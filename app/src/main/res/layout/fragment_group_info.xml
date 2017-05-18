@@ -40,14 +40,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/image"
-                    android:layout_width="160dp"
-                    android:layout_height="150dp"
+                    android:layout_width="150dp"
+                    android:layout_height="140dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="32dp"
                     android:background="@drawable/border_green"
@@ -74,6 +74,8 @@
                     android:layout_marginTop="4dp"
                     android:gravity="center"
                     android:maxLines="5"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
                     android:text="Modi's victory indeed transforms India's political landscape. BJP's dominance is now a fact of India's political life that everyone "
                     android:textColor="#616161"
                     android:textSize="13dp" />
@@ -152,10 +154,30 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/membershead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:paddingLeft="8dp"
+                    android:text="MEMBERS"
+                    android:textColor="@color/main_background_pink"
+                    android:textSize="12dp"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:paddingLeft="2dp"
+                    android:paddingRight="2dp" />
+
+                <TextView
                     android:id="@+id/textrules"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="18dp"
+                    android:paddingLeft="8dp"
                     android:text="RULES"
                     android:textColor="@color/main_background_pink"
                     android:textSize="12dp"
@@ -166,8 +188,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
                     android:text="ent government political party politics is often important."
-
                     android:textColor="#616161"
                     android:textSize="13dp" />
 

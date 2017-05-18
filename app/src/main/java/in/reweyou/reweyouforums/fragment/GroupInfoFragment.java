@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,13 +23,22 @@ import android.widget.Toast;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import in.reweyou.reweyouforums.EditActivity;
 import in.reweyou.reweyouforums.R;
+import in.reweyou.reweyouforums.adapter.GroupMembersAdapter;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
+import in.reweyou.reweyouforums.model.GroupMemberModel;
 import in.reweyou.reweyouforums.utils.Utils;
 
 /**
@@ -44,6 +56,9 @@ public class GroupInfoFragment extends Fragment {
     private String grouprules = "";
     private String adminuid = "";
     private ImageView shineeffect;
+    private UserSessionManager userSessionManager;
+    private GroupMembersAdapter groupMembersAdapter;
+    private RecyclerView recyclerViewMembers;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,7 +74,7 @@ public class GroupInfoFragment extends Fragment {
 
         TextView edit = (TextView) layout.findViewById(R.id.edit);
 
-        final UserSessionManager userSessionManager = new UserSessionManager(mContext);
+        userSessionManager = new UserSessionManager(mContext);
         final TextView btnfollow = (TextView) layout.findViewById(R.id.btn_follow);
         final ImageView img = (ImageView) layout.findViewById(R.id.image);
         final TextView groupname = (TextView) layout.findViewById(R.id.groupname);
@@ -70,6 +85,15 @@ public class GroupInfoFragment extends Fragment {
         TextView threads = (TextView) layout.findViewById(R.id.threads);
         shineeffect = (ImageView) layout.findViewById(R.id.img_shine);
         final ProgressBar pd = (ProgressBar) layout.findViewById(R.id.pd);
+
+        recyclerViewMembers = (RecyclerView) layout.findViewById(R.id.recycler_view);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2, LinearLayoutManager.VERTICAL, false);
+        recyclerViewMembers.setNestedScrollingEnabled(false);
+        recyclerViewMembers.setLayoutManager(gridLayoutManager);
+        groupMembersAdapter = new GroupMembersAdapter(mContext);
+        recyclerViewMembers.setAdapter(groupMembersAdapter);
+
+
         try {
             groupname.setText(getArguments().getString("groupname"));
             members.setText(getArguments().getString("members"));
@@ -101,6 +125,10 @@ public class GroupInfoFragment extends Fragment {
                 btnfollow.setTextColor(mContext.getResources().getColor(R.color.white));
                 btnfollow.setBackground(mContext.getResources().getDrawable(R.drawable.rectangular_solid_pink));
             }
+
+
+            getMembersData();
+
             Glide.with(mContext).load(getArguments().getString("image")).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(img);
             btnfollow.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -175,6 +203,39 @@ public class GroupInfoFragment extends Fragment {
                 }
             }, 700);
         return layout;
+    }
+
+    private void getMembersData() {
+        Log.d(TAG, "getMembersData: " + groupid);
+        AndroidNetworking.post("https://www.reweyou.in/google/list_members.php")
+                .addBodyParameter("groupid", groupid)
+                .addBodyParameter("uid", userSessionManager.getUID())
+                .addBodyParameter("authtoken", userSessionManager.getAuthToken())
+                .setTag("uploadpost")
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONArray(new JSONArrayRequestListener() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            List<GroupMemberModel> list = new ArrayList<>();
+                            Gson gson = new Gson();
+                            for (int i = 0; i < response.length(); i++) {
+                                GroupMemberModel groupMemberModel = gson.fromJson(response.getJSONObject(i).toString(), GroupMemberModel.class);
+                                list.add(groupMemberModel);
+                            }
+                            groupMembersAdapter.add(list);
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+
+                    }
+                });
     }
 
 

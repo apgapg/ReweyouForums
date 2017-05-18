@@ -17,6 +17,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -51,6 +53,7 @@ public class CommentActivity extends AppCompatActivity {
     private TextView nocommenttxt;
     private CommentsAdapter adapterComment;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private ProgressBar progressBar;
 
 
     @Override
@@ -84,7 +87,7 @@ public class CommentActivity extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
         editText = (EditText) findViewById(R.id.edittext);
         send = (ImageView) findViewById(R.id.send);
         nocommenttxt = (TextView) findViewById(R.id.commenttxt);
@@ -143,6 +146,8 @@ public class CommentActivity extends AppCompatActivity {
                                         }
 
                                     }
+
+                                    Collections.reverse(list);
                                     adapterComment.add(list);
                                     if (list.size() == 0) {
                                         nocommenttxt.setVisibility(View.VISIBLE);
@@ -174,7 +179,9 @@ public class CommentActivity extends AppCompatActivity {
                 InputMethodManager imm = (InputMethodManager) CommentActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
                 if (editText.getText().toString().trim().length() > 0) {
-
+                    editText.setEnabled(false);
+                    send.setVisibility(View.INVISIBLE);
+                    progressBar.setVisibility(View.VISIBLE);
                     HashMap<String, String> hashMap = new HashMap<String, String>();
                     hashMap.put("uid", userSessionManager.getUID());
                     hashMap.put("threadid", threadid);
@@ -192,7 +199,6 @@ public class CommentActivity extends AppCompatActivity {
                         hashMap.put("comment", editText.getText().toString().trim());
 
                     }
-                    editText.setText("");
 
 
                     AndroidNetworking.post(url)
@@ -205,9 +211,19 @@ public class CommentActivity extends AppCompatActivity {
                                 public void onResponse(String response) {
                                     Log.d(TAG, "onResponse: " + response);
                                     //   Toast.makeText(CommentActivity.this,response,Toast.LENGTH_SHORT).show();
+
+
                                     if (response.equals("Comment created")) {
+                                        editText.setEnabled(true);
+                                        editText.setText("");
+                                        send.setVisibility(View.VISIBLE);
+                                        progressBar.setVisibility(View.GONE);
                                         getData();
                                     } else if (response.equals("Reply created")) {
+                                        editText.setEnabled(true);
+                                        editText.setText("");
+                                        send.setVisibility(View.VISIBLE);
+                                        progressBar.setVisibility(View.GONE);
                                         getData();
                                     }
                                 }
