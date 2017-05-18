@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "543565106697",
+    "firebase_url": "https://reweyouforums.firebaseio.com",
+    "project_id": "reweyouforums",
+    "storage_bucket": "reweyouforums.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:543565106697:android:1e4ffc7a0a64ca95",
+        "android_client_info": {
+          "package_name": "in.reweyou.reweyouforums"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "543565106697-d1ogd46m94pg0bj71d5thfr49b6ggu05.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "in.reweyou.reweyouforums",
+            "certificate_hash": "506c7a164264667389eee4ac3656c08f85aa2563"
+          }
+        },
+        {
+          "client_id": "543565106697-r2uoe934bocc71755na202tdavfgff4k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "in.reweyou.reweyouforums",
+            "certificate_hash": "79fb95cfaa2938da91d99d41a6440d69174a81f7"
+          }
+        },
+        {
+          "client_id": "543565106697-ip3f48866qivmkitoklg6v2v0catbt2r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_x9Y08zg4EtHMmBzMV_LDNkSfbzokwXU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "543565106697-ip3f48866qivmkitoklg6v2v0catbt2r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/myfragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="in.reweyou.reweyouforums.MyReports">
+
+    <LinearLayout
+        android:id="@+id/heading"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#05A8AA"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="My Reports"
+            android:textColor="#fff"
+            android:textSize="21sp" />
+    </LinearLayout>
+
+    <fragment
+        android:id="@+id/fragment"
+        android:name="in.reweyou.reweyouforums.fragment.ReportsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/heading" />
+</RelativeLayout>

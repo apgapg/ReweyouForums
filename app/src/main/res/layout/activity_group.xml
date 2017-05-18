@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="in.reweyou.reweyouforums.GroupActivity">
+
+    <ImageView
+        android:id="@+id/backgroundimageview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/ic_asb" />
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.NoActionBar.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.NoActionBar.PopupOverlay" />
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:background="#212121"
+            app:tabIndicatorColor="#651FFF"
+            app:tabIndicatorHeight="4dp" />
+
+        <LinearLayout
+            android:id="@+id/uploadingContainer"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:background="#fff"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/uploadingtext"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="14dp"
+                android:gravity="center_vertical"
+                android:text="Uploading Post"
+                android:textColor="#424242"
+                android:textSize="13dp" />
+
+            <ProgressBar
+                android:id="@+id/uploadingprogressbar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+
+                android:indeterminateOnly="true"
+                android:scaleY="1.5" />
+
+            <TextView
+                android:id="@+id/okbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="4dp"
+                android:background="@drawable/ripple_effect2"
+                android:drawableLeft="@drawable/ic_check_layer"
+                android:drawablePadding="6dp"
+                android:gravity="end|center_vertical"
+                android:paddingLeft="6dp"
+                android:paddingRight="16dp"
+                android:text="OK"
+                android:textAllCaps="true"
+                android:textColor="#283593"
+                android:textSize="12dp"
+                android:textStyle="bold"
+                android:visibility="visible" />
+        </LinearLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <include layout="@layout/content_group" />
+
+
+</android.support.design.widget.CoordinatorLayout>
