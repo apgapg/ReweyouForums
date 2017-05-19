@@ -32,7 +32,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -54,6 +53,7 @@ public class CommentActivity extends AppCompatActivity {
     private CommentsAdapter adapterComment;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ProgressBar progressBar;
+    private RecyclerView recyclerView;
 
 
     @Override
@@ -84,7 +84,7 @@ public class CommentActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -131,7 +131,7 @@ public class CommentActivity extends AppCompatActivity {
 
                                 try {
                                     for (int i = 0; i < response.length(); i++) {
-                                        JSONObject json = response.getJSONObject(i);
+                                        JSONObject json = response.getJSONObject(response.length() - 1 - i);
                                         CommentModel coModel = gson.fromJson(json.toString(), CommentModel.class);
                                         list.add(coModel);
 
@@ -147,15 +147,25 @@ public class CommentActivity extends AppCompatActivity {
 
                                     }
 
-                                    Collections.reverse(list);
                                     adapterComment.add(list);
                                     if (list.size() == 0) {
                                         nocommenttxt.setVisibility(View.VISIBLE);
+
+
                                     }
 
+                                    new Handler().post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            recyclerView.smoothScrollToPosition(0);
+                                        }
+                                    });
                                 } catch (Exception e) {
                                     e.printStackTrace();
+                                    Toast.makeText(CommentActivity.this, "something went wrong!", Toast.LENGTH_SHORT).show();
+
                                 }
+
 
                             }
 

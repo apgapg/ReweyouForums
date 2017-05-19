@@ -64,7 +64,7 @@
         android:paddingRight="8dp"
         android:text="Hello World!"
         android:textColor="#616161"
-        android:textSize="12dp" />
+        android:textSize="13dp" />
 
     <TextView
         android:id="@+id/time"
