@@ -115,7 +115,7 @@ public class GroupInfoFragment extends Fragment {
                     textrules.setVisibility(View.GONE);
                     description.setVisibility(View.GONE);
                 }
-            } else description.setText(groupdes);
+            } else description.setText(grouprules);
 
             if (adminuid.equals(userSessionManager.getUID())) {
                 joincontainer.setVisibility(View.GONE);
