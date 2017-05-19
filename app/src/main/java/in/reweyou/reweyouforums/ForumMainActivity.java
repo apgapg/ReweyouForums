@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.Menu;
@@ -19,13 +18,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.common.Priority;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.StringRequestListener;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.kbeanie.multipicker.api.ImagePicker;
 import com.kbeanie.multipicker.api.Picker;
 import com.kbeanie.multipicker.api.callbacks.ImagePickerCallback;
@@ -171,9 +163,7 @@ public class ForumMainActivity extends AppCompatActivity {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
-                if (positionFragment == 3)
-                    handleImage(result.getUri().toString());
-                else if (positionFragment == 2) {
+                if (positionFragment == 2) {
                     CreateFragment createFragment = (CreateFragment) pagerAdapter.getRegisteredFragment(2);
                     createFragment.onImageChoosen(result.getUri().toString());
                 }
@@ -187,47 +177,18 @@ public class ForumMainActivity extends AppCompatActivity {
                 imagePicker.submit(data);
             } else if (requestCode == Utils.REQ_CODE_GROP_ACITIVTY) {
                 ((ExploreFragment) pagerAdapter.getRegisteredFragment(1)).refreshlist();
+            } else if (requestCode == Utils.REQ_CODE_EDIT_PROFILE) {
+                ((UserInfoFragment) pagerAdapter.getRegisteredFragment(2)).refreshprofile();
+
             }
         }
 
 
     }
 
-    private void handleImage(String s) {
-        UserInfoFragment userInfoFragment = (UserInfoFragment) pagerAdapter.getRegisteredFragment(3);
-        userInfoFragment.onImageChoosen(s);
-
-        Glide.with(this).load(s).asBitmap().toBytes().into(new SimpleTarget<byte[]>(150, 150) {
-            @Override
-            public void onResourceReady(byte[] resource, GlideAnimation<? super byte[]> glideAnimation) {
-                String encodedImage = Base64.encodeToString(resource, Base64.DEFAULT);
-                uploadImage(encodedImage);
-            }
-        });
-    }
 
 
-    private void uploadImage(String resource) {
-        AndroidNetworking.post("")
-                .addBodyParameter("image", "")
-                .addBodyParameter("authtoken", userSessionManager.getAuthToken())
-                .addBodyParameter("userid", userSessionManager.getUID())
-                .setTag("test")
-                .setPriority(Priority.MEDIUM)
-                .build()
-                .getAsString(new StringRequestListener() {
-                    @Override
-                    public void onResponse(String response) {
-                        UserInfoFragment userInfoFragment = (UserInfoFragment) pagerAdapter.getRegisteredFragment(3);
-                        userInfoFragment.onImageUpload();
-                    }
 
-                    @Override
-                    public void onError(ANError anError) {
-                        Log.e(TAG, "onError: " + anError);
-                    }
-                });
-    }
 
 
     public boolean onCreateOptionsMenu(final Menu menu) {

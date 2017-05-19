@@ -44,8 +44,6 @@ dependencies {
                 transitive = true
             }
 
-
-
     // required
     compile project(path: ':multipicker')
 

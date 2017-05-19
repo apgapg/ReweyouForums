@@ -5,7 +5,6 @@ import android.graphics.Point;
 import android.view.Display;
 import android.view.WindowManager;
 
-import java.util.Calendar;
 import java.util.Random;
 
 /**
@@ -15,20 +14,13 @@ import java.util.Random;
 public class Utils {
     public static final int REQ_CODE_GROP_ACITIVTY = 25;
     public static final int REQ_CODE_EDIT_GROUP_ACTIVITY = 27;
+    public static final int REQ_CODE_EDIT_PROFILE = 28;
     public static boolean isNight;
     public static int backgroundCode;
     public static int screenWidth;
     private static int scalefactor;
     private static int screenHeight;
 
-    public static void setDayNightBoolean() {
-        Calendar calendar = Calendar.getInstance();
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        boolean isNights = hour < 6 || hour > 18;
-        if (isNights) {
-            isNight = isNights;
-        }
-    }
 
     public static void setBackgroundColor(Context applicationContext) {
         Random rand = new Random();

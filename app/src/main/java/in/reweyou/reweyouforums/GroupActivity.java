@@ -44,7 +44,6 @@ import in.reweyou.reweyouforums.fragment.ChatFragment;
 import in.reweyou.reweyouforums.fragment.CreateThreadFragment;
 import in.reweyou.reweyouforums.fragment.GroupInfoFragment;
 import in.reweyou.reweyouforums.fragment.GroupThreadsFragment;
-import in.reweyou.reweyouforums.fragment.UserInfoFragment;
 import in.reweyou.reweyouforums.utils.Utils;
 
 public class GroupActivity extends AppCompatActivity {
@@ -379,18 +378,7 @@ public class GroupActivity extends AppCompatActivity {
 
     }
 
-    private void handleImage(String s) {
-        UserInfoFragment userInfoFragment = (UserInfoFragment) pagerAdapter.getRegisteredFragment(3);
-        userInfoFragment.onImageChoosen(s);
 
-        Glide.with(this).load(s).asBitmap().toBytes().into(new SimpleTarget<byte[]>(150, 150) {
-            @Override
-            public void onResourceReady(byte[] resource, GlideAnimation<? super byte[]> glideAnimation) {
-                String encodedImage = Base64.encodeToString(resource, Base64.DEFAULT);
-                //uploadImage(encodedImage);
-            }
-        });
-    }
 
     public void startCreateActivity() {
         uploadingContainer.setVisibility(View.GONE);

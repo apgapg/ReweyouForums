@@ -36,6 +36,7 @@ public class UserSessionManager {
     private static final String TAG = UserSessionManager.class.getName();
     private static final String KEY_REALNAME = "realname";
     private static final String KEY_UID = "uid";
+    private static final String KEY_SHORTINFO = "info";
     // Shared Preferences reference
     SharedPreferences pref;
     // Editor reference for Shared preferences
@@ -49,6 +50,7 @@ public class UserSessionManager {
     private String FIRST_LOAD_TUT = "firsttimeload";
     private boolean mobileNumber;
     private String deviceid;
+    private String shortinfo;
 
 
     // Constructor
@@ -206,5 +208,9 @@ public class UserSessionManager {
 
     public String getDeviceid() {
         return deviceid;
+    }
+
+    public String getShortinfo() {
+        return pref.getString(KEY_SHORTINFO, "");
     }
 }

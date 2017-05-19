@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,6 +60,7 @@ public class GroupInfoFragment extends Fragment {
     private UserSessionManager userSessionManager;
     private GroupMembersAdapter groupMembersAdapter;
     private RecyclerView recyclerViewMembers;
+    private RelativeLayout joincontainer;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,6 +78,7 @@ public class GroupInfoFragment extends Fragment {
 
         userSessionManager = new UserSessionManager(mContext);
         final TextView btnfollow = (TextView) layout.findViewById(R.id.btn_follow);
+        joincontainer = (RelativeLayout) layout.findViewById(R.id.joincontainer);
         final ImageView img = (ImageView) layout.findViewById(R.id.image);
         final TextView groupname = (TextView) layout.findViewById(R.id.groupname);
         final TextView textrules = (TextView) layout.findViewById(R.id.textrules);
@@ -114,7 +117,7 @@ public class GroupInfoFragment extends Fragment {
                 }
             }
             if (adminuid.equals(userSessionManager.getUID())) {
-                btnfollow.setVisibility(View.GONE);
+                joincontainer.setVisibility(View.GONE);
             } else if (isfollowed) {
                 btnfollow.setText("Leave");
                 btnfollow.setTextColor(mContext.getResources().getColor(R.color.main_background_pink));
