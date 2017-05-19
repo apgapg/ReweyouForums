@@ -236,6 +236,13 @@ public class CommentActivity extends AppCompatActivity {
                                         send.setVisibility(View.VISIBLE);
                                         progressBar.setVisibility(View.GONE);
                                         getData();
+                                    } else {
+
+                                        send.setVisibility(View.VISIBLE);
+                                        progressBar.setVisibility(View.GONE);
+
+                                        Toast.makeText(CommentActivity.this, "something went wrong!", Toast.LENGTH_SHORT).show();
+
                                     }
                                 }
 
