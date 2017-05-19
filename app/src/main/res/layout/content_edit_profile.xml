@@ -33,14 +33,15 @@
                 android:layout_gravity="center_horizontal"
                 android:padding="1dp"
                 android:src="@color/transparent"
-                app:myborderColor="#6200EA" />
+                app:myborderColor="#6200EA"
+                app:myborderWidth="2dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Tap to change image"
-                android:textColor="@color/main_background_pink_alpha"
+                android:textColor="#757575"
                 android:textSize="12dp" />
 
 

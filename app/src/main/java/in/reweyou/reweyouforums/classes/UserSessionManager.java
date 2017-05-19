@@ -36,7 +36,7 @@ public class UserSessionManager {
     private static final String TAG = UserSessionManager.class.getName();
     private static final String KEY_REALNAME = "realname";
     private static final String KEY_UID = "uid";
-    private static final String KEY_SHORTINFO = "info";
+    private static final String KEY_SHORT_INFO = "info";
     // Shared Preferences reference
     SharedPreferences pref;
     // Editor reference for Shared preferences
@@ -101,7 +101,7 @@ public class UserSessionManager {
     }*/
 
     //Create login session and Register
-    public void createUserRegisterSession(String uid, String real, String username, String photoUrl, String authtoken) {
+    public void createUserRegisterSession(String uid, String real, String username, String photoUrl, String authtoken, String shortinfo) {
 
         editor.putBoolean(IS_USER_LOGIN, true);
 
@@ -110,6 +110,7 @@ public class UserSessionManager {
         editor.putString(KEY_NAME, username);
         editor.putString(KEY_UID, uid);
         editor.putString(KEY_AUTH_TOKEN, authtoken);
+        editor.putString(KEY_SHORT_INFO, shortinfo);
 
         // commit changes
         editor.commit();
@@ -211,6 +212,6 @@ public class UserSessionManager {
     }
 
     public String getShortinfo() {
-        return pref.getString(KEY_SHORTINFO, "");
+        return pref.getString(KEY_SHORT_INFO, "");
     }
 }

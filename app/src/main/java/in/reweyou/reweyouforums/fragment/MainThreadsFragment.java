@@ -3,14 +3,17 @@ package in.reweyou.reweyouforums.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -37,6 +40,7 @@ public class MainThreadsFragment extends Fragment {
     private RecyclerView recyclerView;
     private FeeedsAdapter feeedsAdapter;
     private UserSessionManager userSessionManager;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,8 +56,13 @@ public class MainThreadsFragment extends Fragment {
 
         recyclerView = (RecyclerView) layout.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-
-
+        swipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swiperefresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getData();
+            }
+        });
         return layout;
     }
 
@@ -91,6 +100,7 @@ public class MainThreadsFragment extends Fragment {
     }
 
     private void getData() {
+        swipeRefreshLayout.setRefreshing(true);
         AndroidNetworking.post("https://www.reweyou.in/google/list_threads.php")
                 .addBodyParameter("uid", userSessionManager.getUID())
                 .addBodyParameter("authtoken", userSessionManager.getAuthToken())
@@ -102,12 +112,21 @@ public class MainThreadsFragment extends Fragment {
 
                     @Override
                     public void onResponse(final List<ThreadModel> list) {
-                        feeedsAdapter.add(list);
+                        swipeRefreshLayout.setRefreshing(false);
+                        new Handler().post(new Runnable() {
+                            @Override
+                            public void run() {
+                                feeedsAdapter.add(list);
+
+                            }
+                        });
                     }
 
                     @Override
                     public void onError(final ANError anError) {
                         Log.e(TAG, "run: error: " + anError.getErrorDetail());
+                        Toast.makeText(mContext, "couldn't connect", Toast.LENGTH_SHORT).show();
+                        swipeRefreshLayout.setRefreshing(false);
 
 
                     }

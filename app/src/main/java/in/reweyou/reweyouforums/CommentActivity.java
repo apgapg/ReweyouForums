@@ -152,7 +152,8 @@ public class CommentActivity extends AppCompatActivity {
                                         nocommenttxt.setVisibility(View.VISIBLE);
 
 
-                                    }
+                                    } else nocommenttxt.setVisibility(View.INVISIBLE);
+
 
                                     new Handler().post(new Runnable() {
                                         @Override
@@ -241,6 +242,12 @@ public class CommentActivity extends AppCompatActivity {
                                 @Override
                                 public void onError(ANError anError) {
                                     Log.d(TAG, "onError: anerror" + anError);
+
+                                    send.setVisibility(View.VISIBLE);
+                                    progressBar.setVisibility(View.GONE);
+
+                                    Toast.makeText(CommentActivity.this, "couldn't connect", Toast.LENGTH_SHORT).show();
+
                                 }
                             });
                 }

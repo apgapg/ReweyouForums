@@ -115,7 +115,8 @@ public class GroupInfoFragment extends Fragment {
                     textrules.setVisibility(View.GONE);
                     description.setVisibility(View.GONE);
                 }
-            }
+            } else description.setText(groupdes);
+
             if (adminuid.equals(userSessionManager.getUID())) {
                 joincontainer.setVisibility(View.GONE);
             } else if (isfollowed) {
@@ -202,7 +203,7 @@ public class GroupInfoFragment extends Fragment {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    shineeffect.animate().translationXBy(Utils.convertpxFromDp(28 + 90 + 28)).setInterpolator(new AccelerateDecelerateInterpolator()).setDuration(800).start();
+                    shineeffect.animate().translationXBy(Utils.convertpxFromDp(28 + 90 + 28)).setInterpolator(new AccelerateDecelerateInterpolator()).setDuration(750).start();
                 }
             }, 700);
         return layout;

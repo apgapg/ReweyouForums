@@ -136,6 +136,8 @@ public class EditProfileActivity extends AppCompatActivity {
                             public void onResponse(String response) {
                                 Log.d(TAG, "onResponse: " + response);
                                 if (response.equals("Updated")) {
+
+                                    //  userSessionManager
                                     pd.setVisibility(View.GONE);
                                     Toast.makeText(EditProfileActivity.this, "Profile updated!", Toast.LENGTH_SHORT).show();
                                     setResult(RESULT_OK);

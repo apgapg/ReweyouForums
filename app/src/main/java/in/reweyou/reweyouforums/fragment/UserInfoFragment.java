@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import in.reweyou.reweyouforums.EditProfileActivity;
 import in.reweyou.reweyouforums.R;
@@ -60,9 +61,9 @@ public class UserInfoFragment extends Fragment {
         UserSessionManager userSessionManager = new UserSessionManager(mContext);
 
         username.setText(userSessionManager.getUsername());
-        userstatus.setText("No status yet");
+        userstatus.setText(userSessionManager.getShortinfo());
 
-        Glide.with(mContext).load(userSessionManager.getProfilePicture()).into(image);
+        Glide.with(mContext).load(userSessionManager.getProfilePicture()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(image);
 
         return layout;
     }

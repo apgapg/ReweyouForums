@@ -9,21 +9,25 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.StringRequestListener;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -32,9 +36,12 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.kbeanie.multipicker.api.ImagePicker;
 
+import org.json.JSONObject;
+
 import in.reweyou.reweyouforums.ForumMainActivity;
 import in.reweyou.reweyouforums.LoginActivity;
 import in.reweyou.reweyouforums.R;
+import in.reweyou.reweyouforums.adapter.InterestAdapter;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 
 /**
@@ -48,7 +55,7 @@ public class ProfileFragment extends Fragment {
     private Activity mContext;
     private EditText username;
     private ImageView image;
-    private Button continuebutton;
+    private TextView continuebutton;
     private ImagePicker imagePicker;
     private ProgressBar progressBar;
     private String idToken;
@@ -56,6 +63,7 @@ public class ProfileFragment extends Fragment {
     private Uri photoUrl;
     private String serverAuthCode;
     private String uid;
+    private ProgressBar progressBarproceed;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,8 +79,9 @@ public class ProfileFragment extends Fragment {
 
         username = (EditText) layout.findViewById(R.id.username);
         image = (ImageView) layout.findViewById(R.id.image);
-        continuebutton = (Button) layout.findViewById(R.id.continu);
+        continuebutton = (TextView) layout.findViewById(R.id.continu);
         progressBar = (ProgressBar) layout.findViewById(R.id.pd);
+        progressBarproceed = (ProgressBar) layout.findViewById(R.id.pd1);
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,12 +103,28 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        RecyclerView recyclerView = (RecyclerView) layout.findViewById(R.id.recycler_view);
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 3, LinearLayoutManager.HORIZONTAL, false);
+
+        recyclerView.setLayoutManager(gridLayoutManager);
+
+        InterestAdapter interestAdapter = new InterestAdapter(mContext);
+        recyclerView.setAdapter(interestAdapter);
+
+        getData();
+
         return layout;
+    }
+
+    private void getData() {
+
     }
 
 
     private void uploadDetails() {
-        Log.d(TAG, "uploadDetails: " + uid);
+        continuebutton.setVisibility(View.INVISIBLE);
+        progressBarproceed.setVisibility(View.VISIBLE);
         AndroidNetworking.post("https://www.reweyou.in/google/signup.php")
                 .addBodyParameter("profileurl", photoUrl.toString())
                 .addBodyParameter("name", realname)
@@ -109,25 +134,34 @@ public class ProfileFragment extends Fragment {
                 .setTag("login")
                 .setPriority(Priority.HIGH)
                 .build()
-                .getAsString(new StringRequestListener() {
+                .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
-                    public void onResponse(String response) {
-                        Log.d(TAG, "onResponse: " + response);
-                        if (!response.equals("Error")) {
+                    public void onResponse(JSONObject response) {
+                        try {
+
+
                             UserSessionManager userSessionManager = new UserSessionManager(mContext);
-                            userSessionManager.createUserRegisterSession(uid, realname, username.getText().toString(), photoUrl.toString(), response.replace("token", ""));
+                            userSessionManager.createUserRegisterSession(uid, realname, username.getText().toString(), photoUrl.toString(), response.getString("token"), response.getString("shortinfo"));
                             mContext.startActivity(new Intent(mContext, ForumMainActivity.class));
                             mContext.finish();
-                        } else
-                            Toast.makeText(mContext, "Something went wrong! Please try again", Toast.LENGTH_SHORT).show();
 
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Toast.makeText(mContext, "Something went wrong! Please try again", Toast.LENGTH_SHORT).show();
+                            continuebutton.setVisibility(View.VISIBLE);
+                            progressBarproceed.setVisibility(View.INVISIBLE);
+                        }
                     }
 
                     @Override
                     public void onError(ANError anError) {
-                        Log.e(TAG, "onError: " + anError);
+                        Log.d(TAG, "onError: " + anError);
+                        Toast.makeText(mContext, "Something went wrong! Please try again", Toast.LENGTH_SHORT).show();
+                        continuebutton.setVisibility(View.VISIBLE);
+                        progressBarproceed.setVisibility(View.INVISIBLE);
                     }
                 });
+
     }
 
     private void showGallery() {
@@ -203,7 +237,7 @@ public class ProfileFragment extends Fragment {
             username.setText(givenName);
             username.setSelection(givenName.length());
         }
-        Glide.with(ProfileFragment.this).load(photoUrl).into(image);
+        Glide.with(ProfileFragment.this).load(photoUrl).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(image);
 
 
     }
