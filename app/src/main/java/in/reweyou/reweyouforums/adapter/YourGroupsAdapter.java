@@ -92,6 +92,7 @@ public class YourGroupsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     i.putExtra("rules", messagelist.get(getAdapterPosition()).getRules());
                     i.putExtra("admin", messagelist.get(getAdapterPosition()).getAdmin());
                     i.putExtra("members", messagelist.get(getAdapterPosition()).getMembers());
+                    i.putExtra("threads", messagelist.get(getAdapterPosition()).getThreads());
                     i.putExtra("follow", true);
                     ((Activity) context).startActivityForResult(i, Utils.REQ_CODE_GROP_ACITIVTY);
                     //  i.putExtra("threads",messagelist.get(getAdapterPosition()).ge);

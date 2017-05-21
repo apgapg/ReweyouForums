@@ -71,6 +71,7 @@ public class GroupActivity extends AppCompatActivity {
     private String groupadmin = "";
     private String groupdescription = "";
     private String grouprules = "";
+    private String groupthreads = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +88,7 @@ public class GroupActivity extends AppCompatActivity {
             groupname = getIntent().getStringExtra("groupname");
             groupid = getIntent().getStringExtra("groupid");
             groupmembers = getIntent().getStringExtra("members");
+            groupthreads = getIntent().getStringExtra("threads");
             groupimage = getIntent().getStringExtra("image");
             groupadmin = getIntent().getStringExtra("admin");
             groupdescription = getIntent().getStringExtra("description");
@@ -379,7 +381,6 @@ public class GroupActivity extends AppCompatActivity {
     }
 
 
-
     public void startCreateActivity() {
         uploadingContainer.setVisibility(View.GONE);
         startActivityForResult(new Intent(GroupActivity.this, CreateActivity.class), 19);
@@ -406,6 +407,7 @@ public class GroupActivity extends AppCompatActivity {
                 bundle.putString("admin", groupadmin);
                 bundle.putString("description", groupdescription);
                 bundle.putString("rules", grouprules);
+                bundle.putString("threads", groupthreads);
                 bundle.putString("image", groupimage);
                 bundle.putBoolean("follow", isfollowed);
 

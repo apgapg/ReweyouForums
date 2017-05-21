@@ -9,9 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,9 +22,11 @@ import android.widget.Toast;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.gson.Gson;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -36,13 +35,19 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.kbeanie.multipicker.api.ImagePicker;
 
+import org.apmem.tools.layouts.FlowLayout;
+import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import in.reweyou.reweyouforums.ForumMainActivity;
 import in.reweyou.reweyouforums.LoginActivity;
 import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.adapter.InterestAdapter;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
+import in.reweyou.reweyouforums.model.GroupModel;
 
 /**
  * Created by master on 24/2/17.
@@ -64,6 +69,9 @@ public class ProfileFragment extends Fragment {
     private String serverAuthCode;
     private String uid;
     private ProgressBar progressBarproceed;
+    private InterestAdapter interestAdapter;
+    private org.apmem.tools.layouts.FlowLayout flowLayout;
+    private List<String> interestlist;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -97,20 +105,17 @@ public class ProfileFragment extends Fragment {
         continuebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                uploadDetails();
+                if (interestlist.isEmpty())
+                    Toast.makeText(mContext, "Please select an interest", Toast.LENGTH_SHORT).show();
+                else
+                    uploadDetails();
 
             }
         });
 
-        RecyclerView recyclerView = (RecyclerView) layout.findViewById(R.id.recycler_view);
+        flowLayout = (FlowLayout) layout.findViewById(R.id.flowlayout);
+        flowLayout.removeAllViews();
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 3, LinearLayoutManager.HORIZONTAL, false);
-
-        recyclerView.setLayoutManager(gridLayoutManager);
-
-        InterestAdapter interestAdapter = new InterestAdapter(mContext);
-        recyclerView.setAdapter(interestAdapter);
 
         getData();
 
@@ -118,11 +123,71 @@ public class ProfileFragment extends Fragment {
     }
 
     private void getData() {
+        AndroidNetworking.get("https://www.reweyou.in/google/suggest_groups.php")
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONArray(new JSONArrayRequestListener() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            Gson gson = new Gson();
+                            List<GroupModel> groupModels = new ArrayList<>();
+                            for (int i = 0; i < response.length(); i++) {
+                                if (i < 9) {
+                                    GroupModel groupModel = gson.fromJson(response.getJSONObject(i).toString(), GroupModel.class);
+                                    groupModels.add(groupModel);
+                                }
 
+
+                            }
+                            populatedata(groupModels);
+
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+
+                    }
+                });
+    }
+
+    private void populatedata(final List<GroupModel> groupModels) {
+        interestlist = new ArrayList<>();
+        Log.d(TAG, "populatedata: " + groupModels.size());
+        for (int i = 0; i < groupModels.size(); i++) {
+            View view = mContext.getLayoutInflater().inflate(R.layout.item_interest, null);
+            final TextView textView = (TextView) view.findViewById(R.id.groupname);
+            textView.setText(groupModels.get(i).getGroupname());
+            textView.setTag("0");
+            final int finalI = i;
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (v.getTag().equals("0")) {
+                        v.setTag("1");
+                        textView.setTextColor(mContext.getResources().getColor(R.color.white));
+                        textView.setBackground(mContext.getResources().getDrawable(R.drawable.rectangular_solid_blue));
+                        interestlist.add(groupModels.get(finalI).getGroupid());
+                    } else {
+                        v.setTag("0");
+                        textView.setTextColor(mContext.getResources().getColor(R.color.bright_blue));
+                        textView.setBackground(mContext.getResources().getDrawable(R.drawable.border_blue));
+                        interestlist.remove(groupModels.get(finalI).getGroupid());
+
+                    }
+                }
+            });
+            flowLayout.addView(view);
+        }
     }
 
 
     private void uploadDetails() {
+
         continuebutton.setVisibility(View.INVISIBLE);
         progressBarproceed.setVisibility(View.VISIBLE);
         AndroidNetworking.post("https://www.reweyou.in/google/signup.php")

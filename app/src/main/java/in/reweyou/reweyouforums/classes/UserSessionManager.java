@@ -214,4 +214,8 @@ public class UserSessionManager {
     public String getShortinfo() {
         return pref.getString(KEY_SHORT_INFO, "");
     }
+
+    public void setShortInfo(String shortInfo) {
+        this.shortinfo = shortInfo;
+    }
 }

@@ -18,4 +18,6 @@
         <attr name="refreshColors" format="reference" />
         <attr name="refreshColor" format="reference" />
     </declare-styleable>
+
+
 </resources>

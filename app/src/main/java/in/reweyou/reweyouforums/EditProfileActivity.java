@@ -55,6 +55,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private Button create;
     private ImagePicker imagePicker;
     private String encodedImage = "";
+    private String tempshortinfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +114,7 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 create.setVisibility(View.INVISIBLE);
                 pd.setVisibility(View.VISIBLE);
-                String tempshortinfo = "I am happy to be a part of Reweyou";
+                tempshortinfo = "I am happy to be a part of Reweyou";
                 if (shortinfo.getText().toString().length() > 0)
                     tempshortinfo = shortinfo.getText().toString();
 
@@ -137,7 +138,8 @@ public class EditProfileActivity extends AppCompatActivity {
                                 Log.d(TAG, "onResponse: " + response);
                                 if (response.equals("Updated")) {
 
-                                    //  userSessionManager
+                                    /*userSessionManager.setShortInfo(tempshortinfo);
+                                    userSessionManager.setUsername(username.getText().toString().trim());*/
                                     pd.setVisibility(View.GONE);
                                     Toast.makeText(EditProfileActivity.this, "Profile updated!", Toast.LENGTH_SHORT).show();
                                     setResult(RESULT_OK);

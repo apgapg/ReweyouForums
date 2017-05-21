@@ -17,6 +17,7 @@ import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.reweyou.reweyouforums.CommentActivity;
+import in.reweyou.reweyouforums.FullImage;
 import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.model.ThreadModel;
@@ -181,8 +183,9 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
     }
 
-    private void onbindimage1(Image1ViewHolder image1ViewHolder, int position) {
+    private void onbindimage1(Image1ViewHolder image1ViewHolder, final int position) {
         Glide.with(mContext).load(messagelist.get(position).getImage1()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(image1ViewHolder.image1);
+
     }
 
     private void onbindimage2(Image2ViewHolder image2ViewHolder, int position) {
@@ -345,6 +348,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         private TextView username, likenum, commentnum, likenumber1, likenumber2, likenumber3;
         private TextView date;
         private TextView description;
+        private LinearLayout commentcontainer;
 
         public BaseViewHolder(View inflate) {
             super(inflate);
@@ -358,6 +362,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             likenumber2 = (TextView) inflate.findViewById(R.id.likenumber2);
             likenumber3 = (TextView) inflate.findViewById(R.id.likenumber3);
             description = (TextView) inflate.findViewById(R.id.description);
+            commentcontainer = (LinearLayout) inflate.findViewById(R.id.commentcontainer);
             username = (TextView) inflate.findViewById(R.id.usernamee);
             date = (TextView) inflate.findViewById(R.id.date);
             commentnum = (TextView) inflate.findViewById(R.id.commentnumber);
@@ -393,7 +398,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                 }
             });
 
-            comment.setOnClickListener(new View.OnClickListener() {
+            commentcontainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(mContext, CommentActivity.class);
@@ -449,6 +454,15 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                 }
             });
 
+            image1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(mContext, FullImage.class);
+                    i.putExtra("image", messagelist.get(getAdapterPosition()).getImage1());
+                    mContext.startActivity(i);
+                }
+            });
+
         }
     }
 
@@ -459,7 +473,22 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             super(inflate);
             image1 = (ImageView) inflate.findViewById(R.id.image1);
             image2 = (ImageView) inflate.findViewById(R.id.image2);
-
+            image1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(mContext, FullImage.class);
+                    i.putExtra("image", messagelist.get(getAdapterPosition()).getImage1());
+                    mContext.startActivity(i);
+                }
+            });
+            image2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(mContext, FullImage.class);
+                    i.putExtra("image", messagelist.get(getAdapterPosition()).getImage1());
+                    mContext.startActivity(i);
+                }
+            });
         }
     }
 
@@ -471,7 +500,30 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             image1 = (ImageView) inflate.findViewById(R.id.image1);
             image2 = (ImageView) inflate.findViewById(R.id.image2);
             image3 = (ImageView) inflate.findViewById(R.id.image3);
-
+            image1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(mContext, FullImage.class);
+                    i.putExtra("image", messagelist.get(getAdapterPosition()).getImage1());
+                    mContext.startActivity(i);
+                }
+            });
+            image2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(mContext, FullImage.class);
+                    i.putExtra("image", messagelist.get(getAdapterPosition()).getImage1());
+                    mContext.startActivity(i);
+                }
+            });
+            image3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(mContext, FullImage.class);
+                    i.putExtra("image", messagelist.get(getAdapterPosition()).getImage1());
+                    mContext.startActivity(i);
+                }
+            });
         }
     }
 
@@ -485,6 +537,38 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             image3 = (ImageView) inflate.findViewById(R.id.image3);
             image4 = (ImageView) inflate.findViewById(R.id.image4);
 
+            image1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(mContext, FullImage.class);
+                    i.putExtra("image", messagelist.get(getAdapterPosition()).getImage1());
+                    mContext.startActivity(i);
+                }
+            });
+            image2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(mContext, FullImage.class);
+                    i.putExtra("image", messagelist.get(getAdapterPosition()).getImage1());
+                    mContext.startActivity(i);
+                }
+            });
+            image3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(mContext, FullImage.class);
+                    i.putExtra("image", messagelist.get(getAdapterPosition()).getImage1());
+                    mContext.startActivity(i);
+                }
+            });
+            image4.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(mContext, FullImage.class);
+                    i.putExtra("image", messagelist.get(getAdapterPosition()).getImage1());
+                    mContext.startActivity(i);
+                }
+            });
         }
     }
 

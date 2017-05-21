@@ -73,6 +73,8 @@ dependencies {
     compile 'com.karumi:dexter:4.1.0'
     compile 'me.zhanghai.android.materialprogressbar:library:1.4.1'
     compile 'com.android.support:gridlayout-v7:25.3.1'
+    compile 'org.apmem.tools:layouts:1.10@aar'
+
     testCompile 'junit:junit:4.12'
 }
 

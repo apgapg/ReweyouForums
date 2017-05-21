@@ -9,7 +9,8 @@
         android:id="@+id/img"
         android:layout_width="36dp"
         android:layout_height="36dp"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true"
+        android:src="@color/transparent" />
 
 
 </RelativeLayout>

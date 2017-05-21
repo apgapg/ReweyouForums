@@ -29,19 +29,10 @@ public class FullImage extends AppCompatActivity {
 
 
         Bundle bundle = getIntent().getExtras();
-        imagepath = bundle.getString("myData");
-        tag = bundle.getString("tag");
-        headlinetext = bundle.getString("headline");
+        imagepath = bundle.getString("image");
         imageView = (ImageViewTouch) findViewById(R.id.image);
-        getSupportActionBar().setTitle("#" + tag);
         showimage(imagepath);
 
-        if (headlinetext != null) {
-            if (!headlinetext.isEmpty()) {
-                this.headline.setVisibility(View.VISIBLE);
-                this.headline.setText(headlinetext);
-            }
-        }
 
     }
 

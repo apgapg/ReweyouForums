@@ -31,10 +31,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:ellipsize="marquee"
+
         android:gravity="center"
-        android:lines="1"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
+        android:singleLine="true"
         android:text="GroupName"
         android:textColor="#424242"
         android:textStyle="bold" />

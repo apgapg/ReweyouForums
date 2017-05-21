@@ -93,8 +93,7 @@ public class GroupInfoFragment extends Fragment {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2, LinearLayoutManager.VERTICAL, false);
         recyclerViewMembers.setNestedScrollingEnabled(false);
         recyclerViewMembers.setLayoutManager(gridLayoutManager);
-        groupMembersAdapter = new GroupMembersAdapter(mContext);
-        recyclerViewMembers.setAdapter(groupMembersAdapter);
+
 
 
         try {
@@ -107,6 +106,7 @@ public class GroupInfoFragment extends Fragment {
             grouprules = getArguments().getString("rules");
             description.setText(getArguments().getString("rules"));
             adminuid = getArguments().getString("admin");
+            threads.setText(getArguments().getString("threads"));
             if (getArguments().getString("rules").isEmpty()) {
                 if (userSessionManager.getUID().equals(adminuid)) {
 
@@ -131,6 +131,10 @@ public class GroupInfoFragment extends Fragment {
             }
 
 
+            groupMembersAdapter = new GroupMembersAdapter(mContext, Integer.parseInt(getArguments().getString("members")));
+
+
+            recyclerViewMembers.setAdapter(groupMembersAdapter);
             getMembersData();
 
             Glide.with(mContext).load(getArguments().getString("image")).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(img);

@@ -25,9 +25,12 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private final Context context;
     List<GroupMemberModel> messagelist;
 
-    public GroupMembersAdapter(Context context) {
+    public GroupMembersAdapter(Context context, int members) {
         this.context = context;
         this.messagelist = new ArrayList<>();
+        for (int i = 0; i < members; i++) {
+            messagelist.add(new GroupMemberModel());
+        }
 
     }
 
