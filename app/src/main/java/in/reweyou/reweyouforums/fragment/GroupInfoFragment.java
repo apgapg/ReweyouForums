@@ -196,7 +196,7 @@ public class GroupInfoFragment extends Fragment {
             e.printStackTrace();
         }
 
-        if (userSessionManager.getUID().equals(adminuid)) {
+        if (!userSessionManager.getUID().equals(adminuid)) {
             edit.setVisibility(View.INVISIBLE);
 
         } else {
