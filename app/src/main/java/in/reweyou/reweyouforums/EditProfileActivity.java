@@ -165,6 +165,8 @@ public class EditProfileActivity extends AppCompatActivity {
                             @Override
                             public void onError(ANError anError) {
                                 Log.d(TAG, "onError: " + anError);
+                                Toast.makeText(EditProfileActivity.this, "couldn't connect", Toast.LENGTH_SHORT).show();
+
                                 create.setVisibility(View.VISIBLE);
                                 pd.setVisibility(View.GONE);
                             }
