@@ -139,7 +139,7 @@ public class ExploreFragment extends Fragment {
         AndroidNetworking.post("https://www.reweyou.in/google/discover_groups.php")
                 .addBodyParameter("uid", userSessionManager.getUID())
                 .setTag("fetchgroups")
-                .setPriority(Priority.HIGH)
+                .setPriority(Priority.MEDIUM)
                 .build()
                 /*.getAsString(new StringRequestListener() {
                     @Override

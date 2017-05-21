@@ -42,7 +42,7 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         YourGroupsViewHolder forumViewHolder = (YourGroupsViewHolder) holder;
-        Glide.with(context).load(messagelist.get(position).getImageurl()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(forumViewHolder.backgroundImage);
+        Glide.with(context).load(messagelist.get(position).getImageurl()).dontAnimate().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(forumViewHolder.backgroundImage);
 
     }
 

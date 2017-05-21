@@ -31,7 +31,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.kbeanie.multipicker.api.ImagePicker;
-import com.kbeanie.multipicker.api.Picker;
 import com.kbeanie.multipicker.api.callbacks.ImagePickerCallback;
 import com.kbeanie.multipicker.api.entity.ChosenImage;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -41,7 +40,6 @@ import java.util.List;
 
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.fragment.ChatFragment;
-import in.reweyou.reweyouforums.fragment.CreateThreadFragment;
 import in.reweyou.reweyouforums.fragment.GroupInfoFragment;
 import in.reweyou.reweyouforums.fragment.GroupThreadsFragment;
 import in.reweyou.reweyouforums.utils.Utils;
@@ -230,30 +228,18 @@ public class GroupActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         Log.d("reached", "activigty");
-        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "onActivityResult: " + requestCode + "    " + resultCode);
 
 
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-
-                CreateThreadFragment createFragment = (CreateThreadFragment) pagerAdapter.getRegisteredFragment(2);
-                createFragment.onImageChoosen(result.getUri().toString());
-
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Exception error = result.getError();
-            }
-        }
         if (requestCode == 19) {
             if (resultCode == RESULT_OK) {
                 this.intentData = data;
-
                 compressImages();
             }
         } else if (resultCode == RESULT_OK) {
-            if (requestCode == Picker.PICK_IMAGE_DEVICE) {
-                imagePicker.submit(data);
-            } else if (requestCode == Utils.REQ_CODE_EDIT_GROUP_ACTIVITY) {
+            Log.d(TAG, "onActivityResult: eff333333333");
+            if (requestCode == Utils.REQ_CODE_EDIT_GROUP_ACTIVITY) {
+                Log.d(TAG, "onActivityResult: ewnjdnedejwndnjwendjkwe ncjx");
                 ((GroupInfoFragment) pagerAdapter.getRegisteredFragment(0)).refreshDetails();
             }
         }

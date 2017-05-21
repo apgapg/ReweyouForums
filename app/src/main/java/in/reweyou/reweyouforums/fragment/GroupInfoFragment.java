@@ -135,6 +135,7 @@ public class GroupInfoFragment extends Fragment {
 
 
             recyclerViewMembers.setAdapter(groupMembersAdapter);
+            recyclerViewMembers.setNestedScrollingEnabled(false);
             getMembersData();
 
             Glide.with(mContext).load(getArguments().getString("image")).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(img);
@@ -199,7 +200,7 @@ public class GroupInfoFragment extends Fragment {
                 i.putExtra("image", getArguments().getString("image"));
                 i.putExtra("rules", grouprules);
                 i.putExtra("groupid", groupid);
-                startActivityForResult(i, Utils.REQ_CODE_EDIT_GROUP_ACTIVITY);
+                mContext.startActivityForResult(i, Utils.REQ_CODE_EDIT_GROUP_ACTIVITY);
             }
         });
 
@@ -226,6 +227,7 @@ public class GroupInfoFragment extends Fragment {
                     @Override
                     public void onResponse(JSONArray response) {
                         try {
+                            Log.d(TAG, "onResponse: members " + response.length());
                             List<GroupMemberModel> list = new ArrayList<>();
                             Gson gson = new Gson();
                             for (int i = 0; i < response.length(); i++) {
@@ -241,7 +243,7 @@ public class GroupInfoFragment extends Fragment {
 
                     @Override
                     public void onError(ANError anError) {
-
+                        Log.e(TAG, "onError: " + anError);
                     }
                 });
     }
@@ -274,6 +276,6 @@ public class GroupInfoFragment extends Fragment {
 
 
     public void refreshDetails() {
-        Toast.makeText(mContext, "Details code to be updated soon", Toast.LENGTH_SHORT).show();
+
     }
 }

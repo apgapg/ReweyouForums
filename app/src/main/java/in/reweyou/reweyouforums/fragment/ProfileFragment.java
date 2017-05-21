@@ -37,6 +37,7 @@ import com.kbeanie.multipicker.api.ImagePicker;
 
 import org.apmem.tools.layouts.FlowLayout;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -72,6 +73,7 @@ public class ProfileFragment extends Fragment {
     private InterestAdapter interestAdapter;
     private org.apmem.tools.layouts.FlowLayout flowLayout;
     private List<String> interestlist;
+    private JSONObject jsonObject;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -188,13 +190,28 @@ public class ProfileFragment extends Fragment {
 
     private void uploadDetails() {
 
+
         continuebutton.setVisibility(View.INVISIBLE);
         progressBarproceed.setVisibility(View.VISIBLE);
+
+
+        if (interestlist.size() > 0) {
+            jsonObject = new JSONObject();
+            for (int i = 0; i < interestlist.size(); i++)
+                try {
+                    jsonObject.put("" + i, interestlist.get(i));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+        }
+
+        Log.d(TAG, "uploadDetails: " + jsonObject);
         AndroidNetworking.post("https://www.reweyou.in/google/signup.php")
                 .addBodyParameter("profileurl", photoUrl.toString())
                 .addBodyParameter("name", realname)
                 .addBodyParameter("userid", idToken)
                 .addBodyParameter("uid", uid)
+                .addBodyParameter("interest", jsonObject.toString())
                 .addBodyParameter("username", username.getText().toString())
                 .setTag("login")
                 .setPriority(Priority.HIGH)
