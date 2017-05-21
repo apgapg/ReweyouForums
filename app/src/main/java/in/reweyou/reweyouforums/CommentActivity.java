@@ -140,7 +140,7 @@ public class CommentActivity extends AppCompatActivity {
                                             JSONArray jsonReply = json.getJSONArray("reply");
 
                                             for (int j = 0; j < jsonReply.length(); j++) {
-                                                JSONObject jsontemp = jsonReply.getJSONObject(j);
+                                                JSONObject jsontemp = jsonReply.getJSONObject(jsonReply.length() - 1 - j);
                                                 ReplyCommentModel temp = gson.fromJson(jsontemp.toString(), ReplyCommentModel.class);
                                                 list.add(temp);
                                             }
