@@ -37,6 +37,7 @@ public class UserSessionManager {
     private static final String KEY_REALNAME = "realname";
     private static final String KEY_UID = "uid";
     private static final String KEY_SHORT_INFO = "info";
+    private static final String KEY_FCM_ID = "fcmid";
     // Shared Preferences reference
     SharedPreferences pref;
     // Editor reference for Shared preferences
@@ -218,5 +219,14 @@ public class UserSessionManager {
     public void setShortInfo(String shortInfo) {
         editor.putString(KEY_SHORT_INFO, shortInfo);
         editor.commit();
+    }
+
+    public void setfcmid(String token) {
+        editor.putString(KEY_FCM_ID, token);
+        editor.commit();
+    }
+
+    public String getfcmid() {
+        return pref.getString(KEY_FCM_ID, "");
     }
 }

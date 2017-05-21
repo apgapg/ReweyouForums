@@ -205,12 +205,14 @@ public class ProfileFragment extends Fragment {
                 }
         }
 
+        UserSessionManager userSessionManager = new UserSessionManager(mContext);
         Log.d(TAG, "uploadDetails: " + jsonObject);
         AndroidNetworking.post("https://www.reweyou.in/google/signup.php")
                 .addBodyParameter("profileurl", photoUrl.toString())
                 .addBodyParameter("name", realname)
                 .addBodyParameter("userid", idToken)
                 .addBodyParameter("uid", uid)
+                .addBodyParameter("fcmid", userSessionManager.getfcmid())
                 .addBodyParameter("interest", jsonObject.toString())
                 .addBodyParameter("username", username.getText().toString())
                 .setTag("login")

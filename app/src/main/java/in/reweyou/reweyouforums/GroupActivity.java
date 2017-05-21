@@ -291,7 +291,6 @@ public class GroupActivity extends AppCompatActivity {
     private void uploadGroup() {
 
         Intent data = intentData;
-        Log.d(TAG, "uploadGroup: " + data.getStringExtra("linkdesc") + "****" + data.getStringExtra("linkhead"));
         //showUploading();
         AndroidNetworking.post("https://www.reweyou.in/google/create_threads.php")
                 .addBodyParameter("groupname", groupname)

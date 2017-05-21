@@ -34,9 +34,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.e(TAG, "From: " + remoteMessage.getFrom());
-
-        if (remoteMessage == null)
+        Log.d(TAG, "onMessageReceived: " + remoteMessage);
+      /*  if (remoteMessage == null)
             return;
 
         // Check if message contains a notification payload.
@@ -44,7 +43,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.e(TAG, "Notification Body: " + remoteMessage.getNotification().getBody());
             handleNotification(remoteMessage.getNotification().getBody());
         }
-
+*/
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Log.e(TAG, "Data Payload: " + remoteMessage.getData().toString());
@@ -85,54 +84,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             Log.d(TAG, "handleDataMessage: " + payload.toString());
 
-               /* if (UserChat.userChatActivityOpen && payload.getString("chatroom_id").equals(UserChat.chatroomid)) {
-                    Intent intent = new Intent(Constants.ADD_CHAT_MESSAGE_EVENT);
-
-                    intent.putExtra(Constants.ADD_CHAT_MESSAGE_SENDER_NUMBER, payload.getString("sender_name"));
-                    intent.putExtra(Constants.ADD_CHAT_MESSAGE_MESSAGE, message);
-                    intent.putExtra(Constants.ADD_CHAT_MESSAGE_TIMESTAMP, timestamp);
-                    intent.putExtra(Constants.ADD_CHAT_MESSAGE_CHATROOM_ID, payload.getString("chatroom_id"));
-                    intent.putExtra("suggestid", payload.getString("suggestid"));
-
-                    LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-                } else {
-                    Log.w(TAG, "handleDataMessage: chat activity is background");
-                    Intent i = new Intent(this, UserChat.class);
-                    i.putExtra(Constants.ADD_CHAT_MESSAGE_SENDER_NAME, title);
-                    i.putExtra(Constants.ADD_CHAT_MESSAGE_CHATROOM_ID, payload.getString("chatroom_id"));
-                    i.putExtra(Constants.ADD_CHAT_MESSAGE_SENDER_NUMBER, payload.getString("sender_name"));
-
-                    PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext())
-                            .setSmallIcon(R.drawable.ic_stat_logo_plain)
-                            .setContentIntent(pendingIntent)
-                            .setAutoCancel(true)
-                            .setDefaults(NotificationCompat.DEFAULT_VIBRATE)
-
-                            .setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.mipmap.ic_launcher))
-                            .setContentTitle(title + " messaged you")
-                            .setContentText(message);
-
-                    NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-                    notificationManager.notify(100, mBuilder.build());
-                }
-*/
             Random random = new Random();
 
             int m = random.nextInt(9999 - 1000) + 1000;
             Intent i = new Intent(this, ReviewActivityQR.class);
 
-          /*  i.putExtra("headline", payload.getString("headline"));
-            i.putExtra("description", payload.getString("description"));
-            i.putExtra("rating", payload.getString("rating"));
-            i.putExtra("name", payload.getString("user"));
-            i.putExtra("review", payload.getString("reviews"));
-            i.putExtra("tag", payload.getString("tag"));
-            i.putExtra("image", payload.getString("image"));
-            i.putExtra("video", payload.getString("video"));
-            i.putExtra("gif", payload.getString("gif"));*/
+
             i.putExtra("id", String.valueOf(m));
             Log.d(TAG, "handleDataMessage: id " + m);
             i.putExtra("qrdata", "https://www.reweyou.in/qr/topicid=" + payload.getString("topicid"));
