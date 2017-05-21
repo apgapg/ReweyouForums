@@ -240,7 +240,8 @@ public class GroupActivity extends AppCompatActivity {
             Log.d(TAG, "onActivityResult: eff333333333");
             if (requestCode == Utils.REQ_CODE_EDIT_GROUP_ACTIVITY) {
                 Log.d(TAG, "onActivityResult: ewnjdnedejwndnjwendjkwe ncjx");
-                ((GroupInfoFragment) pagerAdapter.getRegisteredFragment(0)).refreshDetails();
+
+                ((GroupInfoFragment) pagerAdapter.getRegisteredFragment(0)).refreshDetails(data.getStringExtra("description"), data.getStringExtra("rules"), data.getStringExtra("image"));
             }
         }
 

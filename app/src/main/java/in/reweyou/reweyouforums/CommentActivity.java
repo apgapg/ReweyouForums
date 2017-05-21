@@ -116,6 +116,7 @@ public class CommentActivity extends AppCompatActivity {
                         .addBodyParameter("uid", userSessionManager.getUID())
                         .addBodyParameter("authtoken", userSessionManager.getAuthToken())
                         .addBodyParameter("threadid", threadid)
+
                         .setTag("report")
 
                         .setPriority(Priority.HIGH)
@@ -195,6 +196,8 @@ public class CommentActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.VISIBLE);
                     HashMap<String, String> hashMap = new HashMap<String, String>();
                     hashMap.put("uid", userSessionManager.getUID());
+                    hashMap.put("username", userSessionManager.getUsername());
+                    hashMap.put("imageurl", userSessionManager.getProfilePicture());
                     hashMap.put("threadid", threadid);
                     hashMap.put("image", "");
                     String url;
@@ -240,6 +243,7 @@ public class CommentActivity extends AppCompatActivity {
 
                                         send.setVisibility(View.VISIBLE);
                                         progressBar.setVisibility(View.GONE);
+                                        editText.setEnabled(true);
 
                                         Toast.makeText(CommentActivity.this, "something went wrong!", Toast.LENGTH_SHORT).show();
 
@@ -252,6 +256,7 @@ public class CommentActivity extends AppCompatActivity {
 
                                     send.setVisibility(View.VISIBLE);
                                     progressBar.setVisibility(View.GONE);
+                                    editText.setEnabled(true);
 
                                     Toast.makeText(CommentActivity.this, "couldn't connect", Toast.LENGTH_SHORT).show();
 

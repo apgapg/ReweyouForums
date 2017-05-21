@@ -50,7 +50,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (getItemViewType(position) == VIEWTYPE_COMMENT) {
             CommentModel commentModel = (CommentModel) messagelist.get(position);
             CommentViewHolder commentViewHolder = (CommentViewHolder) holder;
-            commentViewHolder.username.setText(commentModel.getName());
+            commentViewHolder.username.setText(commentModel.getUsername());
             commentViewHolder.comment.setText(commentModel.getComment());
             commentViewHolder.time.setText(commentModel.getTimestamp().replace("about ", ""));
             Glide.with(context).load(((CommentModel) messagelist.get(position)).getImageurl()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(commentViewHolder.image);
@@ -58,7 +58,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else if (getItemViewType(position) == VIEWTYPE_REPLY) {
             ReplyCommentModel replyCommentModel = (ReplyCommentModel) messagelist.get(position);
             ReplyViewHolder replyViewHolder = (ReplyViewHolder) holder;
-            replyViewHolder.username.setText(replyCommentModel.getName());
+            replyViewHolder.username.setText(replyCommentModel.getUsername());
             replyViewHolder.comment.setText(replyCommentModel.getReply());
             replyViewHolder.time.setText(replyCommentModel.getTimestamp().replace("about ", ""));
             Glide.with(context).load(((ReplyCommentModel) messagelist.get(position)).getImageurl()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(replyViewHolder.image);
@@ -108,7 +108,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             reply.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((CommentActivity) context).passClicktoEditText(((CommentModel) messagelist.get(getAdapterPosition())).getName(), (((CommentModel) messagelist.get((getAdapterPosition()))).getCommentid()));
+                    ((CommentActivity) context).passClicktoEditText(((CommentModel) messagelist.get(getAdapterPosition())).getUsername(), (((CommentModel) messagelist.get((getAdapterPosition()))).getCommentid()));
                 }
             });
 

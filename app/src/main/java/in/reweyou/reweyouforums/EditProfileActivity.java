@@ -42,6 +42,8 @@ import com.kbeanie.multipicker.api.entity.ChosenImage;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -122,7 +124,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 if (!encodedImage.isEmpty())
                     hashMap.put("image", encodedImage);
                 hashMap.put("username", username.getText().toString().trim());
-                hashMap.put("info", tempshortinfo);
+                hashMap.put("aboutme", tempshortinfo);
                 hashMap.put("uid", userSessionManager.getUID());
                 hashMap.put("authtoken", userSessionManager.getAuthToken());
 
@@ -136,16 +138,24 @@ public class EditProfileActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(String response) {
                                 Log.d(TAG, "onResponse: " + response);
-                                if (response.equals("Updated")) {
+                                if (response.contains("Updated")) {
 
                                     /*userSessionManager.setShortInfo(tempshortinfo);
                                     userSessionManager.setUsername(username.getText().toString().trim());*/
                                     pd.setVisibility(View.GONE);
                                     Toast.makeText(EditProfileActivity.this, "Profile updated!", Toast.LENGTH_SHORT).show();
-                                    setResult(RESULT_OK);
-                                    finish();
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(response.replace("Updated", ""));
+                                        userSessionManager.setUsername(jsonObject.getString("username"));
+                                        userSessionManager.setShortInfo(jsonObject.getString("aboutme"));
+                                        userSessionManager.setProfilePicture(jsonObject.getString("imageurl"));
+                                        setResult(RESULT_OK);
+                                        finish();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
                                 } else {
-                                    Toast.makeText(EditProfileActivity.this, "couldn't connect", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(EditProfileActivity.this, "something went wrong!", Toast.LENGTH_SHORT).show();
 
                                     create.setVisibility(View.VISIBLE);
                                     pd.setVisibility(View.GONE);

@@ -158,7 +158,7 @@ public class ForumMainActivity extends AppCompatActivity {
 
         Log.d("reached", "activigty");
         super.onActivityResult(requestCode, resultCode, data);
-
+        Log.d(TAG, "onActivityResult: " + requestCode + "   " + resultCode);
 
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
@@ -178,7 +178,7 @@ public class ForumMainActivity extends AppCompatActivity {
             } else if (requestCode == Utils.REQ_CODE_GROP_ACITIVTY) {
                 ((ExploreFragment) pagerAdapter.getRegisteredFragment(1)).refreshlist();
             } else if (requestCode == Utils.REQ_CODE_EDIT_PROFILE) {
-                ((UserInfoFragment) pagerAdapter.getRegisteredFragment(2)).refreshprofile();
+                ((UserInfoFragment) pagerAdapter.getRegisteredFragment(3)).refreshprofile();
 
             }
         }

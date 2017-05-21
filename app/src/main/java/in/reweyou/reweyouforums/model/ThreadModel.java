@@ -10,7 +10,7 @@ public class ThreadModel {
     private String link;
     private String youtubelink;
     private String uid;
-    private String name;
+    private String username;
     private String timestamp;
     private String image1;
     private String image2;
@@ -43,8 +43,8 @@ public class ThreadModel {
         return groupname;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
     public String getImage1() {

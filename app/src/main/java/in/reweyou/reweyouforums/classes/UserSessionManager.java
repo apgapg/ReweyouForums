@@ -87,8 +87,8 @@ public class UserSessionManager {
     }
 
     public void setUsername(String fullname) {
-       /* editor.putString(KEY_LOGIN_FULLNAME, fullname);
-        editor.commit();*/
+        editor.putString(KEY_NAME, fullname);
+        editor.commit();
     }
 
    /* public String getLoginLocation() {
@@ -216,6 +216,7 @@ public class UserSessionManager {
     }
 
     public void setShortInfo(String shortInfo) {
-        this.shortinfo = shortInfo;
+        editor.putString(KEY_SHORT_INFO, shortInfo);
+        editor.commit();
     }
 }

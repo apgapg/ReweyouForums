@@ -220,7 +220,7 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-
+                            Log.d(TAG, "onResponse: " + response);
 
                             UserSessionManager userSessionManager = new UserSessionManager(mContext);
                             userSessionManager.createUserRegisterSession(uid, realname, username.getText().toString(), photoUrl.toString(), response.getString("token"), response.getString("shortinfo"));

@@ -6,7 +6,7 @@ package in.reweyou.reweyouforums.model;
 
 public class CommentModel {
 
-    private String name;
+    private String username;
     private String comment;
     private String commentid;
     private String imageurl;
@@ -20,8 +20,8 @@ public class CommentModel {
         return imageurl;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
     public String getComment() {

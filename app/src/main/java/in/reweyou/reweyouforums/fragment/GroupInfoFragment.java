@@ -61,6 +61,9 @@ public class GroupInfoFragment extends Fragment {
     private GroupMembersAdapter groupMembersAdapter;
     private RecyclerView recyclerViewMembers;
     private RelativeLayout joincontainer;
+    private TextView shortdes;
+    private TextView tvRules;
+    private ImageView img;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,14 +79,15 @@ public class GroupInfoFragment extends Fragment {
 
         TextView edit = (TextView) layout.findViewById(R.id.edit);
 
+
         userSessionManager = new UserSessionManager(mContext);
         final TextView btnfollow = (TextView) layout.findViewById(R.id.btn_follow);
         joincontainer = (RelativeLayout) layout.findViewById(R.id.joincontainer);
-        final ImageView img = (ImageView) layout.findViewById(R.id.image);
+        img = (ImageView) layout.findViewById(R.id.image);
         final TextView groupname = (TextView) layout.findViewById(R.id.groupname);
         final TextView textrules = (TextView) layout.findViewById(R.id.textrules);
-        TextView shortdes = (TextView) layout.findViewById(R.id.shortdescription);
-        final TextView description = (TextView) layout.findViewById(R.id.description);
+        shortdes = (TextView) layout.findViewById(R.id.shortdescription);
+        tvRules = (TextView) layout.findViewById(R.id.description);
         final TextView members = (TextView) layout.findViewById(R.id.members);
         TextView threads = (TextView) layout.findViewById(R.id.threads);
         shineeffect = (ImageView) layout.findViewById(R.id.img_shine);
@@ -95,7 +99,6 @@ public class GroupInfoFragment extends Fragment {
         recyclerViewMembers.setLayoutManager(gridLayoutManager);
 
 
-
         try {
             groupname.setText(getArguments().getString("groupname"));
             members.setText(getArguments().getString("members"));
@@ -104,18 +107,19 @@ public class GroupInfoFragment extends Fragment {
             shortdes.setText(getArguments().getString("description"));
             groupdes = getArguments().getString("description");
             grouprules = getArguments().getString("rules");
-            description.setText(getArguments().getString("rules"));
+            tvRules.setText(getArguments().getString("rules"));
             adminuid = getArguments().getString("admin");
             threads.setText(getArguments().getString("threads"));
             if (getArguments().getString("rules").isEmpty()) {
                 if (userSessionManager.getUID().equals(adminuid)) {
 
-                    description.setText("*Edit to update rules*");
+                    tvRules.setText("*Edit to update rules*");
+
                 } else {
                     textrules.setVisibility(View.GONE);
-                    description.setVisibility(View.GONE);
+                    tvRules.setVisibility(View.GONE);
                 }
-            } else description.setText(grouprules);
+            } else tvRules.setText(grouprules);
 
             if (adminuid.equals(userSessionManager.getUID())) {
                 joincontainer.setVisibility(View.GONE);
@@ -192,17 +196,22 @@ public class GroupInfoFragment extends Fragment {
             e.printStackTrace();
         }
 
-        edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(mContext, EditActivity.class);
-                i.putExtra("description", groupdes);
-                i.putExtra("image", getArguments().getString("image"));
-                i.putExtra("rules", grouprules);
-                i.putExtra("groupid", groupid);
-                mContext.startActivityForResult(i, Utils.REQ_CODE_EDIT_GROUP_ACTIVITY);
-            }
-        });
+        if (userSessionManager.getUID().equals(adminuid)) {
+            edit.setVisibility(View.INVISIBLE);
+
+        } else {
+            edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(mContext, EditActivity.class);
+                    i.putExtra("description", groupdes);
+                    i.putExtra("image", getArguments().getString("image"));
+                    i.putExtra("rules", grouprules);
+                    i.putExtra("groupid", groupid);
+                    mContext.startActivityForResult(i, Utils.REQ_CODE_EDIT_GROUP_ACTIVITY);
+                }
+            });
+        }
 
         if (!isfollowed)
             new Handler().postDelayed(new Runnable() {
@@ -275,7 +284,16 @@ public class GroupInfoFragment extends Fragment {
     }
 
 
-    public void refreshDetails() {
-
+    public void refreshDetails(String description, String rules, String image) {
+        try {
+            if (description != null)
+                shortdes.setText(description);
+            if (rules != null)
+                tvRules.setText(rules);
+            if (image != null)
+                Glide.with(mContext).load(image).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(img);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

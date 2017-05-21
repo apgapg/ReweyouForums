@@ -42,6 +42,8 @@ import com.kbeanie.multipicker.api.entity.ChosenImage;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -142,13 +144,23 @@ public class EditActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(String response) {
                                 Log.d(TAG, "onResponse: " + response);
-                                if (response.equals("group updated")) {
+                                if (response.contains("group updated")) {
                                     pd.setVisibility(View.GONE);
                                     Toast.makeText(EditActivity.this, "Group Info updated", Toast.LENGTH_SHORT).show();
-                                    setResult(RESULT_OK);
-                                    finish();
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(response.replace("group updated", ""));
+                                        Intent i = new Intent();
+                                        i.putExtra("description", jsonObject.getString("description"));
+                                        i.putExtra("rules", jsonObject.getString("rules"));
+                                        i.putExtra("image", jsonObject.getString("image"));
+                                        setResult(RESULT_OK, i);
+                                        finish();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+
                                 } else {
-                                    Toast.makeText(EditActivity.this, "couldn't connect", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(EditActivity.this, "something went wrong!", Toast.LENGTH_SHORT).show();
 
                                     create.setVisibility(View.VISIBLE);
                                     pd.setVisibility(View.GONE);

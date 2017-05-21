@@ -6,7 +6,7 @@ package in.reweyou.reweyouforums.model;
 
 public class ReplyCommentModel {
 
-    private String name;
+    private String username;
     private String reply;
     private String imageurl;
     private String timestamp;
@@ -19,8 +19,8 @@ public class ReplyCommentModel {
         return imageurl;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
     public String getReply() {

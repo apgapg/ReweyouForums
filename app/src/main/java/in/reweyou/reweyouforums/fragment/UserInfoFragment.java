@@ -6,13 +6,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -33,6 +33,10 @@ public class UserInfoFragment extends Fragment {
     private Activity mContext;
     private ImageView image;
     private ProgressBar progressBar;
+    private UserSessionManager userSessionManager;
+    private TextView username;
+    private TextView userstatus;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,17 +52,18 @@ public class UserInfoFragment extends Fragment {
         image = (ImageView) layout.findViewById(R.id.image);
         progressBar = (ProgressBar) layout.findViewById(R.id.pd);
 
+        swipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swiperefresh);
         layout.findViewById(R.id.edit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(mContext, EditProfileActivity.class);
-                startActivityForResult(i, Utils.REQ_CODE_EDIT_PROFILE);
+                mContext.startActivityForResult(i, Utils.REQ_CODE_EDIT_PROFILE);
             }
         });
-        TextView username = (TextView) layout.findViewById(R.id.username);
-        TextView userstatus = (TextView) layout.findViewById(R.id.userStatus);
+        username = (TextView) layout.findViewById(R.id.username);
+        userstatus = (TextView) layout.findViewById(R.id.userStatus);
 
-        UserSessionManager userSessionManager = new UserSessionManager(mContext);
+        userSessionManager = new UserSessionManager(mContext);
 
         username.setText(userSessionManager.getUsername());
         userstatus.setText(userSessionManager.getShortinfo());
@@ -96,6 +101,11 @@ public class UserInfoFragment extends Fragment {
 
 
     public void refreshprofile() {
-        Toast.makeText(mContext, "code profile refresh method", Toast.LENGTH_SHORT).show();
+        username.setText(userSessionManager.getUsername());
+        userstatus.setText(userSessionManager.getShortinfo());
+
+        Glide.with(mContext).load(userSessionManager.getProfilePicture()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(image);
+
+
     }
 }
