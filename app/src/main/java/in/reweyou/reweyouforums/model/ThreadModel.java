@@ -20,6 +20,8 @@ public class ThreadModel {
     private String description;
     private String type;
     private String upvotes;
+    private String badge;
+    private String points;
     private String comments;
     private String liketype = "";
 
@@ -38,6 +40,13 @@ public class ThreadModel {
         return imageurl;
     }
 
+    public String getBadge() {
+        return badge;
+    }
+
+    public String getPoints() {
+        return points;
+    }
 
     public String getGroupname() {
         return groupname;

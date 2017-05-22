@@ -5,8 +5,11 @@ import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -97,7 +100,40 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         holder.username.setText(messagelist.get(position).getUsername());
         holder.commentnum.setText(messagelist.get(position).getComments());
         Glide.with(mContext).load(messagelist.get(position).getProfilepic()).into(holder.profileimage);
+        holder.userlevel.setText(messagelist.get(position).getBadge());
 
+
+        Drawable background = holder.userlevel.getBackground();
+        if (background instanceof ShapeDrawable) {
+            // cast to 'ShapeDrawable'
+            ShapeDrawable shapeDrawable = (ShapeDrawable) background;
+            switch (messagelist.get(position).getBadge()) {
+                case "Noob":
+                    shapeDrawable.getPaint().setColor(ContextCompat.getColor(mContext, R.color.user_level_noob));
+                    break;
+                case "Challenger":
+                    shapeDrawable.getPaint().setColor(ContextCompat.getColor(mContext, R.color.user_level_challenger));
+                    break;
+                case "Pro":
+                    shapeDrawable.getPaint().setColor(ContextCompat.getColor(mContext, R.color.user_level_pro));
+                    break;
+                case "Rising Star":
+                    shapeDrawable.getPaint().setColor(ContextCompat.getColor(mContext, R.color.user_level_rising_star));
+                    break;
+                case "Expert":
+                    shapeDrawable.getPaint().setColor(ContextCompat.getColor(mContext, R.color.user_level_expert));
+                    break;
+                case "Leader":
+                    shapeDrawable.getPaint().setColor(ContextCompat.getColor(mContext, R.color.user_level_leader));
+                    break;
+                case "King":
+                    shapeDrawable.getPaint().setColor(ContextCompat.getColor(mContext, R.color.user_level_king));
+                    break;
+                case "Legend":
+                    shapeDrawable.getPaint().setColor(ContextCompat.getColor(mContext, R.color.user_level_legend));
+                    break;
+            }
+        }
 
         if (messagelist.get(position).getLiketype().equals("like1")) {
             holder.like1.setImageResource(R.drawable.ic_happy);
@@ -346,7 +382,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
     public class BaseViewHolder extends RecyclerView.ViewHolder {
         private ImageView profileimage, liketemp, comment, like1, like2, like3;
         private TextView username, likenum, commentnum, likenumber1, likenumber2, likenumber3;
-        private TextView date;
+        private TextView date, userlevel;
         private TextView description;
         private LinearLayout commentcontainer;
 
@@ -361,6 +397,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             likenumber1 = (TextView) inflate.findViewById(R.id.likenumber1);
             likenumber2 = (TextView) inflate.findViewById(R.id.likenumber2);
             likenumber3 = (TextView) inflate.findViewById(R.id.likenumber3);
+            userlevel = (TextView) inflate.findViewById(R.id.userlevel);
             description = (TextView) inflate.findViewById(R.id.description);
             commentcontainer = (LinearLayout) inflate.findViewById(R.id.commentcontainer);
             username = (TextView) inflate.findViewById(R.id.usernamee);
