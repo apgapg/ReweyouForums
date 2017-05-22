@@ -315,8 +315,9 @@ public class GroupActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         Log.d(TAG, "onResponse: " + response);
-                        if (response.equals("Thread created")) {
+                        if (response.contains("Thread created")) {
                             showUploadSuccessful();
+                            userSessionManager.setBadge(response.replace(" Thread created", ""));
 
                         } else {
                             showFailedUpload();

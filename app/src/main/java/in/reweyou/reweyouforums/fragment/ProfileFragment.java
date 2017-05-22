@@ -225,7 +225,7 @@ public class ProfileFragment extends Fragment {
                             Log.d(TAG, "onResponse: " + response);
 
                             UserSessionManager userSessionManager = new UserSessionManager(mContext);
-                            userSessionManager.createUserRegisterSession(uid, realname, username.getText().toString(), photoUrl.toString(), response.getString("token"), response.getString("shortinfo"));
+                            userSessionManager.createUserRegisterSession(uid, realname, username.getText().toString(), photoUrl.toString(), response.getString("token"), response.getString("shortinfo"), response.getString("badge"));
                             mContext.startActivity(new Intent(mContext, ForumMainActivity.class));
                             mContext.finish();
 

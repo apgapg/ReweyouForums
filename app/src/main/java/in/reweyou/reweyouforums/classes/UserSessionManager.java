@@ -38,6 +38,7 @@ public class UserSessionManager {
     private static final String KEY_UID = "uid";
     private static final String KEY_SHORT_INFO = "info";
     private static final String KEY_FCM_ID = "fcmid";
+    private static final String KEY_BADGE = "badge";
     // Shared Preferences reference
     SharedPreferences pref;
     // Editor reference for Shared preferences
@@ -63,26 +64,6 @@ public class UserSessionManager {
     }
 
 
-
-    /*public String getDeviceid() {
-        return pref.getString(KEY_DEVICE_ID, "");
-    }
-
-    public void setDeviceid(String deviceid) {
-        editor.putString(KEY_DEVICE_ID, deviceid);
-        editor.commit();
-
-    }*/
-
-    /*public String getMobileNumber() {
-        return pref.getString(KEY_MOBILE_NUMBER, "");
-    }
-
-    public void setMobileNumber(String number) {
-        editor.putString(KEY_MOBILE_NUMBER, number);
-        editor.commit();
-    }*/
-
     public String getUsername() {
         return pref.getString(KEY_NAME, "");
     }
@@ -92,17 +73,7 @@ public class UserSessionManager {
         editor.commit();
     }
 
-   /* public String getLoginLocation() {
-        return pref.getString(KEY_LOGIN_LOCATION, "New Delhi");
-    }
-
-    public void setLoginLocation(String location) {
-        editor.putString(KEY_LOGIN_LOCATION, location);
-        editor.commit();
-    }*/
-
-    //Create login session and Register
-    public void createUserRegisterSession(String uid, String real, String username, String photoUrl, String authtoken, String shortinfo) {
+    public void createUserRegisterSession(String uid, String real, String username, String photoUrl, String authtoken, String shortinfo, String badge) {
 
         editor.putBoolean(IS_USER_LOGIN, true);
 
@@ -112,6 +83,7 @@ public class UserSessionManager {
         editor.putString(KEY_UID, uid);
         editor.putString(KEY_AUTH_TOKEN, authtoken);
         editor.putString(KEY_SHORT_INFO, shortinfo);
+        editor.putString(KEY_BADGE, badge);
 
         // commit changes
         editor.commit();
@@ -138,12 +110,6 @@ public class UserSessionManager {
         editor.putString(KEY_PIC, image);
         editor.commit();
     }
-
-    /**
-     * Check login method will check user login status
-     * If false it will redirect user to login page
-     * Else do anything
-     */
 
     public boolean checkLoginSplash() {
         // Check login status
@@ -228,5 +194,14 @@ public class UserSessionManager {
 
     public String getfcmid() {
         return pref.getString(KEY_FCM_ID, "");
+    }
+
+    public void setBadge(String badge) {
+        editor.putString(KEY_BADGE, badge);
+        editor.commit();
+    }
+
+    public String getBadge(String badge) {
+        return pref.getString(KEY_BADGE, "");
     }
 }

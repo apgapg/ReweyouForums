@@ -7,9 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +27,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 
+import org.apmem.tools.layouts.FlowLayout;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
@@ -37,7 +35,6 @@ import java.util.List;
 
 import in.reweyou.reweyouforums.EditActivity;
 import in.reweyou.reweyouforums.R;
-import in.reweyou.reweyouforums.adapter.GroupMembersAdapter;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.model.GroupMemberModel;
 import in.reweyou.reweyouforums.utils.Utils;
@@ -58,12 +55,12 @@ public class GroupInfoFragment extends Fragment {
     private String adminuid = "";
     private ImageView shineeffect;
     private UserSessionManager userSessionManager;
-    private GroupMembersAdapter groupMembersAdapter;
-    private RecyclerView recyclerViewMembers;
+
     private RelativeLayout joincontainer;
     private TextView shortdes;
     private TextView tvRules;
     private ImageView img;
+    private FlowLayout flowLayout;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,10 +90,7 @@ public class GroupInfoFragment extends Fragment {
         shineeffect = (ImageView) layout.findViewById(R.id.img_shine);
         final ProgressBar pd = (ProgressBar) layout.findViewById(R.id.pd);
 
-        recyclerViewMembers = (RecyclerView) layout.findViewById(R.id.recycler_view);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2, LinearLayoutManager.VERTICAL, false);
-        recyclerViewMembers.setNestedScrollingEnabled(false);
-        recyclerViewMembers.setLayoutManager(gridLayoutManager);
+
 
 
         try {
@@ -135,12 +129,9 @@ public class GroupInfoFragment extends Fragment {
             }
 
 
-            groupMembersAdapter = new GroupMembersAdapter(mContext, Integer.parseInt(getArguments().getString("members")));
-
-
-            recyclerViewMembers.setAdapter(groupMembersAdapter);
-            recyclerViewMembers.setNestedScrollingEnabled(false);
+            flowLayout = (FlowLayout) layout.findViewById(R.id.flowlayout);
             getMembersData();
+
 
             Glide.with(mContext).load(getArguments().getString("image")).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(img);
             btnfollow.setOnClickListener(new View.OnClickListener() {
@@ -243,7 +234,9 @@ public class GroupInfoFragment extends Fragment {
                                 GroupMemberModel groupMemberModel = gson.fromJson(response.getJSONObject(i).toString(), GroupMemberModel.class);
                                 list.add(groupMemberModel);
                             }
-                            groupMembersAdapter.add(list);
+
+                            populatedata(list);
+
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -255,6 +248,16 @@ public class GroupInfoFragment extends Fragment {
                         Log.e(TAG, "onError: " + anError);
                     }
                 });
+    }
+
+    private void populatedata(final List<GroupMemberModel> groupModels) {
+        for (int i = 0; i < groupModels.size(); i++) {
+            View view = mContext.getLayoutInflater().inflate(R.layout.item_group_info_members, null);
+            final ImageView image = (ImageView) view.findViewById(R.id.img);
+            Glide.with(mContext).load(groupModels.get(i).getImageurl()).dontAnimate().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(image);
+
+            flowLayout.addView(view);
+        }
     }
 
 
