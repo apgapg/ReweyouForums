@@ -196,12 +196,12 @@ public class UserSessionManager {
         return pref.getString(KEY_FCM_ID, "");
     }
 
+    public String getBadge() {
+        return pref.getString(KEY_BADGE, "");
+    }
+
     public void setBadge(String badge) {
         editor.putString(KEY_BADGE, badge);
         editor.commit();
-    }
-
-    public String getBadge(String badge) {
-        return pref.getString(KEY_BADGE, "");
     }
 }

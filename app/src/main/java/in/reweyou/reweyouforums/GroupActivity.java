@@ -299,6 +299,7 @@ public class GroupActivity extends AppCompatActivity {
                 .addBodyParameter("link", data.getStringExtra("link"))
                 .addBodyParameter("linkdesc", data.getStringExtra("linkdesc"))
                 .addBodyParameter("linkhead", data.getStringExtra("linkhead"))
+                .addBodyParameter("linkimage", data.getStringExtra("linkimage"))
                 .addBodyParameter("image1", image1encoded)
                 .addBodyParameter("image2", image2encoded)
                 .addBodyParameter("image3", image3encoded)

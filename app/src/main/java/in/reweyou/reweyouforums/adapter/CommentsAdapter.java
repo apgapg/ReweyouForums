@@ -1,6 +1,9 @@
 package in.reweyou.reweyouforums.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,11 +30,11 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private static final int VIEWTYPE_COMMENT = 1;
     private static final int VIEWTYPE_REPLY = 2;
-    private final Context context;
+    private final Context mContext;
     List<Object> messagelist;
 
     public CommentsAdapter(Context context) {
-        this.context = context;
+        this.mContext = context;
         this.messagelist = new ArrayList<>();
 
     }
@@ -53,7 +56,38 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             commentViewHolder.username.setText(commentModel.getUsername());
             commentViewHolder.comment.setText(commentModel.getComment());
             commentViewHolder.time.setText(commentModel.getTimestamp().replace("about ", ""));
-            Glide.with(context).load(((CommentModel) messagelist.get(position)).getImageurl()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(commentViewHolder.image);
+            Glide.with(mContext).load(((CommentModel) messagelist.get(position)).getImageurl()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(commentViewHolder.image);
+            commentViewHolder.userlevel.setText(((CommentModel) messagelist.get(position)).getBadge());
+
+            Drawable background = commentViewHolder.userlevel.getBackground();
+            if (background instanceof GradientDrawable) {
+                // cast to 'ShapeDrawable'
+                GradientDrawable shapeDrawable = (GradientDrawable) background;
+                if (((CommentModel) messagelist.get(position)).getBadge().equals("Noob")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_noob));
+                } else if (((CommentModel) messagelist.get(position)).getBadge().equals("Follower")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_follower));
+                } else if (((CommentModel) messagelist.get(position)).getBadge().equals("Pro")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_pro));
+                } else if (((CommentModel) messagelist.get(position)).getBadge().equals("Rising Star")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_rising_star));
+                } else if (((CommentModel) messagelist.get(position)).getBadge().equals("Expert")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_expert));
+                } else if (((CommentModel) messagelist.get(position)).getBadge().equals("Leader")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_leader));
+                } else if (((CommentModel) messagelist.get(position)).getBadge().equals("King")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_king));
+                } else if (((CommentModel) messagelist.get(position)).getBadge().equals("Legend")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_legend));
+                } else if (((CommentModel) messagelist.get(position)).getBadge().equals("Editor")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_editor));
+                } else if (((CommentModel) messagelist.get(position)).getBadge().equals("Writer")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_writer));
+                } else if (((CommentModel) messagelist.get(position)).getBadge().equals("GOAT")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_GOAT));
+
+                }
+            }
 
         } else if (getItemViewType(position) == VIEWTYPE_REPLY) {
             ReplyCommentModel replyCommentModel = (ReplyCommentModel) messagelist.get(position);
@@ -61,11 +95,46 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             replyViewHolder.username.setText(replyCommentModel.getUsername());
             replyViewHolder.comment.setText(replyCommentModel.getReply());
             replyViewHolder.time.setText(replyCommentModel.getTimestamp().replace("about ", ""));
-            Glide.with(context).load(((ReplyCommentModel) messagelist.get(position)).getImageurl()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(replyViewHolder.image);
+            Glide.with(mContext).load(((ReplyCommentModel) messagelist.get(position)).getImageurl()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(replyViewHolder.image);
+            replyViewHolder.userlevel.setText(((ReplyCommentModel) messagelist.get(position)).getBadge());
 
+            Drawable background = replyViewHolder.userlevel.getBackground();
+
+            if (background instanceof GradientDrawable) {
+                // cast to 'ShapeDrawable'
+                GradientDrawable shapeDrawable = (GradientDrawable) background;
+                if (((ReplyCommentModel) messagelist.get(position)).getBadge().equals("Noob")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_noob));
+                } else if (((ReplyCommentModel) messagelist.get(position)).getBadge().equals("Follower")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_follower));
+                } else if (((ReplyCommentModel) messagelist.get(position)).getBadge().equals("Pro")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_pro));
+                } else if (((ReplyCommentModel) messagelist.get(position)).getBadge().equals("Rising Star")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_rising_star));
+                } else if (((ReplyCommentModel) messagelist.get(position)).getBadge().equals("Expert")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_expert));
+                } else if (((ReplyCommentModel) messagelist.get(position)).getBadge().equals("Leader")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_leader));
+                } else if (((ReplyCommentModel) messagelist.get(position)).getBadge().equals("King")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_king));
+                } else if (((ReplyCommentModel) messagelist.get(position)).getBadge().equals("Legend")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_legend));
+                } else if (((ReplyCommentModel) messagelist.get(position)).getBadge().equals("Editor")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_editor));
+                } else if (((ReplyCommentModel) messagelist.get(position)).getBadge().equals("Writer")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_writer));
+                } else if (((ReplyCommentModel) messagelist.get(position)).getBadge().equals("GOAT")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_GOAT));
+
+                }
+            }
 
         }
 
+
+    }
+
+    private void settextbackground() {
 
     }
 
@@ -93,7 +162,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private class CommentViewHolder extends RecyclerView.ViewHolder {
         private TextView reply;
         private ImageView image;
-        private TextView username, comment, time;
+        private TextView username, userlevel, comment, time;
 
 
         public CommentViewHolder(View inflate) {
@@ -101,6 +170,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             image = (ImageView) inflate.findViewById(R.id.image);
             username = (TextView) inflate.findViewById(R.id.username);
+            userlevel = (TextView) inflate.findViewById(R.id.userlevel);
             comment = (TextView) inflate.findViewById(R.id.comment);
             time = (TextView) inflate.findViewById(R.id.time);
             reply = (TextView) inflate.findViewById(R.id.reply);
@@ -108,7 +178,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             reply.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((CommentActivity) context).passClicktoEditText(((CommentModel) messagelist.get(getAdapterPosition())).getUsername(), (((CommentModel) messagelist.get((getAdapterPosition()))).getCommentid()));
+                    ((CommentActivity) mContext).passClicktoEditText(((CommentModel) messagelist.get(getAdapterPosition())).getUsername(), (((CommentModel) messagelist.get((getAdapterPosition()))).getCommentid()));
                 }
             });
 
@@ -117,12 +187,14 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     private class ReplyViewHolder extends RecyclerView.ViewHolder {
+        private TextView userlevel;
         private ImageView image;
         private TextView username, comment, reply, time;
 
 
         public ReplyViewHolder(View inflate) {
             super(inflate);
+            userlevel = (TextView) inflate.findViewById(R.id.userlevel);
 
             image = (ImageView) inflate.findViewById(R.id.image);
             username = (TextView) inflate.findViewById(R.id.username);

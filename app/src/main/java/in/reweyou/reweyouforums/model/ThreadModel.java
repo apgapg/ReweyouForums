@@ -24,9 +24,13 @@ public class ThreadModel {
     private String points;
     private String comments;
     private String liketype = "";
-
+    private String linkimage = "";
     private String linkdesc = "";
     private String linkhead = "";
+
+    public String getLinkimage() {
+        return linkimage;
+    }
 
     public String getLinkdesc() {
         return linkdesc;

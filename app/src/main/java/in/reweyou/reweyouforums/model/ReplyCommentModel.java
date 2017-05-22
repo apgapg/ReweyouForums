@@ -10,6 +10,16 @@ public class ReplyCommentModel {
     private String reply;
     private String imageurl;
     private String timestamp;
+    private String badge;
+    private String points;
+
+    public String getPoints() {
+        return points;
+    }
+
+    public String getBadge() {
+        return badge;
+    }
 
     public String getTimestamp() {
         return timestamp;

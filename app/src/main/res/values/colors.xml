@@ -49,14 +49,30 @@
     <color name="grey_create">#9e9e9e</color>
 
     <color name="user_level_noob">#2962FF</color>
-    <color name="user_level_challenger">#C51162</color>
+    <color name="user_level_follower">#C51162</color>
     <color name="user_level_pro">#DD2C00</color>
     <color name="user_level_rising_star">#00C853</color>
     <color name="user_level_expert">#6200EA</color>
     <color name="user_level_leader">#2962FF</color>
     <color name="user_level_king">#FF6D00</color>
     <color name="user_level_legend">#C51162</color>
+    <color name="user_level_GOAT">#4527A0</color>
+    <color name="user_level_writer">#00695C</color>
+    <color name="user_level_editor">#33691E</color>
 
+
+    Noob 0
+    Follower - >100
+    Writer >200
+    Editor >1000
+    Rising Star >2000
+    Star >5000
+    Pro >10000
+    Expert >1000000
+    Leader >1000000
+    King >100000000
+    Legend >1000000000
+    GOAT >10000000000
 
     <color name="bright_blue">#6200EA</color>
 

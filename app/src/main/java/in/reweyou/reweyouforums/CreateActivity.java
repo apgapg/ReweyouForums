@@ -82,6 +82,8 @@ public class CreateActivity extends SlidingActivity {
     private LinearLayout ll, l2;
     private String linkhead = "";
     private String linkdesc = "";
+    private ImageView imageviewlink;
+    private String linkimage = "";
 
     @Override
     protected void configureScroller(MultiShrinkScroller scroller) {
@@ -104,6 +106,8 @@ public class CreateActivity extends SlidingActivity {
         image2 = (ImageView) findViewById(R.id.image2);
         image3 = (ImageView) findViewById(R.id.image3);
         image4 = (ImageView) findViewById(R.id.image4);
+
+        imageviewlink = (ImageView) findViewById(R.id.imagelink);
 
         image1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -226,6 +230,7 @@ public class CreateActivity extends SlidingActivity {
             intent.putExtra("image2", image2url);
             intent.putExtra("image3", image3url);
             intent.putExtra("image4", image4url);
+            intent.putExtra("linkimage", linkimage);
 
 
             intent.putExtra("type", type);
@@ -385,6 +390,7 @@ public class CreateActivity extends SlidingActivity {
                             JSONObject jsonObject = new JSONObject(response);
                             String reallink = jsonObject.getString("reallink");
                             String link = jsonObject.getString("link");
+                            String imagelink = jsonObject.getString("image");
                             Log.d(TAG, "onResponse: " + response + "   " + link);
                             String title = jsonObject.getString("title");
                             String description = jsonObject.getString("description");
@@ -400,6 +406,10 @@ public class CreateActivity extends SlidingActivity {
                             }
                             if (link != null)
                                 linklink.setText(reallink);
+                            if (imagelink != null) {
+                                linkimage = imagelink.replace("\n", "");
+                                Glide.with(CreateActivity.this).load(linkimage).into(imageviewlink);
+                            }
 
                             CreateActivity.this.link = link;
 

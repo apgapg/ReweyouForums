@@ -82,15 +82,24 @@ terro"
                 android:paddingRight="12dp"
                 android:paddingTop="2dp">
 
+                <ImageView
+                    android:id="@+id/imagelink"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:layout_alignParentRight="true"
+
+                    android:layout_marginTop="12dp"
+                    android:scaleType="centerCrop" />
 
                 <TextView
                     android:id="@+id/headlinelink"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/imagelink"
                     android:ellipsize="end"
                     android:maxLines="2"
-
                     android:paddingBottom="8dp"
+                    android:paddingRight="8dp"
                     android:paddingTop="8dp"
                     android:textColor="#424242"
                     android:textSize="14dp"
@@ -101,10 +110,12 @@ terro"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/headlinelink"
+                    android:layout_toLeftOf="@+id/imagelink"
                     android:ellipsize="end"
                     android:maxLines="4"
-
                     android:paddingBottom="8dp"
+
+                    android:paddingRight="8dp"
                     android:textColor="#424242"
                     android:textSize="13dp" />
 

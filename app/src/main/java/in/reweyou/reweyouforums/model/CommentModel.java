@@ -11,6 +11,16 @@ public class CommentModel {
     private String commentid;
     private String imageurl;
     private String timestamp;
+    private String badge;
+    private String points;
+
+    public String getBadge() {
+        return badge;
+    }
+
+    public String getPoints() {
+        return points;
+    }
 
     public String getTimestamp() {
         return timestamp;

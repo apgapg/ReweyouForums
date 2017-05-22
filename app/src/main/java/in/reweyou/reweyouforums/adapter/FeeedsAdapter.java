@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
@@ -102,40 +102,46 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         Glide.with(mContext).load(messagelist.get(position).getProfilepic()).into(holder.profileimage);
         holder.userlevel.setText(messagelist.get(position).getBadge());
 
+        Log.d(TAG, "onBindViewHolder: " + messagelist.get(position).getBadge());
 
         Drawable background = holder.userlevel.getBackground();
-        if (background instanceof ShapeDrawable) {
+        if (background instanceof GradientDrawable) {
             // cast to 'ShapeDrawable'
-            ShapeDrawable shapeDrawable = (ShapeDrawable) background;
-            switch (messagelist.get(position).getBadge()) {
-                case "Noob":
-                    shapeDrawable.getPaint().setColor(ContextCompat.getColor(mContext, R.color.user_level_noob));
-                    break;
-                case "Challenger":
-                    shapeDrawable.getPaint().setColor(ContextCompat.getColor(mContext, R.color.user_level_challenger));
-                    break;
-                case "Pro":
-                    shapeDrawable.getPaint().setColor(ContextCompat.getColor(mContext, R.color.user_level_pro));
-                    break;
-                case "Rising Star":
-                    shapeDrawable.getPaint().setColor(ContextCompat.getColor(mContext, R.color.user_level_rising_star));
-                    break;
-                case "Expert":
-                    shapeDrawable.getPaint().setColor(ContextCompat.getColor(mContext, R.color.user_level_expert));
-                    break;
-                case "Leader":
-                    shapeDrawable.getPaint().setColor(ContextCompat.getColor(mContext, R.color.user_level_leader));
-                    break;
-                case "King":
-                    shapeDrawable.getPaint().setColor(ContextCompat.getColor(mContext, R.color.user_level_king));
-                    break;
-                case "Legend":
-                    shapeDrawable.getPaint().setColor(ContextCompat.getColor(mContext, R.color.user_level_legend));
-                    break;
+            GradientDrawable shapeDrawable = (GradientDrawable) background;
+            if (messagelist.get(position).getBadge().equals("Noob")) {
+                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_noob));
+            } else if (messagelist.get(position).getBadge().equals("Follower")) {
+                Log.d(TAG, "onBindViewHolder: fkwenfkwnfwenfw");
+                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_follower));
+            } else if (messagelist.get(position).getBadge().equals("Pro")) {
+                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_pro));
+            } else if (messagelist.get(position).getBadge().equals("Rising Star")) {
+                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_rising_star));
+            } else if (messagelist.get(position).getBadge().equals("Expert")) {
+                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_expert));
+            } else if (messagelist.get(position).getBadge().equals("Leader")) {
+                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_leader));
+            } else if (messagelist.get(position).getBadge().equals("King")) {
+                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_king));
+            } else if (messagelist.get(position).getBadge().equals("Legend")) {
+                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_legend));
+            } else if (messagelist.get(position).getBadge().equals("Editor")) {
+                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_editor));
+            } else if (messagelist.get(position).getBadge().equals("Writer")) {
+                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_writer));
+            } else if (messagelist.get(position).getBadge().equals("GOAT")) {
+                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_GOAT));
+            
             }
         }
 
-        if (messagelist.get(position).getLiketype().equals("like1")) {
+        if (messagelist.get(position).
+
+                getLiketype().
+
+                equals("like1"))
+
+        {
             holder.like1.setImageResource(R.drawable.ic_happy);
             holder.like2.setImageResource(R.drawable.ic_surprised_small);
             holder.like3.setImageResource(R.drawable.ic_sad_small);
@@ -145,7 +151,13 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             holder.likenumber1.setAlpha(1.0f);
             holder.likenumber2.setAlpha(0.3f);
             holder.likenumber3.setAlpha(0.3f);
-        } else if (messagelist.get(position).getLiketype().equals("like2")) {
+        } else if (messagelist.get(position).
+
+                getLiketype().
+
+                equals("like2"))
+
+        {
             holder.like1.setImageResource(R.drawable.ic_happy_small);
             holder.like2.setImageResource(R.drawable.ic_surprised);
             holder.like3.setImageResource(R.drawable.ic_sad_small);
@@ -156,7 +168,13 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             holder.likenumber2.setAlpha(1.0f);
             holder.likenumber3.setAlpha(0.3f);
 
-        } else if (messagelist.get(position).getLiketype().equals("like3")) {
+        } else if (messagelist.get(position).
+
+                getLiketype().
+
+                equals("like3"))
+
+        {
             holder.like1.setImageResource(R.drawable.ic_happy_small);
             holder.like2.setImageResource(R.drawable.ic_surprised_small);
             holder.like3.setImageResource(R.drawable.ic_sad);
@@ -167,7 +185,9 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             holder.likenumber2.setAlpha(0.3f);
             holder.likenumber3.setAlpha(1.0f);
 
-        } else {
+        } else
+
+        {
             holder.like1.setImageResource(R.drawable.ic_happy_small);
             holder.like2.setImageResource(R.drawable.ic_surprised_small);
             holder.like3.setImageResource(R.drawable.ic_sad_small);
@@ -179,7 +199,11 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             holder.likenumber3.setAlpha(0.3f);
         }
 
-        switch (getItemViewType(position)) {
+        switch (
+
+                getItemViewType(position))
+
+        {
             case VIEW_TYPE_IMAGE_1:
                 Image1ViewHolder image1ViewHolder = (Image1ViewHolder) holder;
                 onbindimage1(image1ViewHolder, position);
@@ -216,7 +240,14 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         linkViewHolder.linkheadline.setText(messagelist.get(position).getLinkhead());
         linkViewHolder.linkdescription.setText(messagelist.get(position).getLinkdesc());
         linkViewHolder.link.setText(messagelist.get(position).getLink());
+        Log.d(TAG, "onbindlink: " + messagelist.get(position).getLinkimage());
+        if (messagelist.get(position).getLink().isEmpty()) {
+            linkViewHolder.linkimage.setVisibility(View.GONE);
+        } else {
+            linkViewHolder.linkimage.setVisibility(View.VISIBLE);
+            Glide.with(mContext).load(messagelist.get(position).getLinkimage()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(linkViewHolder.linkimage);
 
+        }
     }
 
     private void onbindimage1(Image1ViewHolder image1ViewHolder, final int position) {
@@ -619,12 +650,14 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
     private class LinkViewHolder extends BaseViewHolder {
         private TextView linkheadline, linkdescription, link;
         private RelativeLayout container;
+        private ImageView linkimage;
 
         public LinkViewHolder(View inflate) {
             super(inflate);
             link = (TextView) inflate.findViewById(R.id.linklink);
             linkheadline = (TextView) inflate.findViewById(R.id.headlinelink);
             linkdescription = (TextView) inflate.findViewById(R.id.descriptionlink);
+            linkimage = (ImageView) inflate.findViewById(R.id.imagelink);
             container = (RelativeLayout) inflate.findViewById(R.id.rlcont);
             container.setOnClickListener(new View.OnClickListener() {
                 @Override
