@@ -227,13 +227,13 @@ public class CommentActivity extends AppCompatActivity {
                                     //   Toast.makeText(CommentActivity.this,response,Toast.LENGTH_SHORT).show();
 
 
-                                    if (response.equals("Comment created")) {
+                                    if (response.contains("Comment created")) {
                                         editText.setEnabled(true);
                                         editText.setText("");
                                         send.setVisibility(View.VISIBLE);
                                         progressBar.setVisibility(View.GONE);
                                         getData();
-                                    } else if (response.equals("Reply created")) {
+                                    } else if (response.contains("Reply created")) {
                                         editText.setEnabled(true);
                                         editText.setText("");
                                         send.setVisibility(View.VISIBLE);
