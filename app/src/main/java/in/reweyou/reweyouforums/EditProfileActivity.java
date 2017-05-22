@@ -87,7 +87,7 @@ public class EditProfileActivity extends AppCompatActivity {
         final EditText shortinfo = (EditText) findViewById(R.id.shortinfo);
         image = (ImageView) findViewById(R.id.image);
         final ProgressBar pd = (ProgressBar) findViewById(R.id.progressBar);
-
+        shortinfo.setText(userSessionManager.getShortinfo());
         create = (Button) findViewById(R.id.create);
         create.setEnabled(false);
         username.addTextChangedListener(new TextWatcher() {
