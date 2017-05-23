@@ -258,7 +258,6 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         linkViewHolder.linkheadline.setText(messagelist.get(position).getLinkhead());
         linkViewHolder.linkdescription.setText(messagelist.get(position).getLinkdesc());
         linkViewHolder.link.setText(messagelist.get(position).getLink());
-        Log.d(TAG, "onbindlink: " + messagelist.get(position).getLinkimage());
         if (messagelist.get(position).getLink().isEmpty()) {
             linkViewHolder.linkimage.setVisibility(View.GONE);
         } else {
