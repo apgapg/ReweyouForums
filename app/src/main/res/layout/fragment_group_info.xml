@@ -192,24 +192,44 @@
                         android:visibility="gone" />
                 </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/membershead"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="18dp"
-                    android:paddingLeft="8dp"
-                    android:text="MEMBERS"
-                    android:textColor="@color/main_background_pink"
-                    android:textSize="12dp"
-                    android:textStyle="bold" />
+
+                    android:layout_marginTop="18dp">
+
+                    <TextView
+                        android:id="@+id/membershead"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="8dp"
+                        android:text="MEMBERS"
+                        android:textColor="@color/main_background_pink"
+                        android:textSize="12dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/membersmore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="end"
+                        android:background="@drawable/ripple_effect2"
+                        android:paddingLeft="4dp"
+                        android:paddingRight="4dp"
+                        android:text="VIEW ALL"
+                        android:textColor="@color/red"
+                        android:textSize="12dp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
 
                 <org.apmem.tools.layouts.FlowLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/flowlayout"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="2dp"
                     android:layout_marginRight="2dp"
-                    android:layout_marginTop="6dp"></org.apmem.tools.layouts.FlowLayout>
+                    android:layout_marginTop="8dp"></org.apmem.tools.layouts.FlowLayout>
 
 
                 <TextView

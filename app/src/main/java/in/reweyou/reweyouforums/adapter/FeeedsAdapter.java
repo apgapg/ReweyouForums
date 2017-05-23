@@ -44,7 +44,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.reweyou.reweyouforums.CommentActivity;
-import in.reweyou.reweyouforums.ForumMainActivity;
 import in.reweyou.reweyouforums.FullImage;
 import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
@@ -573,7 +572,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                        /* Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(messagelist.get(getAdapterPosition()).getLink()));
                         mContext.startActivity(browserIntent);*/
                         Log.d(TAG, "onClick: " + messagelist.get(getAdapterPosition()).getLink());
-                        CustomTabsHelperFragment.open((ForumMainActivity) mContext, mCustomTabsIntent, Uri.parse(messagelist.get(getAdapterPosition()).getLink()),
+                        CustomTabsHelperFragment.open((Activity) mContext, mCustomTabsIntent, Uri.parse(messagelist.get(getAdapterPosition()).getLink()),
                                 new CustomTabsActivityHelper.CustomTabsFallback() {
                                     @Override
                                     public void openUri(Activity activity, Uri uri) {

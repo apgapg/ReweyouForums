@@ -100,5 +100,6 @@
     <string name="title_activity_create">CreateActivity</string>
     <string name="title_activity_edit">EditActivity</string>
     <string name="title_activity_edit_profile">EditProfileActivity</string>
+    <string name="title_activity_group_members">GroupMembers</string>
 
 </resources>

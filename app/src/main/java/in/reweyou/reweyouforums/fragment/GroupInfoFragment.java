@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.reweyou.reweyouforums.EditActivity;
+import in.reweyou.reweyouforums.GroupMembers;
 import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.model.GroupMemberModel;
@@ -90,7 +91,16 @@ public class GroupInfoFragment extends Fragment {
         TextView threads = (TextView) layout.findViewById(R.id.threads);
         shineeffect = (ImageView) layout.findViewById(R.id.img_shine);
         final ProgressBar pd = (ProgressBar) layout.findViewById(R.id.pd);
-
+        TextView membersmore = (TextView) layout.findViewById(R.id.membersmore);
+        membersmore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(mContext, GroupMembers.class);
+                i.putExtra("groupid", groupid);
+                i.putExtra("admin", adminuid);
+                mContext.startActivity(i);
+            }
+        });
 
         try {
             groupname.setText(getArguments().getString("groupname"));

@@ -42,12 +42,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme" />
 
-
-
-
-
-
-
         <!-- Firebase Notifications -->
         <service android:name=".fcm.MyFirebaseMessagingService">
             <intent-filter>
@@ -81,7 +75,6 @@
 
         <!-- ... -->
 
-
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:screenOrientation="portrait"
@@ -90,8 +83,6 @@
             android:name=".FullImage"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.Preview" />
-
-
         <activity
             android:name=".ForumMainActivity"
             android:label="@string/title_activity_forum_main"
@@ -133,6 +124,10 @@
             android:label="@string/title_activity_edit_profile"
             android:theme="@style/AppTheme2.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".GroupMembers"
+            android:label="@string/title_activity_group_members"
+            android:theme="@style/AppTheme2.NoActionBar"></activity>
     </application>
 
 </manifest>
