@@ -44,7 +44,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Start creating your own Group, by just adding a cover pic, name and description" />
+                    android:text="Start creating your own Group, by just adding a cover pic, name and description"
+                    android:textColor="#616161"
+                    android:textSize="13dp" />
 
                 <RelativeLayout
                     android:layout_width="wrap_content"

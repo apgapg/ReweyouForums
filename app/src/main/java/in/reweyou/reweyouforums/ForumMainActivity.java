@@ -2,6 +2,7 @@ package in.reweyou.reweyouforums;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -16,6 +17,7 @@ import android.util.SparseArray;
 import android.view.Menu;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kbeanie.multipicker.api.ImagePicker;
@@ -50,12 +52,37 @@ public class ForumMainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ImageView back = (ImageView) findViewById(R.id.backgroundimageview);
-
-
+        final TextView tabnametoolbar = (TextView) toolbar.findViewById(R.id.tabnametoolbar);
+        Typeface type = Typeface.createFromAsset(getAssets(), "cr.ttf");
+        tabnametoolbar.setTypeface(type);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         viewPager.setOffscreenPageLimit(3);
         pagerAdapter = new PagerAdapter(getSupportFragmentManager());
+
         viewPager.setAdapter(pagerAdapter);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0)
+                    tabnametoolbar.setText("Feeds");
+                else if (position == 1)
+                    tabnametoolbar.setText("Explore");
+                else if (position == 2)
+                    tabnametoolbar.setText("Create");
+                else if (position == 3)
+                    tabnametoolbar.setText("My Profile");
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
         TabLayout.Tab tabCall1 = tabLayout.getTabAt(0);
@@ -185,10 +212,6 @@ public class ForumMainActivity extends AppCompatActivity {
 
 
     }
-
-
-
-
 
 
     public boolean onCreateOptionsMenu(final Menu menu) {
