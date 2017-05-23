@@ -128,7 +128,6 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             if (messagelist.get(position).getBadge().equals("Noob")) {
                 shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_noob));
             } else if (messagelist.get(position).getBadge().equals("Follower")) {
-                Log.d(TAG, "onBindViewHolder: fkwenfkwnfwenfw");
                 shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_follower));
             } else if (messagelist.get(position).getBadge().equals("Pro")) {
                 shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_pro));
@@ -152,69 +151,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             }
         }
 
-        if (messagelist.get(position).
 
-                getLiketype().
-
-                equals("like1"))
-
-        {
-            holder.like1.setImageResource(R.drawable.ic_happy);
-            holder.like2.setImageResource(R.drawable.ic_surprised_small);
-            holder.like3.setImageResource(R.drawable.ic_sad_small);
-            holder.like1.setEnabled(false);
-            holder.like2.setEnabled(false);
-            holder.like3.setEnabled(false);
-            holder.likenumber1.setAlpha(1.0f);
-            holder.likenumber2.setAlpha(0.3f);
-            holder.likenumber3.setAlpha(0.3f);
-        } else if (messagelist.get(position).
-
-                getLiketype().
-
-                equals("like2"))
-
-        {
-            holder.like1.setImageResource(R.drawable.ic_happy_small);
-            holder.like2.setImageResource(R.drawable.ic_surprised);
-            holder.like3.setImageResource(R.drawable.ic_sad_small);
-            holder.like1.setEnabled(false);
-            holder.like2.setEnabled(false);
-            holder.like3.setEnabled(false);
-            holder.likenumber1.setAlpha(0.3f);
-            holder.likenumber2.setAlpha(1.0f);
-            holder.likenumber3.setAlpha(0.3f);
-
-        } else if (messagelist.get(position).
-
-                getLiketype().
-
-                equals("like3"))
-
-        {
-            holder.like1.setImageResource(R.drawable.ic_happy_small);
-            holder.like2.setImageResource(R.drawable.ic_surprised_small);
-            holder.like3.setImageResource(R.drawable.ic_sad);
-            holder.like1.setEnabled(false);
-            holder.like2.setEnabled(false);
-            holder.like3.setEnabled(false);
-            holder.likenumber1.setAlpha(0.3f);
-            holder.likenumber2.setAlpha(0.3f);
-            holder.likenumber3.setAlpha(1.0f);
-
-        } else
-
-        {
-            holder.like1.setImageResource(R.drawable.ic_happy_small);
-            holder.like2.setImageResource(R.drawable.ic_surprised_small);
-            holder.like3.setImageResource(R.drawable.ic_sad_small);
-            holder.like1.setEnabled(true);
-            holder.like2.setEnabled(true);
-            holder.like3.setEnabled(true);
-            holder.likenumber1.setAlpha(0.3f);
-            holder.likenumber2.setAlpha(0.3f);
-            holder.likenumber3.setAlpha(0.3f);
-        }
 
         switch (
 
@@ -303,7 +240,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
     @Override
     public void onBindViewHolder(BaseViewHolder holder, int position, List<Object> payloads) {
 
-        if (payloads.contains("like1")) {
+      /*  if (payloads.contains("like1")) {
             holder.like1.setImageResource(R.drawable.ic_happy);
             holder.like1.setEnabled(false);
             holder.like2.setEnabled(false);
@@ -313,24 +250,6 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             // messagelist.get(position).setUpvotes(String.valueOf(Integer.parseInt(messagelist.get(position).getUpvotes())+1));
             //  holder.likenumber1.setText(messagelist.get(position).getUpvotes());
             messagelist.get(position).setLiketype("like1");
-        } else if (payloads.contains("like2")) {
-            holder.like2.setImageResource(R.drawable.ic_surprised);
-            holder.like1.setEnabled(false);
-            holder.like2.setEnabled(false);
-            holder.like3.setEnabled(false);
-
-            holder.likenumber2.setAlpha(1.0f);
-            messagelist.get(position).setLiketype("like2");
-
-        } else if (payloads.contains("like3")) {
-            holder.like3.setImageResource(R.drawable.ic_sad);
-            holder.like1.setEnabled(false);
-            holder.like2.setEnabled(false);
-            holder.like3.setEnabled(false);
-
-            holder.likenumber3.setAlpha(1.0f);
-            messagelist.get(position).setLiketype("like3");
-
         } else if (payloads.contains("like1unlike")) {
             holder.like1.setImageResource(R.drawable.ic_happy_small);
             holder.like1.setEnabled(true);
@@ -353,17 +272,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             messagelist.get(position).setLiketype("");
 
             Toast.makeText(mContext, "couldn't connect", Toast.LENGTH_SHORT).show();
-        } else if (payloads.contains("like3unlike")) {
-            holder.like3.setImageResource(R.drawable.ic_sad_small);
-            holder.like1.setEnabled(true);
-            holder.like2.setEnabled(true);
-            holder.like3.setEnabled(true);
-            holder.likenumber3.setAlpha(0.3f);
-
-            messagelist.get(position).setLiketype("");
-
-            Toast.makeText(mContext, "couldn't connect", Toast.LENGTH_SHORT).show();
-        } else
+        }*/
             super.onBindViewHolder(holder, position, payloads);
     }
 
@@ -428,8 +337,8 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
     }
 
     public class BaseViewHolder extends RecyclerView.ViewHolder {
-        private ImageView profileimage, liketemp, comment, like1, like2, like3;
-        private TextView username, likenum, commentnum, likenumber1, likenumber2, likenumber3;
+        private ImageView profileimage, liketemp, comment, like;
+        private TextView username, likenum, commentnum, likenumber;
         private TextView date, userlevel, groupname;
         private TextView description;
         private LinearLayout commentcontainer;
@@ -439,13 +348,11 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
             profileimage = (ImageView) inflate.findViewById(R.id.profilepic);
             comment = (ImageView) inflate.findViewById(R.id.comment);
-            like1 = (ImageView) inflate.findViewById(R.id.i1);
-            like2 = (ImageView) inflate.findViewById(R.id.i2);
-            like3 = (ImageView) inflate.findViewById(R.id.i3);
+            like = (ImageView) inflate.findViewById(R.id.like);
+
             groupname = (TextView) inflate.findViewById(R.id.groupname);
-            likenumber1 = (TextView) inflate.findViewById(R.id.likenumber1);
-            likenumber2 = (TextView) inflate.findViewById(R.id.likenumber2);
-            likenumber3 = (TextView) inflate.findViewById(R.id.likenumber3);
+
+            likenumber = (TextView) inflate.findViewById(R.id.likenumber);
             userlevel = (TextView) inflate.findViewById(R.id.userlevel);
             description = (TextView) inflate.findViewById(R.id.description);
             commentcontainer = (LinearLayout) inflate.findViewById(R.id.commentcontainer);
@@ -453,33 +360,12 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             date = (TextView) inflate.findViewById(R.id.date);
             commentnum = (TextView) inflate.findViewById(R.id.commentnumber);
 
-            like1.setOnClickListener(new View.OnClickListener() {
+            like.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    notifyItemChanged(getAdapterPosition(), "like1");
-                    sendrequestforlike(getAdapterPosition(), "like1");
-
-                }
-            });
-            like2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-
-                    notifyItemChanged(getAdapterPosition(), "like2");
-                    sendrequestforlike(getAdapterPosition(), "like2");
-
-
-                }
-            });
-            like3.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-
-                    notifyItemChanged(getAdapterPosition(), "like3");
-                    sendrequestforlike(getAdapterPosition(), "like3");
+                   /* notifyItemChanged(getAdapterPosition(), "like");
+                    sendrequestforlike(getAdapterPosition(), "like");*/
 
                 }
             });

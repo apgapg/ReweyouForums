@@ -73,7 +73,7 @@ public class UserSessionManager {
         editor.commit();
     }
 
-    public void createUserRegisterSession(String uid, String real, String username, String photoUrl, String authtoken, String shortinfo, String badge) {
+    public void createUserRegisterSession(String uid, String real, String username, String photoUrl, String authtoken, String shortinfo) {
 
         editor.putBoolean(IS_USER_LOGIN, true);
 
@@ -83,7 +83,6 @@ public class UserSessionManager {
         editor.putString(KEY_UID, uid);
         editor.putString(KEY_AUTH_TOKEN, authtoken);
         editor.putString(KEY_SHORT_INFO, shortinfo);
-        editor.putString(KEY_BADGE, badge);
 
         // commit changes
         editor.commit();
