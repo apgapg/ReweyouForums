@@ -118,8 +118,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         holder.commentnum.setText(messagelist.get(position).getComments());
         Glide.with(mContext).load(messagelist.get(position).getProfilepic()).into(holder.profileimage);
         holder.userlevel.setText(messagelist.get(position).getBadge());
-        Log.d(TAG, "onBindViewHolder: " + messagelist.get(position).getGroupname());
-        holder.groupname.setText(messagelist.get(position).getGroupname());
+        holder.groupname.setText("#" + messagelist.get(position).getGroupname());
         Log.d(TAG, "onBindViewHolder: " + messagelist.get(position).getBadge());
 
         Drawable background = holder.userlevel.getBackground();
