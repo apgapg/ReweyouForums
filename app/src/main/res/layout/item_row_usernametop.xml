@@ -38,12 +38,31 @@
         android:gravity="center_vertical"
         android:lines="1"
 
-        android:maxLines="5"
         android:paddingLeft="5dp"
         android:paddingRight="7dp"
 
         android:text="Expert"
         android:textColor="#fff"
+        android:textSize="10.5dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/groupname"
+        android:layout_width="wrap_content"
+        android:layout_height="18dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="12dp"
+        android:layout_marginRight="4dp"
+
+        android:drawablePadding="2dp"
+        android:gravity="center_vertical"
+        android:lines="1"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:text="#Photography"
+        android:textColor="@color/main_background_pink"
         android:textSize="10.5dp"
         android:textStyle="bold" />
 

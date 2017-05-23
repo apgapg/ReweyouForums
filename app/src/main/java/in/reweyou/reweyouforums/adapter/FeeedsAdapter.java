@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -34,16 +35,20 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
+import org.chromium.customtabsclient.CustomTabsActivityHelper;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import in.reweyou.reweyouforums.CommentActivity;
+import in.reweyou.reweyouforums.ForumMainActivity;
 import in.reweyou.reweyouforums.FullImage;
 import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.model.ThreadModel;
 import in.reweyou.reweyouforums.utils.Utils;
+import me.zhanghai.android.customtabshelper.CustomTabsHelperFragment;
 
 /**
  * Created by master on 1/5/17.
@@ -62,13 +67,19 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
     private final Context mContext;
     private final UserSessionManager userSessionManager;
+    private final CustomTabsIntent mCustomTabsIntent;
     List<ThreadModel> messagelist;
 
     public FeeedsAdapter(Context context) {
         this.mContext = context;
         this.messagelist = new ArrayList<>();
         userSessionManager = new UserSessionManager(mContext);
+        mCustomTabsIntent = new CustomTabsIntent.Builder()
 
+                .enableUrlBarHiding()
+                .setToolbarColor(mContext.getResources().getColor(R.color.black))
+                .setShowTitle(true)
+                .build();
     }
 
     @Override
@@ -101,7 +112,8 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         holder.commentnum.setText(messagelist.get(position).getComments());
         Glide.with(mContext).load(messagelist.get(position).getProfilepic()).into(holder.profileimage);
         holder.userlevel.setText(messagelist.get(position).getBadge());
-
+        Log.d(TAG, "onBindViewHolder: " + messagelist.get(position).getGroupname());
+        holder.groupname.setText(messagelist.get(position).getGroupname());
         Log.d(TAG, "onBindViewHolder: " + messagelist.get(position).getBadge());
 
         Drawable background = holder.userlevel.getBackground();
@@ -131,7 +143,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                 shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_writer));
             } else if (messagelist.get(position).getBadge().equals("GOAT")) {
                 shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_GOAT));
-            
+
             }
         }
 
@@ -237,6 +249,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
     }
 
     private void onbindlink(LinkViewHolder linkViewHolder, int position) {
+
         linkViewHolder.linkheadline.setText(messagelist.get(position).getLinkhead());
         linkViewHolder.linkdescription.setText(messagelist.get(position).getLinkdesc());
         linkViewHolder.link.setText(messagelist.get(position).getLink());
@@ -413,7 +426,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
     public class BaseViewHolder extends RecyclerView.ViewHolder {
         private ImageView profileimage, liketemp, comment, like1, like2, like3;
         private TextView username, likenum, commentnum, likenumber1, likenumber2, likenumber3;
-        private TextView date, userlevel;
+        private TextView date, userlevel, groupname;
         private TextView description;
         private LinearLayout commentcontainer;
 
@@ -425,6 +438,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             like1 = (ImageView) inflate.findViewById(R.id.i1);
             like2 = (ImageView) inflate.findViewById(R.id.i2);
             like3 = (ImageView) inflate.findViewById(R.id.i3);
+            groupname = (TextView) inflate.findViewById(R.id.groupname);
             likenumber1 = (TextView) inflate.findViewById(R.id.likenumber1);
             likenumber2 = (TextView) inflate.findViewById(R.id.likenumber2);
             likenumber3 = (TextView) inflate.findViewById(R.id.likenumber3);
@@ -663,8 +677,18 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                 @Override
                 public void onClick(View v) {
                     if (messagelist.get(getAdapterPosition()).getLink() != null) {
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(messagelist.get(getAdapterPosition()).getLink()));
-                        mContext.startActivity(browserIntent);
+                       /* Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(messagelist.get(getAdapterPosition()).getLink()));
+                        mContext.startActivity(browserIntent);*/
+                        Log.d(TAG, "onClick: " + messagelist.get(getAdapterPosition()).getLink());
+                        CustomTabsHelperFragment.open((ForumMainActivity) mContext, mCustomTabsIntent, Uri.parse(messagelist.get(getAdapterPosition()).getLink()),
+                                new CustomTabsActivityHelper.CustomTabsFallback() {
+                                    @Override
+                                    public void openUri(Activity activity, Uri uri) {
+                                        Log.d(TAG, "openUri: here");
+                                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(messagelist.get(getAdapterPosition()).getLink()));
+                                        mContext.startActivity(browserIntent);
+                                    }
+                                });
                     }
                 }
             });

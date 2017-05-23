@@ -27,6 +27,7 @@ import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.adapter.FeeedsAdapter;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.model.ThreadModel;
+import me.zhanghai.android.customtabshelper.CustomTabsHelperFragment;
 
 /**
  * Created by master on 24/2/17.
@@ -41,12 +42,15 @@ public class MainThreadsFragment extends Fragment {
     private FeeedsAdapter feeedsAdapter;
     private UserSessionManager userSessionManager;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private CustomTabsHelperFragment mCustomTabsHelperFragment;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         userSessionManager = new UserSessionManager(mContext);
+        mCustomTabsHelperFragment = CustomTabsHelperFragment.attachTo(this);
+
     }
 
     @Nullable
@@ -120,6 +124,7 @@ public class MainThreadsFragment extends Fragment {
 
                             }
                         });
+
                     }
 
                     @Override

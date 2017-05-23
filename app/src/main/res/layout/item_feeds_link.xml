@@ -75,7 +75,7 @@ terro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:background="@drawable/border_link"
+                android:background="@drawable/ripple_effect22"
                 android:minHeight="100dp"
                 android:paddingBottom="4dp"
                 android:paddingLeft="12dp"

@@ -10,6 +10,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -62,7 +65,16 @@ public class UserInfoFragment extends Fragment {
         });
         username = (TextView) layout.findViewById(R.id.username);
         userstatus = (TextView) layout.findViewById(R.id.userStatus);
+        ImageView imageView = (ImageView) layout.findViewById(R.id.dashimg);
 
+        RotateAnimation rotate = new RotateAnimation(0, 360,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+                0.5f);
+
+        rotate.setDuration(5000);
+        rotate.setInterpolator(new LinearInterpolator());
+        rotate.setRepeatCount(Animation.INFINITE);
+        imageView.setAnimation(rotate);
         userSessionManager = new UserSessionManager(mContext);
 
         username.setText(userSessionManager.getUsername());

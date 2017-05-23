@@ -43,26 +43,26 @@
             android:orientation="vertical">
 
             <RelativeLayout
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="78dp"
+                android:layout_height="78dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="32dp">
 
+                <ImageView
+                    android:id="@+id/dashimg"
+                    android:layout_width="78dp"
+                    android:layout_height="78dp"
+                    android:background="@drawable/border_circular_dash" />
                 <in.reweyou.reweyouforums.customView.CircularImageView
                     android:id="@+id/image"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
+                    android:layout_centerInParent="true"
                     android:src="@drawable/download"
                     app:myborderColor="#6200EA"
-                    app:myborderWidth="2dp" />
+                    app:myborderWidth="0dp" />
 
 
-                <ProgressBar
-                    android:id="@+id/pd"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:visibility="invisible" />
             </RelativeLayout>
 
 

@@ -10,5 +10,5 @@
             <solid android:color="#d0d0d0" />
         </shape>
     </item>
-
+    <item android:drawable="@drawable/border_link" />
 </ripple>
