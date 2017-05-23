@@ -25,6 +25,7 @@ import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 
 import org.apmem.tools.layouts.FlowLayout;
@@ -91,8 +92,6 @@ public class GroupInfoFragment extends Fragment {
         final ProgressBar pd = (ProgressBar) layout.findViewById(R.id.pd);
 
 
-
-
         try {
             groupname.setText(getArguments().getString("groupname"));
             members.setText(getArguments().getString("members"));
@@ -153,6 +152,7 @@ public class GroupInfoFragment extends Fragment {
                                 public void onResponse(String response) {
                                     Log.d(TAG, "onResponse: " + response);
                                     if (response.equals("Followed")) {
+
                                         btnfollow.setText("Leave");
                                         btnfollow.setTextColor(mContext.getResources().getColor(R.color.main_background_pink));
                                         btnfollow.setBackground(mContext.getResources().getDrawable(R.drawable.rectangular_border_pink));
@@ -161,13 +161,18 @@ public class GroupInfoFragment extends Fragment {
                                         pd.setVisibility(View.GONE);
                                         Toast.makeText(mContext, "You are now following '" + getArguments().getString("groupname") + "'", Toast.LENGTH_SHORT).show();
                                         mContext.setResult(Activity.RESULT_OK);
+                                        FirebaseMessaging.getInstance().subscribeToTopic(getArguments().getString("groupname"));
+
                                     } else if (response.equals("Unfollowed")) {
+
                                         btnfollow.setText("Join");
                                         btnfollow.setTextColor(mContext.getResources().getColor(R.color.white));
                                         btnfollow.setBackground(mContext.getResources().getDrawable(R.drawable.rectangular_solid_pink));
                                         btnfollow.setVisibility(View.VISIBLE);
                                         pd.setVisibility(View.GONE);
                                         mContext.setResult(Activity.RESULT_OK);
+                                        FirebaseMessaging.getInstance().unsubscribeFromTopic(getArguments().getString("groupname"));
+
                                     }
                                 }
 
