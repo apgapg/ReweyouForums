@@ -1,6 +1,7 @@
 package in.reweyou.reweyouforums;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -81,6 +82,8 @@ public class CommentActivity extends AppCompatActivity {
         });
         try {
             threadid = getIntent().getStringExtra("threadid");
+            if (threadid == null)
+                throw new NullPointerException("threadid cannot be null");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -336,5 +339,13 @@ public class CommentActivity extends AppCompatActivity {
         final InputMethodManager inputMethodManager = (InputMethodManager) this
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(CommentActivity.this, ForumMainActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(i);
+        finish();
     }
 }

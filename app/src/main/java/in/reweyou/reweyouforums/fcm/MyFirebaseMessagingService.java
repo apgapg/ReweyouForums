@@ -20,8 +20,9 @@ import org.json.JSONObject;
 import java.util.Calendar;
 import java.util.Random;
 
+import in.reweyou.reweyouforums.CommentActivity;
+import in.reweyou.reweyouforums.ForumMainActivity;
 import in.reweyou.reweyouforums.R;
-import in.reweyou.reweyouforums.ReviewActivityQR;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -56,7 +57,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Random random = new Random();
 
             int m = random.nextInt(9999 - 1000) + 1000;
-            Intent i = new Intent(this, ReviewActivityQR.class);
+            Intent i;
+            if (payload.has("threadid")) {
+                i = new Intent(this, CommentActivity.class);
+                i.putExtra("threadid", payload.getString("threadid"));
+            } else i = new Intent(this, ForumMainActivity.class);
 
 
             PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), m, i, PendingIntent.FLAG_ONE_SHOT);

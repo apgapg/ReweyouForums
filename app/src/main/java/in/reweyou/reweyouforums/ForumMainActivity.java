@@ -1,10 +1,12 @@
 package in.reweyou.reweyouforums;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,6 +18,7 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +47,7 @@ public class ForumMainActivity extends AppCompatActivity {
     private int positionFragment = -1;
     private ViewPager viewPager;
     private UserSessionManager userSessionManager;
+    private boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +72,7 @@ public class ForumMainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
+
                 if (position == 0)
                     tabnametoolbar.setText("Feeds");
                 else if (position == 1)
@@ -76,6 +81,8 @@ public class ForumMainActivity extends AppCompatActivity {
                     tabnametoolbar.setText("Create");
                 else if (position == 3)
                     tabnametoolbar.setText("My Profile");
+                InputMethodManager imm = (InputMethodManager) ForumMainActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(ForumMainActivity.this.getCurrentFocus().getWindowToken(), 0);
             }
 
             @Override
@@ -223,6 +230,28 @@ public class ForumMainActivity extends AppCompatActivity {
 
         viewPager.setCurrentItem(1);
         ((ExploreFragment) pagerAdapter.getRegisteredFragment(1)).refreshlist();
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if (doubleBackToExitPressedOnce) {
+
+            finishAffinity();
+        }
+        if (!doubleBackToExitPressedOnce)
+            Toast.makeText(this, "Press again to exit.", Toast.LENGTH_SHORT).show();
+
+        this.doubleBackToExitPressedOnce = true;
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 3000);
+
     }
 
     private class PagerAdapter extends FragmentStatePagerAdapter {
