@@ -574,7 +574,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(mContext, FullImage.class);
-                    i.putExtra("image", messagelist.get(getAdapterPosition()).getImage1());
+                    i.putExtra("image", messagelist.get(getAdapterPosition()).getImage2());
                     mContext.startActivity(i);
                 }
             });
@@ -601,7 +601,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(mContext, FullImage.class);
-                    i.putExtra("image", messagelist.get(getAdapterPosition()).getImage1());
+                    i.putExtra("image", messagelist.get(getAdapterPosition()).getImage2());
                     mContext.startActivity(i);
                 }
             });
@@ -609,7 +609,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(mContext, FullImage.class);
-                    i.putExtra("image", messagelist.get(getAdapterPosition()).getImage1());
+                    i.putExtra("image", messagelist.get(getAdapterPosition()).getImage3());
                     mContext.startActivity(i);
                 }
             });
@@ -638,7 +638,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(mContext, FullImage.class);
-                    i.putExtra("image", messagelist.get(getAdapterPosition()).getImage1());
+                    i.putExtra("image", messagelist.get(getAdapterPosition()).getImage2());
                     mContext.startActivity(i);
                 }
             });
@@ -646,7 +646,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(mContext, FullImage.class);
-                    i.putExtra("image", messagelist.get(getAdapterPosition()).getImage1());
+                    i.putExtra("image", messagelist.get(getAdapterPosition()).getImage3());
                     mContext.startActivity(i);
                 }
             });
@@ -654,7 +654,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(mContext, FullImage.class);
-                    i.putExtra("image", messagelist.get(getAdapterPosition()).getImage1());
+                    i.putExtra("image", messagelist.get(getAdapterPosition()).getImage4());
                     mContext.startActivity(i);
                 }
             });
