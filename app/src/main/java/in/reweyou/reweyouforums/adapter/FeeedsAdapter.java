@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -34,6 +35,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.chromium.customtabsclient.CustomTabsActivityHelper;
 
@@ -68,6 +70,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
     private final Context mContext;
     private final UserSessionManager userSessionManager;
     private final CustomTabsIntent mCustomTabsIntent;
+    private final FirebaseAnalytics mFirebaseAnalytics;
     List<ThreadModel> messagelist;
 
     public FeeedsAdapter(Context context) {
@@ -80,6 +83,9 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                 .setToolbarColor(mContext.getResources().getColor(R.color.black))
                 .setShowTitle(true)
                 .build();
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
+
     }
 
     @Override
@@ -486,6 +492,9 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                     Intent i = new Intent(mContext, CommentActivity.class);
                     i.putExtra("threadid", messagelist.get(getAdapterPosition()).getThreadid());
                     mContext.startActivity(i);
+                    Bundle params = new Bundle();
+                    params.putString("groupname", messagelist.get(getAdapterPosition()).getGroupname());
+                    mFirebaseAnalytics.logEvent("comment_btn_click", params);
                 }
             });
 

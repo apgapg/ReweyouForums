@@ -3,6 +3,7 @@ package in.reweyou.reweyouforums.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,11 +31,13 @@ import in.reweyou.reweyouforums.utils.Utils;
 public class ForumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final Context context;
+    private final FirebaseAnalytics mFirebaseAnalytics;
     List<GroupModel> messagelist;
 
     public ForumAdapter(Context context) {
         this.context = context;
         this.messagelist = new ArrayList<>();
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
 
     }
 
@@ -95,6 +99,9 @@ public class ForumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     ((Activity) context).startActivityForResult(i, Utils.REQ_CODE_GROP_ACITIVTY);
                     //  i.putExtra("threads",messagelist.get(getAdapterPosition()).ge);
 
+                    Bundle params = new Bundle();
+
+                    mFirebaseAnalytics.logEvent(messagelist.get(getAdapterPosition()).getGroupname(), params);
                 }
             });
         }

@@ -3,6 +3,7 @@ package in.reweyou.reweyouforums.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,11 +32,13 @@ import in.reweyou.reweyouforums.utils.Utils;
 public class YourGroupsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final Context context;
+    private final FirebaseAnalytics mFirebaseAnalytics;
     List<GroupModel> messagelist;
 
     public YourGroupsAdapter(Context context) {
         this.context = context;
         this.messagelist = new ArrayList<>();
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
 
     }
 
@@ -96,7 +100,9 @@ public class YourGroupsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     i.putExtra("follow", true);
                     ((Activity) context).startActivityForResult(i, Utils.REQ_CODE_GROP_ACITIVTY);
                     //  i.putExtra("threads",messagelist.get(getAdapterPosition()).ge);
+                    Bundle params = new Bundle();
 
+                    mFirebaseAnalytics.logEvent(messagelist.get(getAdapterPosition()).getGroupname(), params);
                 }
             });
         }
