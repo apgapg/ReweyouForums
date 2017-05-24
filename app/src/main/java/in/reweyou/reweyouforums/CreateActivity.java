@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -212,6 +213,10 @@ public class CreateActivity extends SlidingActivity {
             Log.d(TAG, "intent.getAction().equals(Intent.ACTION_SEND)");
             String message = getIntent().getStringExtra(Intent.EXTRA_TEXT);
             Log.d(TAG, "init: " + message);
+            if (!URLUtil.isValidUrl(message)) {
+                Toast.makeText(this, "Please check link", Toast.LENGTH_SHORT).show();
+                finish();
+            }
             flowLayout = (FlowLayout) findViewById(R.id.flowlayout);
             flowLayout.removeAllViews();
             flowLayout.setVisibility(View.VISIBLE);
