@@ -50,7 +50,7 @@
         android:layout_marginTop="24dp"
         android:lineSpacingExtra="2dp"
 
-        android:text="1. Create your own groups\n2. Share images, link in the groups\n3. Get to know what others likes\n4. Connect with similar interest people"
+        android:text="1. Create your own group\n2. Share images, links in the group\n3. Get to know what others like\n4. Connect with similar interest people"
         android:textColor="#212121"
         android:textSize="14dp" />
 
