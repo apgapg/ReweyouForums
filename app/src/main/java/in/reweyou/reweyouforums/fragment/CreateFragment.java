@@ -150,8 +150,6 @@ public class CreateFragment extends Fragment {
                     @Override
                     public void onResponse(String response) {
                         Log.d(TAG, "onResponse: group upload: " + response);
-                        Toast.makeText(mContext, "Group created successfully", Toast.LENGTH_SHORT).show();
-
 
                         imgtext.setVisibility(View.VISIBLE);
                         img.setImageResource(0);

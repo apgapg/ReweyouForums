@@ -48,7 +48,6 @@
             android:layout_toLeftOf="@+id/image"
 
             android:ellipsize="end"
-            android:maxLines="5"
             android:paddingBottom="10dp"
             android:paddingLeft="14dp"
             android:paddingRight="14dp"

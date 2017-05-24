@@ -47,7 +47,6 @@
             android:layout_marginTop="8dp"
             android:layout_toLeftOf="@+id/image"
             android:ellipsize="end"
-            android:maxLines="5"
             android:paddingBottom="6dp"
             android:paddingLeft="14dp"
             android:paddingRight="14dp"
