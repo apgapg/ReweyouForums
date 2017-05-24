@@ -86,8 +86,12 @@ public class ForumMainActivity extends AppCompatActivity {
                     tabnametoolbar.setText("Create");
                 else if (position == 3)
                     tabnametoolbar.setText("My Profile");
-                InputMethodManager imm = (InputMethodManager) ForumMainActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(ForumMainActivity.this.getCurrentFocus().getWindowToken(), 0);
+                try {
+                    InputMethodManager imm = (InputMethodManager) ForumMainActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(ForumMainActivity.this.getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
