@@ -72,8 +72,9 @@ public class ProfileFragment extends Fragment {
     private ProgressBar progressBarproceed;
     private InterestAdapter interestAdapter;
     private org.apmem.tools.layouts.FlowLayout flowLayout;
-    private List<String> interestlist;
+    private List<String> interestlist = new ArrayList<>();
     private JSONObject jsonObject;
+    private boolean dataloaded;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -107,16 +108,16 @@ public class ProfileFragment extends Fragment {
         continuebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (interestlist.isEmpty())
-                    Toast.makeText(mContext, "Please select an interest", Toast.LENGTH_SHORT).show();
-                else
-                    uploadDetails();
-
+                if (dataloaded) {
+                    if (interestlist.isEmpty())
+                        Toast.makeText(mContext, "Please select an interest", Toast.LENGTH_SHORT).show();
+                    else
+                        uploadDetails();
+                } else getData();
             }
         });
 
         flowLayout = (FlowLayout) layout.findViewById(R.id.flowlayout);
-        flowLayout.removeAllViews();
 
 
         getData();
@@ -125,6 +126,8 @@ public class ProfileFragment extends Fragment {
     }
 
     private void getData() {
+        flowLayout.removeAllViews();
+
         AndroidNetworking.get("https://www.reweyou.in/google/suggest_groups.php")
                 .setPriority(Priority.HIGH)
                 .build()
@@ -158,7 +161,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void populatedata(final List<GroupModel> groupModels) {
-        interestlist = new ArrayList<>();
+        dataloaded = true;
         Log.d(TAG, "populatedata: " + groupModels.size());
         for (int i = 0; i < groupModels.size(); i++) {
             View view = mContext.getLayoutInflater().inflate(R.layout.item_interest, null);
