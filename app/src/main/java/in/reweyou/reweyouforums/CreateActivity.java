@@ -208,32 +208,33 @@ public class CreateActivity extends SlidingActivity {
             }
         });
 
-        if (getIntent().getAction().equals(Intent.ACTION_SEND)) {
+        if (getIntent().getAction() != null)
+            if (getIntent().getAction().equals(Intent.ACTION_SEND)) {
 
-            Log.d(TAG, "intent.getAction().equals(Intent.ACTION_SEND)");
-            String message = getIntent().getStringExtra(Intent.EXTRA_TEXT);
-            Log.d(TAG, "init: " + message);
-            if (!URLUtil.isValidUrl(message)) {
-                Toast.makeText(this, "Please check link", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-            flowLayout = (FlowLayout) findViewById(R.id.flowlayout);
-            flowLayout.removeAllViews();
-            flowLayout.setVisibility(View.VISIBLE);
-            findViewById(R.id.selectgroup).setVisibility(View.VISIBLE);
-            onLinkPasted(message);
-            getData();
-            create.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (groupid != null && groupname != null)
-                        uploadPostShare();
-                    else
-                        Toast.makeText(CreateActivity.this, "Please select a group!", Toast.LENGTH_SHORT).show();
-
+                Log.d(TAG, "intent.getAction().equals(Intent.ACTION_SEND)");
+                String message = getIntent().getStringExtra(Intent.EXTRA_TEXT);
+                Log.d(TAG, "init: " + message);
+                if (!URLUtil.isValidUrl(message)) {
+                    Toast.makeText(this, "Please check link", Toast.LENGTH_SHORT).show();
+                    finish();
                 }
-            });
-        }
+                flowLayout = (FlowLayout) findViewById(R.id.flowlayout);
+                flowLayout.removeAllViews();
+                flowLayout.setVisibility(View.VISIBLE);
+                findViewById(R.id.selectgroup).setVisibility(View.VISIBLE);
+                onLinkPasted(message);
+                getData();
+                create.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (groupid != null && groupname != null)
+                            uploadPostShare();
+                        else
+                            Toast.makeText(CreateActivity.this, "Please select a group!", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+            }
 
 
     }
