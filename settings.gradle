@@ -1,1 +1,1 @@
-include ':app', ':multipicker', ':AndroidVisionQRReader'
+include ':app', ':multipicker'

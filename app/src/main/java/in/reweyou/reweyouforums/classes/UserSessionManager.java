@@ -9,7 +9,8 @@ import com.google.gson.Gson;
 
 import java.util.List;
 
-import in.reweyou.reweyouforums.Signup;
+import in.reweyou.reweyouforums.LoginActivity;
+
 
 /**
  * Created by Reweyou on 12/17/2015.
@@ -127,7 +128,7 @@ public class UserSessionManager {
         editor.commit();
 
         // After logout redirect user to Login Activity
-        Intent i = new Intent(_context, Signup.class);
+        Intent i = new Intent(_context, LoginActivity.class);
 
         // Closing all the Activities
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
