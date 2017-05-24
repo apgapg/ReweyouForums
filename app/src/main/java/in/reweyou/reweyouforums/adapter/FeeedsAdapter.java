@@ -5,7 +5,6 @@ import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
@@ -129,7 +128,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
             holder.like.setImageResource(R.drawable.ic_heart_like_grey);
 
-        } else throw new NullPointerException("liked status null");
+        }
         Drawable background = holder.userlevel.getBackground();
         if (background instanceof GradientDrawable) {
             // cast to 'ShapeDrawable'
@@ -256,7 +255,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             messagelist.get(position).setUpvotes(String.valueOf(Integer.parseInt(messagelist.get(position).getUpvotes()) + 1));
         } else if (payloads.contains("unlike")) {
             messagelist.get(position).setStatus("false");
-            holder.like.setColorFilter(Color.parseColor("#d0d0d0"));
+            holder.like.setImageResource(R.drawable.ic_heart_like_grey);
             if (Integer.parseInt(messagelist.get(position).getUpvotes()) != 0) {
                 holder.likenumber.setText(String.valueOf(Integer.parseInt(messagelist.get(position).getUpvotes()) - 1));
                 messagelist.get(position).setUpvotes(String.valueOf(Integer.parseInt(messagelist.get(position).getUpvotes()) - 1));
