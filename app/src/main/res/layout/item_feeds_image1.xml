@@ -80,7 +80,7 @@ terro"
                 android:layout_alignParentRight="true"
                 android:layout_marginBottom="20dp"
                 android:layout_marginRight="16dp"
-                android:alpha="0.74"
+                android:alpha="0.78"
                 android:background="@drawable/solid_circle_black"
                 android:padding="6dp"
                 card_view:srcCompat="@drawable/ic_phone_iphone_black_24dp" />

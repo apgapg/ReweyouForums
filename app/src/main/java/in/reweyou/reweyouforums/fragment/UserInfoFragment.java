@@ -1,8 +1,11 @@
 package in.reweyou.reweyouforums.fragment;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,9 +16,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -104,6 +109,13 @@ public class UserInfoFragment extends Fragment {
         recyclerView.setNestedScrollingEnabled(false);
 
         getMembersData();
+
+        layout.findViewById(R.id.more).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showbadgedialog();
+            }
+        });
         return layout;
     }
 
@@ -177,4 +189,35 @@ public class UserInfoFragment extends Fragment {
 
 
     }
+
+    private void showbadgedialog() {
+        //Creating a LayoutInflater object for the dialog box
+        final LayoutInflater li = LayoutInflater.from(mContext);
+        //Creating a view to get the dialog box
+        View confirmDialog = li.inflate(R.layout.dialog_badges, null);
+        //  number=session.getMobileNumber();
+        //Initizliaing confirm button fo dialog box and edittext of dialog box
+        final Button buttonconfirm = (Button) confirmDialog.findViewById(R.id.buttonConfirm);
+
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+
+        alert.setView(confirmDialog);
+
+        final AlertDialog alertDialog = alert.create();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+
+        alertDialog.show();
+
+        //On the click of the confirm button from alert dialog
+        buttonconfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
+    }
+
 }

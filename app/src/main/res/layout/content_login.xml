@@ -5,6 +5,13 @@
     android:layout_height="match_parent"
     tools:context="in.reweyou.reweyouforums.LoginActivity">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.08"
+        android:scaleType="centerCrop"
+
+        android:src="@drawable/main_back" />
     <in.reweyou.reweyouforums.customView.NonSwipeableViewPager
         android:id="@+id/swipeViewPager"
         android:layout_width="match_parent"

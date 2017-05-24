@@ -1,0 +1,291 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="@drawable/button_background2"
+    android:orientation="vertical"
+    android:paddingBottom="16dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:paddingTop="8dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="8dp"
+        android:alpha="0.87"
+        android:background="@color/transparent"
+        android:gravity="center_vertical"
+        android:paddingLeft="12dp"
+        android:text="What is a badge?"
+        android:textAllCaps="true"
+        android:textColor="#000000"
+        android:textSize="13dp"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:text="Badges indicate user level. By adding posts, comments, likes you are adding points to your profile."
+        android:textColor="#616161" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingLeft="8dp"
+        android:paddingRight="4dp"
+        android:paddingTop="2dp"
+        android:text="Post - 10 points\nComment - 5 points\nReply - 5 points"
+        android:textColor="#424242"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="14dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:background="@drawable/background_user_level"
+            android:drawableLeft="@drawable/ic_user_level_layer"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:lines="1"
+
+            android:paddingLeft="9dp"
+            android:paddingRight="10dp"
+
+            android:text="Noob"
+            android:textColor="#fff"
+            android:textSize="12dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="8dp"
+            android:text="- 0 (New User)"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:background="@drawable/background_user_level"
+            android:drawableLeft="@drawable/ic_user_level_layer"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:lines="1"
+
+            android:paddingLeft="9dp"
+            android:paddingRight="10dp"
+
+            android:text="Follower"
+            android:textColor="#fff"
+            android:textSize="12dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="8dp"
+            android:text="- 100"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:background="@drawable/background_user_level"
+            android:drawableLeft="@drawable/ic_user_level_layer"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:lines="1"
+
+            android:paddingLeft="9dp"
+            android:paddingRight="10dp"
+
+            android:text="Writer"
+            android:textColor="#fff"
+            android:textSize="12dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="8dp"
+            android:text="- 200"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:background="@drawable/background_user_level"
+            android:drawableLeft="@drawable/ic_user_level_layer"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:lines="1"
+
+            android:paddingLeft="9dp"
+            android:paddingRight="10dp"
+
+            android:text="Editor"
+            android:textColor="#fff"
+            android:textSize="12dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="8dp"
+            android:text="- 1000"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:background="@drawable/background_user_level"
+            android:drawableLeft="@drawable/ic_user_level_layer"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:lines="1"
+
+            android:paddingLeft="9dp"
+            android:paddingRight="10dp"
+
+            android:text="Rising Star"
+            android:textColor="#fff"
+            android:textSize="12dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="8dp"
+            android:text="- 2000"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:background="@drawable/background_user_level"
+            android:drawableLeft="@drawable/ic_user_level_layer"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:lines="1"
+
+            android:paddingLeft="9dp"
+            android:paddingRight="10dp"
+
+            android:text="Star"
+            android:textColor="#fff"
+            android:textSize="12dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="8dp"
+            android:text="- 5000"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:background="@drawable/background_user_level"
+            android:drawableLeft="@drawable/ic_user_level_layer"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:lines="1"
+
+            android:paddingLeft="9dp"
+            android:paddingRight="10dp"
+
+            android:text="Pro"
+            android:textColor="#fff"
+            android:textSize="12dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="8dp"
+            android:text="- 10000"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/buttonConfirm"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/border_pink"
+        android:text="OK"
+        android:textColor="@color/main_background_pink" />
+
+</LinearLayout>

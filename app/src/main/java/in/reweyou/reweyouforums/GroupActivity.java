@@ -39,7 +39,6 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import java.util.List;
 
 import in.reweyou.reweyouforums.classes.UserSessionManager;
-import in.reweyou.reweyouforums.fragment.ChatFragment;
 import in.reweyou.reweyouforums.fragment.GroupInfoFragment;
 import in.reweyou.reweyouforums.fragment.GroupThreadsFragment;
 import in.reweyou.reweyouforums.utils.Utils;
@@ -403,8 +402,7 @@ public class GroupActivity extends AppCompatActivity {
                 fragment.setArguments(bundle);
 
                 return fragment;
-            } else if (position == 2)
-                return new ChatFragment();
+            }
             else {
                 Bundle bundle = new Bundle();
                 bundle.putString("groupid", groupid);
