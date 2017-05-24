@@ -411,7 +411,7 @@ public class GroupActivity extends AppCompatActivity {
             else {
                 Bundle bundle = new Bundle();
                 bundle.putString("groupid", groupid);
-                bundle.putString("follow", isfollowed);
+                bundle.putBoolean("follow", isfollowed);
                 GroupThreadsFragment groupThreadsFragment = new GroupThreadsFragment();
                 groupThreadsFragment.setArguments(bundle);
 
