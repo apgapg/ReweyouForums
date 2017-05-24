@@ -1,6 +1,7 @@
 package in.reweyou.reweyouforums;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -23,6 +24,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.kbeanie.multipicker.api.ImagePicker;
 import com.kbeanie.multipicker.api.Picker;
 import com.kbeanie.multipicker.api.callbacks.ImagePickerCallback;
@@ -120,6 +125,52 @@ public class ForumMainActivity extends AppCompatActivity {
                 break;
         }
 
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                checkAppVersion();
+            }
+        }, 7000);
+
+    }
+
+    private void checkAppVersion() {
+        AndroidNetworking.get("https://www.reweyou.in/google/version.php")
+                .setTag("report")
+                .setPriority(Priority.LOW)
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        int versionCode = BuildConfig.VERSION_CODE;
+
+                        if (Integer.parseInt(response) > versionCode) {
+                            AlertDialogBox alertDialogBox = new AlertDialogBox(ForumMainActivity.this, "Update Available", "A new update is available. Please update the app in order to have rich user experience", "UPDATE", "LATER") {
+                                @Override
+                                public void onNegativeButtonClick(DialogInterface dialog) {
+                                    dialog.dismiss();
+                                }
+
+                                @Override
+                                public void onPositiveButtonClick(DialogInterface dialog) {
+                                    final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                                    try {
+                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                                    } catch (android.content.ActivityNotFoundException anfe) {
+                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                                    }
+                                }
+                            };
+                            alertDialogBox.show();
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        Log.d(TAG, "onError: " + anError);
+                    }
+                });
     }
 
     public void showPickImage(int i) {
