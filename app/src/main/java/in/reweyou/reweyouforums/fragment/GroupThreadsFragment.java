@@ -47,6 +47,8 @@ public class GroupThreadsFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private Button createpost;
     private CardView joingroupcard;
+    private FloatingActionButton fab;
+    private boolean isfollow;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,20 +60,24 @@ public class GroupThreadsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView: djwjnjwendjwenjdwjdn");
         View layout = inflater.inflate(R.layout.fragment_group_threads, container, false);
         recyclerView = (RecyclerView) layout.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         nopostcard = (CardView) layout.findViewById(R.id.nopostcard);
         joingroupcard = (CardView) layout.findViewById(R.id.joincard);
-        FloatingActionButton fab = (FloatingActionButton) layout.findViewById(R.id.fab);
+        fab = (FloatingActionButton) layout.findViewById(R.id.fab);
         swipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swiperefresh);
+        isfollow = getArguments().getBoolean("follow");
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (getArguments().getBoolean("follow"))
+                if (isfollow)
                     getData();
                 else {
                     joingroupcard.setVisibility(View.VISIBLE);
+                    fab.setVisibility(View.INVISIBLE);
+
                 }
             }
         });
@@ -138,6 +144,8 @@ public class GroupThreadsFragment extends Fragment {
                 getData();
             else {
                 joingroupcard.setVisibility(View.VISIBLE);
+                fab.setVisibility(View.INVISIBLE);
+
             }
 
 
@@ -146,9 +154,12 @@ public class GroupThreadsFragment extends Fragment {
 
     private void getData() {
 
-
+        recyclerView.setVisibility(View.VISIBLE);
         swipeRefreshLayout.setEnabled(true);
         nopostcard.setVisibility(View.GONE);
+        joingroupcard.setVisibility(View.GONE);
+        fab.setVisibility(View.VISIBLE);
+
         swipeRefreshLayout.setRefreshing(true);
         AndroidNetworking.post("https://www.reweyou.in/google/list_threads.php")
                 .addBodyParameter("uid", userSessionManager.getUID())
@@ -191,8 +202,22 @@ public class GroupThreadsFragment extends Fragment {
             getData();
         else {
             joingroupcard.setVisibility(View.VISIBLE);
+            fab.setVisibility(View.INVISIBLE);
+
         }
 
 
+    }
+
+    public void refreshList1(boolean isfollowed) {
+        this.isfollow = isfollowed;
+        if (isfollowed)
+            getData();
+        else {
+            nopostcard.setVisibility(View.INVISIBLE);
+            joingroupcard.setVisibility(View.VISIBLE);
+            fab.setVisibility(View.INVISIBLE);
+            recyclerView.setVisibility(View.INVISIBLE);
+        }
     }
 }

@@ -113,7 +113,7 @@ public class GroupActivity extends AppCompatActivity {
         setBackgroundtint();
 
         viewPager = (ViewPager) findViewById(R.id.viewPager);
-        viewPager.setOffscreenPageLimit(3);
+        viewPager.setOffscreenPageLimit(1);
         pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
@@ -376,6 +376,10 @@ public class GroupActivity extends AppCompatActivity {
 
     public void showfirstpage() {
         viewPager.setCurrentItem(0);
+    }
+
+    public void refreshfeeds(boolean isfollowed) {
+        ((GroupThreadsFragment) pagerAdapter.getRegisteredFragment(1)).refreshList1(isfollowed);
     }
 
     private class PagerAdapter extends FragmentStatePagerAdapter {

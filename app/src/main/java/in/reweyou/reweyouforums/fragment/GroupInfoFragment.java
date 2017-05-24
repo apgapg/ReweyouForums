@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.reweyou.reweyouforums.EditActivity;
+import in.reweyou.reweyouforums.GroupActivity;
 import in.reweyou.reweyouforums.GroupMembers;
 import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
@@ -171,7 +172,8 @@ public class GroupInfoFragment extends Fragment {
                                         pd.setVisibility(View.GONE);
                                         Toast.makeText(mContext, "You are now following '" + getArguments().getString("groupname") + "'", Toast.LENGTH_SHORT).show();
                                         mContext.setResult(Activity.RESULT_OK);
-
+                                        isfollowed = true;
+                                        ((GroupActivity) mContext).refreshfeeds(isfollowed);
                                         try {
                                             String paramgroupname = getArguments().getString("groupname");
 
@@ -184,7 +186,7 @@ public class GroupInfoFragment extends Fragment {
                                         }
 
                                     } else if (response.equals("Unfollowed")) {
-
+                                        isfollowed = false;
                                         btnfollow.setText("Join");
                                         btnfollow.setTextColor(mContext.getResources().getColor(R.color.white));
                                         btnfollow.setBackground(mContext.getResources().getDrawable(R.drawable.rectangular_solid_pink));
@@ -192,6 +194,7 @@ public class GroupInfoFragment extends Fragment {
                                         pd.setVisibility(View.GONE);
                                         mContext.setResult(Activity.RESULT_OK);
                                         // FirebaseMessaging.getInstance().unsubscribeFromTopic(getArguments().getString("groupname"));
+                                        ((GroupActivity) mContext).refreshfeeds(isfollowed);
 
                                         try {
                                             String paramgroupname = getArguments().getString("groupname");
