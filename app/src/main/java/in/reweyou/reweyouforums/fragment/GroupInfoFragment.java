@@ -25,6 +25,7 @@ import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 
 import org.apmem.tools.layouts.FlowLayout;
@@ -168,9 +169,9 @@ public class GroupInfoFragment extends Fragment {
 
                                         btnfollow.setVisibility(View.VISIBLE);
                                         pd.setVisibility(View.GONE);
-                                        Toast.makeText(mContext, "You are now following '" + getArguments().getString("groupname") + "'", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(mContext, "You are now following '" + getArguments().getString("groupid") + "'", Toast.LENGTH_SHORT).show();
                                         mContext.setResult(Activity.RESULT_OK);
-                                        // FirebaseMessaging.getInstance().subscribeToTopic(getArguments().getString("groupname"));
+                                        FirebaseMessaging.getInstance().subscribeToTopic(getArguments().getString("groupid"));
 
                                     } else if (response.equals("Unfollowed")) {
 
@@ -180,7 +181,7 @@ public class GroupInfoFragment extends Fragment {
                                         btnfollow.setVisibility(View.VISIBLE);
                                         pd.setVisibility(View.GONE);
                                         mContext.setResult(Activity.RESULT_OK);
-                                        //   FirebaseMessaging.getInstance().unsubscribeFromTopic(getArguments().getString("groupname"));
+                                        FirebaseMessaging.getInstance().unsubscribeFromTopic(getArguments().getString("groupname"));
 
                                     }
                                 }

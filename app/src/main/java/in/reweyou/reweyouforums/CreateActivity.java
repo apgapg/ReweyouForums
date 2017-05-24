@@ -1,6 +1,8 @@
 package in.reweyou.reweyouforums;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -27,8 +29,10 @@ import android.widget.Toast;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -44,11 +48,15 @@ import com.klinker.android.sliding.SlidingActivity;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import org.apmem.tools.layouts.FlowLayout;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import in.reweyou.reweyouforums.classes.UserSessionManager;
+import in.reweyou.reweyouforums.model.GroupModel;
 
 public class CreateActivity extends SlidingActivity {
 
@@ -84,6 +92,11 @@ public class CreateActivity extends SlidingActivity {
     private String linkdesc = "";
     private ImageView imageviewlink;
     private String linkimage = "";
+    private FlowLayout flowLayout;
+    private String groupid;
+    private int temppos;
+    private String groupname;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void configureScroller(MultiShrinkScroller scroller) {
@@ -99,7 +112,15 @@ public class CreateActivity extends SlidingActivity {
 
         setContent(R.layout.content_create);
 
+
         sessionManager = new UserSessionManager(this);
+
+
+        if (!sessionManager.isUserLoggedIn()) {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        }
+
         linkpd = (ProgressBar) findViewById(R.id.linkpd);
         cd = (CardView) findViewById(R.id.cd);
         image1 = (ImageView) findViewById(R.id.image1);
@@ -186,6 +207,29 @@ public class CreateActivity extends SlidingActivity {
             }
         });
 
+        if (getIntent().getAction().equals(Intent.ACTION_SEND)) {
+
+            Log.d(TAG, "intent.getAction().equals(Intent.ACTION_SEND)");
+            String message = getIntent().getStringExtra(Intent.EXTRA_TEXT);
+            Log.d(TAG, "init: " + message);
+            flowLayout = (FlowLayout) findViewById(R.id.flowlayout);
+            flowLayout.removeAllViews();
+            flowLayout.setVisibility(View.VISIBLE);
+            findViewById(R.id.selectgroup).setVisibility(View.VISIBLE);
+            onLinkPasted(message);
+            getData();
+            create.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (groupid != null && groupname != null)
+                        uploadPostShare();
+                    else
+                        Toast.makeText(CreateActivity.this, "Please select a group!", Toast.LENGTH_SHORT).show();
+
+                }
+            });
+        }
+
 
     }
 
@@ -213,6 +257,77 @@ public class CreateActivity extends SlidingActivity {
                     }
                 }).check();
     }
+
+    private void getData() {
+        AndroidNetworking.post("https://www.reweyou.in/google/suggest_groups.php")
+                .addBodyParameter("uid", sessionManager.getUID())
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONArray(new JSONArrayRequestListener() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            Gson gson = new Gson();
+                            List<GroupModel> groupModels = new ArrayList<>();
+                            for (int i = 0; i < response.length(); i++) {
+                                if (i < 9) {
+                                    GroupModel groupModel = gson.fromJson(response.getJSONObject(i).toString(), GroupModel.class);
+                                    groupModels.add(groupModel);
+                                }
+
+
+                            }
+                            populatedata(groupModels);
+
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+
+                    }
+                });
+    }
+
+    private void populatedata(final List<GroupModel> groupModels) {
+        final Context mContext = CreateActivity.this;
+        Log.d(TAG, "populatedata: " + groupModels.size());
+        for (int i = 0; i < groupModels.size(); i++) {
+            View view = CreateActivity.this.getLayoutInflater().inflate(R.layout.item_interest, null);
+            final TextView textView = (TextView) view.findViewById(R.id.groupname);
+            textView.setText(groupModels.get(i).getGroupname());
+            textView.setTag("0");
+            final int finalI = i;
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (v.getTag().equals("0")) {
+                        v.setTag("1");
+                        textView.setTextColor(mContext.getResources().getColor(R.color.white));
+                        textView.setBackground(mContext.getResources().getDrawable(R.drawable.rectangular_solid_blue));
+                        groupid = (groupModels.get(finalI).getGroupid());
+                        groupname = (groupModels.get(finalI).getGroupname());
+                        temppos = finalI;
+
+                        if (temppos != 0) {
+                            ((TextView) flowLayout.getChildAt(temppos).findViewById(R.id.groupname)).setTextColor(mContext.getResources().getColor(R.color.bright_blue));
+                            flowLayout.getChildAt(temppos).findViewById(R.id.groupname).setBackground(mContext.getResources().getDrawable(R.drawable.border_blue));
+                        }
+                    } else {
+                        v.setTag("0");
+                        textView.setTextColor(mContext.getResources().getColor(R.color.bright_blue));
+                        textView.setBackground(mContext.getResources().getDrawable(R.drawable.border_blue));
+                        groupid = null;
+                    }
+                }
+            });
+            flowLayout.addView(view);
+        }
+    }
+
 
     private void uploadPost() {
 
@@ -267,6 +382,69 @@ public class CreateActivity extends SlidingActivity {
         }
 
     }
+
+    private void uploadPostShare() {
+        if (edittextdescription.getText().toString().trim().length() > 0 && type != null) {
+
+            showUploading();
+            AndroidNetworking.post("https://www.reweyou.in/google/create_threads.php")
+                    .addBodyParameter("groupname", groupname)
+                    .addBodyParameter("groupid", groupid)
+                    .addBodyParameter("description", edittextdescription.getText().toString().trim())
+                    .addBodyParameter("link", link)
+                    .addBodyParameter("linkdesc", linkdesc)
+                    .addBodyParameter("linkhead", linkhead)
+                    .addBodyParameter("linkimage", linkimage)
+                    .addBodyParameter("image1", image1url)
+                    .addBodyParameter("image2", image2url)
+                    .addBodyParameter("image3", image3url)
+                    .addBodyParameter("image4", image4url)
+                    .addBodyParameter("type", type)
+                    .addBodyParameter("uid", sessionManager.getUID())
+                    .addBodyParameter("name", sessionManager.getUsername())
+                    .addBodyParameter("profilepic", sessionManager.getProfilePicture())
+                    .addBodyParameter("authtoken", sessionManager.getAuthToken())
+                    .setTag("uploadpost")
+                    .setPriority(Priority.HIGH)
+                    .build()
+                    .getAsString(new StringRequestListener() {
+                        @Override
+                        public void onResponse(String response) {
+                            Log.d(TAG, "onResponse: " + response);
+                            if (response.contains("Thread created")) {
+                                progressDialog.hide();
+                                Toast.makeText(CreateActivity.this, "Upload successful", Toast.LENGTH_SHORT).show();
+                                finish();
+                                Intent i = new Intent(CreateActivity.this, ForumMainActivity.class);
+                                i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                                startActivity(i);
+                                finish();
+                            } else {
+                                Toast.makeText(CreateActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+
+                                progressDialog.hide();
+                            }
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            Log.d(TAG, "onError: " + anError);
+                            Toast.makeText(CreateActivity.this, "Upload failed!", Toast.LENGTH_SHORT).show();
+
+                            progressDialog.hide();
+                        }
+                    });
+        }
+    }
+
+    private void showUploading() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Uploading Post");
+        progressDialog.setMessage("Please Wait!");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+    }
+
 
     private void initTextWatchers() {
 

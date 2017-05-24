@@ -4,20 +4,32 @@
     android:layout_width="match_parent"
     android:layout_height="44dp"
     android:layout_gravity="end"
-    android:layout_marginLeft="4dp"
+    android:layout_marginLeft="6dp"
+    android:clipChildren="false"
     android:orientation="horizontal">
+
+
+    <ImageView
+        android:id="@+id/templike"
+        android:layout_width="40dp"
+        android:layout_height="44dp"
+        android:paddingTop="2dp"
+        android:scaleType="center"
+        app:srcCompat="@drawable/ic_heart_like_alpha" />
 
     <ImageView
         android:id="@+id/like"
         android:layout_width="40dp"
         android:layout_height="44dp"
+        android:paddingTop="2dp"
         android:scaleType="center"
-        app:srcCompat="@drawable/ic_clap" />
+        app:srcCompat="@drawable/ic_heart_like_grey" />
+
     <TextView
         android:id="@+id/likenumber"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginLeft="36dp"
+        android:layout_marginLeft="37dp"
         android:gravity="center"
         android:text="12"
         android:textColor="#424242" />

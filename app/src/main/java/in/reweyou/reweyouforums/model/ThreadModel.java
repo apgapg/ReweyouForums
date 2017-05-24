@@ -18,6 +18,7 @@ public class ThreadModel {
     private String image4;
     private String imageurl;
     private String description;
+    private String likenumber;
     private String type;
     private String upvotes;
     private String badge;
@@ -27,6 +28,15 @@ public class ThreadModel {
     private String linkimage = "";
     private String linkdesc = "";
     private String linkhead = "";
+    private String status = "false";
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getLinkimage() {
         return linkimage;
