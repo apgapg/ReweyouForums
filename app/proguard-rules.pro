@@ -22,7 +22,7 @@
 # This rule will properly ProGuard all the model classes in
 # the package com.yourcompany.models. Modify to fit the structure
 # of your app.
--keepclassmembers class in.reweyou.reweyou.model.** {
+-keepclassmembers class in.reweyou.reweyouforums.model.** {
   *;
 }
 -keep class android.support.v7.widget.SearchView { *; }
