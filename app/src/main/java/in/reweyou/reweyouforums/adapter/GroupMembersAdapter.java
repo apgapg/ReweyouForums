@@ -65,8 +65,8 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ((YourGroupsViewHolder) holder).username.setText(messagelist.get(position).getUsername());
         Glide.with(context).load(messagelist.get(position).getImageurl()).dontAnimate().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(forumViewHolder.backgroundImage);
         if (isadmin) {
-            ((YourGroupsViewHolder) holder).backgroundImage.setVisibility(View.VISIBLE);
-        } else ((YourGroupsViewHolder) holder).backgroundImage.setVisibility(View.INVISIBLE);
+            ((YourGroupsViewHolder) holder).block.setVisibility(View.VISIBLE);
+        } else ((YourGroupsViewHolder) holder).block.setVisibility(View.INVISIBLE);
 
 
     }

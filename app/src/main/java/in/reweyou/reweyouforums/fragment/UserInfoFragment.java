@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +20,24 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import in.reweyou.reweyouforums.EditProfileActivity;
 import in.reweyou.reweyouforums.R;
+import in.reweyou.reweyouforums.adapter.GroupBadegsAdapter;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
+import in.reweyou.reweyouforums.model.GroupBadgeModel;
 import in.reweyou.reweyouforums.utils.Utils;
 
 /**
@@ -40,6 +55,7 @@ public class UserInfoFragment extends Fragment {
     private TextView username;
     private TextView userstatus;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private GroupBadegsAdapter groupBadegsAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,8 +97,49 @@ public class UserInfoFragment extends Fragment {
         userstatus.setText(userSessionManager.getShortinfo());
 
         Glide.with(mContext).load(userSessionManager.getProfilePicture()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(image);
+        RecyclerView recyclerView = (RecyclerView) layout.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        groupBadegsAdapter = new GroupBadegsAdapter(mContext);
+        recyclerView.setAdapter(groupBadegsAdapter);
+        recyclerView.setNestedScrollingEnabled(false);
 
+        getMembersData();
         return layout;
+    }
+
+    private void getMembersData() {
+        AndroidNetworking.post("https://www.reweyou.in/google/show_profile.php")
+                .addBodyParameter("uid", userSessionManager.getUID())
+                .addBodyParameter("authtoken", userSessionManager.getAuthToken())
+                .setTag("uploadpost")
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONArray(new JSONArrayRequestListener() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            Log.d(TAG, "onResponse: members " + response);
+                            List<GroupBadgeModel> list = new ArrayList<>();
+                            Gson gson = new Gson();
+                            for (int i = 0; i < response.length(); i++) {
+                                GroupBadgeModel groupMemberModel = gson.fromJson(response.getJSONObject(i).toString(), GroupBadgeModel.class);
+                                list.add(groupMemberModel);
+                            }
+
+                            groupBadegsAdapter.add(list);
+                            //  populatedata(list);
+
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        Log.e(TAG, "onError: " + anError);
+                    }
+                });
     }
 
 
