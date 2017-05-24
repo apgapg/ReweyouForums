@@ -168,7 +168,7 @@ public class GroupInfoFragment extends Fragment {
 
                                         btnfollow.setVisibility(View.VISIBLE);
                                         pd.setVisibility(View.GONE);
-                                        Toast.makeText(mContext, "You are now following '" + getArguments().getString("groupid") + "'", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(mContext, "You are now following '" + getArguments().getString("groupname") + "'", Toast.LENGTH_SHORT).show();
                                         mContext.setResult(Activity.RESULT_OK);
                                         // FirebaseMessaging.getInstance().subscribeToTopic(getArguments().getString("groupid"));
 
