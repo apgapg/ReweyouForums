@@ -69,6 +69,7 @@ public class GroupActivity extends AppCompatActivity {
     private String groupdescription = "";
     private String grouprules = "";
     private String groupthreads = "";
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +112,7 @@ public class GroupActivity extends AppCompatActivity {
         back = (ImageView) findViewById(R.id.backgroundimageview);
         setBackgroundtint();
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
         viewPager.setOffscreenPageLimit(3);
         pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
@@ -373,6 +374,10 @@ public class GroupActivity extends AppCompatActivity {
         startActivityForResult(new Intent(GroupActivity.this, CreateActivity.class), 19);
     }
 
+    public void showfirstpage() {
+        viewPager.setCurrentItem(0);
+    }
+
     private class PagerAdapter extends FragmentStatePagerAdapter {
         SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
 
@@ -406,6 +411,7 @@ public class GroupActivity extends AppCompatActivity {
             else {
                 Bundle bundle = new Bundle();
                 bundle.putString("groupid", groupid);
+                bundle.putString("follow", isfollowed);
                 GroupThreadsFragment groupThreadsFragment = new GroupThreadsFragment();
                 groupThreadsFragment.setArguments(bundle);
 

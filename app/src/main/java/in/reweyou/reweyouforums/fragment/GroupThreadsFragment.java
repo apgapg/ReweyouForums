@@ -46,6 +46,7 @@ public class GroupThreadsFragment extends Fragment {
     private CardView nopostcard;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Button createpost;
+    private CardView joingroupcard;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,12 +62,17 @@ public class GroupThreadsFragment extends Fragment {
         recyclerView = (RecyclerView) layout.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         nopostcard = (CardView) layout.findViewById(R.id.nopostcard);
+        joingroupcard = (CardView) layout.findViewById(R.id.joincard);
         FloatingActionButton fab = (FloatingActionButton) layout.findViewById(R.id.fab);
         swipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swiperefresh);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getData();
+                if (getArguments().getBoolean("follow"))
+                    getData();
+                else {
+                    joingroupcard.setVisibility(View.VISIBLE);
+                }
             }
         });
         createpost = (Button) layout.findViewById(R.id.createpost);
@@ -87,6 +93,14 @@ public class GroupThreadsFragment extends Fragment {
             public void onClick(View v) {
 
                 ((GroupActivity) mContext).startCreateActivity();
+
+            }
+        });
+
+        layout.findViewById(R.id.joinbtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((GroupActivity) mContext).showfirstpage();
 
             }
         });
@@ -120,13 +134,19 @@ public class GroupThreadsFragment extends Fragment {
             feeedsAdapter = new FeeedsAdapter(mContext);
             recyclerView.setAdapter(feeedsAdapter);
 
-            getData();
+            if (getArguments().getBoolean("follow"))
+                getData();
+            else {
+                joingroupcard.setVisibility(View.VISIBLE);
+            }
 
 
         }
     }
 
     private void getData() {
+
+
         swipeRefreshLayout.setEnabled(true);
         nopostcard.setVisibility(View.GONE);
         swipeRefreshLayout.setRefreshing(true);
@@ -167,7 +187,12 @@ public class GroupThreadsFragment extends Fragment {
 
 
     public void refreshList() {
-        getData();
+        if (getArguments().getBoolean("follow"))
+            getData();
+        else {
+            joingroupcard.setVisibility(View.VISIBLE);
+        }
+
 
     }
 }
