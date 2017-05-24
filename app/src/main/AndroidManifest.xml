@@ -83,6 +83,8 @@
         <activity
             android:name=".ForumMainActivity"
             android:label="@string/title_activity_forum_main"
+            android:screenOrientation="portrait"
+
             android:theme="@style/AppTheme2.NoActionBar" />
         <activity
             android:name=".CommentActivity"
@@ -93,10 +95,14 @@
         <activity
             android:name=".GroupActivity"
             android:label="@string/title_activity_group"
+            android:screenOrientation="portrait"
+
             android:theme="@style/AppTheme2.NoActionBar" />
         <activity
             android:name=".LoginActivity"
             android:label="ReweyouForums"
+            android:screenOrientation="portrait"
+
             android:theme="@style/AppTheme2.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -120,16 +126,22 @@
         <activity
             android:name=".EditActivity"
             android:label="@string/title_activity_edit"
+
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme2.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".EditProfileActivity"
             android:label="@string/title_activity_edit_profile"
+            android:screenOrientation="portrait"
+
             android:theme="@style/AppTheme2.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".GroupMembers"
             android:label="@string/title_activity_group_members"
+
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme2.NoActionBar"></activity>
     </application>
 

@@ -303,6 +303,8 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
     private void sendrequestforlike(final int adapterPosition) {
         AndroidNetworking.post("https://www.reweyou.in/google/like.php")
                 .addBodyParameter("uid", userSessionManager.getUID())
+                .addBodyParameter("imageurl", userSessionManager.getProfilePicture())
+                .addBodyParameter("username", userSessionManager.getUsername())
                 .addBodyParameter("threadid", messagelist.get(adapterPosition).getThreadid())
                 .addBodyParameter("authtoken", userSessionManager.getAuthToken())
                 .setTag("reportlike")
