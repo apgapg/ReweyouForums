@@ -487,7 +487,7 @@ public class CreateActivity extends SlidingActivity {
 
     private void editHeadline() {
         //Creating a LayoutInflater object for the dialog box
-        LayoutInflater li = LayoutInflater.from(this);
+        final LayoutInflater li = LayoutInflater.from(this);
         //Creating a view to get the dialog box
         View confirmDialog = li.inflate(R.layout.dialog_insert_link, null);
         //  number=session.getMobileNumber();
@@ -535,8 +535,10 @@ public class CreateActivity extends SlidingActivity {
 
                 if (link.getText().toString().trim().length() > 0) {
                     alertDialog.dismiss();
-
-                    CreateActivity.this.onLinkPasted(link.getText().toString());
+                    if (URLUtil.isValidUrl(link.getText().toString()))
+                        CreateActivity.this.onLinkPasted(link.getText().toString());
+                    else
+                        Toast.makeText(CreateActivity.this, "Please check your link", Toast.LENGTH_SHORT).show();
 
 
                 } else alertDialog.dismiss();
