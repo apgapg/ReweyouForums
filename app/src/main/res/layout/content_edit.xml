@@ -99,7 +99,6 @@
             android:gravity="top"
             android:hint="Tap to add rules"
             android:inputType="textMultiLine"
-            android:maxLength="600"
             android:minLines="2"
             android:paddingBottom="10dp"
             android:paddingLeft="2dp"

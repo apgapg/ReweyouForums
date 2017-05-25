@@ -211,7 +211,6 @@
                     android:gravity="top"
                     android:hint="Share your thoughts..."
                     android:inputType="textMultiLine"
-                    android:maxLength="500"
                     android:minLines="2"
                     android:paddingBottom="14dp"
                     android:paddingLeft="15dp"
