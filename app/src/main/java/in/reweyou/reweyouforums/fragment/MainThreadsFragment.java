@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,6 +24,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
 
+import in.reweyou.reweyouforums.ForumMainActivity;
 import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.adapter.FeeedsAdapter;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
@@ -43,6 +45,7 @@ public class MainThreadsFragment extends Fragment {
     private UserSessionManager userSessionManager;
     private SwipeRefreshLayout swipeRefreshLayout;
     private CustomTabsHelperFragment mCustomTabsHelperFragment;
+    private FloatingActionButton fab;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,6 +53,7 @@ public class MainThreadsFragment extends Fragment {
 
         userSessionManager = new UserSessionManager(mContext);
         mCustomTabsHelperFragment = CustomTabsHelperFragment.attachTo(this);
+
 
     }
 
@@ -65,6 +69,16 @@ public class MainThreadsFragment extends Fragment {
             @Override
             public void onRefresh() {
                 getData();
+            }
+        });
+        fab = (FloatingActionButton) layout.findViewById(R.id.fab);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ((ForumMainActivity) mContext).startCreateActivity();
+
             }
         });
         return layout;

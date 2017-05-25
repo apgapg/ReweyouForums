@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.os.Handler;
 import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +35,8 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.gson.Gson;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -95,9 +99,13 @@ public class CreateActivity extends SlidingActivity {
     private String linkimage = "";
     private FlowLayout flowLayout;
     private String groupid;
-    private int temppos;
+    private int temppos = -1;
     private String groupname;
     private ProgressDialog progressDialog;
+    private String image1encoded = "";
+    private String image2encoded = "";
+    private String image3encoded = "";
+    private String image4encoded = "";
 
     @Override
     protected void configureScroller(MultiShrinkScroller scroller) {
@@ -208,6 +216,27 @@ public class CreateActivity extends SlidingActivity {
             }
         });
 
+        try {
+            if (getIntent().getBooleanExtra("frommain", false)) {
+                flowLayout = (FlowLayout) findViewById(R.id.flowlayout);
+                flowLayout.removeAllViews();
+                flowLayout.setVisibility(View.VISIBLE);
+                findViewById(R.id.selectgroup).setVisibility(View.VISIBLE);
+                getData();
+                create.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (groupid != null && groupname != null)
+                            compressImages();
+                        else
+                            Toast.makeText(CreateActivity.this, "Please select a group!", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (getIntent().getAction() != null)
             if (getIntent().getAction().equals(Intent.ACTION_SEND)) {
 
@@ -316,12 +345,14 @@ public class CreateActivity extends SlidingActivity {
                         textView.setBackground(mContext.getResources().getDrawable(R.drawable.rectangular_solid_blue));
                         groupid = (groupModels.get(finalI).getGroupid());
                         groupname = (groupModels.get(finalI).getGroupname());
-                        temppos = finalI;
 
-                        if (temppos != 0) {
+                        if (temppos != -1) {
                             ((TextView) flowLayout.getChildAt(temppos).findViewById(R.id.groupname)).setTextColor(mContext.getResources().getColor(R.color.bright_blue));
                             flowLayout.getChildAt(temppos).findViewById(R.id.groupname).setBackground(mContext.getResources().getDrawable(R.drawable.border_blue));
+                            flowLayout.getChildAt(temppos).setTag("0");
                         }
+                        temppos = finalI;
+
                     } else {
                         v.setTag("0");
                         textView.setTextColor(mContext.getResources().getColor(R.color.bright_blue));
@@ -401,10 +432,10 @@ public class CreateActivity extends SlidingActivity {
                     .addBodyParameter("linkdesc", linkdesc)
                     .addBodyParameter("linkhead", linkhead)
                     .addBodyParameter("linkimage", linkimage)
-                    .addBodyParameter("image1", image1url)
-                    .addBodyParameter("image2", image2url)
-                    .addBodyParameter("image3", image3url)
-                    .addBodyParameter("image4", image4url)
+                    .addBodyParameter("image1", image1encoded)
+                    .addBodyParameter("image2", image2encoded)
+                    .addBodyParameter("image3", image3encoded)
+                    .addBodyParameter("image4", image4encoded)
                     .addBodyParameter("type", type)
                     .addBodyParameter("uid", sessionManager.getUID())
                     .addBodyParameter("name", sessionManager.getUsername())
@@ -418,17 +449,19 @@ public class CreateActivity extends SlidingActivity {
                         public void onResponse(String response) {
                             Log.d(TAG, "onResponse: " + response);
                             if (response.contains("Thread created")) {
-                                progressDialog.hide();
+                                progressDialog.dismiss();
                                 Toast.makeText(CreateActivity.this, "Upload successful", Toast.LENGTH_SHORT).show();
-                                finish();
-                                Intent i = new Intent(CreateActivity.this, ForumMainActivity.class);
-                                i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                                startActivity(i);
+
+                                if (!getIntent().getBooleanExtra("frommain", false)) {
+                                    Intent i = new Intent(CreateActivity.this, ForumMainActivity.class);
+                                    i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                                    startActivity(i);
+                                } else setResult(RESULT_OK);
                                 finish();
                             } else {
                                 Toast.makeText(CreateActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
 
-                                progressDialog.hide();
+                                progressDialog.dismiss();
                             }
                         }
 
@@ -437,7 +470,7 @@ public class CreateActivity extends SlidingActivity {
                             Log.d(TAG, "onError: " + anError);
                             Toast.makeText(CreateActivity.this, "Upload failed!", Toast.LENGTH_SHORT).show();
 
-                            progressDialog.hide();
+                            progressDialog.dismiss();
                         }
                     });
         }
@@ -787,4 +820,43 @@ public class CreateActivity extends SlidingActivity {
         });*/
 
     }
+
+    private void compressImages() {
+        final int count = counter - 1;
+        if (count > 0) {
+            Glide.with(this).load(image1url).asBitmap().toBytes(Bitmap.CompressFormat.JPEG, 90).atMost().override(1200, 1200).into(new SimpleTarget<byte[]>() {
+                @Override
+                public void onResourceReady(byte[] resource, GlideAnimation<? super byte[]> glideAnimation) {
+                    image1encoded = Base64.encodeToString(resource, Base64.DEFAULT);
+                    if (count > 1)
+                        Glide.with(CreateActivity.this).load(image2url).asBitmap().toBytes(Bitmap.CompressFormat.JPEG, 90).atMost().override(1200, 1200).into(new SimpleTarget<byte[]>() {
+                            @Override
+                            public void onResourceReady(byte[] resource, GlideAnimation<? super byte[]> glideAnimation) {
+                                image2encoded = Base64.encodeToString(resource, Base64.DEFAULT);
+                                if (count > 2)
+                                    Glide.with(CreateActivity.this).load(image3url).asBitmap().toBytes(Bitmap.CompressFormat.JPEG, 90).atMost().override(1200, 1200).into(new SimpleTarget<byte[]>() {
+                                        @Override
+                                        public void onResourceReady(byte[] resource, GlideAnimation<? super byte[]> glideAnimation) {
+                                            image3encoded = Base64.encodeToString(resource, Base64.DEFAULT);
+                                            if (count > 3)
+                                                Glide.with(CreateActivity.this).load(image4url).asBitmap().toBytes(Bitmap.CompressFormat.JPEG, 90).atMost().override(1200, 1200).into(new SimpleTarget<byte[]>() {
+                                                    @Override
+                                                    public void onResourceReady(byte[] resource, GlideAnimation<? super byte[]> glideAnimation) {
+                                                        image4encoded = Base64.encodeToString(resource, Base64.DEFAULT);
+                                                        uploadPostShare();
+                                                    }
+                                                });
+                                            else uploadPostShare();
+
+                                        }
+                                    });
+                                else uploadPostShare();
+                            }
+                        });
+                    else uploadPostShare();
+                }
+            });
+        } else uploadPostShare();
+    }
+
 }

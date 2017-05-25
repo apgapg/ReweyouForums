@@ -510,6 +510,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                 public void onClick(View v) {
                     Intent i = new Intent(mContext, FullImage.class);
                     i.putExtra("image", messagelist.get(getAdapterPosition()).getImage1());
+
                     mContext.startActivity(i);
                 }
             });

@@ -178,6 +178,7 @@ public class CreateFragment extends Fragment {
                     @Override
                     public void onError(ANError anError) {
                         Log.e(TAG, "onError: " + anError);
+                        Toast.makeText(mContext, "couldn't connect", Toast.LENGTH_SHORT).show();
                         create.setVisibility(View.VISIBLE);
                         pd.setVisibility(View.INVISIBLE);
                         groupname.setEnabled(true);

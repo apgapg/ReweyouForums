@@ -269,6 +269,9 @@ public class ForumMainActivity extends AppCompatActivity {
             } else if (requestCode == Utils.REQ_CODE_EDIT_PROFILE) {
                 ((UserInfoFragment) pagerAdapter.getRegisteredFragment(3)).refreshprofile();
 
+            } else if (requestCode == Utils.REQ_CODE_CREATE_FROM_FORUMACTVITY) {
+                ((MainThreadsFragment) pagerAdapter.getRegisteredFragment(0)).refreshList();
+
             }
         }
 
@@ -307,6 +310,12 @@ public class ForumMainActivity extends AppCompatActivity {
             }
         }, 3000);
 
+    }
+
+    public void startCreateActivity() {
+        Intent i = new Intent(this, CreateActivity.class);
+        i.putExtra("frommain", true);
+        startActivityForResult(i, Utils.REQ_CODE_CREATE_FROM_FORUMACTVITY);
     }
 
     private class PagerAdapter extends FragmentStatePagerAdapter {
