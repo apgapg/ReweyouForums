@@ -242,6 +242,8 @@ public class GroupActivity extends AppCompatActivity {
                 Log.d(TAG, "onActivityResult: ewnjdnedejwndnjwendjkwe ncjx");
 
                 ((GroupInfoFragment) pagerAdapter.getRegisteredFragment(0)).refreshDetails(data.getStringExtra("description"), data.getStringExtra("rules"), data.getStringExtra("image"));
+                setResult(RESULT_OK);
+
             }
         }
 
@@ -411,8 +413,7 @@ public class GroupActivity extends AppCompatActivity {
                 fragment.setArguments(bundle);
 
                 return fragment;
-            }
-            else {
+            } else {
                 Bundle bundle = new Bundle();
                 bundle.putString("groupid", groupid);
                 bundle.putBoolean("follow", isfollowed);
