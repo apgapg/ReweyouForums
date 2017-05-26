@@ -1,6 +1,8 @@
 package in.reweyou.reweyouforums;
 
-import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 
@@ -21,7 +23,7 @@ import okhttp3.OkHttpClient;
 /**
  * Created by Reweyou on 2/25/2016.
  */
-public class ApplicationClass extends Application {
+public class ApplicationClass extends MultiDexApplication {
     public static final String TAG = ApplicationClass.class
             .getSimpleName();
     private static final Interceptor REWRITE_CACHE_CONTROL_INTERCEPTOR = new Interceptor() {
@@ -49,6 +51,7 @@ public class ApplicationClass extends Application {
         super.onCreate();
         mInstance = this;
 
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
         Utils.setBackgroundColor(getApplicationContext());
         Utils.setpxFromDp(getApplicationContext());
@@ -121,5 +124,13 @@ public class ApplicationClass extends Application {
         // Build and send an Event.
         t.send(new HitBuilders.EventBuilder().setCategory(category).setAction(action).setLabel(label).build());
     }
+
+    @Override
+    protected void attachBaseContext(Context context) {
+        super.attachBaseContext(context);
+        MultiDex.install(this);
+    }
+
+
 
 }

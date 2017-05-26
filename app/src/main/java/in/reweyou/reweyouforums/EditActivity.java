@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -50,8 +51,12 @@ import java.util.List;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 
 public class EditActivity extends AppCompatActivity {
-
     private static final String TAG = EditActivity.class.getName();
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
+
     private String groupid;
     private String groupdescription;
     private String grouprules;

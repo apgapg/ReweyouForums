@@ -3,6 +3,7 @@ package in.reweyou.reweyouforums;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -25,8 +26,12 @@ import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.model.GroupMemberModel;
 
 public class GroupMembers extends AppCompatActivity {
-
     private static final String TAG = GroupMembers.class.getName();
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
+
     private UserSessionManager userSessionManager;
     private GroupMembersAdapter groupMembersAdapter;
     private boolean isadmin;

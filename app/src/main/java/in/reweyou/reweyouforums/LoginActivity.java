@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.util.Base64;
 import android.util.Log;
 import android.util.SparseArray;
@@ -46,6 +47,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private static final int RC_SIGN_IN = 4;
     private static final String TAG = LoginActivity.class.getName();
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
+
     private GoogleApiClient mGoogleApiClient;
     private NonSwipeableViewPager nonSwipeableViewPager;
     private PagerAdapter pagerAdapter;

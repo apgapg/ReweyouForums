@@ -2,6 +2,7 @@ package in.reweyou.reweyouforums;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
@@ -12,6 +13,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 
 public class FullImage extends AppCompatActivity {
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
 
     private String imagepath;
     private ImageViewTouch imageView;
