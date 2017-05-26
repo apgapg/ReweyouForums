@@ -291,6 +291,7 @@ public class GroupInfoFragment extends Fragment {
     }
 
     private void populatedata(final List<GroupMemberModel> groupModels) {
+        ((TextView) mContext.findViewById(R.id.membershead)).setText("MEMBERS (" + groupModels.size() + ")");
         for (int i = 0; i < groupModels.size(); i++) {
             View view = mContext.getLayoutInflater().inflate(R.layout.item_group_info_members, null);
             final ImageView image = (ImageView) view.findViewById(R.id.img);

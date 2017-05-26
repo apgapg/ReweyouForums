@@ -232,14 +232,14 @@
                     android:id="@+id/flowlayout"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp" />
+                    android:layout_marginTop="4dp" />
 
 
                 <TextView
                     android:id="@+id/textrules"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="10dp"
                     android:paddingLeft="8dp"
                     android:text="RULES"
                     android:textColor="@color/main_background_pink"
