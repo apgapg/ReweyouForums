@@ -1,10 +1,13 @@
 package in.reweyou.reweyouforums.adapter;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
@@ -13,15 +16,21 @@ import android.os.Bundle;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -45,7 +54,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.reweyou.reweyouforums.CommentActivity;
+import in.reweyou.reweyouforums.ForumMainActivity;
 import in.reweyou.reweyouforums.FullImage;
+import in.reweyou.reweyouforums.GroupActivity;
 import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.model.ThreadModel;
@@ -120,6 +131,9 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         holder.userlevel.setText(messagelist.get(position).getBadge());
         holder.groupname.setText("#" + messagelist.get(position).getGroupname());
         Log.d(TAG, "onBindViewHolder: " + messagelist.get(position).getBadge());
+        if (messagelist.get(position).getUid().equals(userSessionManager.getUID())) {
+            holder.edit.setVisibility(View.VISIBLE);
+        } else holder.edit.setVisibility(View.INVISIBLE);
 
         holder.likenumber.setText(messagelist.get(position).getUpvotes());
         if (messagelist.get(position).getStatus().equals("true")) {
@@ -325,11 +339,112 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                 });
     }
 
+    private void editdescription(final int adapterPosition) {
+        //Creating a LayoutInflater object for the dialog box
+        final LayoutInflater li = LayoutInflater.from(mContext);
+        //Creating a view to get the dialog box
+        View confirmDialog = li.inflate(R.layout.dialog_edit_description, null);
+        //  number=session.getMobileNumber();
+        //Initizliaing confirm button fo dialog box and edittext of dialog box
+        final Button buttonconfirm = (Button) confirmDialog.findViewById(R.id.buttonConfirm);
+        final EditText edittextdesc = (EditText) confirmDialog.findViewById(R.id.edittext);
+        edittextdesc.setText(messagelist.get(adapterPosition).getDescription());
+        edittextdesc.setSelection(messagelist.get(adapterPosition).getDescription().length());
+        edittextdesc.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() > 0) {
+                    buttonconfirm.setBackground(mContext.getResources().getDrawable(R.drawable.border_pink));
+                    buttonconfirm.setTextColor(mContext.getResources().getColor(R.color.main_background_pink));
+                } else {
+                    buttonconfirm.setBackground(mContext.getResources().getDrawable(R.drawable.border_grey));
+                    buttonconfirm.setTextColor(Color.parseColor("#9e9e9e"));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+
+        alert.setView(confirmDialog);
+
+        final AlertDialog alertDialog = alert.create();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+
+        alertDialog.show();
+
+        //On the click of the confirm button from alert dialog
+        buttonconfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                if (edittextdesc.getText().toString().trim().length() > 0) {
+                    InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(edittextdesc.getWindowToken(), 0);
+                    alertDialog.dismiss();
+                    Toast.makeText(mContext, "updating post!", Toast.LENGTH_SHORT).show();
+
+                    sendeditrequesttoserver(adapterPosition, edittextdesc.getText().toString().trim());
+
+                } else alertDialog.dismiss();
+            }
+        });
+
+    }
+
+    private void sendeditrequesttoserver(int adapterPosition, String desc) {
+        AndroidNetworking.post("https://www.reweyou.in/google/edit_thread.php")
+                .addBodyParameter("uid", userSessionManager.getUID())
+                .addBodyParameter("authtoken", userSessionManager.getAuthToken())
+                .addBodyParameter("threadid", messagelist.get(adapterPosition).getThreadid())
+                .addBodyParameter("description", desc)
+                .setTag("reporst")
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d(TAG, "onResponse: edit: " + response);
+                        if (response.contains("Edited")) {
+                            Toast.makeText(mContext, "post updated!", Toast.LENGTH_SHORT).show();
+                            if (mContext instanceof GroupActivity)
+                                ((GroupActivity) mContext).refreshfeeds(true);
+                            else if (mContext instanceof ForumMainActivity) {
+                                Log.d(TAG, "onResponse: dkwmdkwkkkkk1111");
+                                ((ForumMainActivity) mContext).refreshfeeds();
+                            }
+
+                        } else
+
+                            Toast.makeText(mContext, "something went wrong!", Toast.LENGTH_SHORT).show();
+
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        Log.e(TAG, "onError: " + anError);
+                        Toast.makeText(mContext, "couldn't connect!", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+    }
+
     public class BaseViewHolder extends RecyclerView.ViewHolder {
         private ImageView profileimage, liketemp, comment, like;
         private TextView username, likenum, commentnum, likenumber;
         private TextView date, userlevel, groupname;
-        private TextView description;
+        private TextView description, edit;
         private LinearLayout commentcontainer;
 
         public BaseViewHolder(View inflate) {
@@ -341,6 +456,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             liketemp = (ImageView) inflate.findViewById(R.id.templike);
 
             groupname = (TextView) inflate.findViewById(R.id.groupname);
+            edit = (TextView) inflate.findViewById(R.id.edit);
 
             likenumber = (TextView) inflate.findViewById(R.id.likenumber);
             userlevel = (TextView) inflate.findViewById(R.id.userlevel);
@@ -350,6 +466,13 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             date = (TextView) inflate.findViewById(R.id.date);
             commentnum = (TextView) inflate.findViewById(R.id.commentnumber);
 
+            edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    editdescription(getAdapterPosition());
+                }
+            });
             like.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -620,4 +743,5 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             return null;
         }
     }
+
 }

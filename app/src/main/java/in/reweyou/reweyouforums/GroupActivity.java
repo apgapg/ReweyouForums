@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
@@ -44,8 +45,12 @@ import in.reweyou.reweyouforums.fragment.GroupThreadsFragment;
 import in.reweyou.reweyouforums.utils.Utils;
 
 public class GroupActivity extends AppCompatActivity {
-
     private static final String TAG = GroupActivity.class.getName();
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
+
     private ImageView back;
     private int positionFragment = -1;
     private ImagePicker imagePicker;

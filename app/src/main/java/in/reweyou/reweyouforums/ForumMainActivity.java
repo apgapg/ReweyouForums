@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.SparseArray;
@@ -47,6 +48,11 @@ import in.reweyou.reweyouforums.utils.Utils;
 public class ForumMainActivity extends AppCompatActivity {
 
     private static final String TAG = ForumMainActivity.class.getName();
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
+
     private ImagePicker imagePicker;
     private PagerAdapter pagerAdapter;
     private int positionFragment = -1;
@@ -316,6 +322,12 @@ public class ForumMainActivity extends AppCompatActivity {
         Intent i = new Intent(this, CreateActivity.class);
         i.putExtra("frommain", true);
         startActivityForResult(i, Utils.REQ_CODE_CREATE_FROM_FORUMACTVITY);
+    }
+
+    public void refreshfeeds() {
+        Log.d(TAG, "onResponse: dkwmdkwkkkkk11swsws11");
+
+        ((MainThreadsFragment) pagerAdapter.getRegisteredFragment(0)).refreshList();
     }
 
     private class PagerAdapter extends FragmentStatePagerAdapter {

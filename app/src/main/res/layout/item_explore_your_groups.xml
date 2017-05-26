@@ -51,7 +51,7 @@
             android:id="@+id/members"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_supervisor_account_black_24px"
+            android:drawableLeft="@drawable/ic_supervisor_account_black_24px_layer"
             android:gravity="center"
             android:text="46"
             android:textSize="12dp" />
@@ -61,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:drawableLeft="@drawable/ic_subject_black_24px"
+            android:drawableLeft="@drawable/ic_subject_black_24px_layer"
 
             android:gravity="center"
             android:text="92"

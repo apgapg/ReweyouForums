@@ -45,8 +45,10 @@
             android:layout_below="@+id/a"
             android:layout_marginTop="8dp"
             android:layout_toLeftOf="@+id/image"
+            android:autoLink="web"
             android:ellipsize="end"
             android:paddingBottom="10dp"
+
             android:paddingLeft="14dp"
             android:paddingRight="14dp"
             android:paddingTop="4dp"

@@ -32,3 +32,5 @@
 -dontwarn **
 -keep class com.wang.avi.** { *; }
 -keep class com.wang.avi.indicators.** { *; }
+-printmapping build/outputs/mapping/release/mapping.txt
+-printmapping obfuscation/mapping.txt

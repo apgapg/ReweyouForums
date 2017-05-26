@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -44,6 +45,11 @@ import in.reweyou.reweyouforums.model.ReplyCommentModel;
 public class CommentActivity extends AppCompatActivity {
 
     private static final String TAG = CommentActivity.class.getName();
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
+
     public EditText editText;
     private ImageView send;
     private TextView replyheader;
@@ -55,7 +61,6 @@ public class CommentActivity extends AppCompatActivity {
     private SwipeRefreshLayout swipeRefreshLayout;
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -347,5 +352,10 @@ public class CommentActivity extends AppCompatActivity {
         i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(i);
         finish();
+    }
+
+
+    public void refreshlist() {
+        getData();
     }
 }

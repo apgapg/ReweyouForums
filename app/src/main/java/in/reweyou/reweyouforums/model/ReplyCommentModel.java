@@ -12,6 +12,12 @@ public class ReplyCommentModel {
     private String timestamp;
     private String badge;
     private String points;
+    private String replyid;
+    private String uid;
+
+    public String getUid() {
+        return uid;
+    }
 
     public String getPoints() {
         return points;
@@ -19,6 +25,10 @@ public class ReplyCommentModel {
 
     public String getBadge() {
         return badge;
+    }
+
+    public String getReplyid() {
+        return replyid;
     }
 
     public String getTimestamp() {

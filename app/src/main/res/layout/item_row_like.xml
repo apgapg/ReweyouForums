@@ -34,7 +34,23 @@
         android:text="12"
         android:textColor="#424242" />
 
+    <TextView
+        android:id="@+id/edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
 
+        android:layout_gravity="center"
+        android:background="@drawable/ripple_effect2"
+
+        android:gravity="center"
+        android:paddingBottom="4dp"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        android:paddingTop="4dp"
+        android:text="EDIT"
+        android:textColor="@color/red"
+        android:textSize="12dp"
+        android:textStyle="bold" />
     <LinearLayout
         android:id="@+id/commentcontainer"
         android:layout_width="wrap_content"

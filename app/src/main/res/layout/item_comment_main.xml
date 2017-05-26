@@ -92,10 +92,28 @@
         android:drawableRight="@drawable/ic_reply_layer"
         android:paddingBottom="4dp"
         android:paddingLeft="12dp"
-        android:paddingRight="16dp"
+        android:paddingRight="12dp"
         android:paddingTop="4dp"
         android:text="Reply"
         android:textColor="#424242"
+        android:textSize="12dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/edit"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/time"
+        android:layout_toRightOf="@+id/reply"
+        android:background="@drawable/ripple_effect2"
+        android:paddingBottom="1dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="1dp"
+        android:text="EDIT"
+
+        android:textColor="@color/red"
         android:textSize="12dp"
         android:textStyle="bold" />
 

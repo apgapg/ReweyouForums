@@ -13,6 +13,11 @@ public class CommentModel {
     private String timestamp;
     private String badge;
     private String points;
+    private String uid;
+
+    public String getUid() {
+        return uid;
+    }
 
     public String getBadge() {
         return badge;

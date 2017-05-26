@@ -123,7 +123,7 @@ public class UserInfoFragment extends Fragment {
             }
         });
 
-        setcoloranimation();
+        //  setcoloranimation();
         return layout;
     }
 

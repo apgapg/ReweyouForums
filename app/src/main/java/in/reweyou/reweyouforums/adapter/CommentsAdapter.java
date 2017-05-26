@@ -1,16 +1,31 @@
 package in.reweyou.reweyouforums.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
@@ -19,6 +34,7 @@ import java.util.List;
 
 import in.reweyou.reweyouforums.CommentActivity;
 import in.reweyou.reweyouforums.R;
+import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.model.CommentModel;
 import in.reweyou.reweyouforums.model.ReplyCommentModel;
 
@@ -30,13 +46,15 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private static final int VIEWTYPE_COMMENT = 1;
     private static final int VIEWTYPE_REPLY = 2;
+    private static final String TAG = CommentsAdapter.class.getName();
     private final Context mContext;
+    private final UserSessionManager userSessionManager;
     List<Object> messagelist;
 
     public CommentsAdapter(Context context) {
         this.mContext = context;
         this.messagelist = new ArrayList<>();
-
+        userSessionManager = new UserSessionManager(mContext);
     }
 
     @Override
@@ -56,6 +74,10 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             commentViewHolder.username.setText(commentModel.getUsername());
             commentViewHolder.comment.setText(commentModel.getComment());
             commentViewHolder.time.setText(commentModel.getTimestamp().replace("about ", ""));
+
+            if (((CommentModel) messagelist.get(position)).getUid().equals(userSessionManager.getUID()))
+                commentViewHolder.edit.setVisibility(View.VISIBLE);
+            else commentViewHolder.edit.setVisibility(View.INVISIBLE);
             Glide.with(mContext).load(((CommentModel) messagelist.get(position)).getImageurl()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(commentViewHolder.image);
             commentViewHolder.userlevel.setText(((CommentModel) messagelist.get(position)).getBadge());
 
@@ -97,7 +119,9 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             replyViewHolder.time.setText(replyCommentModel.getTimestamp().replace("about ", ""));
             Glide.with(mContext).load(((ReplyCommentModel) messagelist.get(position)).getImageurl()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(replyViewHolder.image);
             replyViewHolder.userlevel.setText(((ReplyCommentModel) messagelist.get(position)).getBadge());
-
+            if (((ReplyCommentModel) messagelist.get(position)).getUid().equals(userSessionManager.getUID()))
+                replyViewHolder.edit.setVisibility(View.VISIBLE);
+            else replyViewHolder.edit.setVisibility(View.INVISIBLE);
             Drawable background = replyViewHolder.userlevel.getBackground();
 
             if (background instanceof GradientDrawable) {
@@ -159,22 +183,214 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         notifyDataSetChanged();
     }
 
+    private void editcomment(final int adapterPosition) {
+        //Creating a LayoutInflater object for the dialog box
+        final LayoutInflater li = LayoutInflater.from(mContext);
+        //Creating a view to get the dialog box
+        View confirmDialog = li.inflate(R.layout.dialog_edit_comment, null);
+        //  number=session.getMobileNumber();
+        //Initizliaing confirm button fo dialog box and edittext of dialog box
+        final Button buttonconfirm = (Button) confirmDialog.findViewById(R.id.buttonConfirm);
+        final EditText edittextdesc = (EditText) confirmDialog.findViewById(R.id.edittext);
+        edittextdesc.setText(((CommentModel) messagelist.get(adapterPosition)).getComment());
+        edittextdesc.setSelection(((CommentModel) messagelist.get(adapterPosition)).getComment().length());
+        edittextdesc.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() > 0) {
+                    buttonconfirm.setBackground(mContext.getResources().getDrawable(R.drawable.border_pink));
+                    buttonconfirm.setTextColor(mContext.getResources().getColor(R.color.main_background_pink));
+                } else {
+                    buttonconfirm.setBackground(mContext.getResources().getDrawable(R.drawable.border_grey));
+                    buttonconfirm.setTextColor(Color.parseColor("#9e9e9e"));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+
+        alert.setView(confirmDialog);
+
+        final AlertDialog alertDialog = alert.create();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+
+        alertDialog.show();
+
+        //On the click of the confirm button from alert dialog
+        buttonconfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                if (edittextdesc.getText().toString().trim().length() > 0) {
+                    InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(edittextdesc.getWindowToken(), 0);
+                    alertDialog.dismiss();
+                    Toast.makeText(mContext, "updating comment!", Toast.LENGTH_SHORT).show();
+                    sendeditcommenttoserver(adapterPosition, edittextdesc.getText().toString().trim());
+
+                } else alertDialog.dismiss();
+            }
+        });
+
+    }
+
+    private void editreply(final int adapterPosition) {
+        //Creating a LayoutInflater object for the dialog box
+        final LayoutInflater li = LayoutInflater.from(mContext);
+        //Creating a view to get the dialog box
+        View confirmDialog = li.inflate(R.layout.dialog_edit_reply, null);
+        //  number=session.getMobileNumber();
+        //Initizliaing confirm button fo dialog box and edittext of dialog box
+        final Button buttonconfirm = (Button) confirmDialog.findViewById(R.id.buttonConfirm);
+        final EditText edittextdesc = (EditText) confirmDialog.findViewById(R.id.edittext);
+        edittextdesc.setText(((ReplyCommentModel) messagelist.get(adapterPosition)).getReply());
+        edittextdesc.setSelection(((ReplyCommentModel) messagelist.get(adapterPosition)).getReply().length());
+        edittextdesc.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() > 0) {
+                    buttonconfirm.setBackground(mContext.getResources().getDrawable(R.drawable.border_pink));
+                    buttonconfirm.setTextColor(mContext.getResources().getColor(R.color.main_background_pink));
+                } else {
+                    buttonconfirm.setBackground(mContext.getResources().getDrawable(R.drawable.border_grey));
+                    buttonconfirm.setTextColor(Color.parseColor("#9e9e9e"));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+
+        alert.setView(confirmDialog);
+
+        final AlertDialog alertDialog = alert.create();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+
+        alertDialog.show();
+
+        //On the click of the confirm button from alert dialog
+        buttonconfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                if (edittextdesc.getText().toString().trim().length() > 0) {
+                    InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(edittextdesc.getWindowToken(), 0);
+                    alertDialog.dismiss();
+                    Toast.makeText(mContext, "updating reply!", Toast.LENGTH_SHORT).show();
+                    sendeditreplytoserver(adapterPosition, edittextdesc.getText().toString().trim());
+
+                } else alertDialog.dismiss();
+            }
+        });
+
+    }
+
+    private void sendeditcommenttoserver(int adapterPosition, String desc) {
+        AndroidNetworking.post("https://www.reweyou.in/google/edit_comment.php")
+                .addBodyParameter("uid", userSessionManager.getUID())
+                .addBodyParameter("authtoken", userSessionManager.getAuthToken())
+                .addBodyParameter("comment", desc)
+                .addBodyParameter("commentid", ((CommentModel) messagelist.get(adapterPosition)).getCommentid())
+                .setTag("reporst")
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d(TAG, "onResponse: edit: " + response);
+                        if (response.contains("Edited")) {
+                            Toast.makeText(mContext, "comment updated!", Toast.LENGTH_SHORT).show();
+                            ((CommentActivity) mContext).refreshlist();
+                        } else
+                            Toast.makeText(mContext, "something went wrong!", Toast.LENGTH_SHORT).show();
+
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        Log.e(TAG, "onError: " + anError);
+                        Toast.makeText(mContext, "couldn't connect!", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+    }
+
+    private void sendeditreplytoserver(int adapterPosition, String desc) {
+        AndroidNetworking.post("https://www.reweyou.in/google/edit_reply.php")
+                .addBodyParameter("uid", userSessionManager.getUID())
+                .addBodyParameter("authtoken", userSessionManager.getAuthToken())
+                .addBodyParameter("reply", desc)
+                .addBodyParameter("replyid", ((ReplyCommentModel) messagelist.get(adapterPosition)).getReplyid())
+                .setTag("reporst")
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d(TAG, "onResponse: edit: " + response);
+                        if (response.contains("Edited")) {
+                            Toast.makeText(mContext, "reply updated!", Toast.LENGTH_SHORT).show();
+                            ((CommentActivity) mContext).refreshlist();
+                        } else
+                            Toast.makeText(mContext, "something went wrong!", Toast.LENGTH_SHORT).show();
+
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        Log.e(TAG, "onError: " + anError);
+                        Toast.makeText(mContext, "couldn't connect!", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+    }
+
     private class CommentViewHolder extends RecyclerView.ViewHolder {
         private TextView reply;
         private ImageView image;
-        private TextView username, userlevel, comment, time;
+        private TextView username, userlevel, comment, time, edit;
 
 
         public CommentViewHolder(View inflate) {
             super(inflate);
 
             image = (ImageView) inflate.findViewById(R.id.image);
+            edit = (TextView) inflate.findViewById(R.id.edit);
             username = (TextView) inflate.findViewById(R.id.username);
             userlevel = (TextView) inflate.findViewById(R.id.userlevel);
             comment = (TextView) inflate.findViewById(R.id.comment);
             time = (TextView) inflate.findViewById(R.id.time);
             reply = (TextView) inflate.findViewById(R.id.reply);
-
+            edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    editcomment(getAdapterPosition());
+                }
+            });
             reply.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -187,6 +403,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     private class ReplyViewHolder extends RecyclerView.ViewHolder {
+        private TextView edit;
         private TextView userlevel;
         private ImageView image;
         private TextView username, comment, reply, time;
@@ -197,6 +414,14 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             userlevel = (TextView) inflate.findViewById(R.id.userlevel);
 
             image = (ImageView) inflate.findViewById(R.id.image);
+            edit = (TextView) inflate.findViewById(R.id.edit);
+
+            edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    editreply(getAdapterPosition());
+                }
+            });
             username = (TextView) inflate.findViewById(R.id.username);
             comment = (TextView) inflate.findViewById(R.id.comment);
             time = (TextView) inflate.findViewById(R.id.time);
@@ -204,4 +429,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         }
     }
+
+
 }
