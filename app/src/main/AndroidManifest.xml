@@ -26,7 +26,7 @@
         android:value="barcode" />
 
     <application
-        android:name="android.support.multidex.MultiDexApplication"
+        android:name=".ApplicationClass"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="ReweyouForums"

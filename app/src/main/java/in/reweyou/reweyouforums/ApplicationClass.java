@@ -50,7 +50,7 @@ public class ApplicationClass extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         mInstance = this;
-
+        Log.d(TAG, "onCreate: calledapp");
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
         Utils.setBackgroundColor(getApplicationContext());
@@ -129,6 +129,7 @@ public class ApplicationClass extends MultiDexApplication {
     protected void attachBaseContext(Context context) {
         super.attachBaseContext(context);
         MultiDex.install(this);
+
     }
 
 
