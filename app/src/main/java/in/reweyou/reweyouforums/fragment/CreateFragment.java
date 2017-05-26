@@ -148,13 +148,15 @@ public class CreateFragment extends Fragment {
                     @Override
                     public void onResponse(String response) {
                         Log.d(TAG, "onResponse: group upload: " + response);
+                        if (response.equals("group created")) {
+                            imgtext.setVisibility(View.VISIBLE);
+                            img.setImageResource(0);
 
-                        imgtext.setVisibility(View.VISIBLE);
-                        img.setImageResource(0);
+                            description.setText("");
+                            groupname.setText("");
 
-                        description.setText("");
-                        groupname.setText("");
-
+                        } else
+                            Toast.makeText(mContext, "something went wrong!", Toast.LENGTH_SHORT).show();
 
                         create.setVisibility(View.VISIBLE);
                         pd.setVisibility(View.INVISIBLE);

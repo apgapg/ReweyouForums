@@ -1,11 +1,15 @@
 package in.reweyou.reweyouforums.fragment;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -61,6 +65,7 @@ public class UserInfoFragment extends Fragment {
     private TextView userstatus;
     private SwipeRefreshLayout swipeRefreshLayout;
     private GroupBadegsAdapter groupBadegsAdapter;
+    private ImageView imageView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,7 +91,7 @@ public class UserInfoFragment extends Fragment {
         });
         username = (TextView) layout.findViewById(R.id.username);
         userstatus = (TextView) layout.findViewById(R.id.userStatus);
-        ImageView imageView = (ImageView) layout.findViewById(R.id.dashimg);
+        imageView = (ImageView) layout.findViewById(R.id.dashimg);
 
         RotateAnimation rotate = new RotateAnimation(0, 360,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
@@ -110,13 +115,40 @@ public class UserInfoFragment extends Fragment {
 
         getMembersData();
 
+
         layout.findViewById(R.id.more).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showbadgedialog();
             }
         });
+
+        setcoloranimation();
         return layout;
+    }
+
+    private void setcoloranimation() {
+        ValueAnimator anim = new ValueAnimator();
+        anim.setIntValues(R.color.main_background_pink, R.color.bright_blue);
+        anim.setEvaluator(new ArgbEvaluator());
+        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                Drawable background = imageView.getBackground();
+                if (background instanceof GradientDrawable) {
+                    // cast to 'ShapeDrawable'
+                    GradientDrawable shapeDrawable = (GradientDrawable) background;
+                    shapeDrawable.setColor((Integer) valueAnimator.getAnimatedValue());
+
+                }
+            }
+        });
+
+        anim.setDuration(4000);
+        anim.setRepeatMode(ValueAnimator.REVERSE);
+        anim.setRepeatCount(ValueAnimator.INFINITE);
+        anim.start();
+
     }
 
     private void getMembersData() {

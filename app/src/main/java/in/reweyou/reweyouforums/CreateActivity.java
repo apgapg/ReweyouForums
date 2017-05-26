@@ -219,10 +219,14 @@ public class CreateActivity extends SlidingActivity {
         try {
             if (getIntent().getBooleanExtra("frommain", false)) {
                 flowLayout = (FlowLayout) findViewById(R.id.flowlayout);
-                flowLayout.removeAllViews();
                 flowLayout.setVisibility(View.VISIBLE);
                 findViewById(R.id.selectgroup).setVisibility(View.VISIBLE);
-                getData();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        getData();
+                    }
+                }, 800);
                 create.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
