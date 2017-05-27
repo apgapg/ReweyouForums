@@ -61,6 +61,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             if (payload.has("threadid")) {
                 i = new Intent(this, CommentActivity.class);
                 i.putExtra("threadid", payload.getString("threadid"));
+                i.putExtra("from", "n");
             } else i = new Intent(this, ForumMainActivity.class);
 
 

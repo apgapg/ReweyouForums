@@ -489,16 +489,20 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             commentcontainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(mContext, CommentActivity.class);
-                    i.putExtra("threadid", messagelist.get(getAdapterPosition()).getThreadid());
-                    if (mContext instanceof ForumMainActivity)
-                        i.putExtra("from", "f");
-                    else if (mContext instanceof GroupActivity)
-                        i.putExtra("from", "g");
-                    mContext.startActivity(i);
-                    Bundle params = new Bundle();
-                    params.putString("groupname", messagelist.get(getAdapterPosition()).getGroupname());
-                    mFirebaseAnalytics.logEvent("comment_btn_click", params);
+                    if (mContext instanceof CommentActivity) {
+                        ((CommentActivity) mContext).showCommentPage();
+                    } else {
+                        Intent i = new Intent(mContext, CommentActivity.class);
+                        i.putExtra("threadid", messagelist.get(getAdapterPosition()).getThreadid());
+                        if (mContext instanceof ForumMainActivity)
+                            i.putExtra("from", "f");
+                        else if (mContext instanceof GroupActivity)
+                            i.putExtra("from", "g");
+                        mContext.startActivity(i);
+                        Bundle params = new Bundle();
+                        params.putString("groupname", messagelist.get(getAdapterPosition()).getGroupname());
+                        mFirebaseAnalytics.logEvent("comment_btn_click", params);
+                    }
                 }
             });
 

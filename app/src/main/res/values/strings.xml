@@ -19,6 +19,15 @@
         <item>@string/tab_5</item>
         <item>@string/tab_8</item>
     </string-array>
+    <string-array name="tabssinglecomment">
+        <item>@string/tab_10</item>
+
+    </string-array>
+    <string-array name="tabsdoublecomment">
+        <item>@string/tab_11</item>
+        <item>@string/tab_10</item>
+
+    </string-array>
     <string-array name="group_tabs">
         <item>@string/tab1</item>
         <item>@string/tab2</item>
@@ -100,5 +109,7 @@
     <string name="title_activity_edit">EditActivity</string>
     <string name="title_activity_edit_profile">EditProfileActivity</string>
     <string name="title_activity_group_members">GroupMembers</string>
+    <string name="tab_10">COMMENTS</string>
+    <string name="tab_11">POST</string>
 
 </resources>

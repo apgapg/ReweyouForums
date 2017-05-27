@@ -611,8 +611,9 @@ public class CreateActivity extends SlidingActivity {
                 .getAsString(new StringRequestListener() {
                     @Override
                     public void onResponse(String response) {
+                        Log.d(TAG, "onResponse: " + response);
+
                         try {
-                            Log.d(TAG, "onResponse: " + response);
 
                             linkpd.setVisibility(View.INVISIBLE);
                             JSONObject jsonObject = new JSONObject(response);
@@ -638,6 +639,7 @@ public class CreateActivity extends SlidingActivity {
                                 linkimage = imagelink.replace("\n", "");
                                 Glide.with(CreateActivity.this).load(linkimage).into(imageviewlink);
                             }
+                            edittextdescription.setHint("Describe this link...");
 
                             CreateActivity.this.link = link;
 
@@ -655,6 +657,7 @@ public class CreateActivity extends SlidingActivity {
 
                     @Override
                     public void onError(ANError anError) {
+                        Log.d(TAG, "onError: " + anError);
                         cd.setVisibility(View.GONE);
                         rl.setVisibility(View.VISIBLE);
 
