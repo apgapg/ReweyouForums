@@ -88,7 +88,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_profile_login, container, false);
 
-        username = (EditText) layout.findViewById(R.id.username);
+        username = (EditText) layout.findViewById(R.id.message);
         image = (ImageView) layout.findViewById(R.id.image);
         continuebutton = (TextView) layout.findViewById(R.id.continu);
         progressBar = (ProgressBar) layout.findViewById(R.id.pd);

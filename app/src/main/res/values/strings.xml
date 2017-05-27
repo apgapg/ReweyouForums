@@ -111,5 +111,6 @@
     <string name="title_activity_group_members">GroupMembers</string>
     <string name="tab_10">COMMENTS</string>
     <string name="tab_11">POST</string>
+    <string name="title_activity_noti">NotiActivity</string>
 
 </resources>

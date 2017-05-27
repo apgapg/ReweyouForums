@@ -89,7 +89,7 @@ public class UserInfoFragment extends Fragment {
                 mContext.startActivityForResult(i, Utils.REQ_CODE_EDIT_PROFILE);
             }
         });
-        username = (TextView) layout.findViewById(R.id.username);
+        username = (TextView) layout.findViewById(R.id.message);
         userstatus = (TextView) layout.findViewById(R.id.userStatus);
         imageView = (ImageView) layout.findViewById(R.id.dashimg);
 

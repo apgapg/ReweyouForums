@@ -84,7 +84,7 @@ public class YourGroupsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             members = (TextView) inflate.findViewById(R.id.members);
             threads = (TextView) inflate.findViewById(R.id.threads);
             container = (LinearLayout) inflate.findViewById(R.id.container);
-
+            groupName.setSelected(true);
             container.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

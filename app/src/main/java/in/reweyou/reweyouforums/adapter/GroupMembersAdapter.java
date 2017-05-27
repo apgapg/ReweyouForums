@@ -185,7 +185,7 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             backgroundImage = (ImageView) inflate.findViewById(R.id.image);
             block = (ImageView) inflate.findViewById(R.id.block);
 
-            username = (TextView) inflate.findViewById(R.id.username);
+            username = (TextView) inflate.findViewById(R.id.message);
 
             block.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -19,6 +19,7 @@
     <color name="feedbackground">#f4f4f4</color>
     <color name="grey">#dbdbdb</color>
     <color name="red">#f44336</color>
+    <color name="red_alpha">#24f44336</color>
 
     <color name="divider">#BDBDBD</color>
     <color name="greylight">#25000000</color>

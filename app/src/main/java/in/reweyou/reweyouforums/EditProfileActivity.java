@@ -88,7 +88,7 @@ public class EditProfileActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        final EditText username = (EditText) findViewById(R.id.username);
+        final EditText username = (EditText) findViewById(R.id.message);
         final EditText shortinfo = (EditText) findViewById(R.id.shortinfo);
         image = (ImageView) findViewById(R.id.image);
         final ProgressBar pd = (ProgressBar) findViewById(R.id.progressBar);

@@ -10,7 +10,7 @@
         android:id="@+id/backgroundimageview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:alpha="0.12"
+        android:alpha="0.14"
         android:scaleType="fitXY"
         app:srcCompat="@drawable/ic_asb_grey" />
     <android.support.design.widget.AppBarLayout

@@ -14,6 +14,24 @@ public class CommentModel {
     private String badge;
     private String points;
     private String uid;
+    private String upvotes;
+    private String status = "false";
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getUpvotes() {
+        return upvotes;
+    }
+
+    public void setUpvotes(String upvotes) {
+        this.upvotes = upvotes;
+    }
 
     public String getUid() {
         return uid;

@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,6 +38,7 @@ import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.model.CommentModel;
 import in.reweyou.reweyouforums.model.ReplyCommentModel;
+import in.reweyou.reweyouforums.utils.Utils;
 
 /**
  * Created by master on 1/5/17.
@@ -80,7 +82,14 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             else commentViewHolder.edit.setVisibility(View.INVISIBLE);
             Glide.with(mContext).load(((CommentModel) messagelist.get(position)).getImageurl()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(commentViewHolder.image);
             commentViewHolder.userlevel.setText(((CommentModel) messagelist.get(position)).getBadge());
+            commentViewHolder.likenumber.setText(((CommentModel) messagelist.get(position)).getUpvotes());
+            if (((CommentModel) messagelist.get(position)).getStatus().equals("true")) {
+                commentViewHolder.like.setImageResource(R.drawable.ic_heart_like);
+            } else if (((CommentModel) messagelist.get(position)).getStatus().equals("false")) {
 
+                commentViewHolder.like.setImageResource(R.drawable.ic_heart_like_grey);
+
+            }
             Drawable background = commentViewHolder.userlevel.getBackground();
             if (background instanceof GradientDrawable) {
                 // cast to 'ShapeDrawable'
@@ -123,7 +132,14 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 replyViewHolder.edit.setVisibility(View.VISIBLE);
             else replyViewHolder.edit.setVisibility(View.INVISIBLE);
             Drawable background = replyViewHolder.userlevel.getBackground();
+            replyViewHolder.likenumber.setText(((ReplyCommentModel) messagelist.get(position)).getUpvotes());
+            if (((ReplyCommentModel) messagelist.get(position)).getStatus().equals("true")) {
+                replyViewHolder.like.setImageResource(R.drawable.ic_heart_like);
+            } else if (((ReplyCommentModel) messagelist.get(position)).getStatus().equals("false")) {
 
+                replyViewHolder.like.setImageResource(R.drawable.ic_heart_like_grey);
+
+            }
             if (background instanceof GradientDrawable) {
                 // cast to 'ShapeDrawable'
                 GradientDrawable shapeDrawable = (GradientDrawable) background;
@@ -157,6 +173,54 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
 
     }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder1, int position, List<Object> payloads) {
+
+        if (payloads.contains("like")) {
+            if (getItemViewType(position) == VIEWTYPE_COMMENT) {
+                CommentViewHolder holder = (CommentViewHolder) holder1;
+                ((CommentModel) messagelist.get(position)).setStatus("true");
+                holder.like.setImageResource(R.drawable.ic_heart_like);
+                holder.liketemp.animate().rotation(-80).setDuration(650).alpha(0.0f).translationYBy(-Utils.convertpxFromDp(16)).translationXBy(-Utils.convertpxFromDp(70)).setInterpolator(new DecelerateInterpolator()).start();
+                holder.likenumber.setText(String.valueOf(Integer.parseInt(((CommentModel) messagelist.get(position)).getUpvotes()) + 1));
+                ((CommentModel) messagelist.get(position)).setUpvotes(String.valueOf(Integer.parseInt(((CommentModel) messagelist.get(position)).getUpvotes()) + 1));
+
+            } else {
+                ReplyViewHolder holder = (ReplyViewHolder) holder1;
+                holder.like.setImageResource(R.drawable.ic_heart_like);
+                holder.liketemp.animate().rotation(-80).setDuration(650).alpha(0.0f).translationYBy(-Utils.convertpxFromDp(16)).translationXBy(-Utils.convertpxFromDp(70)).setInterpolator(new DecelerateInterpolator()).start();
+                holder.likenumber.setText(String.valueOf(Integer.parseInt(((ReplyCommentModel) messagelist.get(position)).getUpvotes()) + 1));
+                ((ReplyCommentModel) messagelist.get(position)).setUpvotes(String.valueOf(Integer.parseInt(((ReplyCommentModel) messagelist.get(position)).getUpvotes()) + 1));
+
+            }
+        } else if (payloads.contains("unlike")) {
+            if (getItemViewType(position) == VIEWTYPE_COMMENT) {
+                CommentViewHolder holder = (CommentViewHolder) holder1;
+
+                ((CommentModel) messagelist.get(position)).setStatus("false");
+                holder.like.setImageResource(R.drawable.ic_heart_like_grey);
+                if (Integer.parseInt(((CommentModel) messagelist.get(position)).getUpvotes()) != 0) {
+                    holder.likenumber.setText(String.valueOf(Integer.parseInt(((CommentModel) messagelist.get(position)).getUpvotes()) - 1));
+                    ((CommentModel) messagelist.get(position)).setUpvotes(String.valueOf(Integer.parseInt(((CommentModel) messagelist.get(position)).getUpvotes()) - 1));
+
+                }
+            } else {
+                ReplyViewHolder holder = (ReplyViewHolder) holder1;
+
+                ((ReplyCommentModel) messagelist.get(position)).setStatus("false");
+                holder.like.setImageResource(R.drawable.ic_heart_like_grey);
+                if (Integer.parseInt(((ReplyCommentModel) messagelist.get(position)).getUpvotes()) != 0) {
+                    holder.likenumber.setText(String.valueOf(Integer.parseInt(((ReplyCommentModel) messagelist.get(position)).getUpvotes()) - 1));
+                    ((ReplyCommentModel) messagelist.get(position)).setUpvotes(String.valueOf(Integer.parseInt(((ReplyCommentModel) messagelist.get(position)).getUpvotes()) - 1));
+
+                }
+
+            }
+        } else
+            super.onBindViewHolder(holder1, position, payloads);
+    }
+
 
     private void settextbackground() {
 
@@ -369,10 +433,60 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 });
     }
 
+    private void sendrequestforlikecomment(final int adapterPosition) {
+        AndroidNetworking.post("https://www.reweyou.in/google/like.php")
+                .addBodyParameter("uid", userSessionManager.getUID())
+                .addBodyParameter("imageurl", userSessionManager.getProfilePicture())
+                .addBodyParameter("username", userSessionManager.getUsername())
+                .addBodyParameter("commentid", ((CommentModel) messagelist.get(adapterPosition)).getCommentid())
+                .addBodyParameter("authtoken", userSessionManager.getAuthToken())
+                .setTag("reportlike")
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d(TAG, "onResponse: " + response);
+
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        Log.d(TAG, "onError: " + anError);
+                        notifyItemChanged(adapterPosition, "unlike");
+                    }
+                });
+    }
+
+    private void sendrequestforlikereply(final int adapterPosition) {
+        AndroidNetworking.post("https://www.reweyou.in/google/like.php")
+                .addBodyParameter("uid", userSessionManager.getUID())
+                .addBodyParameter("imageurl", userSessionManager.getProfilePicture())
+                .addBodyParameter("username", userSessionManager.getUsername())
+                .addBodyParameter("replyid", ((ReplyCommentModel) messagelist.get(adapterPosition)).getReplyid())
+                .addBodyParameter("authtoken", userSessionManager.getAuthToken())
+                .setTag("reportlike")
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d(TAG, "onResponse: " + response);
+
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        Log.d(TAG, "onError: " + anError);
+                        notifyItemChanged(adapterPosition, "unlike");
+                    }
+                });
+    }
+
     private class CommentViewHolder extends RecyclerView.ViewHolder {
         private TextView reply;
-        private ImageView image;
-        private TextView username, userlevel, comment, time, edit;
+        private ImageView image, like, liketemp;
+        private TextView username, userlevel, comment, time, edit, likenumber;
 
 
         public CommentViewHolder(View inflate) {
@@ -380,8 +494,11 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             image = (ImageView) inflate.findViewById(R.id.image);
             edit = (TextView) inflate.findViewById(R.id.edit);
-            username = (TextView) inflate.findViewById(R.id.username);
+            username = (TextView) inflate.findViewById(R.id.message);
             userlevel = (TextView) inflate.findViewById(R.id.userlevel);
+            likenumber = (TextView) inflate.findViewById(R.id.likenumber);
+            like = (ImageView) inflate.findViewById(R.id.like);
+            liketemp = (ImageView) inflate.findViewById(R.id.templike);
             comment = (TextView) inflate.findViewById(R.id.comment);
             time = (TextView) inflate.findViewById(R.id.time);
             reply = (TextView) inflate.findViewById(R.id.reply);
@@ -398,11 +515,25 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
             });
 
+            like.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (((CommentModel) messagelist.get(getAdapterPosition())).getStatus().equals("false"))
+                        notifyItemChanged(getAdapterPosition(), "like");
+                    else notifyItemChanged(getAdapterPosition(), "unlike");
+                    sendrequestforlikecomment(getAdapterPosition());
+
+
+                }
+            });
 
         }
     }
 
     private class ReplyViewHolder extends RecyclerView.ViewHolder {
+        private TextView likenumber;
+        private ImageView liketemp;
+        private ImageView like;
         private TextView edit;
         private TextView userlevel;
         private ImageView image;
@@ -412,21 +543,32 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public ReplyViewHolder(View inflate) {
             super(inflate);
             userlevel = (TextView) inflate.findViewById(R.id.userlevel);
+            likenumber = (TextView) inflate.findViewById(R.id.likenumber);
 
             image = (ImageView) inflate.findViewById(R.id.image);
             edit = (TextView) inflate.findViewById(R.id.edit);
-
+            like = (ImageView) inflate.findViewById(R.id.like);
+            liketemp = (ImageView) inflate.findViewById(R.id.templike);
             edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     editreply(getAdapterPosition());
                 }
             });
-            username = (TextView) inflate.findViewById(R.id.username);
+            username = (TextView) inflate.findViewById(R.id.message);
             comment = (TextView) inflate.findViewById(R.id.comment);
             time = (TextView) inflate.findViewById(R.id.time);
 
+            like.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (((ReplyCommentModel) messagelist.get(getAdapterPosition())).getStatus().equals("false"))
+                        notifyItemChanged(getAdapterPosition(), "like");
+                    else notifyItemChanged(getAdapterPosition(), "unlike");
+                    sendrequestforlikereply(getAdapterPosition());
 
+                }
+            });
         }
     }
 

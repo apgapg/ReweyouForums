@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- <uses-permission android:name="android.permission.READ_PHONE_STATE" /> -->
 
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -32,7 +31,6 @@
         android:label="ReweyouForums"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-
 
         <!-- Firebase Notifications -->
         <service android:name=".fcm.MyFirebaseMessagingService">
@@ -79,7 +77,6 @@
             android:name=".ForumMainActivity"
             android:label="@string/title_activity_forum_main"
             android:screenOrientation="portrait"
-
             android:theme="@style/AppTheme2.NoActionBar" />
         <activity
             android:name=".CommentActivity"
@@ -91,13 +88,11 @@
             android:name=".GroupActivity"
             android:label="@string/title_activity_group"
             android:screenOrientation="portrait"
-
             android:theme="@style/AppTheme2.NoActionBar" />
         <activity
             android:name=".LoginActivity"
             android:label="ReweyouForums"
             android:screenOrientation="portrait"
-
             android:theme="@style/AppTheme2.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -114,14 +109,15 @@
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
         <activity
             android:name=".EditActivity"
             android:label="@string/title_activity_edit"
-
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
@@ -129,14 +125,16 @@
             android:name=".EditProfileActivity"
             android:label="@string/title_activity_edit_profile"
             android:screenOrientation="portrait"
-
             android:theme="@style/AppTheme2.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".GroupMembers"
             android:label="@string/title_activity_group_members"
-
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme2.NoActionBar" />
+        <activity
+            android:name=".NotiActivity"
+            android:label="@string/title_activity_noti"
             android:theme="@style/AppTheme2.NoActionBar"></activity>
     </application>
 

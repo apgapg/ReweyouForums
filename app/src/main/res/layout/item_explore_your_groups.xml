@@ -34,6 +34,8 @@
         android:layout_marginTop="4dp"
         android:ellipsize="marquee"
         android:gravity="center"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
         android:singleLine="true"
         android:text="GroupName"
         android:textColor="#424242"
