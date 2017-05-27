@@ -18,7 +18,7 @@ import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.SparseArray;
-import android.view.Menu;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
@@ -59,6 +59,9 @@ public class ForumMainActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private UserSessionManager userSessionManager;
     private boolean doubleBackToExitPressedOnce = false;
+    private ImageView noti;
+    private TextView notinum;
+    private TextView notiback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +69,21 @@ public class ForumMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_forum_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        userSessionManager = new UserSessionManager(this);
+
+        notiback = (TextView) toolbar.findViewById(R.id.notiback);
+        notinum = (TextView) toolbar.findViewById(R.id.notinum);
+        noti = (ImageView) toolbar.findViewById(R.id.noti);
+
+        noti.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(ForumMainActivity.this, NotiActivity.class), Utils.REQ_CODE_NOTI);
+            }
+        });
+        getnoticount();
+
+
         ImageView back = (ImageView) findViewById(R.id.backgroundimageview);
         final TextView tabnametoolbar = (TextView) toolbar.findViewById(R.id.tabnametoolbar);
         Typeface type = Typeface.createFromAsset(getAssets(), "cr.ttf");
@@ -116,7 +134,6 @@ public class ForumMainActivity extends AppCompatActivity {
         TabLayout.Tab tabCall4 = tabLayout.getTabAt(3);
         tabCall4.setIcon(R.drawable.tab4_selector);
 
-        userSessionManager = new UserSessionManager(this);
 
         switch (Utils.backgroundCode) {
             case 0:
@@ -142,6 +159,34 @@ public class ForumMainActivity extends AppCompatActivity {
             }
         }, 7000);
 
+    }
+
+    private void getnoticount() {
+
+        AndroidNetworking.post("https://www.reweyou.in/google/notification_count.php")
+                .addBodyParameter("uid", userSessionManager.getUID())
+                .addBodyParameter("authtoken", userSessionManager.getAuthToken())
+                .setTag("report")
+                .setPriority(Priority.LOW)
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d(TAG, "onResponse: noticount: " + response);
+                        if (!response.equals("0")) {
+                            notinum.setVisibility(View.VISIBLE);
+                            notiback.setVisibility(View.VISIBLE);
+
+                            notinum.setText(response);
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        Log.e(TAG, "onError: " + anError);
+
+                    }
+                });
     }
 
     private void checkAppVersion() {
@@ -284,11 +329,6 @@ public class ForumMainActivity extends AppCompatActivity {
 
     }
 
-
-    public boolean onCreateOptionsMenu(final Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_forum, menu);
-        return true;
-    }
 
     public void showExploreGroupFragment() {
 
