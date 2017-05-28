@@ -94,7 +94,11 @@
             android:label="ReweyouForums"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".CreateActivity"
@@ -135,12 +139,8 @@
         <activity
             android:name=".YoutubeActivity"
             android:label="@string/title_activity_youtube"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:theme="@style/AppTheme.NoActionBar.Preview">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".YoutubePlayerActivity">
 

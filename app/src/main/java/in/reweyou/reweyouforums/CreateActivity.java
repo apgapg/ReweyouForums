@@ -603,7 +603,7 @@ public class CreateActivity extends SlidingActivity {
         });
 
 
-        AndroidNetworking.post("https://damp-beyond-15607.herokuapp.com/previewlink.php")
+        AndroidNetworking.post("https://damp-beyond-15607.herokuapp.com/previewlinknew.php")
                 .addBodyParameter("url", s)
                 .setTag("agr")
                 .setPriority(Priority.HIGH)
@@ -623,6 +623,8 @@ public class CreateActivity extends SlidingActivity {
                             Log.d(TAG, "onResponse: " + response + "   " + link);
                             String title = jsonObject.getString("title");
                             String description = jsonObject.getString("description");
+                            String parser = jsonObject.getString("parser");
+                            String videoid = jsonObject.getString("videoid");
 
 
                             if (title != null) {
@@ -640,10 +642,15 @@ public class CreateActivity extends SlidingActivity {
                                 Glide.with(CreateActivity.this).load(linkimage).into(imageviewlink);
                             }
                             edittextdescription.setHint("Describe this link...");
+                            if (parser.contains("youtube"))
+                                CreateActivity.this.link = videoid;
+                            else
+                                CreateActivity.this.link = link;
 
-                            CreateActivity.this.link = link;
-
-                            type = "link";
+                            if (parser.contains("youtube"))
+                                type = "youtubelink";
+                            else
+                                type = "link";
                         } catch (Exception e) {
                             rl.setVisibility(View.VISIBLE);
                             edittextdescription.setHint("Describe this link...");

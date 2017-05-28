@@ -3,6 +3,7 @@ package in.reweyou.reweyouforums;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -34,6 +35,7 @@ public class YoutubeActivity extends AppCompatActivity implements YouTubePlayer.
 
         this.videoUrl = getIntent().getStringExtra("url");
 
+        Log.d("kjk", "onCreate: " + videoUrl);
         YouTubePlayerSupportFragment frag =
                 (YouTubePlayerSupportFragment) getSupportFragmentManager().findFragmentById(R.id.youtube_fragment);
         frag.initialize(Utils.YOUTUBE_API_KEY, this);

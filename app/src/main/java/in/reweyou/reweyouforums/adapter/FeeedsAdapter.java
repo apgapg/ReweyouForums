@@ -58,6 +58,7 @@ import in.reweyou.reweyouforums.ForumMainActivity;
 import in.reweyou.reweyouforums.FullImage;
 import in.reweyou.reweyouforums.GroupActivity;
 import in.reweyou.reweyouforums.R;
+import in.reweyou.reweyouforums.YoutubeActivity;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.model.ThreadModel;
 import in.reweyou.reweyouforums.utils.Utils;
@@ -114,6 +115,9 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                 return new TextViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_feeds_text, parent, false));
             case VIEW_TYPE_LINK:
                 return new LinkViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_feeds_link, parent, false));
+            case VIEW_TYPE_YOUTUBE_LINK:
+                return new YoutubeViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_feeds_youtube_link, parent, false));
+
             default:
                 return new TextViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_feeds_text, parent, false));
         }
@@ -201,6 +205,10 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                 LinkViewHolder linkViewHolder = (LinkViewHolder) holder;
                 onbindlink(linkViewHolder, position);
                 return;
+            case VIEW_TYPE_YOUTUBE_LINK:
+                YoutubeViewHolder youtubeViewHolder = (YoutubeViewHolder) holder;
+                onbindyoutubelink(youtubeViewHolder, position);
+                return;
 
         }
        /* if (messagelist.get(position).getImage().isEmpty())
@@ -223,6 +231,15 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             Glide.with(mContext).load(messagelist.get(position).getLinkimage()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(linkViewHolder.linkimage);
 
         }
+    }
+
+    private void onbindyoutubelink(YoutubeViewHolder youtubeViewHolder, int position) {
+
+        youtubeViewHolder.linkheadline.setText(messagelist.get(position).getLinkhead());
+        youtubeViewHolder.linkheadline.setSelected(true);
+        Glide.with(mContext).load(messagelist.get(position).getLinkimage()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(youtubeViewHolder.linkimage);
+
+
     }
 
     private void onbindimage1(Image1ViewHolder image1ViewHolder, final int position) {
@@ -294,9 +311,9 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             case "text":
                 return VIEW_TYPE_TEXT;
             case "link":
-
                 return VIEW_TYPE_LINK;
-
+            case "youtubelink":
+                return VIEW_TYPE_YOUTUBE_LINK;
             default:
                 return super.getItemViewType(position);
 
@@ -707,6 +724,33 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                                         mContext.startActivity(browserIntent);
                                     }
                                 });
+                    }
+                }
+            });
+        }
+    }
+
+    private class YoutubeViewHolder extends BaseViewHolder {
+        private TextView linkheadline;
+        private RelativeLayout container;
+        private ImageView linkimage;
+
+        public YoutubeViewHolder(View inflate) {
+            super(inflate);
+            linkheadline = (TextView) inflate.findViewById(R.id.headlinelink);
+            linkimage = (ImageView) inflate.findViewById(R.id.imagelink);
+            linkheadline.setSelected(true);
+
+            container = (RelativeLayout) inflate.findViewById(R.id.rlcont);
+            container.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        Intent i = new Intent(mContext, YoutubeActivity.class);
+                        i.putExtra("url", messagelist.get(getAdapterPosition()).getLink());
+                        mContext.startActivity(i);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             });
