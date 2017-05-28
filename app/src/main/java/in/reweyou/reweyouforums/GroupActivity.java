@@ -361,7 +361,7 @@ public class GroupActivity extends AppCompatActivity {
         okbbutton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_check_layer, 0, 0, 0);
         okbbutton.setVisibility(View.VISIBLE);
 
-        ((GroupThreadsFragment) pagerAdapter.getRegisteredFragment(1)).refreshList();
+        ((GroupThreadsFragment) pagerAdapter.getRegisteredFragment(1)).refreshList1(true);
 
 
     }
