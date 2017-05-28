@@ -1,10 +1,12 @@
 package in.reweyou.reweyouforums;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -75,6 +77,8 @@ public class GroupActivity extends AppCompatActivity {
     private String grouprules = "";
     private String groupthreads = "";
     private ViewPager viewPager;
+    private boolean isUploading;
+    private AlertDialogBox uploadingalertbox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +114,7 @@ public class GroupActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                onBackPressed();
             }
         });
 
@@ -126,6 +130,20 @@ public class GroupActivity extends AppCompatActivity {
 
         if (isfollowed)
             viewPager.setCurrentItem(1);
+
+        uploadingalertbox = new AlertDialogBox(this, "Upload in progress!", "exiting from this group will discard your post. Proceed back?", "yes", "no") {
+            @Override
+            public void onNegativeButtonClick(DialogInterface dialog) {
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onPositiveButtonClick(DialogInterface dialog) {
+                dialog.dismiss();
+                finish();
+
+            }
+        };
     }
 
     private void initUploadingContainer() {
@@ -344,6 +362,8 @@ public class GroupActivity extends AppCompatActivity {
     }
 
     private void showUploading() {
+
+        isUploading = true;
         uploadingpd.setVisibility(View.VISIBLE);
         uploadingtext.setText("Uploading Post");
         okbbutton.setText("OK");
@@ -353,6 +373,7 @@ public class GroupActivity extends AppCompatActivity {
     }
 
     private void showUploadSuccessful() {
+        isUploading = false;
 
         uploadingpd.setVisibility(View.INVISIBLE);
         uploadingtext.setText("Upload successful.");
@@ -361,12 +382,19 @@ public class GroupActivity extends AppCompatActivity {
         okbbutton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_check_layer, 0, 0, 0);
         okbbutton.setVisibility(View.VISIBLE);
 
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                uploadingContainer.setVisibility(View.GONE);
+            }
+        }, 5000);
         ((GroupThreadsFragment) pagerAdapter.getRegisteredFragment(1)).refreshList1(true);
 
 
     }
 
     private void showFailedUpload() {
+        isUploading = false;
         uploadingpd.setVisibility(View.INVISIBLE);
         uploadingtext.setText("Upload failed.");
         okbbutton.setText("Retry");
@@ -393,6 +421,13 @@ public class GroupActivity extends AppCompatActivity {
 
     public void showsecondpage() {
         viewPager.setCurrentItem(1);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isUploading)
+
+            finish();
     }
 
     private class PagerAdapter extends FragmentStatePagerAdapter {
@@ -464,6 +499,4 @@ public class GroupActivity extends AppCompatActivity {
         }
 
     }
-
-
 }

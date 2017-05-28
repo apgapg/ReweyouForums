@@ -78,7 +78,8 @@ public class NotiActivity extends AppCompatActivity {
 
             @Override
             public void onPositiveButtonClick(DialogInterface dialog) {
-
+                dialog.dismiss();
+                sendrequestforseenchange();
             }
         };
 
@@ -162,7 +163,6 @@ public class NotiActivity extends AppCompatActivity {
             // do something here
             if (dataloaded) {
                 alertDialogBox.show();
-                sendrequestforseenchange();
             }
         }
         return super.onOptionsItemSelected(item);

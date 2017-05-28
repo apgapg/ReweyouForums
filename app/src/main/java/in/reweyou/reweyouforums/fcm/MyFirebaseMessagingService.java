@@ -61,23 +61,27 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             int m = random.nextInt(9999 - 1000) + 1000;
             Intent i;
             if (payload.has("threadid")) {
+                //create comment thread, comment/reply like
+
                 i = new Intent(this, CommentActivity.class);
                 i.putExtra("threadid", payload.getString("threadid"));
                 i.putExtra("from", "n");
                 shownoti(m, message, title, i);
 
             } else if (payload.has("id")) {
+                //thread like
+
                 i = new Intent(this, CommentActivity.class);
                 i.putExtra("threadid", payload.getString("id"));
                 i.putExtra("from", "n");
                 shownoti(m, message, title, i);
 
-            } else if (payload.has("groupid")) {
+            } else if (payload.has("ids")) {
                 if (userSessionManager.getGroupsilentstatus(payload.getString("groupid"))) {
                     Log.d(TAG, "handleDataMessage: group is silent");
                 } else {
                     i = new Intent(this, CommentActivity.class);
-                    i.putExtra("threadid", payload.getString("id"));
+                    i.putExtra("threadid", payload.getString("ids"));
                     i.putExtra("from", "n");
                     shownoti(m, message, title, i);
 
