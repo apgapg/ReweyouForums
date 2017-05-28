@@ -63,6 +63,7 @@ public class ForumMainActivity extends AppCompatActivity {
     private ImageView noti;
     private TextView notinum;
     private TextView notiback;
+    private boolean firstload;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -324,7 +325,7 @@ public class ForumMainActivity extends AppCompatActivity {
                 imagePicker.submit(data);
             } else if (requestCode == Utils.REQ_CODE_GROP_ACITIVTY) {
                 ((ExploreFragment) pagerAdapter.getRegisteredFragment(1)).refreshlist();
-                ((ExploreFragment) pagerAdapter.getRegisteredFragment(2)).refreshlist();
+                ((YourGroupsFragment) pagerAdapter.getRegisteredFragment(2)).refreshlist();
             } else if (requestCode == Utils.REQ_CODE_EDIT_PROFILE) {
                 ((UserInfoFragment) pagerAdapter.getRegisteredFragment(4)).refreshprofile();
 
@@ -380,6 +381,19 @@ public class ForumMainActivity extends AppCompatActivity {
         Log.d(TAG, "onResponse: dkwmdkwkkkkk11swsws11");
 
         ((MainThreadsFragment) pagerAdapter.getRegisteredFragment(0)).refreshList();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (firstload) {
+            try {
+                getnoticount();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        firstload = true;
     }
 
     private class PagerAdapter extends FragmentStatePagerAdapter {
