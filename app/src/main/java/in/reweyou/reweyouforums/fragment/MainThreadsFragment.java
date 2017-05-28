@@ -81,6 +81,24 @@ public class MainThreadsFragment extends Fragment {
 
             }
         });
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0 || dy < 0 && fab.isShown()) {
+                    fab.hide();
+                }
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    fab.show();
+                }
+
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
+
         return layout;
     }
 
