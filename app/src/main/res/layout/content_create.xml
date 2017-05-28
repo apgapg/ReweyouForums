@@ -203,6 +203,44 @@
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
 
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cdy"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+
+                    android:layout_marginTop="12dp"
+                    android:visibility="visible"
+                    app:cardBackgroundColor="#fff"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="4dp"
+                    app:cardUseCompatPadding="true">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+
+                        android:layout_height="100dp"
+
+                        android:background="@drawable/border_link">
+
+                        <ImageView
+                            android:id="@+id/imageyoutube"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:tint="#59000000" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:scaleType="centerCrop"
+                            app:srcCompat="@drawable/ic_youtube" />
+
+
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
+
                 <EditText
                     android:id="@+id/groupname"
                     android:layout_width="match_parent"
@@ -250,6 +288,7 @@
                     android:layout_marginTop="14dp"
                     android:gravity="center"
                     android:visibility="gone" />
+
                 <Button
                     android:id="@+id/create"
                     android:layout_width="wrap_content"
@@ -348,6 +387,34 @@
                     android:text="LINK"
                     android:textSize="11dp" />
             </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/ylink"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/link"
+                android:background="@drawable/ripple_effect2">
+
+                <ImageView
+                    android:id="@+id/y2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:paddingLeft="2dp"
+                    android:scaleType="center"
+                    app:srcCompat="@drawable/ic_videocam_black_24px" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/y2"
+                    android:gravity="center_vertical"
+                    android:paddingRight="10dp"
+                    android:text="YOUTUBE"
+                    android:textSize="11dp" />
+            </RelativeLayout>
+
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 </RelativeLayout>

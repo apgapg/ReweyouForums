@@ -17,6 +17,9 @@ public class Utils {
     public static final int REQ_CODE_EDIT_PROFILE = 28;
     public static final int REQ_CODE_CREATE_FROM_FORUMACTVITY = 29;
     public static final int REQ_CODE_NOTI = 30;
+    public static final String YOUTUBE_API_KEY = "AIzaSyBBnhu7Kx-4QAEmoSddzU9zFYutex-p5l4";
+    public static final int RECOVERY_DIALOG_YOUTUBE = 111;
+
     public static boolean isNight;
     public static int backgroundCode;
     public static int screenWidth;

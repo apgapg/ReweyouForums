@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion '26.0.0 rc2'
 
     defaultConfig {
         applicationId "in.reweyou.reweyouforums"
@@ -34,6 +34,7 @@ repositories
             jcenter()
 
             maven { url 'https://github.com/leonardocardoso/mvn-repo/raw/master/maven-deploy' }
+
         }
 
 dependencies {

@@ -65,7 +65,7 @@ public class NotiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
         notiViewHolder.time.setText(messagelist.get(position).getTimestamp().replace("about ", ""));
         Glide.with(context).load(messagelist.get(position).getNotifier_image()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(notiViewHolder.image);
-        if (messagelist.get(position).getReadstatus().equals("1"))
+        if (messagelist.get(position).getReadstatus().equals("0"))
             notiViewHolder.container.setBackgroundColor(context.getResources().getColor(R.color.red_alpha));
         else
             notiViewHolder.container.setBackgroundColor(context.getResources().getColor(R.color.transparent));

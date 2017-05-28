@@ -112,5 +112,7 @@
     <string name="tab_10">COMMENTS</string>
     <string name="tab_11">POST</string>
     <string name="title_activity_noti">NotiActivity</string>
+    <string name="title_activity_youtube">YoutubeActivity</string>
+    <string name="error_player">Something went wrong! Please try again</string>
 
 </resources>
