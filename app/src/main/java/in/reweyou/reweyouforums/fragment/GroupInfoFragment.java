@@ -184,6 +184,13 @@ public class GroupInfoFragment extends Fragment {
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                ((GroupActivity) mContext).showsecondpage();
+
+                                            }
+                                        }, 1000);
 
                                     } else if (response.equals("Unfollowed")) {
                                         isfollowed = false;

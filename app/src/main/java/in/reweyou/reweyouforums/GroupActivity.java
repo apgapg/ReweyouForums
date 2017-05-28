@@ -124,6 +124,8 @@ public class GroupActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
 
+        if (isfollowed)
+            viewPager.setCurrentItem(1);
     }
 
     private void initUploadingContainer() {
@@ -387,6 +389,10 @@ public class GroupActivity extends AppCompatActivity {
 
     public void refreshfeeds(boolean isfollowed) {
         ((GroupThreadsFragment) pagerAdapter.getRegisteredFragment(1)).refreshList1(isfollowed);
+    }
+
+    public void showsecondpage() {
+        viewPager.setCurrentItem(1);
     }
 
     private class PagerAdapter extends FragmentStatePagerAdapter {

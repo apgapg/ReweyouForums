@@ -46,6 +46,7 @@ public class GroupBadegsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         YourGroupsViewHolder forumViewHolder = (YourGroupsViewHolder) holder;
         forumViewHolder.groupname.setText("#" + messagelist.get(position).getGroupname());
         forumViewHolder.userlevel.setText(messagelist.get(position).getBadge());
+        forumViewHolder.grouppoints.setText("-" + messagelist.get(position).getPoints() + " pts");
         Drawable background = forumViewHolder.userlevel.getBackground();
         if (background instanceof GradientDrawable) {
             // cast to 'ShapeDrawable'
@@ -93,13 +94,14 @@ public class GroupBadegsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private class YourGroupsViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView groupname;
+        private TextView groupname, grouppoints;
         private TextView userlevel;
 
         public YourGroupsViewHolder(View inflate) {
             super(inflate);
 
             groupname = (TextView) inflate.findViewById(R.id.groupname);
+            grouppoints = (TextView) inflate.findViewById(R.id.grouppoints);
             userlevel = (TextView) inflate.findViewById(R.id.userlevel);
 
         }

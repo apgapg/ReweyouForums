@@ -7,6 +7,7 @@ package in.reweyou.reweyouforums.model;
 public class GroupBadgeModel {
     private String badge;
     private String groupname;
+    private String points;
 
     public String getBadge() {
         return badge;
@@ -14,5 +15,9 @@ public class GroupBadgeModel {
 
     public String getGroupname() {
         return groupname;
+    }
+
+    public String getPoints() {
+        return points;
     }
 }
