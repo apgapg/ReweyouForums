@@ -46,7 +46,7 @@ public class GroupBadegsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         YourGroupsViewHolder forumViewHolder = (YourGroupsViewHolder) holder;
         forumViewHolder.groupname.setText("#" + messagelist.get(position).getGroupname());
         forumViewHolder.userlevel.setText(messagelist.get(position).getBadge());
-        forumViewHolder.grouppoints.setText("-" + messagelist.get(position).getPoints() + " pts");
+        forumViewHolder.grouppoints.setText("- " + messagelist.get(position).getPoints() + " pts");
         Drawable background = forumViewHolder.userlevel.getBackground();
         if (background instanceof GradientDrawable) {
             // cast to 'ShapeDrawable'

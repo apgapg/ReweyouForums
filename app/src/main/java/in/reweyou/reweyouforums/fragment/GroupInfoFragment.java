@@ -64,11 +64,13 @@ public class GroupInfoFragment extends Fragment {
     private TextView tvRules;
     private ImageView img;
     private FlowLayout flowLayout;
+    private ImageView dnd;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        userSessionManager = new UserSessionManager(mContext);
 
     }
 
@@ -79,8 +81,28 @@ public class GroupInfoFragment extends Fragment {
 
         TextView edit = (TextView) layout.findViewById(R.id.edit);
 
+        dnd = (ImageView) layout.findViewById(R.id.dnd);
+        if (userSessionManager.getGroupsilentstatus(getArguments().getString("groupid")))
+            dnd.setImageResource(R.drawable.ic_notifications_off_black_24px);
+        else dnd.setImageResource(R.drawable.ic_notifications_none_black_24px);
 
-        userSessionManager = new UserSessionManager(mContext);
+        dnd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!userSessionManager.getGroupsilentstatus(getArguments().getString("groupid"))) {
+                    dnd.setImageResource(R.drawable.ic_notifications_off_black_24px);
+                    userSessionManager.savegroupsilent(getArguments().getString("groupid"), true);
+                    Toast.makeText(mContext, "Group notifications hide!", Toast.LENGTH_SHORT).show();
+                } else {
+                    dnd.setImageResource(R.drawable.ic_notifications_none_black_24px);
+                    userSessionManager.savegroupsilent(getArguments().getString("groupid"), false);
+                    Toast.makeText(mContext, "Group notifications shown!", Toast.LENGTH_SHORT).show();
+
+
+                }
+
+            }
+        });
         final TextView btnfollow = (TextView) layout.findViewById(R.id.btn_follow);
         joincontainer = (RelativeLayout) layout.findViewById(R.id.joincontainer);
         img = (ImageView) layout.findViewById(R.id.image);
@@ -262,6 +284,7 @@ public class GroupInfoFragment extends Fragment {
     }
 
     private void getMembersData() {
+
         Log.d(TAG, "getMembersData: " + groupid);
         AndroidNetworking.post("https://www.reweyou.in/google/list_members.php")
                 .addBodyParameter("groupid", groupid)

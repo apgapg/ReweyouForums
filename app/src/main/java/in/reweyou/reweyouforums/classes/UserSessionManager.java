@@ -204,4 +204,13 @@ public class UserSessionManager {
         editor.putString(KEY_BADGE, badge);
         editor.commit();
     }
+
+    public boolean getGroupsilentstatus(String groupid) {
+        return pref.getBoolean("groupid" + groupid, false);
+    }
+
+    public void savegroupsilent(String groupid, boolean b) {
+        editor.putBoolean("groupid" + groupid, b);
+        editor.commit();
+    }
 }
