@@ -747,6 +747,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                 public void onClick(View v) {
                     try {
                         Intent i = new Intent(mContext, YoutubeActivity.class);
+                        Log.d(TAG, "onClick: " + messagelist.get(getAdapterPosition()).getLink());
                         i.putExtra("url", messagelist.get(getAdapterPosition()).getLink());
                         mContext.startActivity(i);
                     } catch (Exception e) {

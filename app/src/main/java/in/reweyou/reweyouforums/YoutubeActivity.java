@@ -33,7 +33,7 @@ public class YoutubeActivity extends AppCompatActivity implements YouTubePlayer.
             }
         });
 
-        this.videoUrl = getIntent().getStringExtra("url");
+        videoUrl = getIntent().getStringExtra("url");
 
         Log.d("kjk", "onCreate: " + videoUrl);
         YouTubePlayerSupportFragment frag =
@@ -45,11 +45,10 @@ public class YoutubeActivity extends AppCompatActivity implements YouTubePlayer.
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
         if (!b) {
-            //I assume the below String value is your video id
-            youTubePlayer.cueVideo(videoUrl);
+            Log.d("sasa", "onInitializationSuccess: " + videoUrl);
+            youTubePlayer.cueVideo(videoUrl.replace("\n", ""));
         }
     }
-
     @Override
     public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult errorReason) {
         if (errorReason.isUserRecoverableError()) {

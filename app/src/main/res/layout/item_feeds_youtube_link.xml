@@ -83,7 +83,6 @@ terro"
                     android:layout_width="match_parent"
                     android:layout_height="130dp"
                     android:layout_alignParentRight="true"
-
                     android:scaleType="centerCrop" />
 
                 <ImageView

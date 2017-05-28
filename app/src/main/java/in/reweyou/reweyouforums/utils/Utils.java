@@ -23,9 +23,9 @@ public class Utils {
     public static boolean isNight;
     public static int backgroundCode;
     public static int screenWidth;
+    public static String youtubeUrl;
     private static int scalefactor;
     private static int screenHeight;
-
 
     public static void setBackgroundColor(Context applicationContext) {
         Random rand = new Random();
