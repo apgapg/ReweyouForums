@@ -45,7 +45,6 @@ public class YoutubeActivity extends AppCompatActivity implements YouTubePlayer.
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
         if (!b) {
-            Log.d("sasa", "onInitializationSuccess: " + videoUrl);
             youTubePlayer.cueVideo(videoUrl.replace("\n", ""));
         }
     }

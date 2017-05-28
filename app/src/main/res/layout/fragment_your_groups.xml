@@ -10,13 +10,12 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="36dp"
         app:cardCornerRadius="2dp"
-
         app:cardElevation="4dp"
         app:cardUseCompatPadding="true">
 
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/explore_recycler_view"
+            android:id="@+id/explore_recycler_view_your_groups"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="6dp"
@@ -26,7 +25,7 @@
             android:paddingTop="8dp" />
 
         <TextView
-            android:id="@+id/txtexplore"
+            android:id="@+id/txtgroups"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

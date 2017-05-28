@@ -102,7 +102,7 @@ public class CreateFragment extends Fragment {
                 if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     checkStoragePermission();
 
-                } else ((ForumMainActivity) mContext).showPickImage(2);
+                } else ((ForumMainActivity) mContext).showPickImage(3);
             }
         });
 
@@ -310,7 +310,7 @@ public class CreateFragment extends Fragment {
                 .withListener(new PermissionListener() {
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse response) {
-                        ((ForumMainActivity) mContext).showPickImage(2);
+                        ((ForumMainActivity) mContext).showPickImage(3);
                     }
 
                     @Override

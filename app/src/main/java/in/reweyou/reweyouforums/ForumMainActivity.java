@@ -43,6 +43,7 @@ import in.reweyou.reweyouforums.fragment.CreateFragment;
 import in.reweyou.reweyouforums.fragment.ExploreFragment;
 import in.reweyou.reweyouforums.fragment.MainThreadsFragment;
 import in.reweyou.reweyouforums.fragment.UserInfoFragment;
+import in.reweyou.reweyouforums.fragment.YourGroupsFragment;
 import in.reweyou.reweyouforums.utils.Utils;
 
 public class ForumMainActivity extends AppCompatActivity {
@@ -89,7 +90,7 @@ public class ForumMainActivity extends AppCompatActivity {
         Typeface type = Typeface.createFromAsset(getAssets(), "cr.ttf");
         tabnametoolbar.setTypeface(type);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
-        viewPager.setOffscreenPageLimit(3);
+        viewPager.setOffscreenPageLimit(4);
         pagerAdapter = new PagerAdapter(getSupportFragmentManager());
 
         viewPager.setAdapter(pagerAdapter);
@@ -105,10 +106,12 @@ public class ForumMainActivity extends AppCompatActivity {
                 if (position == 0)
                     tabnametoolbar.setText("Feeds");
                 else if (position == 1)
-                    tabnametoolbar.setText("Explore");
+                    tabnametoolbar.setText("Explore Groups");
                 else if (position == 2)
-                    tabnametoolbar.setText("Create");
+                    tabnametoolbar.setText("Your Groups");
                 else if (position == 3)
+                    tabnametoolbar.setText("Create Group");
+                else if (position == 4)
                     tabnametoolbar.setText("My Profile");
                 try {
                     InputMethodManager imm = (InputMethodManager) ForumMainActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
@@ -130,10 +133,11 @@ public class ForumMainActivity extends AppCompatActivity {
         TabLayout.Tab tabCall2 = tabLayout.getTabAt(1);
         tabCall2.setIcon(R.drawable.tab2_selector);
         TabLayout.Tab tabCall3 = tabLayout.getTabAt(2);
-        tabCall3.setIcon(R.drawable.tab3_selector);
+        tabCall3.setIcon(R.drawable.tab5_selector);
         TabLayout.Tab tabCall4 = tabLayout.getTabAt(3);
-        tabCall4.setIcon(R.drawable.tab4_selector);
-
+        tabCall4.setIcon(R.drawable.tab3_selector);
+        TabLayout.Tab tabCall5 = tabLayout.getTabAt(4);
+        tabCall5.setIcon(R.drawable.tab4_selector);
 
         switch (Utils.backgroundCode) {
             case 0:
@@ -303,8 +307,8 @@ public class ForumMainActivity extends AppCompatActivity {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
-                if (positionFragment == 2) {
-                    CreateFragment createFragment = (CreateFragment) pagerAdapter.getRegisteredFragment(2);
+                if (positionFragment == 3) {
+                    CreateFragment createFragment = (CreateFragment) pagerAdapter.getRegisteredFragment(3);
                     createFragment.onImageChoosen(result.getUri().toString());
                 }
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
@@ -317,12 +321,15 @@ public class ForumMainActivity extends AppCompatActivity {
                 imagePicker.submit(data);
             } else if (requestCode == Utils.REQ_CODE_GROP_ACITIVTY) {
                 ((ExploreFragment) pagerAdapter.getRegisteredFragment(1)).refreshlist();
+                ((ExploreFragment) pagerAdapter.getRegisteredFragment(2)).refreshlist();
             } else if (requestCode == Utils.REQ_CODE_EDIT_PROFILE) {
-                ((UserInfoFragment) pagerAdapter.getRegisteredFragment(3)).refreshprofile();
+                ((UserInfoFragment) pagerAdapter.getRegisteredFragment(4)).refreshprofile();
 
             } else if (requestCode == Utils.REQ_CODE_CREATE_FROM_FORUMACTVITY) {
                 ((MainThreadsFragment) pagerAdapter.getRegisteredFragment(0)).refreshList();
 
+            } else if (requestCode == Utils.REQ_CODE_NOTI) {
+                getnoticount();
             }
         }
 
@@ -382,12 +389,14 @@ public class ForumMainActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
 
-            if (position == 3)
+            if (position == 4)
                 return new UserInfoFragment();
             else if (position == 1)
                 return new ExploreFragment();
-            else if (position == 2)
+            else if (position == 3)
                 return new CreateFragment();
+            if (position == 2)
+                return new YourGroupsFragment();
             else
                 return new MainThreadsFragment();
         }

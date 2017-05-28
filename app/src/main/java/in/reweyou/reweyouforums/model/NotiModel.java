@@ -17,6 +17,10 @@ public class NotiModel {
         return readstatus;
     }
 
+    public void setReadstatus(String readstatus) {
+        this.readstatus = readstatus;
+    }
+
     public String getNoti_type() {
         return noti_type;
     }

@@ -1,5 +1,6 @@
 package in.reweyou.reweyouforums;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -8,6 +9,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -15,6 +18,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -33,6 +37,8 @@ public class NotiActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private NotiAdapter notiAdapter;
     private UserSessionManager userSessionManager;
+    private AlertDialogBox alertDialogBox;
+    private boolean dataloaded;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +70,17 @@ public class NotiActivity extends AppCompatActivity {
         notiAdapter = new NotiAdapter(this);
         recyclerView.setAdapter(notiAdapter);
         getData();
+        alertDialogBox = new AlertDialogBox(this, "Mark all as read?", "Do you want to mark all notifications as read?", "yes", "no") {
+            @Override
+            public void onNegativeButtonClick(DialogInterface dialog) {
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onPositiveButtonClick(DialogInterface dialog) {
+
+            }
+        };
 
     }
 
@@ -102,6 +119,9 @@ public class NotiActivity extends AppCompatActivity {
                                         notiModelList.add(notiModel);
                                     }
                                     notiAdapter.add(notiModelList);
+                                    if (notiModelList.size() > 0) {
+                                        dataloaded = true;
+                                    }
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                     swipeRefreshLayout.setRefreshing(false);
@@ -123,4 +143,49 @@ public class NotiActivity extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_forum, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    // handle button activities
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_noti) {
+            // do something here
+            if (dataloaded) {
+                alertDialogBox.show();
+                sendrequestforseenchange();
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void sendrequestforseenchange() {
+        AndroidNetworking.post("https://www.reweyou.in/google/notification_read.php")
+                .addBodyParameter("uid", userSessionManager.getUID())
+                .addBodyParameter("nid", "")
+                .addBodyParameter("type", "All")
+                .setTag("groupcreate")
+                .setPriority(Priority.HIGH)
+                .build().getAsString(new StringRequestListener() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "onResponse: noti: " + response);
+                setResult(RESULT_OK);
+            }
+
+            @Override
+            public void onError(ANError anError) {
+                Log.d(TAG, "onError: " + anError);
+
+            }
+        });
+    }
+
 }

@@ -13,12 +13,15 @@
     <string name="tab2">FEED</string>
     <string name="tab3">CREATE</string>
     <string name="tab4">CHAT</string>
+
     <string-array name="tabs">
         <item>@string/tab_1</item>
         <item>@string/tab_4</item>
         <item>@string/tab_5</item>
+        <item>@string/tab_44</item>
         <item>@string/tab_8</item>
     </string-array>
+
     <string-array name="tabssinglecomment">
         <item>@string/tab_10</item>
 
@@ -114,5 +117,6 @@
     <string name="title_activity_noti">NotiActivity</string>
     <string name="title_activity_youtube">YoutubeActivity</string>
     <string name="error_player">Something went wrong! Please try again</string>
+    <string name="tab_44">Your Group</string>
 
 </resources>

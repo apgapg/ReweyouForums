@@ -1,7 +1,10 @@
 package in.reweyou.reweyouforums.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,13 +12,20 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import in.reweyou.reweyouforums.CommentActivity;
+import in.reweyou.reweyouforums.NotiActivity;
 import in.reweyou.reweyouforums.R;
+import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.model.NotiModel;
 
 /**
@@ -24,12 +34,15 @@ import in.reweyou.reweyouforums.model.NotiModel;
 
 public class NotiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private static final String TAG = NotiAdapter.class.getName();
     private final Context context;
+    private final UserSessionManager userSessionManager;
     List<NotiModel> messagelist;
 
     public NotiAdapter(Context context) {
         this.context = context;
         this.messagelist = new ArrayList<>();
+        userSessionManager = new UserSessionManager(context);
 
     }
 
@@ -73,6 +86,17 @@ public class NotiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List<Object> payloads) {
+        if (payloads.contains("change")) {
+            NotiViewHolder notiViewHolder = (NotiViewHolder) holder;
+            notiViewHolder.container.setBackgroundColor(context.getResources().getColor(R.color.transparent));
+            messagelist.get(position).setReadstatus("1");
+
+        } else
+            super.onBindViewHolder(holder, position, payloads);
+    }
+
+    @Override
     public int getItemCount() {
         return messagelist.size();
     }
@@ -81,6 +105,28 @@ public class NotiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         messagelist.clear();
         messagelist.addAll(list);
         notifyDataSetChanged();
+    }
+
+    private void sendrequestforseenchange(int adapterPosition) {
+        AndroidNetworking.post("https://www.reweyou.in/google/notification_read.php")
+                .addBodyParameter("uid", userSessionManager.getUID())
+                .addBodyParameter("nid", messagelist.get(adapterPosition).getNid())
+                .addBodyParameter("type", "")
+                .setTag("groupcreate")
+                .setPriority(Priority.HIGH)
+                .build().getAsString(new StringRequestListener() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "onResponse: noti: " + response);
+                ((NotiActivity) context).setResult(Activity.RESULT_OK);
+            }
+
+            @Override
+            public void onError(ANError anError) {
+                Log.d(TAG, "onError: " + anError);
+
+            }
+        });
     }
 
     private class NotiViewHolder extends RecyclerView.ViewHolder {
@@ -100,7 +146,11 @@ public class NotiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             container.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    notifyItemChanged(getAdapterPosition(), "change");
+                    sendrequestforseenchange(getAdapterPosition());
+                    Intent i = new Intent(context, CommentActivity.class);
+                    i.putExtra("from", "n");
+                    context.startActivity(i);
                 }
             });
         }

@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.reweyou.reweyouforums.R;
-import in.reweyou.reweyouforums.adapter.ForumAdapter;
+import in.reweyou.reweyouforums.adapter.YourGroupsAdapter;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.model.GroupModel;
 
@@ -35,13 +35,11 @@ import in.reweyou.reweyouforums.model.GroupModel;
  * Created by master on 1/5/17.
  */
 
-public class ExploreFragment extends Fragment {
-    private static final String TAG = ExploreFragment.class.getName();
+public class YourGroupsFragment extends Fragment {
+    private static final String TAG = YourGroupsFragment.class.getName();
     private Activity mContext;
-    private ForumAdapter adapterExplore;
-    private RecyclerView recyclerViewExplore;
-    private TextView exploretextview;
-
+    private RecyclerView recyclerViewYourGroups;
+    private YourGroupsAdapter adapterYourGroups;
     private UserSessionManager userSessionManager;
     private TextView txtgroups;
     private TextView txtexplore;
@@ -58,16 +56,15 @@ public class ExploreFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View layout = inflater.inflate(R.layout.fragment_explore, container, false);
-        recyclerViewExplore = (RecyclerView) layout.findViewById(R.id.explore_recycler_view);
+        View layout = inflater.inflate(R.layout.fragment_your_groups, container, false);
+        recyclerViewYourGroups = (RecyclerView) layout.findViewById(R.id.explore_recycler_view_your_groups);
 
-
-        txtexplore = (TextView) layout.findViewById(R.id.txtexplore);
+        txtgroups = (TextView) layout.findViewById(R.id.txtgroups);
 
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2, LinearLayoutManager.VERTICAL, false);
 
-        recyclerViewExplore.setLayoutManager(gridLayoutManager);
+        recyclerViewYourGroups.setLayoutManager(gridLayoutManager);
         return layout;
     }
 
@@ -102,9 +99,9 @@ public class ExploreFragment extends Fragment {
 
     private void getDataFromServer() {
 
-        txtexplore.setVisibility(View.GONE);
-        adapterExplore = new ForumAdapter(mContext);
-        recyclerViewExplore.setAdapter(adapterExplore);
+        txtgroups.setVisibility(View.GONE);
+        adapterYourGroups = new YourGroupsAdapter(mContext);
+        recyclerViewYourGroups.setAdapter(adapterYourGroups);
 
         AndroidNetworking.post("https://www.reweyou.in/google/discover_groups.php")
                 .addBodyParameter("uid", userSessionManager.getUID())
@@ -130,20 +127,20 @@ public class ExploreFragment extends Fragment {
                             JSONObject jsonobject = jsonarray.getJSONObject(0);
                             Log.d(TAG, "onResponse: " + jsonobject);
 
-                            JSONArray explorejsonarray = jsonobject.getJSONArray("explore");
+                            JSONArray followjsonarray = jsonobject.getJSONArray("followed");
 
-                            List<GroupModel> explorelist = new ArrayList<GroupModel>();
-                            for (int i = 0; i < explorejsonarray.length(); i++) {
-                                JSONObject jsonObject = explorejsonarray.getJSONObject(i);
+                            List<GroupModel> followlist = new ArrayList<GroupModel>();
+
+                            for (int i = 0; i < followjsonarray.length(); i++) {
+                                JSONObject jsonObject = followjsonarray.getJSONObject(i);
                                 GroupModel groupModel = gson.fromJson(jsonObject.toString(), GroupModel.class);
-                                explorelist.add(0, groupModel);
+                                followlist.add(0, groupModel);
                             }
+                            adapterYourGroups.add(followlist);
 
 
-                            adapterExplore.add(explorelist);
-
-                            if (explorelist.size() == 0) {
-                                txtexplore.setVisibility(View.VISIBLE);
+                            if (followlist.size() == 0) {
+                                txtgroups.setVisibility(View.VISIBLE);
                             }
 
 
