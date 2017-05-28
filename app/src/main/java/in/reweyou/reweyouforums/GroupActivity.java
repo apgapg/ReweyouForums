@@ -426,7 +426,8 @@ public class GroupActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (isUploading)
-
+            uploadingalertbox.show();
+        else
             finish();
     }
 
