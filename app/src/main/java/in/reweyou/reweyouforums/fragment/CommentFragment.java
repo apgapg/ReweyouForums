@@ -107,7 +107,7 @@ public class CommentFragment extends Fragment {
         return layout;
     }
 
-    private void getData() {
+    public void getData() {
         swipeRefreshLayout.setRefreshing(true);
         replyheader.setVisibility(View.GONE);
         new Handler().postDelayed(new Runnable() {

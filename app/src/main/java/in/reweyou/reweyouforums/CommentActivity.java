@@ -92,7 +92,6 @@ public class CommentActivity extends AppCompatActivity {
         }
 
 
-
     }
 
 
@@ -128,6 +127,17 @@ public class CommentActivity extends AppCompatActivity {
         viewpager.setCurrentItem(1);
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        try {
+            threadid = getIntent().getStringExtra("threadid");
+            ((ThreadFragment) pagerAdapter.getRegisteredFragment(0)).refreshList();
+            ((CommentFragment) pagerAdapter.getRegisteredFragment(1)).getData();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private class PagerAdapterSingle extends FragmentStatePagerAdapter {
         SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
@@ -235,5 +245,4 @@ public class CommentActivity extends AppCompatActivity {
         }
 
     }
-
 }

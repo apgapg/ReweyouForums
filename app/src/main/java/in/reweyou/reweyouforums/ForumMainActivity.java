@@ -182,6 +182,9 @@ public class ForumMainActivity extends AppCompatActivity {
                             notiback.setVisibility(View.VISIBLE);
 
                             notinum.setText(response);
+                        } else {
+                            notinum.setVisibility(View.INVISIBLE);
+                            notiback.setVisibility(View.INVISIBLE);
                         }
                     }
 
@@ -329,7 +332,9 @@ public class ForumMainActivity extends AppCompatActivity {
                 ((MainThreadsFragment) pagerAdapter.getRegisteredFragment(0)).refreshList();
 
             } else if (requestCode == Utils.REQ_CODE_NOTI) {
+                Log.d(TAG, "onActivityResult: dwjdnwndwdwnoti");
                 getnoticount();
+
             }
         }
 

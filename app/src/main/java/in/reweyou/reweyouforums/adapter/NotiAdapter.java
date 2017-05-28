@@ -118,6 +118,7 @@ public class NotiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, "onResponse: noti: " + response);
+
                 ((NotiActivity) context).setResult(Activity.RESULT_OK);
             }
 

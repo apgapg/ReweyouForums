@@ -114,8 +114,8 @@
     <string name="title_activity_group_members">GroupMembers</string>
     <string name="tab_10">COMMENTS</string>
     <string name="tab_11">POST</string>
-    <string name="title_activity_noti">NotiActivity</string>
-    <string name="title_activity_youtube">YoutubeActivity</string>
+    <string name="title_activity_noti">Notifications</string>
+    <string name="title_activity_youtube">Youtube Video</string>
     <string name="error_player">Something went wrong! Please try again</string>
     <string name="tab_44">Your Group</string>
 

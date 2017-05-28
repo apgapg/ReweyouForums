@@ -84,7 +84,9 @@ public class NotiActivity extends AppCompatActivity {
 
     }
 
-    private void getData() {
+    public void getData() {
+
+        Log.d(TAG, "getData: dddd");
         swipeRefreshLayout.setRefreshing(true);
         new Handler().post(new Runnable() {
             @Override
@@ -177,7 +179,9 @@ public class NotiActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, "onResponse: noti: " + response);
+                getData();
                 setResult(RESULT_OK);
+
             }
 
             @Override
@@ -187,5 +191,6 @@ public class NotiActivity extends AppCompatActivity {
             }
         });
     }
+
 
 }
