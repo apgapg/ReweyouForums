@@ -80,7 +80,7 @@ public class CommentActivity extends AppCompatActivity {
         tablayout = (TabLayout) findViewById(R.id.tabLayout);
 
 
-        if (getIntent().getStringExtra("from").equals("n")) {
+        if (getIntent().getStringExtra("from").equals("n") || getIntent().getStringExtra("from").equals("nb")) {
             pagerAdapter = new PagerAdapter(getSupportFragmentManager());
             viewpager.setAdapter(pagerAdapter);
             tablayout.setupWithViewPager(viewpager);
@@ -100,7 +100,9 @@ public class CommentActivity extends AppCompatActivity {
         Intent i;
         if (getIntent().getStringExtra("from").equals("g"))
             finish();
-        else {
+        else if (getIntent().getStringExtra("from").equals("nb")) {
+            finish();
+        } else {
             i = new Intent(CommentActivity.this, ForumMainActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(i);
@@ -111,6 +113,12 @@ public class CommentActivity extends AppCompatActivity {
 
     public void refreshlist() {
         // getData();
+        if (getIntent().getStringExtra("from").equals("n")) {
+            ((CommentFragment) pagerAdapter.getRegisteredFragment(1)).getData();
+
+        } else {
+            ((CommentFragment) pagerAdapterSingle.getRegisteredFragment(0)).getData();
+        }
     }
 
     public void passClicktoEditText(String username, String commentid) {

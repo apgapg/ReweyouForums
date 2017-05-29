@@ -10,8 +10,13 @@ public class NotiModel {
     private String timestamp;
     private String notifier;
     private String nid;
+    private String id;
     private String noti_type;
     private String readstatus;
+
+    public String getId() {
+        return id;
+    }
 
     public String getReadstatus() {
         return readstatus;

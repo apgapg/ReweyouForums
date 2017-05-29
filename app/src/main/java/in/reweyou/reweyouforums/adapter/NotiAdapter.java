@@ -150,7 +150,8 @@ public class NotiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     notifyItemChanged(getAdapterPosition(), "change");
                     sendrequestforseenchange(getAdapterPosition());
                     Intent i = new Intent(context, CommentActivity.class);
-                    i.putExtra("from", "n");
+                    i.putExtra("from", "nb");
+                    i.putExtra("threadid", messagelist.get(getAdapterPosition()).getId());
                     context.startActivity(i);
                 }
             });

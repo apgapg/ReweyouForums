@@ -124,6 +124,7 @@ public class ThreadFragment extends Fragment {
 
                     @Override
                     public void onResponse(final List<ThreadModel> list) {
+                        Log.d(TAG, "onResponse: " + list.size());
                         swipeRefreshLayout.setRefreshing(false);
                         new Handler().post(new Runnable() {
                             @Override

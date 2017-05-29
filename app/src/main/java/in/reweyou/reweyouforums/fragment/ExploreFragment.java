@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -45,6 +47,7 @@ public class ExploreFragment extends Fragment {
     private UserSessionManager userSessionManager;
     private TextView txtgroups;
     private TextView txtexplore;
+    private SwipeRefreshLayout swiperefresh;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,8 +63,13 @@ public class ExploreFragment extends Fragment {
 
         View layout = inflater.inflate(R.layout.fragment_explore, container, false);
         recyclerViewExplore = (RecyclerView) layout.findViewById(R.id.explore_recycler_view);
-
-
+        swiperefresh = (SwipeRefreshLayout) layout.findViewById(R.id.swiperefresh);
+        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getDataFromServer();
+            }
+        });
         txtexplore = (TextView) layout.findViewById(R.id.txtexplore);
 
 
@@ -101,7 +109,7 @@ public class ExploreFragment extends Fragment {
     }
 
     private void getDataFromServer() {
-
+        swiperefresh.setRefreshing(true);
         txtexplore.setVisibility(View.GONE);
         adapterExplore = new ForumAdapter(mContext);
         recyclerViewExplore.setAdapter(adapterExplore);
@@ -126,6 +134,7 @@ public class ExploreFragment extends Fragment {
                     @Override
                     public void onResponse(JSONArray jsonarray) {
                         try {
+                            swiperefresh.setRefreshing(false);
                             Gson gson = new Gson();
                             JSONObject jsonobject = jsonarray.getJSONObject(0);
                             Log.d(TAG, "onResponse: " + jsonobject);
@@ -148,6 +157,8 @@ public class ExploreFragment extends Fragment {
 
 
                         } catch (Exception e) {
+                            swiperefresh.setRefreshing(false);
+
                             e.printStackTrace();
                         }
                     }
@@ -155,6 +166,9 @@ public class ExploreFragment extends Fragment {
                     @Override
                     public void onError(ANError anError) {
                         Log.d(TAG, "onError: " + anError);
+                        swiperefresh.setRefreshing(false);
+                        Toast.makeText(mContext, "couldn't connect", Toast.LENGTH_SHORT).show();
+
                     }
                 });
 

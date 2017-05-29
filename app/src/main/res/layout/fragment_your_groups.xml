@@ -14,15 +14,22 @@
         app:cardUseCompatPadding="true">
 
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/explore_recycler_view_your_groups"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@id/swiperefresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="6dp"
-            android:layout_marginRight="4dp"
-            android:clipToPadding="false"
-            android:paddingBottom="6dp"
-            android:paddingTop="8dp" />
+            android:layout_marginRight="4dp">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/explore_recycler_view_your_groups"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:clipToPadding="false"
+                android:paddingBottom="6dp"
+                android:paddingTop="8dp" />
+        </android.support.v4.widget.SwipeRefreshLayout>
 
         <TextView
             android:id="@+id/txtgroups"
