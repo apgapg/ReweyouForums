@@ -3,10 +3,16 @@ package in.reweyou.reweyouforums.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +37,10 @@ import com.google.gson.Gson;
 import org.apmem.tools.layouts.FlowLayout;
 import org.json.JSONArray;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import in.reweyou.reweyouforums.EditActivity;
@@ -41,6 +50,8 @@ import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.model.GroupMemberModel;
 import in.reweyou.reweyouforums.utils.Utils;
+
+import static in.reweyou.reweyouforums.utils.Utils.convertpxFromDp;
 
 /**
  * Created by master on 24/2/17.
@@ -65,6 +76,8 @@ public class GroupInfoFragment extends Fragment {
     private ImageView img;
     private FlowLayout flowLayout;
     private ImageView dnd;
+    private ImageView share;
+    private Uri uri;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,6 +95,17 @@ public class GroupInfoFragment extends Fragment {
         TextView edit = (TextView) layout.findViewById(R.id.edit);
 
         dnd = (ImageView) layout.findViewById(R.id.dnd);
+        share = (ImageView) layout.findViewById(R.id.share);
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    takeScreenshot(img);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         if (userSessionManager.getGroupsilentstatus(getArguments().getString("groupid")))
             dnd.setImageResource(R.drawable.ic_notifications_off_black_24px);
         else dnd.setImageResource(R.drawable.ic_notifications_none_black_24px);
@@ -277,7 +301,7 @@ public class GroupInfoFragment extends Fragment {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    shineeffect.animate().translationXBy(Utils.convertpxFromDp(28 + 90 + 28)).setInterpolator(new AccelerateDecelerateInterpolator()).setDuration(750).start();
+                    shineeffect.animate().translationXBy(convertpxFromDp(28 + 90 + 28)).setInterpolator(new AccelerateDecelerateInterpolator()).setDuration(750).start();
                 }
             }, 700);
         return layout;
@@ -369,5 +393,99 @@ public class GroupInfoFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void shareIntent(String image, String groupname) {
+        String tempimage = image;
+        if (image == null)
+            if (tempimage.isEmpty())
+                tempimage = "";
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT, "Join '" + groupname + "' group in ReweyouForums app. Download now: https://play.google.com/store/apps/details?id=in.reweyou.reweyouforums");
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        intent.setType("image/jpeg");
+        mContext.startActivity(Intent.createChooser(intent, "Share Group using"));
+    }
+
+
+    private void takeScreenshot(ImageView cv) {
+        Date now = new Date();
+        android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);
+
+        try {
+
+            File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "Pictures/ReweyouForums/Screenshot");
+
+            if (!mediaStorageDir.exists()) {
+                if (!mediaStorageDir.mkdirs()) {
+                    Log.d("Reweyou", "failed to create directory");
+                }
+            }
+
+            String mPath = mediaStorageDir.toString() + "/" + now + ".jpg";
+            File imageFile = new File(mPath);
+            uri = Uri.fromFile(imageFile);
+            FileOutputStream outputStream = new FileOutputStream(imageFile);
+            int quality = 99;
+            cv.setDrawingCacheEnabled(true);
+            cv.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+            loadBitmapFromView(cv).compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
+            outputStream.flush();
+            outputStream.close();
+
+            try {
+                shareIntent(getArguments().getString("image"), getArguments().getString("groupname"));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private Bitmap loadBitmapFromView(View v) {
+        Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight() - Utils.convertpxFromDp(24), Bitmap.Config.ARGB_4444);
+        Canvas c = new Canvas(b);
+        v.draw(c);
+
+        final DisplayMetrics metrics = mContext.getResources().getDisplayMetrics();
+        final Bitmap b2 = drawToBitmap(mContext, R.layout.share_reweyou_tag, metrics.widthPixels, metrics.heightPixels);
+        return combineImages(b, b2);
+    }
+
+    private Bitmap drawToBitmap(Context context, final int layoutResId, final int width, final int height) {
+
+        final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View layout = inflater.inflate(layoutResId, null);
+        layout.setDrawingCacheEnabled(true);
+        layout.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.AT_MOST));
+        layout.layout(0, 0, layout.getMeasuredWidth(), layout.getMeasuredHeight());
+        final Bitmap bmp = Bitmap.createBitmap(layout.getMeasuredWidth(), layout.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+        final Canvas canvas = new Canvas(bmp);
+        canvas.drawBitmap(layout.getDrawingCache(), 0, 0, new Paint());
+        return bmp;
+    }
+
+    private Bitmap combineImages(Bitmap c, Bitmap s) {
+        Bitmap cs = null;
+
+        int width, height = 0;
+
+        width = c.getWidth();
+        height = c.getHeight() + s.getHeight();
+        Log.d("width", "" + c.getWidth() + "     " + s.getWidth());
+        Log.d("height", "" + c.getHeight() + "     " + s.getHeight());
+        cs = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+
+        Canvas comboImage = new Canvas(cs);
+
+        Log.d(TAG, "combineImages: " + cs.getWidth() + "   " + cs.getHeight());
+        comboImage.drawBitmap(c, 0f, 0f, null);
+        comboImage.drawBitmap(s, 0f, c.getHeight(), null);
+
+        return cs;
     }
 }

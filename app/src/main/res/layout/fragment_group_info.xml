@@ -47,6 +47,17 @@
                 android:padding="2dp"
                 app:srcCompat="@drawable/ic_notifications_none_black_24px" />
 
+            <ImageView
+                android:id="@+id/share"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginLeft="36dp"
+
+                android:layout_marginTop="8dp"
+                android:background="@drawable/ripple_effect3"
+                android:padding="4dp"
+                app:srcCompat="@drawable/ic_share_black_24px" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"

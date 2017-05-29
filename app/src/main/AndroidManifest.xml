@@ -135,14 +135,20 @@
         <activity
             android:name=".NotiActivity"
             android:label="@string/title_activity_noti"
+            android:screenOrientation="portrait"
+
             android:theme="@style/AppTheme2.NoActionBar" />
         <activity
             android:name=".YoutubeActivity"
             android:label="@string/title_activity_youtube"
+            android:screenOrientation="portrait"
+
             android:theme="@style/AppTheme.NoActionBar.Preview">
 
         </activity>
-        <activity android:name=".YoutubePlayerActivity">
+        <activity
+            android:name=".YoutubePlayerActivity"
+            android:screenOrientation="portrait">
 
         </activity>
     </application>
