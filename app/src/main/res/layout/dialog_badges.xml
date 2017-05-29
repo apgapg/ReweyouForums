@@ -173,7 +173,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:paddingLeft="8dp"
-            android:text="- 1000"
+            android:text="- 500"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -206,7 +206,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:paddingLeft="8dp"
-            android:text="- 2000"
+            android:text="- 1000"
             android:textStyle="bold" />
     </LinearLayout>
 
