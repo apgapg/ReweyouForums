@@ -1,5 +1,7 @@
 package in.reweyou.reweyouforums;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +18,7 @@ import in.reweyou.reweyouforums.utils.Utils;
 public class YoutubeActivity extends AppCompatActivity implements YouTubePlayer.OnInitializedListener {
 
     private String videoUrl = "nCgQDjiotG0";
+    private String TAG = YoutubeActivity.class.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +51,31 @@ public class YoutubeActivity extends AppCompatActivity implements YouTubePlayer.
             youTubePlayer.cueVideo(videoUrl.replace("\n", ""));
         }
     }
+
     @Override
     public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult errorReason) {
         if (errorReason.isUserRecoverableError()) {
-            errorReason.getErrorDialog(YoutubeActivity.this, Utils.RECOVERY_DIALOG_YOUTUBE).show();
+            Log.d(TAG, "onInitializationFailure: " + errorReason.toString());
+            if (errorReason.toString().equals("SERVICE_MISSING"))
+                errorReason.getErrorDialog(YoutubeActivity.this, Utils.RECOVERY_DIALOG_YOUTUBE_APP).show();
         } else {
             String errorMessage = String.format(getString(R.string.error_player), errorReason.toString());
             Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == Utils.RECOVERY_DIALOG_YOUTUBE_APP) {
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + "com.google.android.youtube")));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        Log.d("youtube", "onActivityResult: " + requestCode + "    " + resultCode);
     }
 }

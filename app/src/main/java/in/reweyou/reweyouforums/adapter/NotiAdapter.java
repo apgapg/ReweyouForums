@@ -147,12 +147,13 @@ public class NotiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             container.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    notifyItemChanged(getAdapterPosition(), "change");
-                    sendrequestforseenchange(getAdapterPosition());
+
                     Intent i = new Intent(context, CommentActivity.class);
                     i.putExtra("from", "nb");
                     i.putExtra("threadid", messagelist.get(getAdapterPosition()).getId());
                     context.startActivity(i);
+                    notifyItemChanged(getAdapterPosition(), "change");
+                    sendrequestforseenchange(getAdapterPosition());
                 }
             });
         }
