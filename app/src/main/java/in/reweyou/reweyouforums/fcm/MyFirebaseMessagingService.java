@@ -80,6 +80,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 if (userSessionManager.getGroupsilentstatus(payload.getString("groupid"))) {
                     Log.d(TAG, "handleDataMessage: group is silent");
                 } else {
+                    Log.d(TAG, "handleDataMessage: hereeeee");
                     i = new Intent(this, CommentActivity.class);
                     i.putExtra("threadid", payload.getString("ids"));
                     i.putExtra("from", "n");

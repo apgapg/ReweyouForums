@@ -3,7 +3,6 @@ package in.reweyou.reweyouforums.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -19,9 +18,12 @@ import android.widget.Toast;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.ParsedRequestListener;
-import com.google.gson.reflect.TypeToken;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
+import com.google.gson.Gson;
 
+import org.json.JSONArray;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import in.reweyou.reweyouforums.R;
@@ -119,25 +121,30 @@ public class ThreadFragment extends Fragment {
                 .setTag("report")
                 .setPriority(Priority.HIGH)
                 .build()
-                .getAsParsed(new TypeToken<List<ThreadModel>>() {
-                }, new ParsedRequestListener<List<ThreadModel>>() {
-
+                .getAsJSONArray(new JSONArrayRequestListener() {
                     @Override
-                    public void onResponse(final List<ThreadModel> list) {
-                        Log.d(TAG, "onResponse: " + list.size());
+                    public void onResponse(JSONArray response) {
+                        Log.d(TAG, "onResponse: resp: " + response);
                         swipeRefreshLayout.setRefreshing(false);
-                        new Handler().post(new Runnable() {
-                            @Override
-                            public void run() {
+                        List<ThreadModel> list = new ArrayList<>();
+                        try {
+                            Gson gson = new Gson();
+                            for (int i = 0; i < response.length(); i++) {
+                                ThreadModel threadModel = gson.fromJson(response.getJSONObject(i).toString(), ThreadModel.class);
+                                list.add(threadModel);
                                 feeedsAdapter.add(list);
-
                             }
-                        });
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Toast.makeText(mContext, "something went wrong!", Toast.LENGTH_SHORT).show();
 
+                            swipeRefreshLayout.setRefreshing(false);
+
+                        }
                     }
 
                     @Override
-                    public void onError(final ANError anError) {
+                    public void onError(ANError anError) {
                         Log.e(TAG, "run: error: " + anError.getErrorDetail());
                         Toast.makeText(mContext, "couldn't connect", Toast.LENGTH_SHORT).show();
                         swipeRefreshLayout.setRefreshing(false);
