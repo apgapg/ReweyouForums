@@ -74,6 +74,8 @@ public class YourGroupsFragment extends Fragment {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2, LinearLayoutManager.VERTICAL, false);
 
         recyclerViewYourGroups.setLayoutManager(gridLayoutManager);
+        adapterYourGroups = new YourGroupsAdapter(mContext);
+        recyclerViewYourGroups.setAdapter(adapterYourGroups);
         return layout;
     }
 
@@ -109,8 +111,7 @@ public class YourGroupsFragment extends Fragment {
     private void getDataFromServer() {
         swiperefresh.setRefreshing(true);
         txtgroups.setVisibility(View.GONE);
-        adapterYourGroups = new YourGroupsAdapter(mContext);
-        recyclerViewYourGroups.setAdapter(adapterYourGroups);
+
 
         AndroidNetworking.post("https://www.reweyou.in/google/discover_groups.php")
                 .addBodyParameter("uid", userSessionManager.getUID())

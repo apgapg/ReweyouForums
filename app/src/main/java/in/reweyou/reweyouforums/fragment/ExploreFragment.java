@@ -76,6 +76,8 @@ public class ExploreFragment extends Fragment {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2, LinearLayoutManager.VERTICAL, false);
 
         recyclerViewExplore.setLayoutManager(gridLayoutManager);
+        adapterExplore = new ForumAdapter(mContext);
+        recyclerViewExplore.setAdapter(adapterExplore);
         return layout;
     }
 
@@ -111,8 +113,7 @@ public class ExploreFragment extends Fragment {
     private void getDataFromServer() {
         swiperefresh.setRefreshing(true);
         txtexplore.setVisibility(View.GONE);
-        adapterExplore = new ForumAdapter(mContext);
-        recyclerViewExplore.setAdapter(adapterExplore);
+
 
         AndroidNetworking.post("https://www.reweyou.in/google/discover_groups.php")
                 .addBodyParameter("uid", userSessionManager.getUID())
