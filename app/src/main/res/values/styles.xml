@@ -22,27 +22,6 @@
     </style>
 
 
-    <style name="MySeekBarTheme5" parent="Widget.AppCompat.SeekBar">
-        <item name="colorAccent">@color/rating5</item>
-
-    </style>
-
-    <style name="MySeekBarTheme4" parent="Widget.AppCompat.SeekBar">
-        <item name="colorAccent">@color/rating4</item>
-    </style>
-
-    <style name="MySeekBarTheme3" parent="Widget.AppCompat.SeekBar">
-        <item name="colorAccent">@color/rating3</item>
-    </style>
-
-    <style name="MySeekBarTheme2" parent="Widget.AppCompat.SeekBar">
-        <item name="colorAccent">@color/rating2</item>
-    </style>
-
-    <style name="MySeekBarTheme1" parent="Widget.AppCompat.SeekBar">
-        <item name="colorAccent">@color/rating1</item>
-    </style>
-
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -51,13 +30,6 @@
     <style name="AppTheme2.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="Userprofile" parent="AppTheme.NoActionBar">
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:backgroundDimEnabled">false</item>
-
     </style>
 
     <style name="Theme.Sliding.Lights" parent="@style/Theme.AppCompat.Light.NoActionBar">
@@ -73,38 +45,11 @@
         <item name="popup_theme">@style/ThemeOverlay.AppCompat.Light</item>
     </style>
 
-    <style name="SearchViewStyleMyApp" parent="Widget.AppCompat.SearchView">
-        <!-- Background for the search query section (e.g. EditText) -->
-        ...
-        <item name="queryBackground">@drawable/button_background2</item>
-        <!-- note that this is how you stye your hint icon -->
-        <item name="closeIcon">@drawable/ic_clear_black_24dp</item>
-    </style>
-
-    <style name="MyThemeOverlay.ActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="searchViewStyle">@style/SearchViewStyleMyApp</item>
-        <item name="colorAccent">#757575</item>
-    </style>
-
-    <style name="DialogActivity" parent="Theme.AppCompat.Dialog">
-        <item name="windowNoTitle">true</item>
-
-    </style>
-
-    <style name="AppTheme.NoActionBar.Feed">
-
-    </style>
-
 
     <style name="AppTheme.NoActionBar.Preview">
 
     </style>
 
-
-    <style name="checkBoxStyle" parent="Base.Theme.AppCompat">
-        <item name="colorAccent">@color/colorPrimary</item>
-        <item name="android:textColorSecondary">@color/colorPrimaryDark</item>
-    </style>
 
     <style name="Theme.Transparent" parent="android:Theme">
         <item name="android:windowIsTranslucent">true</item>
@@ -124,20 +69,6 @@
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:textSize">12sp</item>
         <item name="android:textStyle">normal</item>
-    </style>
-
-    <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
-        <item name="colorControlNormal">#bbffffff</item>
-        <item name="colorControlActivated">#fff</item>
-        <item name="colorControlHighlight">#000</item>
-
-    </style>
-
-    <style name="EditTextStyle2" parent="Widget.AppCompat.EditText">
-        <item name="colorControlNormal">#24000000</item>
-        <item name="colorControlActivated">@color/colorPrimary</item>
-        <item name="colorControlHighlight">@color/colorPrimary</item>
-
     </style>
 
 

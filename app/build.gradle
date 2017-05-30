@@ -9,11 +9,11 @@ android {
         minSdkVersion 16
 
         targetSdkVersion 25
-        versionCode 4
+        versionCode 5
         versionName "1.0.3"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
-
+        resConfigs "en"
     }
     buildTypes {
         release {
@@ -30,22 +30,14 @@ repositories
                     {
                         url "https://jitpack.io"
                     }
-            maven { url 'https://dl.bintray.com/drummer-aidan/maven' }
             jcenter()
 
-            maven { url 'https://github.com/leonardocardoso/mvn-repo/raw/master/maven-deploy' }
 
         }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
-    compile('com.github.ozodrukh:CircularReveal:2.0.1@aar')
-            {
-                transitive = true
-            }
-
-    // required
     compile project(path: ':multipicker')
 
 
@@ -64,7 +56,6 @@ dependencies {
     compile 'com.amitshekhar.android:android-networking:0.3.0'
     compile 'com.klinkerapps:sliding-activity:1.4.4'
     compile 'com.google.code.gson:gson:2.8.0'
-    compile 'com.google.firebase:firebase-auth:10.2.6'
     compile 'com.google.android.gms:play-services-auth:10.2.6'
     compile 'com.karumi:dexter:4.1.0'
     compile 'org.apmem.tools:layouts:1.10@aar'

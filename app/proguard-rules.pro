@@ -25,12 +25,18 @@
 -keepclassmembers class in.reweyou.reweyouforums.model.** {
   *;
 }
--keep class android.support.v7.widget.SearchView { *; }
 
 -dontwarn io.nlopez.**
 -dontwarn okio.**
 -dontwarn **
--keep class com.wang.avi.** { *; }
--keep class com.wang.avi.indicators.** { *; }
+
 -printmapping build/outputs/mapping/release/mapping.txt
 -printmapping obfuscation/mapping.txt
+
+
+# glide
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}

@@ -81,7 +81,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/t2"
             android:layout_marginRight="44dp"
-            android:layout_weight="1"
             android:background="@color/transparent"
             android:hint="Say Hello..."
 
