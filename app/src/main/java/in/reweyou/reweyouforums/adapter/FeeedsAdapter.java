@@ -440,6 +440,9 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                             else if (mContext instanceof ForumMainActivity) {
                                 Log.d(TAG, "onResponse: dkwmdkwkkkkk1111");
                                 ((ForumMainActivity) mContext).refreshfeeds();
+                            } else if (mContext instanceof CommentActivity) {
+                                Log.d(TAG, "onResponse: dkwmdkwkkkkk1111");
+                                ((CommentActivity) mContext).refreshthread();
                             }
 
                         } else

@@ -12,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +48,10 @@ public class CommentActivity extends AppCompatActivity {
     private TabLayout tablayout;
     private PagerAdapter pagerAdapter;
     private PagerAdapterSingle pagerAdapterSingle;
+    private boolean isfromNoti;
+    private boolean isfromForumMainActivity;
+    private boolean isfromGroupActivity;
+    private boolean isfromNotiAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,6 +73,19 @@ public class CommentActivity extends AppCompatActivity {
 
         try {
             threadid = getIntent().getStringExtra("threadid");
+            if (getIntent().getStringExtra("from").equals("n")) {
+                isfromNoti = true;
+            }
+            if (getIntent().getStringExtra("from").equals("f")) {
+                isfromForumMainActivity = true;
+            }
+            if (getIntent().getStringExtra("from").equals("g")) {
+                isfromGroupActivity = true;
+            }
+            if (getIntent().getStringExtra("from").equals("nb")) {
+                isfromNotiAdapter = true;
+            }
+
             if (threadid == null)
                 throw new NullPointerException("threadid cannot be null");
         } catch (Exception e) {
@@ -80,7 +96,7 @@ public class CommentActivity extends AppCompatActivity {
         tablayout = (TabLayout) findViewById(R.id.tabLayout);
 
 
-        if (getIntent().getStringExtra("from").equals("n") || getIntent().getStringExtra("from").equals("nb")) {
+        if (isfromNoti || isfromNotiAdapter) {
             pagerAdapter = new PagerAdapter(getSupportFragmentManager());
             viewpager.setAdapter(pagerAdapter);
             tablayout.setupWithViewPager(viewpager);
@@ -98,9 +114,9 @@ public class CommentActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent i;
-        if (getIntent().getStringExtra("from").equals("g"))
+        if (isfromGroupActivity)
             finish();
-        else if (getIntent().getStringExtra("from").equals("nb")) {
+        else if (isfromNotiAdapter) {
             finish();
         } else {
             i = new Intent(CommentActivity.this, ForumMainActivity.class);
@@ -113,7 +129,7 @@ public class CommentActivity extends AppCompatActivity {
 
     public void refreshlist() {
         // getData();
-        if (getIntent().getStringExtra("from").equals("n")) {
+        if (isfromNoti) {
             ((CommentFragment) pagerAdapter.getRegisteredFragment(1)).getData();
 
         } else {
@@ -123,7 +139,7 @@ public class CommentActivity extends AppCompatActivity {
 
     public void passClicktoEditText(String username, String commentid) {
 
-        if (getIntent().getStringExtra("from").equals("n")) {
+        if (isfromNoti || isfromNotiAdapter) {
             ((CommentFragment) pagerAdapter.getRegisteredFragment(1)).passClicktoEditText(username, commentid);
 
         } else {
@@ -147,6 +163,11 @@ public class CommentActivity extends AppCompatActivity {
         }
     }
 
+    public void refreshthread() {
+        ((ThreadFragment) pagerAdapter.getRegisteredFragment(0)).refreshList();
+
+    }
+
     private class PagerAdapterSingle extends FragmentStatePagerAdapter {
         SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
 
@@ -159,7 +180,6 @@ public class CommentActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
 
-            Log.d(TAG, "getItem: fljewnfjknjwf");
             CommentFragment commentFragment = new CommentFragment();
             Bundle bundle = new Bundle();
             bundle.putString("threadid", threadid);
