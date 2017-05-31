@@ -382,12 +382,19 @@ public class GroupActivity extends AppCompatActivity {
         okbbutton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_check_layer, 0, 0, 0);
         okbbutton.setVisibility(View.VISIBLE);
 
+        try {
+            uploadingalertbox.hide();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 uploadingContainer.setVisibility(View.GONE);
+
             }
-        }, 5000);
+        }, 6500);
         ((GroupThreadsFragment) pagerAdapter.getRegisteredFragment(1)).refreshList1(true);
 
 

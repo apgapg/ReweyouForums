@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 public abstract class AlertDialogBox {
 
     private AlertDialog.Builder dialog;
+    private AlertDialog dlg;
 
     public AlertDialogBox(Activity context, String title, String message, String positive, String negative) {
         dialog = new AlertDialog.Builder(context);
@@ -42,8 +43,15 @@ public abstract class AlertDialogBox {
     public abstract void onPositiveButtonClick(DialogInterface dialog);
 
     public void show() {
-        dialog.show();
+        dlg = dialog.create();
+        dlg.show();
     }
+
+    public void hide() {
+
+        dlg.hide();
+    }
+
 
     public void setCancellable(boolean cancellable) {
         dialog.setCancelable(cancellable);
