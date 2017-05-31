@@ -61,7 +61,9 @@
         android:layout_below="@+id/message"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="40dp"
+
         android:layout_toRightOf="@+id/image"
+        android:autoLink="web"
         android:paddingRight="8dp"
         android:text="Hello World!"
         android:textColor="#515151"
