@@ -129,7 +129,7 @@ public class CommentActivity extends AppCompatActivity {
 
     public void refreshlist() {
         // getData();
-        if (isfromNoti) {
+        if (isfromNoti || isfromNotiAdapter) {
             ((CommentFragment) pagerAdapter.getRegisteredFragment(1)).getData();
 
         } else {
