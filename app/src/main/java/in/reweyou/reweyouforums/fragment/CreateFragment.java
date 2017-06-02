@@ -154,6 +154,12 @@ public class CreateFragment extends Fragment {
 
                             description.setText("");
                             groupname.setText("");
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ((ForumMainActivity) mContext).showExploreGroupFragment();
+                                }
+                            }, 500);
 
                         } else
                             Toast.makeText(mContext, "something went wrong!", Toast.LENGTH_SHORT).show();
@@ -164,12 +170,6 @@ public class CreateFragment extends Fragment {
                         description.setEnabled(true);
 
 
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                ((ForumMainActivity) mContext).showExploreGroupFragment();
-                            }
-                        }, 500);
                     }
 
 

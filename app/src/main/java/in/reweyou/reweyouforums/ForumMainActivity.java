@@ -346,7 +346,7 @@ public class ForumMainActivity extends AppCompatActivity {
     public void showExploreGroupFragment() {
 
         viewPager.setCurrentItem(1);
-        ((ExploreFragment) pagerAdapter.getRegisteredFragment(1)).refreshlist();
+        ((YourGroupsFragment) pagerAdapter.getRegisteredFragment(2)).refreshlist();
     }
 
     @Override
