@@ -14,6 +14,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -86,6 +87,7 @@ public class GroupInfoFragment extends Fragment {
     private ImageView dnd;
     private ImageView share;
     private Uri uri;
+    private CardView cd;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -101,7 +103,7 @@ public class GroupInfoFragment extends Fragment {
         View layout = inflater.inflate(R.layout.fragment_group_info, container, false);
 
         TextView edit = (TextView) layout.findViewById(R.id.edit);
-
+        cd = (CardView) layout.findViewById(R.id.cd);
         dnd = (ImageView) layout.findViewById(R.id.dnd);
         share = (ImageView) layout.findViewById(R.id.share);
         share.setOnClickListener(new View.OnClickListener() {
@@ -112,7 +114,7 @@ public class GroupInfoFragment extends Fragment {
                         checkStoragePermission();
 
                     } else
-                        takeScreenshot(img);
+                        takeScreenshot(cd);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -325,7 +327,7 @@ public class GroupInfoFragment extends Fragment {
                 .withListener(new PermissionListener() {
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse response) {
-                        takeScreenshot(img);
+                        takeScreenshot(cd);
                     }
 
                     @Override
@@ -446,7 +448,7 @@ public class GroupInfoFragment extends Fragment {
     }
 
 
-    private void takeScreenshot(ImageView cv) {
+    private void takeScreenshot(CardView cv) {
         Date now = new Date();
         android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);
 
@@ -483,12 +485,13 @@ public class GroupInfoFragment extends Fragment {
     }
 
     private Bitmap loadBitmapFromView(View v) {
-        Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight() - Utils.convertpxFromDp(24), Bitmap.Config.ARGB_4444);
+        Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight() - Utils.convertpxFromDp(8), Bitmap.Config.ARGB_4444);
         Canvas c = new Canvas(b);
         v.draw(c);
 
         final DisplayMetrics metrics = mContext.getResources().getDisplayMetrics();
         final Bitmap b2 = drawToBitmap(mContext, R.layout.share_reweyou_tag, metrics.widthPixels, metrics.heightPixels);
+
         return combineImages(b, b2);
     }
 
@@ -499,7 +502,7 @@ public class GroupInfoFragment extends Fragment {
         layout.setDrawingCacheEnabled(true);
         layout.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.AT_MOST));
         layout.layout(0, 0, layout.getMeasuredWidth(), layout.getMeasuredHeight());
-        final Bitmap bmp = Bitmap.createBitmap(layout.getMeasuredWidth(), layout.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+        final Bitmap bmp = Bitmap.createBitmap(layout.getMeasuredWidth(), layout.getMeasuredHeight(), Bitmap.Config.ARGB_4444);
         final Canvas canvas = new Canvas(bmp);
         canvas.drawBitmap(layout.getDrawingCache(), 0, 0, new Paint());
         return bmp;
@@ -512,16 +515,14 @@ public class GroupInfoFragment extends Fragment {
 
         width = c.getWidth();
         height = c.getHeight() + s.getHeight();
-        Log.d("width", "" + c.getWidth() + "     " + s.getWidth());
-        Log.d("height", "" + c.getHeight() + "     " + s.getHeight());
+
         cs = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
 
         Canvas comboImage = new Canvas(cs);
-
-        Log.d(TAG, "combineImages: " + cs.getWidth() + "   " + cs.getHeight());
         comboImage.drawBitmap(c, 0f, 0f, null);
         comboImage.drawBitmap(s, 0f, c.getHeight(), null);
+        Bitmap resizedbitmap1 = Bitmap.createBitmap(cs, Utils.convertpxFromDp(10), Utils.convertpxFromDp(10), cs.getWidth() - Utils.convertpxFromDp(16), cs.getHeight() - Utils.convertpxFromDp(10));
 
-        return cs;
+        return resizedbitmap1;
     }
 }
