@@ -248,7 +248,7 @@ public class GroupInfoFragment extends Fragment {
                                                 ((GroupActivity) mContext).showsecondpage();
 
                                             }
-                                        }, 1000);
+                                        }, 300);
 
                                     } else if (response.equals("Unfollowed")) {
                                         isfollowed = false;
