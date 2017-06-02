@@ -40,6 +40,7 @@
         android:drawablePadding="8dp"
         android:hint="Description can't be empty..."
         android:inputType="textMultiLine"
+        android:maxLines="8"
         android:minHeight="48dp"
         android:minLines="1"
         android:paddingBottom="8dp"
