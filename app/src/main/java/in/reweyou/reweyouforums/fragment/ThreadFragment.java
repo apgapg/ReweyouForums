@@ -155,7 +155,8 @@ public class ThreadFragment extends Fragment {
     }
 
 
-    public void refreshList() {
+    public void refreshList(String threadid) {
+        this.threadid = threadid;
         getData();
 
     }

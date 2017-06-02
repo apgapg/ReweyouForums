@@ -72,6 +72,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 //thread like
 
                 i = new Intent(this, CommentActivity.class);
+
                 i.putExtra("threadid", payload.getString("id"));
                 i.putExtra("from", "n");
                 shownoti(m, message, title, i);
@@ -81,7 +82,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     Log.d(TAG, "handleDataMessage: group is silent");
                 } else {
                     Log.d(TAG, "handleDataMessage: hereeeee");
+
                     i = new Intent(this, CommentActivity.class);
+
                     i.putExtra("threadid", payload.getString("ids"));
                     i.putExtra("from", "n");
                     shownoti(m, message, title, i);

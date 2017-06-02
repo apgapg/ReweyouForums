@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
@@ -114,11 +115,9 @@ public class CommentActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent i;
-        if (isfromGroupActivity)
+        if (isfromGroupActivity || isfromNotiAdapter || isfromForumMainActivity)
             finish();
-        else if (isfromNotiAdapter) {
-            finish();
-        } else {
+        else {
             i = new Intent(CommentActivity.this, ForumMainActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(i);
@@ -155,16 +154,23 @@ public class CommentActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         try {
+            Log.d(TAG, "onNewIntent: called");
             threadid = getIntent().getStringExtra("threadid");
-            ((ThreadFragment) pagerAdapter.getRegisteredFragment(0)).refreshList();
-            ((CommentFragment) pagerAdapter.getRegisteredFragment(1)).getData();
+            if (viewpager.getAdapter() instanceof PagerAdapterSingle) {
+                viewpager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
+                tablayout.setupWithViewPager(viewpager);
+                tablayout.setVisibility(View.VISIBLE);
+            } else {
+                ((ThreadFragment) pagerAdapter.getRegisteredFragment(0)).refreshList(threadid);
+                ((CommentFragment) pagerAdapter.getRegisteredFragment(1)).refreshList(threadid);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void refreshthread() {
-        ((ThreadFragment) pagerAdapter.getRegisteredFragment(0)).refreshList();
+        ((ThreadFragment) pagerAdapter.getRegisteredFragment(0)).refreshList(threadid);
 
     }
 

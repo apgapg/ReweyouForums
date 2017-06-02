@@ -366,4 +366,9 @@ public class CommentFragment extends Fragment {
     }
 
 
+    public void refreshList(String threadid) {
+        this.threadid = threadid;
+
+        getData();
+    }
 }

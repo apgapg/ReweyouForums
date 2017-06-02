@@ -81,6 +81,7 @@
         <activity
             android:name=".CommentActivity"
             android:label="@string/title_activity_comment"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustResize" />
