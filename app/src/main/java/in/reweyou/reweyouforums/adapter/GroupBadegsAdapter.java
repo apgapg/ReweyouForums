@@ -57,7 +57,7 @@ public class GroupBadegsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_follower));
             } else if (messagelist.get(position).getBadge().equals("Pro")) {
                 shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_pro));
-            } else if (messagelist.get(position).getBadge().equals("Rising Star")) {
+            } else if (messagelist.get(position).getBadge().equals("Star")) {
                 shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_rising_star));
             } else if (messagelist.get(position).getBadge().equals("Expert")) {
                 shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_expert));

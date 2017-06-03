@@ -100,7 +100,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_follower));
                 } else if (((CommentModel) messagelist.get(position)).getBadge().equals("Pro")) {
                     shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_pro));
-                } else if (((CommentModel) messagelist.get(position)).getBadge().equals("Rising Star")) {
+                } else if (((CommentModel) messagelist.get(position)).getBadge().equals("Star")) {
                     shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_rising_star));
                 } else if (((CommentModel) messagelist.get(position)).getBadge().equals("Expert")) {
                     shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_expert));
