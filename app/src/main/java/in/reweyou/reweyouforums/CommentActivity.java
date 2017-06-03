@@ -162,7 +162,10 @@ public class CommentActivity extends AppCompatActivity {
         super.onNewIntent(intent);
         try {
             Log.d(TAG, "onNewIntent: called");
-            threadid = getIntent().getStringExtra("threadid");
+
+
+            threadid = intent.getStringExtra("threadid");
+            Log.d(TAG, "onNewIntent: " + threadid);
             if (viewpager.getAdapter() instanceof PagerAdapterSingle) {
                 pagerAdapter = new PagerAdapter(getSupportFragmentManager());
                 viewpager.setAdapter(pagerAdapter);
