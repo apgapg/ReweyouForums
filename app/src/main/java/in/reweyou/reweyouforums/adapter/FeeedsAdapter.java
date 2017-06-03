@@ -2,32 +2,25 @@ package in.reweyou.reweyouforums.adapter;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,13 +36,10 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.chromium.customtabsclient.CustomTabsActivityHelper;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -530,48 +520,12 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
     }
 
     private class Image1ViewHolder extends BaseViewHolder {
-        private ImageView image1, wallpaper;
+        private ImageView image1;
 
         public Image1ViewHolder(View inflate) {
             super(inflate);
             image1 = (ImageView) inflate.findViewById(R.id.image1);
-            wallpaper = (ImageView) inflate.findViewById(R.id.wallpaper);
-            wallpaper.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(mContext, "setting wallpaper...", Toast.LENGTH_SHORT).show();
 
-
-                    RotateAnimation rotate = new RotateAnimation(0, 360,
-                            Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
-                            0.5f);
-
-                    rotate.setDuration(700);
-                    rotate.setInterpolator(new LinearInterpolator());
-                    rotate.setRepeatCount(Animation.INFINITE);
-                    rotate.setFillAfter(false);
-                    wallpaper.startAnimation(rotate);
-
-                    DisplayMetrics displayMetrics = new DisplayMetrics();
-                    ((Activity) mContext).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-                    int height = displayMetrics.heightPixels;
-                    int width = (int) (1.5 * displayMetrics.widthPixels);
-                    Log.d("ddd", "onClick: " + height + "  " + width);
-                    Glide.with(mContext).load(messagelist.get(getAdapterPosition()).getImage1()).asBitmap().override(width, height).diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                            .into(new SimpleTarget<Bitmap>() {
-                                @Override
-                                public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                                    // you can do something with loaded bitmap here
-                                    // .....
-                                    new WallpaperAsync(resource, wallpaper).execute();
-
-
-                                }
-                            });
-
-
-                }
-            });
 
             image1.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -761,43 +715,5 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         }
     }
 
-    private class WallpaperAsync extends AsyncTask<Void, Void, Void> {
-        private final Bitmap bitmap;
-        private final ImageView wallpaper;
-
-        public WallpaperAsync(Bitmap bitmap, ImageView wallpaper) {
-            this.bitmap = bitmap;
-            this.wallpaper = wallpaper;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            wallpaper.clearAnimation();
-            Toast.makeText(mContext, "wallpaper set", Toast.LENGTH_SHORT).show();
-
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-
-            WallpaperManager myWallpaperManager
-                    = WallpaperManager.getInstance(mContext.getApplicationContext());
-            try {
-                Log.d("feeds", "doInBackground:ewlm " + bitmap.getWidth() + "  " + bitmap.getHeight());
-                if (bitmap.getWidth() > (1.5 * Utils.screenWidth)) {
-                    Bitmap finalBitmap = Bitmap.createBitmap(bitmap, (int) ((bitmap.getWidth() / 2) - ((1.5 * Utils.screenWidth) / 2)), 0, (int) (1.5 * Utils.screenWidth), bitmap.getHeight());
-                    Log.d("feeds", "doInBackground: " + finalBitmap.getWidth() + "  " + finalBitmap.getHeight());
-                    myWallpaperManager.setBitmap(finalBitmap);
-
-                } else myWallpaperManager.setBitmap(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
-            return null;
-        }
-    }
 
 }

@@ -69,18 +69,7 @@ terro"
                 android:layout_marginRight="8dp"
                 android:scaleType="centerInside" />
 
-            <ImageView
-                android:id="@+id/wallpaper"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginBottom="20dp"
-                android:layout_marginRight="16dp"
-                android:alpha="0.78"
-                android:background="@drawable/solid_circle_black"
-                android:padding="6dp"
-                card_view:srcCompat="@drawable/ic_phone_iphone_black_24dp" />
+
         </RelativeLayout>
 
         <View

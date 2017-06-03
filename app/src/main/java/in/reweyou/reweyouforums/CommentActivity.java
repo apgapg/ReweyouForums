@@ -164,7 +164,8 @@ public class CommentActivity extends AppCompatActivity {
             Log.d(TAG, "onNewIntent: called");
             threadid = getIntent().getStringExtra("threadid");
             if (viewpager.getAdapter() instanceof PagerAdapterSingle) {
-                viewpager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
+                pagerAdapter = new PagerAdapter(getSupportFragmentManager());
+                viewpager.setAdapter(pagerAdapter);
                 tablayout.setupWithViewPager(viewpager);
                 tablayout.setVisibility(View.VISIBLE);
             } else {
