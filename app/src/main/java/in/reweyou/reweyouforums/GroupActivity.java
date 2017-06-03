@@ -79,6 +79,7 @@ public class GroupActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private boolean isUploading;
     private AlertDialogBox uploadingalertbox;
+    private String groupadminname = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +99,7 @@ public class GroupActivity extends AppCompatActivity {
             groupthreads = getIntent().getStringExtra("threads");
             groupimage = getIntent().getStringExtra("image");
             groupadmin = getIntent().getStringExtra("admin");
+            groupadminname = getIntent().getStringExtra("adminname");
             groupdescription = getIntent().getStringExtra("description");
             grouprules = getIntent().getStringExtra("rules");
             isfollowed = getIntent().getBooleanExtra("follow", false);
@@ -457,6 +459,7 @@ public class GroupActivity extends AppCompatActivity {
                 bundle.putString("groupid", groupid);
                 bundle.putString("members", groupmembers);
                 bundle.putString("admin", groupadmin);
+                bundle.putString("adminname", groupadminname);
                 bundle.putString("description", groupdescription);
                 bundle.putString("rules", grouprules);
                 bundle.putString("threads", groupthreads);

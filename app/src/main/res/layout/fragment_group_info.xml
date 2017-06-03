@@ -177,13 +177,25 @@
 
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/adminname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center"
+                    android:paddingLeft="4dp"
+                    android:text="Admin: Default"
+                    android:textColor="#424242"
+                    android:textSize="14dp"
+                    android:textStyle="bold" />
                 <RelativeLayout
                     android:id="@+id/joincontainer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="18dp">
+                    android:layout_marginTop="16dp">
 
                     <TextView
                         android:id="@+id/btn_follow"

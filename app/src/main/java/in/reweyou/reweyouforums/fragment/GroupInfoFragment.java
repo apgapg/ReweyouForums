@@ -88,6 +88,8 @@ public class GroupInfoFragment extends Fragment {
     private ImageView share;
     private Uri uri;
     private CardView cd;
+    private TextView adminname;
+    private String groupadminname;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -105,6 +107,7 @@ public class GroupInfoFragment extends Fragment {
         TextView edit = (TextView) layout.findViewById(R.id.edit);
         cd = (CardView) layout.findViewById(R.id.cd);
         dnd = (ImageView) layout.findViewById(R.id.dnd);
+        adminname = (TextView) layout.findViewById(R.id.adminname);
         share = (ImageView) layout.findViewById(R.id.share);
         share.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,6 +176,7 @@ public class GroupInfoFragment extends Fragment {
             grouprules = getArguments().getString("rules");
             tvRules.setText(getArguments().getString("rules"));
             adminuid = getArguments().getString("admin");
+            groupadminname = getArguments().getString("adminname");
             threads.setText(getArguments().getString("threads"));
             if (getArguments().getString("rules").isEmpty()) {
                 if (userSessionManager.getUID().equals(adminuid)) {
@@ -201,7 +205,7 @@ public class GroupInfoFragment extends Fragment {
 
             flowLayout = (FlowLayout) layout.findViewById(R.id.flowlayout);
             getMembersData();
-
+            adminname.setText("Admin: " + groupadminname);
 
             Glide.with(mContext).load(getArguments().getString("image")).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(img);
             btnfollow.setOnClickListener(new View.OnClickListener() {

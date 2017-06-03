@@ -12,7 +12,12 @@ public class GroupModel {
     private String members;
     private String groupid;
     private String admin;
+    private String adminname;
     private String rules;
+
+    public String getAdminname() {
+        return adminname;
+    }
 
     public String getAdmin() {
         return admin;

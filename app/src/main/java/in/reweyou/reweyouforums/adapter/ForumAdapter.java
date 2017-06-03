@@ -91,6 +91,7 @@ public class ForumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     i.putExtra("description", messagelist.get(getAdapterPosition()).getDescription());
                     i.putExtra("rules", messagelist.get(getAdapterPosition()).getRules());
                     i.putExtra("admin", messagelist.get(getAdapterPosition()).getAdmin());
+                    i.putExtra("adminname", messagelist.get(getAdapterPosition()).getAdminname());
                     i.putExtra("image", messagelist.get(getAdapterPosition()).getImage());
                     i.putExtra("members", messagelist.get(getAdapterPosition()).getMembers());
                     i.putExtra("threads", messagelist.get(getAdapterPosition()).getThreads());

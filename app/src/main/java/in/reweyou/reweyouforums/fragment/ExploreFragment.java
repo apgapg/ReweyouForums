@@ -117,6 +117,7 @@ public class ExploreFragment extends Fragment {
 
         AndroidNetworking.post("https://www.reweyou.in/google/discover_groups.php")
                 .addBodyParameter("uid", userSessionManager.getUID())
+                .addBodyParameter("authtoken", userSessionManager.getAuthToken())
                 .setTag("fetchgroups")
                 .setPriority(Priority.MEDIUM)
                 .build()
