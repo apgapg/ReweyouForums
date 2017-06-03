@@ -156,7 +156,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                 shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_follower));
             } else if (messagelist.get(position).getBadge().equals("Pro")) {
                 shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_pro));
-            } else if (messagelist.get(position).getBadge().equals("Star")) {
+            } else if (messagelist.get(position).getBadge().equals("Rising Star")) {
                 shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_rising_star));
             } else if (messagelist.get(position).getBadge().equals("Expert")) {
                 shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_expert));
@@ -796,7 +796,6 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
     private class YoutubeViewHolder extends BaseViewHolder {
         private TextView linkheadline;
-        private RelativeLayout container;
         private ImageView linkimage;
 
         public YoutubeViewHolder(View inflate) {
@@ -805,8 +804,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             linkimage = (ImageView) inflate.findViewById(R.id.imagelink);
             linkheadline.setSelected(true);
 
-            container = (RelativeLayout) inflate.findViewById(R.id.rlcont);
-            container.setOnClickListener(new View.OnClickListener() {
+            linkimage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     try {

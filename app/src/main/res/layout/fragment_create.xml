@@ -59,9 +59,10 @@
                         android:id="@+id/image"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-
-
                         android:background="@drawable/border_green"
+
+
+                        android:foreground="@drawable/ripple_effect2"
                         android:padding="1dp"
                         android:scaleType="center"
 

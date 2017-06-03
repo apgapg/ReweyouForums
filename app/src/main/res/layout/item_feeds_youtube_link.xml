@@ -72,16 +72,17 @@ terro"
             <RelativeLayout
                 android:id="@+id/rlcont"
                 android:layout_width="match_parent"
-                android:layout_height="170dp"
-
-                android:background="@drawable/ripple_effect_white_rec">
+                android:layout_height="170dp">
 
                 <ImageView
                     android:id="@+id/imagelink"
                     android:layout_width="match_parent"
                     android:layout_height="130dp"
                     android:layout_alignParentRight="true"
-                    android:scaleType="centerCrop" />
+                    android:foreground="@drawable/ripple_effect_white_rec"
+
+                    android:scaleType="centerCrop"
+                    android:tint="#64000000" />
 
                 <ImageView
                     android:layout_width="wrap_content"

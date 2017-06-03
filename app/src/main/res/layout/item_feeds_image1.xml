@@ -55,22 +55,21 @@ terro"
             android:textColor="#424242"
             android:textSize="13dp" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="200dp">
+
 
             <ImageView
                 android:id="@+id/image1"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_alignParentRight="true"
+
                 android:layout_marginBottom="12dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
+                android:foreground="@drawable/ripple_effect_white_rec"
                 android:scaleType="centerInside" />
 
 
-        </RelativeLayout>
 
         <View
             android:id="@+id/c"
