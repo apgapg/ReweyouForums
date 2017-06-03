@@ -118,58 +118,63 @@ public class CommentFragment extends Fragment {
                         .addBodyParameter("authtoken", userSessionManager.getAuthToken())
                         .addBodyParameter("threadid", threadid)
 
-                        .setTag("report")
+                        .setTag("comment1")
 
                         .setPriority(Priority.HIGH)
                         .build()
                         .getAsJSONArray(new JSONArrayRequestListener() {
                             @Override
                             public void onResponse(JSONArray response) {
-                                swipeRefreshLayout.setRefreshing(false);
-
-                                Log.d(TAG, "onResponse: " + response);
-                                Gson gson = new Gson();
-                                List<Object> list = new ArrayList<>();
 
                                 try {
-                                    for (int i = 0; i < response.length(); i++) {
-                                        JSONObject json = response.getJSONObject(response.length() - 1 - i);
-                                        CommentModel coModel = gson.fromJson(json.toString(), CommentModel.class);
-                                        list.add(coModel);
+                                    if (!mContext.isFinishing()) {
+                                        swipeRefreshLayout.setRefreshing(false);
 
-                                        if (json.has("reply")) {
-                                            JSONArray jsonReply = json.getJSONArray("reply");
+                                        Log.d(TAG, "onResponse: " + response);
+                                        Gson gson = new Gson();
+                                        List<Object> list = new ArrayList<>();
 
-                                            for (int j = 0; j < jsonReply.length(); j++) {
-                                                JSONObject jsontemp = jsonReply.getJSONObject(jsonReply.length() - 1 - j);
-                                                ReplyCommentModel temp = gson.fromJson(jsontemp.toString(), ReplyCommentModel.class);
-                                                list.add(temp);
+                                        try {
+                                            for (int i = 0; i < response.length(); i++) {
+                                                JSONObject json = response.getJSONObject(response.length() - 1 - i);
+                                                CommentModel coModel = gson.fromJson(json.toString(), CommentModel.class);
+                                                list.add(coModel);
+
+                                                if (json.has("reply")) {
+                                                    JSONArray jsonReply = json.getJSONArray("reply");
+
+                                                    for (int j = 0; j < jsonReply.length(); j++) {
+                                                        JSONObject jsontemp = jsonReply.getJSONObject(jsonReply.length() - 1 - j);
+                                                        ReplyCommentModel temp = gson.fromJson(jsontemp.toString(), ReplyCommentModel.class);
+                                                        list.add(temp);
+                                                    }
+                                                }
+
                                             }
+
+                                            adapterComment.add(list);
+                                            if (list.size() == 0) {
+                                                nocommenttxt.setVisibility(View.VISIBLE);
+
+
+                                            } else nocommenttxt.setVisibility(View.INVISIBLE);
+
+
+                                            new Handler().post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    recyclerView.smoothScrollToPosition(0);
+                                                }
+                                            });
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                            Toast.makeText(mContext.getApplicationContext(), "something went wrong!", Toast.LENGTH_SHORT).show();
+
                                         }
-
-                                    }
-
-                                    adapterComment.add(list);
-                                    if (list.size() == 0) {
-                                        nocommenttxt.setVisibility(View.VISIBLE);
-
-
-                                    } else nocommenttxt.setVisibility(View.INVISIBLE);
-
-
-                                    new Handler().post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            recyclerView.smoothScrollToPosition(0);
-                                        }
-                                    });
+                                    } else Log.e(TAG, "onResponse: activity finishing");
                                 } catch (Exception e) {
                                     e.printStackTrace();
-                                    Toast.makeText(mContext, "something went wrong!", Toast.LENGTH_SHORT).show();
-
                                 }
-
-
                             }
 
                             @Override
@@ -218,7 +223,7 @@ public class CommentFragment extends Fragment {
 
                     AndroidNetworking.post(url)
                             .addBodyParameter(hashMap)
-                            .setTag("comment")
+                            .setTag("comment2")
                             .setPriority(Priority.HIGH)
                             .build()
                             .getAsString(new StringRequestListener() {
@@ -226,41 +231,53 @@ public class CommentFragment extends Fragment {
                                 public void onResponse(String response) {
                                     Log.d(TAG, "onResponse: " + response);
                                     //   Toast.makeText(CommentActivity.this,response,Toast.LENGTH_SHORT).show();
+                                    try {
 
 
-                                    if (response.contains("Comment created")) {
-                                        editText.setEnabled(true);
-                                        editText.setText("");
-                                        send.setVisibility(View.VISIBLE);
-                                        progressBar.setVisibility(View.GONE);
-                                        getData();
-                                    } else if (response.contains("Reply created")) {
-                                        editText.setEnabled(true);
-                                        editText.setText("");
-                                        send.setVisibility(View.VISIBLE);
-                                        progressBar.setVisibility(View.GONE);
-                                        getData();
-                                    } else {
+                                        if (!mContext.isFinishing()) {
 
-                                        send.setVisibility(View.VISIBLE);
-                                        progressBar.setVisibility(View.GONE);
-                                        editText.setEnabled(true);
 
-                                        Toast.makeText(mContext, "something went wrong!", Toast.LENGTH_SHORT).show();
+                                            if (response.contains("Comment created")) {
+                                                editText.setEnabled(true);
+                                                editText.setText("");
+                                                send.setVisibility(View.VISIBLE);
+                                                progressBar.setVisibility(View.GONE);
+                                                getData();
+                                            } else if (response.contains("Reply created")) {
+                                                editText.setEnabled(true);
+                                                editText.setText("");
+                                                send.setVisibility(View.VISIBLE);
+                                                progressBar.setVisibility(View.GONE);
+                                                getData();
+                                            } else {
 
+                                                send.setVisibility(View.VISIBLE);
+                                                progressBar.setVisibility(View.GONE);
+                                                editText.setEnabled(true);
+
+                                                Toast.makeText(mContext, "something went wrong!", Toast.LENGTH_SHORT).show();
+
+                                            }
+                                        } else Log.w(TAG, "onResponse: activity finishing");
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
                                 }
 
                                 @Override
                                 public void onError(ANError anError) {
                                     Log.d(TAG, "onError: anerror" + anError);
+                                    try {
+                                        if (!mContext.isFinishing()) {
+                                            send.setVisibility(View.VISIBLE);
+                                            progressBar.setVisibility(View.GONE);
+                                            editText.setEnabled(true);
 
-                                    send.setVisibility(View.VISIBLE);
-                                    progressBar.setVisibility(View.GONE);
-                                    editText.setEnabled(true);
-
-                                    Toast.makeText(mContext, "couldn't connect", Toast.LENGTH_SHORT).show();
-
+                                            Toast.makeText(mContext, "couldn't connect", Toast.LENGTH_SHORT).show();
+                                        } else Log.w(TAG, "onResponse: activity finishing");
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             });
                 }

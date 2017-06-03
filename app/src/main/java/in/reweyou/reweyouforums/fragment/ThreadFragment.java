@@ -118,7 +118,7 @@ public class ThreadFragment extends Fragment {
                 .addBodyParameter("threadid", threadid)
                 .addBodyParameter("uid", userSessionManager.getUID())
                 .addBodyParameter("authtoken", userSessionManager.getAuthToken())
-                .setTag("report")
+                .setTag("comment3")
                 .setPriority(Priority.HIGH)
                 .build()
                 .getAsJSONArray(new JSONArrayRequestListener() {

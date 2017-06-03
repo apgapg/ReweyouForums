@@ -21,6 +21,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.androidnetworking.AndroidNetworking;
+
 import in.reweyou.reweyouforums.adapter.CommentsAdapter;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.fragment.CommentFragment;
@@ -114,6 +116,11 @@ public class CommentActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+
+        Log.d(TAG, "onBackPressed: called");
+        AndroidNetworking.cancel("comment1");
+        AndroidNetworking.cancel("comment2");
+        AndroidNetworking.cancel("comment3");
         Intent i;
         if (isfromGroupActivity || isfromNotiAdapter || isfromForumMainActivity)
             finish();
