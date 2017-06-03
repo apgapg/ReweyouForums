@@ -1,5 +1,6 @@
 package in.reweyou.reweyouforums.adapter;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -11,7 +12,9 @@ import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.customtabs.CustomTabsIntent;
@@ -43,6 +46,12 @@ import com.androidnetworking.interfaces.StringRequestListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 import org.chromium.customtabsclient.CustomTabsActivityHelper;
 
@@ -483,7 +492,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             Random random = new Random();
             int m = random.nextInt(999999 - 100000) + 100000;
 
-            String mPath = mediaStorageDir.toString() + "/" + random + ".jpg";
+            String mPath = mediaStorageDir.toString() + "/" + m + ".jpg";
             File imageFile = new File(mPath);
             Uri uri = Uri.fromFile(imageFile);
 
@@ -494,6 +503,10 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             loadBitmapFromView(cv).compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
             outputStream.flush();
             outputStream.close();
+
+
+            MediaScannerConnection.scanFile(mContext.getApplicationContext(), new String[]{mPath}, new String[]{"image/jpeg"}, null);
+
 
             try {
                 shareIntent(uri);
@@ -548,6 +561,31 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         return resizedbitmap1;
     }
 
+    private void checkStoragePermission(final CardView cv) {
+        Dexter.withActivity((Activity) mContext)
+                .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        takeScreenshot(cv);
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        Toast.makeText(mContext, "Storage Permission denied by user", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "onPermissionGranted: " + response.isPermanentlyDenied());
+
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        token.continuePermissionRequest();
+
+                    }
+                }).check();
+    }
+
+
     public class BaseViewHolder extends RecyclerView.ViewHolder {
         private ImageView profileimage, liketemp, comment, like, share;
         private TextView username, likenum, commentnum, likenumber;
@@ -580,7 +618,15 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             share.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    takeScreenshot(cv);
+                    try {
+                        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            checkStoragePermission(cv);
+
+                        } else
+                            takeScreenshot(cv);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             });
             edit.setOnClickListener(new View.OnClickListener() {
@@ -625,6 +671,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
         }
     }
+
 
     private class Image1ViewHolder extends BaseViewHolder {
         private ImageView image1;

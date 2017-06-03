@@ -4,6 +4,7 @@ import android.app.WallpaperManager;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -30,6 +37,8 @@ import in.reweyou.reweyouforums.utils.Utils;
 import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 
 public class FullImage extends AppCompatActivity {
+
+    private static final String TAG = FullImage.class.getName();
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -91,17 +100,49 @@ public class FullImage extends AppCompatActivity {
         txtsave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                v.setVisibility(View.INVISIBLE);
-                pdsave.setVisibility(View.VISIBLE);
 
-                savephoto();
+                try {
+                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        checkStoragePermission();
+
+                    } else
+                        savephoto();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
         });
     }
 
+    private void checkStoragePermission() {
+        Dexter.withActivity(FullImage.this)
+                .withPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        savephoto();
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        Toast.makeText(FullImage.this, "Storage Permission denied by user", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "onPermissionGranted: " + response.isPermanentlyDenied());
+
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        token.continuePermissionRequest();
+
+                    }
+                }).check();
+    }
+
     private void savephoto() {
 
-
+        txtsave.setVisibility(View.INVISIBLE);
+        pdsave.setVisibility(View.VISIBLE);
         Glide.with(FullImage.this).load(imagepath).asBitmap().into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
@@ -128,6 +169,7 @@ public class FullImage extends AppCompatActivity {
                     Toast.makeText(FullImage.this, "Image saved!", Toast.LENGTH_SHORT).show();
                     txtsave.setVisibility(View.VISIBLE);
                     pdsave.setVisibility(View.INVISIBLE);
+
                     MediaScannerConnection.scanFile(getApplicationContext(), new String[]{mPath}, new String[]{"image/jpeg"}, null);
 
 
