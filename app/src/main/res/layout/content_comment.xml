@@ -75,7 +75,6 @@
             android:hint="Add a comment..."
 
             android:inputType="textMultiLine"
-            android:maxLength="600"
             android:maxLines="10"
             android:minHeight="48dp"
             android:paddingBottom="8dp"
