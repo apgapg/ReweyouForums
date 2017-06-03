@@ -43,5 +43,67 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/gradient_black_bottom" />
 
+    <TextView
+        android:id="@+id/txtwallpaper"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:alpha="0.90"
+        android:background="@drawable/border_link_white"
+        android:gravity="center"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:text="Set as wallpaper"
+        android:textAllCaps="true"
+        android:textColor="#fff"
+        android:textSize="12dp"
+
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txtsave"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        android:alpha="0.90"
+        android:background="@drawable/border_link_white"
+        android:gravity="center"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:text="save photo"
+        android:textAllCaps="true"
+        android:textColor="#fff"
+        android:textSize="12dp"
+        android:textStyle="bold" />
+
+    <ProgressBar
+        android:id="@+id/pd"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="18dp"
+        android:layout_marginLeft="68dp"
+        android:visibility="invisible" />
+
+    <ProgressBar
+        android:id="@+id/pdsave"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="18dp"
+        android:layout_marginRight="48dp"
+        android:visibility="invisible" />
 </RelativeLayout>
