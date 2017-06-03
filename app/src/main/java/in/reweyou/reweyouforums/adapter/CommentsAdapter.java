@@ -511,7 +511,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             reply.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((CommentActivity) mContext).passClicktoEditText(((CommentModel) messagelist.get(getAdapterPosition())).getUsername(), (((CommentModel) messagelist.get((getAdapterPosition()))).getCommentid()));
+                    ((CommentActivity) mContext).passClicktoEditText(((CommentModel) messagelist.get(getAdapterPosition())).getUsername(), (((CommentModel) messagelist.get((getAdapterPosition()))).getCommentid()), getAdapterPosition());
                 }
             });
 

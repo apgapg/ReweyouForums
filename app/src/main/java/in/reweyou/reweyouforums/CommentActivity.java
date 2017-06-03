@@ -143,13 +143,13 @@ public class CommentActivity extends AppCompatActivity {
         }
     }
 
-    public void passClicktoEditText(String username, String commentid) {
+    public void passClicktoEditText(String username, String commentid, int adapterPosition) {
 
         if (isfromNoti || isfromNotiAdapter) {
-            ((CommentFragment) pagerAdapter.getRegisteredFragment(1)).passClicktoEditText(username, commentid);
+            ((CommentFragment) pagerAdapter.getRegisteredFragment(1)).passClicktoEditText(username, commentid, adapterPosition);
 
         } else {
-            ((CommentFragment) pagerAdapterSingle.getRegisteredFragment(0)).passClicktoEditText(username, commentid);
+            ((CommentFragment) pagerAdapterSingle.getRegisteredFragment(0)).passClicktoEditText(username, commentid, adapterPosition);
         }
     }
 

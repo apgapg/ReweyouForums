@@ -64,6 +64,7 @@ public class CommentFragment extends Fragment {
     private CommentsAdapter adapterComment;
     private String threadid;
     private String tempcommentid;
+    private LinearLayoutManager linearLayoutManager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,7 +88,7 @@ public class CommentFragment extends Fragment {
         });
 
         recyclerView = (RecyclerView) layout.findViewById(R.id.recycler_view);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
+        linearLayoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(linearLayoutManager);
         progressBar = (ProgressBar) layout.findViewById(R.id.progressBar);
         editText = (EditText) layout.findViewById(R.id.edittext);
@@ -336,7 +337,8 @@ public class CommentFragment extends Fragment {
     }
 
     public void passClicktoEditText(String s, String commentid, int adapterPosition) {
-        recyclerView.smoothScrollToPosition(adapterPosition);
+        Log.w(TAG, "passClicktoEditText: " + adapterPosition);
+        linearLayoutManager.scrollToPositionWithOffset(adapterPosition, 0);
         this.tempcommentid = commentid;
         if (replyheader.getVisibility() == View.GONE) {
             replyheader.setVisibility(View.VISIBLE);
