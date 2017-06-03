@@ -335,7 +335,8 @@ public class CommentFragment extends Fragment {
 
     }
 
-    public void passClicktoEditText(String s, String commentid) {
+    public void passClicktoEditText(String s, String commentid, int adapterPosition) {
+        recyclerView.smoothScrollToPosition(adapterPosition);
         this.tempcommentid = commentid;
         if (replyheader.getVisibility() == View.GONE) {
             replyheader.setVisibility(View.VISIBLE);

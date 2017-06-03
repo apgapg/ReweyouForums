@@ -9,9 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="36dp"
-        app:cardCornerRadius="2dp"
-
-        app:cardElevation="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="0dp"
         app:cardUseCompatPadding="true">
 
         <android.support.v4.widget.SwipeRefreshLayout

@@ -4,17 +4,23 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,8 +46,11 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.chromium.customtabsclient.CustomTabsActivityHelper;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import in.reweyou.reweyouforums.CommentActivity;
 import in.reweyou.reweyouforums.ForumMainActivity;
@@ -127,7 +136,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         Log.d(TAG, "onBindViewHolder: " + messagelist.get(position).getBadge());
         if (messagelist.get(position).getUid().equals(userSessionManager.getUID())) {
             holder.edit.setVisibility(View.VISIBLE);
-        } else holder.edit.setVisibility(View.INVISIBLE);
+        } else holder.edit.setVisibility(View.GONE);
 
         holder.likenumber.setText(messagelist.get(position).getUpvotes());
         if (messagelist.get(position).getStatus().equals("true")) {
@@ -450,20 +459,111 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                 });
     }
 
+    private void shareIntent(Uri uri) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT, "Download ReweyouForums app: https://play.google.com/store/apps/details?id=in.reweyou.reweyouforums");
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        intent.setType("image/jpeg");
+        mContext.startActivity(Intent.createChooser(intent, "Share Post using"));
+    }
+
+    private void takeScreenshot(CardView cv) {
+
+        try {
+
+            File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "Pictures/ReweyouForums");
+
+            if (!mediaStorageDir.exists()) {
+                if (!mediaStorageDir.mkdirs()) {
+                    Log.d("Reweyou", "failed to create directory");
+                }
+            }
+            Random random = new Random();
+            int m = random.nextInt(999999 - 100000) + 100000;
+
+            String mPath = mediaStorageDir.toString() + "/" + random + ".jpg";
+            File imageFile = new File(mPath);
+            Uri uri = Uri.fromFile(imageFile);
+
+            FileOutputStream outputStream = new FileOutputStream(imageFile);
+            int quality = 99;
+            cv.setDrawingCacheEnabled(true);
+            cv.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+            loadBitmapFromView(cv).compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
+            outputStream.flush();
+            outputStream.close();
+
+            try {
+                shareIntent(uri);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private Bitmap loadBitmapFromView(View v) {
+        Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight() - Utils.convertpxFromDp(4), Bitmap.Config.ARGB_4444);
+        Canvas c = new Canvas(b);
+        v.draw(c);
+
+        final DisplayMetrics metrics = mContext.getResources().getDisplayMetrics();
+        final Bitmap b2 = drawToBitmap(mContext, R.layout.share_reweyou_tag, metrics.widthPixels, metrics.heightPixels);
+
+        return combineImages(b, b2);
+    }
+
+    private Bitmap drawToBitmap(Context context, final int layoutResId, final int width, final int height) {
+
+        final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View layout = inflater.inflate(layoutResId, null);
+        layout.setDrawingCacheEnabled(true);
+        layout.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.AT_MOST));
+        layout.layout(0, 0, layout.getMeasuredWidth(), layout.getMeasuredHeight());
+        final Bitmap bmp = Bitmap.createBitmap(layout.getMeasuredWidth(), layout.getMeasuredHeight(), Bitmap.Config.ARGB_4444);
+        final Canvas canvas = new Canvas(bmp);
+        canvas.drawBitmap(layout.getDrawingCache(), 0, 0, new Paint());
+        return bmp;
+    }
+
+    private Bitmap combineImages(Bitmap c, Bitmap s) {
+        Bitmap cs = null;
+
+        int width, height = 0;
+
+        width = c.getWidth();
+        height = c.getHeight() + s.getHeight();
+
+        cs = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+
+        Canvas comboImage = new Canvas(cs);
+        comboImage.drawBitmap(c, 0f, 0f, null);
+        comboImage.drawBitmap(s, 0f, c.getHeight(), null);
+        Bitmap resizedbitmap1 = Bitmap.createBitmap(cs, Utils.convertpxFromDp(6), Utils.convertpxFromDp(6), cs.getWidth() - Utils.convertpxFromDp(12), cs.getHeight() - Utils.convertpxFromDp(6));
+
+        return resizedbitmap1;
+    }
+
     public class BaseViewHolder extends RecyclerView.ViewHolder {
-        private ImageView profileimage, liketemp, comment, like;
+        private ImageView profileimage, liketemp, comment, like, share;
         private TextView username, likenum, commentnum, likenumber;
         private TextView date, userlevel, groupname;
         private TextView description, edit;
         private LinearLayout commentcontainer;
+        private CardView cv;
 
         public BaseViewHolder(View inflate) {
             super(inflate);
 
             profileimage = (ImageView) inflate.findViewById(R.id.profilepic);
             comment = (ImageView) inflate.findViewById(R.id.comment);
+            share = (ImageView) inflate.findViewById(R.id.share);
             like = (ImageView) inflate.findViewById(R.id.like);
             liketemp = (ImageView) inflate.findViewById(R.id.templike);
+            cv = (CardView) inflate.findViewById(R.id.cv);
 
             groupname = (TextView) inflate.findViewById(R.id.groupname);
             edit = (TextView) inflate.findViewById(R.id.edit);
@@ -476,6 +576,12 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             date = (TextView) inflate.findViewById(R.id.date);
             commentnum = (TextView) inflate.findViewById(R.id.commentnumber);
 
+            share.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    takeScreenshot(cv);
+                }
+            });
             edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -714,6 +820,5 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             });
         }
     }
-
 
 }
