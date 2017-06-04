@@ -134,7 +134,6 @@ public class TopMembersFragment extends Fragment {
                                     } else Log.e(TAG, "onResponse: activity finishing");
                                 } catch (Exception e) {
                                     e.printStackTrace();
-                                    Toast.makeText(mContext.getApplicationContext(), "something went wrong!", Toast.LENGTH_SHORT).show();
 
                                 }
                             }

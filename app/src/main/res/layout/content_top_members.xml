@@ -30,8 +30,8 @@
 
                 android:clipToPadding="false"
                 android:paddingBottom="4dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="3dp"
                 android:paddingTop="4dp" />
         </android.support.v4.widget.SwipeRefreshLayout>
     </android.support.v7.widget.CardView>

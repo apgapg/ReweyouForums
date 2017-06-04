@@ -48,6 +48,7 @@ public class TopGroupMembersAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         ((YourGroupsViewHolder) holder).username.setText(messagelist.get(position).getUsername());
         Glide.with(mContext).load(messagelist.get(position).getImageurl()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(forumViewHolder.image);
 
+        forumViewHolder.rank.setText("#" + position);
         forumViewHolder.userlevel.setText(messagelist.get(position).getBadge());
 
         Drawable background = forumViewHolder.userlevel.getBackground();
@@ -95,7 +96,7 @@ public class TopGroupMembersAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     private class YourGroupsViewHolder extends RecyclerView.ViewHolder {
         private ImageView image;
-        private TextView username, userlevel;
+        private TextView username, userlevel, rank;
 
 
         public YourGroupsViewHolder(View inflate) {
@@ -103,6 +104,7 @@ public class TopGroupMembersAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
             image = (ImageView) inflate.findViewById(R.id.image);
             userlevel = (TextView) inflate.findViewById(R.id.userlevel);
+            rank = (TextView) inflate.findViewById(R.id.rank);
 
             username = (TextView) inflate.findViewById(R.id.username);
 
