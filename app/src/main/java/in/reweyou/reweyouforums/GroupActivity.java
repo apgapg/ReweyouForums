@@ -44,6 +44,7 @@ import java.util.List;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.fragment.GroupInfoFragment;
 import in.reweyou.reweyouforums.fragment.GroupThreadsFragment;
+import in.reweyou.reweyouforums.fragment.TopMembersFragment;
 import in.reweyou.reweyouforums.utils.Utils;
 
 public class GroupActivity extends AppCompatActivity {
@@ -470,7 +471,7 @@ public class GroupActivity extends AppCompatActivity {
                 fragment.setArguments(bundle);
 
                 return fragment;
-            } else {
+            } else if (position == 1) {
                 Bundle bundle = new Bundle();
                 bundle.putString("groupid", groupid);
                 bundle.putBoolean("follow", isfollowed);
@@ -478,6 +479,14 @@ public class GroupActivity extends AppCompatActivity {
                 groupThreadsFragment.setArguments(bundle);
 
                 return groupThreadsFragment;
+            } else {
+                Bundle bundle = new Bundle();
+                bundle.putString("groupid", groupid);
+                bundle.putBoolean("follow", isfollowed);
+                TopMembersFragment topMembersFragment = new TopMembersFragment();
+                topMembersFragment.setArguments(bundle);
+                return topMembersFragment;
+
             }
         }
 

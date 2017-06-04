@@ -33,6 +33,7 @@
     <string-array name="group_tab">
         <item>@string/tab1</item>
         <item>@string/tab2</item>
+        <item>@string/tab3</item>
     </string-array>
 
     <string name="tab_8">POST</string>
@@ -51,5 +52,6 @@
     <string name="title_activity_youtube">Youtube Video</string>
     <string name="error_player">Something went wrong! Please try again</string>
     <string name="tab_44">Your Group</string>
+    <string name="tab3">Leaders</string>
 
 </resources>
