@@ -17,12 +17,6 @@
     <!-- Get permission for reliable local dispatching on non-Google Play devices. -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <meta-data
-        android:name="firebase_analytics_collection_deactivated"
-        android:value="true" />
-    <meta-data
-        android:name="com.google.android.gms.vision.DEPENDENCIES"
-        android:value="barcode" />
 
     <application
         android:name=".ApplicationClass"
@@ -43,13 +37,7 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-        <!-- Firebase Notifications -->
 
-
-        <!--
-             Register AnalyticsReceiver and AnalyticsService to support background
-             dispatching on non-Google Play devices.
-        -->
         <receiver
             android:name="com.google.android.gms.analytics.AnalyticsReceiver"
             android:enabled="true">
@@ -57,20 +45,33 @@
                 <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH" />
             </intent-filter>
         </receiver>
-
         <service
             android:name="com.google.android.gms.analytics.AnalyticsService"
             android:enabled="true"
             android:exported="false" />
 
-        <!-- ... -->
+
+        <!-- Optionally, register CampaignTrackingReceiver and CampaignTrackingService to enable
+             installation campaign reporting -->
+        <receiver
+            android:name="com.google.android.gms.analytics.CampaignTrackingReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="com.google.android.gms.analytics.CampaignTrackingService"
+            android:enabled="true"
+            android:exported="false" />
 
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Base.Theme.AppCompat" />
         <activity
-            android:name=".FullImage"
+            android:name=".FullImageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.Preview" />
         <activity
@@ -102,7 +103,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CreateActivity"
+            android:name=".CreatePostActivity"
             android:label="@string/title_activity_create"
             android:screenOrientation="portrait"
             android:taskAffinity=""
@@ -117,7 +118,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".EditActivity"
+            android:name=".EditGroupActivity"
             android:label="@string/title_activity_edit"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2.NoActionBar"
@@ -134,7 +135,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2.NoActionBar" />
         <activity
-            android:name=".NotiActivity"
+            android:name=".NotificationActivity"
             android:label="@string/title_activity_noti"
             android:screenOrientation="portrait"
 
@@ -145,11 +146,6 @@
             android:screenOrientation="portrait"
 
             android:theme="@style/AppTheme.NoActionBar.Preview">
-
-        </activity>
-        <activity
-            android:name=".YoutubePlayerActivity"
-            android:screenOrientation="portrait">
 
         </activity>
     </application>

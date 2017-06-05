@@ -31,6 +31,7 @@ import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.adapter.TopGroupMembersAdapter;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.model.TopGroupMemberModel;
+import in.reweyou.reweyouforums.utils.NetworkHandler;
 
 /**
  * Created by master on 24/2/17.
@@ -101,49 +102,54 @@ public class TopMembersFragment extends Fragment {
                         .getAsJSONArray(new JSONArrayRequestListener() {
                             @Override
                             public void onResponse(JSONArray response) {
+                                if (new NetworkHandler().isActivityAlive(TAG, mContext, response)) {
 
-                                try {
-                                    if (!mContext.isFinishing()) {
-                                        swipeRefreshLayout.setRefreshing(false);
+                                    try {
+                                        if (!mContext.isFinishing()) {
+                                            swipeRefreshLayout.setRefreshing(false);
 
-                                        Log.d(TAG, "onResponse: " + response);
-                                        Gson gson = new Gson();
-                                        List<TopGroupMemberModel> list = new ArrayList<>();
+                                            Log.d(TAG, "onResponse: " + response);
+                                            Gson gson = new Gson();
+                                            List<TopGroupMemberModel> list = new ArrayList<>();
 
-                                        try {
-                                            for (int i = 0; i < response.length(); i++) {
-                                                JSONObject json = response.getJSONObject(i);
-                                                TopGroupMemberModel coModel = gson.fromJson(json.toString(), TopGroupMemberModel.class);
-                                                list.add(coModel);
+                                            try {
+                                                for (int i = 0; i < response.length(); i++) {
+                                                    JSONObject json = response.getJSONObject(i);
+                                                    TopGroupMemberModel coModel = gson.fromJson(json.toString(), TopGroupMemberModel.class);
+                                                    list.add(coModel);
+
+                                                }
+
+                                                topGroupMembersAdapter.add(list);
+
+                                                new Handler().post(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        recyclerView.smoothScrollToPosition(0);
+                                                    }
+                                                });
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                                Toast.makeText(mContext.getApplicationContext(), "something went wrong!", Toast.LENGTH_SHORT).show();
 
                                             }
+                                        } else Log.e(TAG, "onResponse: activity finishing");
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
 
-                                            topGroupMembersAdapter.add(list);
-
-                                            new Handler().post(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    recyclerView.smoothScrollToPosition(0);
-                                                }
-                                            });
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                            Toast.makeText(mContext.getApplicationContext(), "something went wrong!", Toast.LENGTH_SHORT).show();
-
-                                        }
-                                    } else Log.e(TAG, "onResponse: activity finishing");
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-
+                                    }
                                 }
                             }
 
                             @Override
                             public void onError(ANError anError) {
-                                swipeRefreshLayout.setRefreshing(false);
+                                if (new NetworkHandler().isActivityAlive(TAG, mContext, anError)) {
 
-                                Log.d(TAG, "onError: " + anError);
-                                Toast.makeText(mContext, "couldn't connect", Toast.LENGTH_SHORT).show();
+                                    swipeRefreshLayout.setRefreshing(false);
+
+                                    Log.d(TAG, "onError: " + anError);
+                                    Toast.makeText(mContext, "couldn't connect", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         });
             }

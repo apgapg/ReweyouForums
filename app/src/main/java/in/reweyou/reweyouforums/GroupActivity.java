@@ -418,7 +418,7 @@ public class GroupActivity extends AppCompatActivity {
 
     public void startCreateActivity() {
         uploadingContainer.setVisibility(View.GONE);
-        startActivityForResult(new Intent(GroupActivity.this, CreateActivity.class), 19);
+        startActivityForResult(new Intent(GroupActivity.this, CreatePostActivity.class), 19);
     }
 
     public void showfirstpage() {

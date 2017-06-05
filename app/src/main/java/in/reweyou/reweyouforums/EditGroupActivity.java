@@ -50,8 +50,8 @@ import java.util.List;
 
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 
-public class EditActivity extends AppCompatActivity {
-    private static final String TAG = EditActivity.class.getName();
+public class EditGroupActivity extends AppCompatActivity {
+    private static final String TAG = EditGroupActivity.class.getName();
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -151,7 +151,7 @@ public class EditActivity extends AppCompatActivity {
                                 Log.d(TAG, "onResponse: " + response);
                                 if (response.contains("group updated")) {
                                     pd.setVisibility(View.GONE);
-                                    Toast.makeText(EditActivity.this, "Group Info updated", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(EditGroupActivity.this, "Group Info updated", Toast.LENGTH_SHORT).show();
                                     try {
                                         JSONObject jsonObject = new JSONObject(response.replace("group updated", ""));
                                         Intent i = new Intent();
@@ -165,7 +165,7 @@ public class EditActivity extends AppCompatActivity {
                                     }
 
                                 } else {
-                                    Toast.makeText(EditActivity.this, "something went wrong!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(EditGroupActivity.this, "something went wrong!", Toast.LENGTH_SHORT).show();
 
                                     create.setVisibility(View.VISIBLE);
                                     pd.setVisibility(View.GONE);
@@ -222,7 +222,7 @@ public class EditActivity extends AppCompatActivity {
     }
 
     private void checkStoragePermission() {
-        Dexter.withActivity(EditActivity.this)
+        Dexter.withActivity(EditGroupActivity.this)
                 .withPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)
                 .withListener(new PermissionListener() {
                     @Override
@@ -232,7 +232,7 @@ public class EditActivity extends AppCompatActivity {
 
                     @Override
                     public void onPermissionDenied(PermissionDeniedResponse response) {
-                        Toast.makeText(EditActivity.this, "Storage Permission denied by user", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EditGroupActivity.this, "Storage Permission denied by user", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "onPermissionGranted: " + response.isPermanentlyDenied());
 
                     }

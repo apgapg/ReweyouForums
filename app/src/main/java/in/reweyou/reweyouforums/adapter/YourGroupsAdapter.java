@@ -44,7 +44,7 @@ public class YourGroupsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new YourGroupsViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_explore_your_groups, parent, false));
+        return new YourGroupsViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_explore_suggest, parent, false));
     }
 
     @Override
@@ -83,6 +83,7 @@ public class YourGroupsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             groupName = (TextView) inflate.findViewById(R.id.groupname);
             members = (TextView) inflate.findViewById(R.id.members);
             threads = (TextView) inflate.findViewById(R.id.threads);
+
             container = (LinearLayout) inflate.findViewById(R.id.container);
             groupName.setSelected(true);
             container.setOnClickListener(new View.OnClickListener() {

@@ -53,6 +53,7 @@ public class ForumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         forumViewHolder.groupName.setText(messagelist.get(position).getGroupname());
         forumViewHolder.members.setText(messagelist.get(position).getMembers());
         forumViewHolder.threads.setText(messagelist.get(position).getThreads());
+        forumViewHolder.description.setText(messagelist.get(position).getDescription());
     }
 
     @Override
@@ -70,7 +71,7 @@ public class ForumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         private ImageView backgroundImage;
         private TextView groupName;
         private TextView members;
-        private TextView threads;
+        private TextView threads, description;
         private LinearLayout container;
 
         public ForumViewHolder(View inflate) {
@@ -80,6 +81,7 @@ public class ForumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             groupName = (TextView) inflate.findViewById(R.id.groupname);
             members = (TextView) inflate.findViewById(R.id.members);
             threads = (TextView) inflate.findViewById(R.id.threads);
+            description = (TextView) inflate.findViewById(R.id.description);
             container = (LinearLayout) inflate.findViewById(R.id.container);
             groupName.setSelected(true);
             container.setOnClickListener(new View.OnClickListener() {

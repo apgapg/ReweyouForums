@@ -30,9 +30,9 @@ import in.reweyou.reweyouforums.adapter.NotiAdapter;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.model.NotiModel;
 
-public class NotiActivity extends AppCompatActivity {
+public class NotificationActivity extends AppCompatActivity {
 
-    private static final String TAG = NotiActivity.class.getName();
+    private static final String TAG = NotificationActivity.class.getName();
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
     private NotiAdapter notiAdapter;
@@ -128,7 +128,7 @@ public class NotiActivity extends AppCompatActivity {
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                     swipeRefreshLayout.setRefreshing(false);
-                                    Toast.makeText(NotiActivity.this, "something went wrong!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(NotificationActivity.this, "something went wrong!", Toast.LENGTH_SHORT).show();
 
 
                                 }
@@ -138,7 +138,7 @@ public class NotiActivity extends AppCompatActivity {
                             public void onError(ANError anError) {
                                 Log.e(TAG, "onError: " + anError);
                                 swipeRefreshLayout.setRefreshing(false);
-                                Toast.makeText(NotiActivity.this, "couldn't connect", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(NotificationActivity.this, "couldn't connect", Toast.LENGTH_SHORT).show();
 
                             }
                         });

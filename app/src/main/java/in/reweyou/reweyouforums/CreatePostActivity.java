@@ -64,8 +64,8 @@ import java.util.List;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.model.GroupModel;
 
-public class CreateActivity extends SlidingActivity {
-    private static final String TAG = CreateActivity.class.getName();
+public class CreatePostActivity extends SlidingActivity {
+    private static final String TAG = CreatePostActivity.class.getName();
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -238,7 +238,7 @@ public class CreateActivity extends SlidingActivity {
                         if (groupid != null && groupname != null)
                             compressImages();
                         else
-                            Toast.makeText(CreateActivity.this, "Please select a group!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CreatePostActivity.this, "Please select a group!", Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -268,7 +268,7 @@ public class CreateActivity extends SlidingActivity {
                         if (groupid != null && groupname != null)
                             uploadPostShare();
                         else
-                            Toast.makeText(CreateActivity.this, "Please select a group!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CreatePostActivity.this, "Please select a group!", Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -289,7 +289,7 @@ public class CreateActivity extends SlidingActivity {
 
                     @Override
                     public void onPermissionDenied(PermissionDeniedResponse response) {
-                        Toast.makeText(CreateActivity.this, "Storage Permission denied by user", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CreatePostActivity.this, "Storage Permission denied by user", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "onPermissionGranted: " + response.isPermanentlyDenied());
 
                     }
@@ -337,10 +337,10 @@ public class CreateActivity extends SlidingActivity {
     }
 
     private void populatedata(final List<GroupModel> groupModels) {
-        final Context mContext = CreateActivity.this;
+        final Context mContext = CreatePostActivity.this;
         Log.d(TAG, "populatedata: " + groupModels.size());
         for (int i = 0; i < groupModels.size(); i++) {
-            View view = CreateActivity.this.getLayoutInflater().inflate(R.layout.item_interest, null);
+            View view = CreatePostActivity.this.getLayoutInflater().inflate(R.layout.item_interest, null);
             final TextView textView = (TextView) view.findViewById(R.id.groupname);
             textView.setText(groupModels.get(i).getGroupname());
             textView.setTag("0");
@@ -412,16 +412,16 @@ public class CreateActivity extends SlidingActivity {
                         public void onResponse(String response) {
                             Log.d(TAG, "onResponse: " + response);
                             if (response.equals("Thread created")) {
-                                Toast.makeText(CreateActivity.this, "Post uploaded successfully", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(CreatePostActivity.this, "Post uploaded successfully", Toast.LENGTH_SHORT).show();
                             } else
-                                Toast.makeText(CreateActivity.this, "Couldn't post. connectivity error", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(CreatePostActivity.this, "Couldn't post. connectivity error", Toast.LENGTH_SHORT).show();
 
                         }
 
                         @Override
                         public void onError(ANError anError) {
                             Log.d(TAG, "onError: " + anError);
-                            Toast.makeText(CreateActivity.this, "Couldn't post. connectivity error", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CreatePostActivity.this, "Couldn't post. connectivity error", Toast.LENGTH_SHORT).show();
 
                         }
                     });*/
@@ -459,16 +459,16 @@ public class CreateActivity extends SlidingActivity {
                             Log.d(TAG, "onResponse: " + response);
                             if (response.contains("Thread created")) {
                                 progressDialog.dismiss();
-                                Toast.makeText(CreateActivity.this, "Upload successful", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(CreatePostActivity.this, "Upload successful", Toast.LENGTH_SHORT).show();
 
                                 if (!getIntent().getBooleanExtra("frommain", false)) {
-                                    Intent i = new Intent(CreateActivity.this, ForumMainActivity.class);
+                                    Intent i = new Intent(CreatePostActivity.this, ForumMainActivity.class);
                                     i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                                     startActivity(i);
                                 } else setResult(RESULT_OK);
                                 finish();
                             } else {
-                                Toast.makeText(CreateActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(CreatePostActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
 
                                 progressDialog.dismiss();
                             }
@@ -477,7 +477,7 @@ public class CreateActivity extends SlidingActivity {
                         @Override
                         public void onError(ANError anError) {
                             Log.d(TAG, "onError: " + anError);
-                            Toast.makeText(CreateActivity.this, "Upload failed!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CreatePostActivity.this, "Upload failed!", Toast.LENGTH_SHORT).show();
 
                             progressDialog.dismiss();
                         }
@@ -546,10 +546,10 @@ public class CreateActivity extends SlidingActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().trim().length() > 0) {
-                    buttonconfirm.setBackground(CreateActivity.this.getResources().getDrawable(R.drawable.border_pink));
-                    buttonconfirm.setTextColor(CreateActivity.this.getResources().getColor(R.color.main_background_pink));
+                    buttonconfirm.setBackground(CreatePostActivity.this.getResources().getDrawable(R.drawable.border_pink));
+                    buttonconfirm.setTextColor(CreatePostActivity.this.getResources().getColor(R.color.main_background_pink));
                 } else {
-                    buttonconfirm.setBackground(CreateActivity.this.getResources().getDrawable(R.drawable.border_grey));
+                    buttonconfirm.setBackground(CreatePostActivity.this.getResources().getDrawable(R.drawable.border_grey));
                     buttonconfirm.setTextColor(Color.parseColor("#9e9e9e"));
                 }
             }
@@ -579,9 +579,9 @@ public class CreateActivity extends SlidingActivity {
                 if (link.getText().toString().trim().length() > 0) {
                     alertDialog.dismiss();
                     if (URLUtil.isValidUrl(link.getText().toString()))
-                        CreateActivity.this.onLinkPasted(link.getText().toString());
+                        CreatePostActivity.this.onLinkPasted(link.getText().toString());
                     else
-                        Toast.makeText(CreateActivity.this, "Please check your link", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CreatePostActivity.this, "Please check your link", Toast.LENGTH_SHORT).show();
 
 
                 } else alertDialog.dismiss();
@@ -639,13 +639,13 @@ public class CreateActivity extends SlidingActivity {
                                 linklink.setText(reallink);
                             if (imagelink != null) {
                                 linkimage = imagelink.replace("\n", "");
-                                Glide.with(CreateActivity.this).load(linkimage).into(imageviewlink);
+                                Glide.with(CreatePostActivity.this).load(linkimage).into(imageviewlink);
                             }
                             edittextdescription.setHint("Describe this link...");
                             if (parser.contains("youtube"))
-                                CreateActivity.this.link = videoid;
+                                CreatePostActivity.this.link = videoid;
                             else
-                                CreateActivity.this.link = link;
+                                CreatePostActivity.this.link = link;
 
                             if (parser.contains("youtube"))
                                 type = "youtubelink";
@@ -655,7 +655,7 @@ public class CreateActivity extends SlidingActivity {
                             rl.setVisibility(View.VISIBLE);
                             edittextdescription.setHint("Describe this link...");
                             cd.setVisibility(View.GONE);
-                            Toast.makeText(CreateActivity.this, "Error in fetching data from link", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CreatePostActivity.this, "Error in fetching data from link", Toast.LENGTH_SHORT).show();
 
                             e.printStackTrace();
                         }
@@ -669,7 +669,7 @@ public class CreateActivity extends SlidingActivity {
                         rl.setVisibility(View.VISIBLE);
 
 
-                        Toast.makeText(CreateActivity.this, "Error in fetching data from link", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CreatePostActivity.this, "Error in fetching data from link", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -775,7 +775,7 @@ public class CreateActivity extends SlidingActivity {
             new Handler().post(new Runnable() {
                 @Override
                 public void run() {
-                    Glide.with(CreateActivity.this).load(s).into(image1);
+                    Glide.with(CreatePostActivity.this).load(s).into(image1);
 
                 }
             });
@@ -792,7 +792,7 @@ public class CreateActivity extends SlidingActivity {
             new Handler().post(new Runnable() {
                 @Override
                 public void run() {
-                    Glide.with(CreateActivity.this).load(s).into(image2);
+                    Glide.with(CreatePostActivity.this).load(s).into(image2);
                 }
             });
             counter++;
@@ -807,7 +807,7 @@ public class CreateActivity extends SlidingActivity {
             new Handler().post(new Runnable() {
                 @Override
                 public void run() {
-                    Glide.with(CreateActivity.this).load(s).into(image3);
+                    Glide.with(CreatePostActivity.this).load(s).into(image3);
                 }
             });
             counter++;
@@ -821,7 +821,7 @@ public class CreateActivity extends SlidingActivity {
             new Handler().post(new Runnable() {
                 @Override
                 public void run() {
-                    Glide.with(CreateActivity.this).load(s).into(image4);
+                    Glide.with(CreatePostActivity.this).load(s).into(image4);
                 }
             });
             counter++;
@@ -848,17 +848,17 @@ public class CreateActivity extends SlidingActivity {
                 public void onResourceReady(byte[] resource, GlideAnimation<? super byte[]> glideAnimation) {
                     image1encoded = Base64.encodeToString(resource, Base64.DEFAULT);
                     if (count > 1)
-                        Glide.with(CreateActivity.this).load(image2url).asBitmap().toBytes(Bitmap.CompressFormat.JPEG, 90).atMost().override(1200, 1200).into(new SimpleTarget<byte[]>() {
+                        Glide.with(CreatePostActivity.this).load(image2url).asBitmap().toBytes(Bitmap.CompressFormat.JPEG, 90).atMost().override(1200, 1200).into(new SimpleTarget<byte[]>() {
                             @Override
                             public void onResourceReady(byte[] resource, GlideAnimation<? super byte[]> glideAnimation) {
                                 image2encoded = Base64.encodeToString(resource, Base64.DEFAULT);
                                 if (count > 2)
-                                    Glide.with(CreateActivity.this).load(image3url).asBitmap().toBytes(Bitmap.CompressFormat.JPEG, 90).atMost().override(1200, 1200).into(new SimpleTarget<byte[]>() {
+                                    Glide.with(CreatePostActivity.this).load(image3url).asBitmap().toBytes(Bitmap.CompressFormat.JPEG, 90).atMost().override(1200, 1200).into(new SimpleTarget<byte[]>() {
                                         @Override
                                         public void onResourceReady(byte[] resource, GlideAnimation<? super byte[]> glideAnimation) {
                                             image3encoded = Base64.encodeToString(resource, Base64.DEFAULT);
                                             if (count > 3)
-                                                Glide.with(CreateActivity.this).load(image4url).asBitmap().toBytes(Bitmap.CompressFormat.JPEG, 90).atMost().override(1200, 1200).into(new SimpleTarget<byte[]>() {
+                                                Glide.with(CreatePostActivity.this).load(image4url).asBitmap().toBytes(Bitmap.CompressFormat.JPEG, 90).atMost().override(1200, 1200).into(new SimpleTarget<byte[]>() {
                                                     @Override
                                                     public void onResourceReady(byte[] resource, GlideAnimation<? super byte[]> glideAnimation) {
                                                         image4encoded = Base64.encodeToString(resource, Base64.DEFAULT);

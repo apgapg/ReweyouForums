@@ -80,7 +80,7 @@ public class ForumMainActivity extends AppCompatActivity {
         noti.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(new Intent(ForumMainActivity.this, NotiActivity.class), Utils.REQ_CODE_NOTI);
+                startActivityForResult(new Intent(ForumMainActivity.this, NotificationActivity.class), Utils.REQ_CODE_NOTI);
             }
         });
         getnoticount();
@@ -372,7 +372,7 @@ public class ForumMainActivity extends AppCompatActivity {
     }
 
     public void startCreateActivity() {
-        Intent i = new Intent(this, CreateActivity.class);
+        Intent i = new Intent(this, CreatePostActivity.class);
         i.putExtra("frommain", true);
         startActivityForResult(i, Utils.REQ_CODE_CREATE_FROM_FORUMACTVITY);
     }

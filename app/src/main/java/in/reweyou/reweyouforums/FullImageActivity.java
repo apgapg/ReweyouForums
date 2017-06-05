@@ -36,9 +36,9 @@ import java.util.Random;
 import in.reweyou.reweyouforums.utils.Utils;
 import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 
-public class FullImage extends AppCompatActivity {
+public class FullImageActivity extends AppCompatActivity {
 
-    private static final String TAG = FullImage.class.getName();
+    private static final String TAG = FullImageActivity.class.getName();
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -83,7 +83,7 @@ public class FullImage extends AppCompatActivity {
                 int height = displayMetrics.heightPixels;
                 int width = (int) (1.5 * displayMetrics.widthPixels);
                 Log.d("ddd", "onClick: " + height + "  " + width);
-                Glide.with(FullImage.this).load(imagepath).asBitmap().override(width, height).diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                Glide.with(FullImageActivity.this).load(imagepath).asBitmap().override(width, height).diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into(new SimpleTarget<Bitmap>() {
                             @Override
                             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
@@ -116,7 +116,7 @@ public class FullImage extends AppCompatActivity {
     }
 
     private void checkStoragePermission() {
-        Dexter.withActivity(FullImage.this)
+        Dexter.withActivity(FullImageActivity.this)
                 .withPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)
                 .withListener(new PermissionListener() {
                     @Override
@@ -126,7 +126,7 @@ public class FullImage extends AppCompatActivity {
 
                     @Override
                     public void onPermissionDenied(PermissionDeniedResponse response) {
-                        Toast.makeText(FullImage.this, "Storage Permission denied by user", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FullImageActivity.this, "Storage Permission denied by user", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "onPermissionGranted: " + response.isPermanentlyDenied());
 
                     }
@@ -143,7 +143,7 @@ public class FullImage extends AppCompatActivity {
 
         txtsave.setVisibility(View.INVISIBLE);
         pdsave.setVisibility(View.VISIBLE);
-        Glide.with(FullImage.this).load(imagepath).asBitmap().into(new SimpleTarget<Bitmap>() {
+        Glide.with(FullImageActivity.this).load(imagepath).asBitmap().into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
 
@@ -166,7 +166,7 @@ public class FullImage extends AppCompatActivity {
                     resource.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
                     outputStream.flush();
                     outputStream.close();
-                    Toast.makeText(FullImage.this, "Image saved!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FullImageActivity.this, "Image saved!", Toast.LENGTH_SHORT).show();
                     txtsave.setVisibility(View.VISIBLE);
                     pdsave.setVisibility(View.INVISIBLE);
 
@@ -204,7 +204,7 @@ public class FullImage extends AppCompatActivity {
     }
 
     private void showimage(String i) {
-        Glide.with(FullImage.this).load(i).diskCacheStrategy(DiskCacheStrategy.SOURCE).fitCenter().into(imageView);
+        Glide.with(FullImageActivity.this).load(i).diskCacheStrategy(DiskCacheStrategy.SOURCE).fitCenter().into(imageView);
     }
 
     @Override

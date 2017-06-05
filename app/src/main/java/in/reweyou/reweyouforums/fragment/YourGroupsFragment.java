@@ -32,6 +32,7 @@ import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.adapter.YourGroupsAdapter;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.model.GroupModel;
+import in.reweyou.reweyouforums.utils.NetworkHandler;
 
 /**
  * Created by master on 1/5/17.
@@ -71,9 +72,15 @@ public class YourGroupsFragment extends Fragment {
         txtgroups = (TextView) layout.findViewById(R.id.txtgroups);
 
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2, LinearLayoutManager.VERTICAL, false);
+       /* DividerItemDecoration divider = new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL);
+        divider.setDrawable(ContextCompat.getDrawable(mContext, R.drawable.my_custom_divider));
+        recyclerViewYourGroups.addItemDecoration(divider);
+*/
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 3, LinearLayoutManager.VERTICAL, false);
 
         recyclerViewYourGroups.setLayoutManager(gridLayoutManager);
+        //recyclerViewYourGroups.setLayoutManager(new LinearLayoutManager(mContext));
+
         adapterYourGroups = new YourGroupsAdapter(mContext);
         recyclerViewYourGroups.setAdapter(adapterYourGroups);
         return layout;
@@ -132,43 +139,47 @@ public class YourGroupsFragment extends Fragment {
                 .getAsJSONArray(new JSONArrayRequestListener() {
                     @Override
                     public void onResponse(JSONArray jsonarray) {
-                        try {
-                            swiperefresh.setRefreshing(false);
+                        if (new NetworkHandler().isActivityAlive(TAG, mContext, jsonarray)) {
 
-                            Gson gson = new Gson();
-                            JSONObject jsonobject = jsonarray.getJSONObject(0);
-                            Log.d(TAG, "onResponse: " + jsonobject);
+                            try {
+                                swiperefresh.setRefreshing(false);
 
-                            JSONArray followjsonarray = jsonobject.getJSONArray("followed");
+                                Gson gson = new Gson();
+                                JSONObject jsonobject = jsonarray.getJSONObject(0);
 
-                            List<GroupModel> followlist = new ArrayList<GroupModel>();
+                                JSONArray followjsonarray = jsonobject.getJSONArray("followed");
 
-                            for (int i = 0; i < followjsonarray.length(); i++) {
-                                JSONObject jsonObject = followjsonarray.getJSONObject(i);
-                                GroupModel groupModel = gson.fromJson(jsonObject.toString(), GroupModel.class);
-                                followlist.add(0, groupModel);
+                                List<GroupModel> followlist = new ArrayList<GroupModel>();
+
+                                for (int i = 0; i < followjsonarray.length(); i++) {
+                                    JSONObject jsonObject = followjsonarray.getJSONObject(i);
+                                    GroupModel groupModel = gson.fromJson(jsonObject.toString(), GroupModel.class);
+                                    followlist.add(0, groupModel);
+                                }
+                                adapterYourGroups.add(followlist);
+
+
+                                if (followlist.size() == 0) {
+                                    txtgroups.setVisibility(View.VISIBLE);
+                                }
+
+
+                            } catch (Exception e) {
+                                swiperefresh.setRefreshing(false);
+
+                                e.printStackTrace();
                             }
-                            adapterYourGroups.add(followlist);
-
-
-                            if (followlist.size() == 0) {
-                                txtgroups.setVisibility(View.VISIBLE);
-                            }
-
-
-                        } catch (Exception e) {
-                            swiperefresh.setRefreshing(false);
-
-                            e.printStackTrace();
                         }
                     }
 
                     @Override
                     public void onError(ANError anError) {
-                        Log.d(TAG, "onError: " + anError);
-                        swiperefresh.setRefreshing(false);
-                        Toast.makeText(mContext, "couldn't connect", Toast.LENGTH_SHORT).show();
+                        if (new NetworkHandler().isActivityAlive(TAG, mContext, anError)) {
 
+                            swiperefresh.setRefreshing(false);
+                            Toast.makeText(mContext, "couldn't connect", Toast.LENGTH_SHORT).show();
+
+                        }
                     }
                 });
 

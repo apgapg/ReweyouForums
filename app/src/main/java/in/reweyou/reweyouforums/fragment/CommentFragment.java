@@ -43,6 +43,7 @@ import in.reweyou.reweyouforums.adapter.CommentsAdapter;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.model.CommentModel;
 import in.reweyou.reweyouforums.model.ReplyCommentModel;
+import in.reweyou.reweyouforums.utils.NetworkHandler;
 
 /**
  * Created by master on 24/2/17.
@@ -69,7 +70,6 @@ public class CommentFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
     }
 
@@ -126,64 +126,69 @@ public class CommentFragment extends Fragment {
                         .getAsJSONArray(new JSONArrayRequestListener() {
                             @Override
                             public void onResponse(JSONArray response) {
+                                if (new NetworkHandler().isActivityAlive(TAG, mContext, response)) {
 
-                                try {
-                                    if (!mContext.isFinishing()) {
-                                        swipeRefreshLayout.setRefreshing(false);
+                                    try {
+                                        if (!mContext.isFinishing()) {
+                                            swipeRefreshLayout.setRefreshing(false);
 
-                                        Log.d(TAG, "onResponse: " + response);
-                                        Gson gson = new Gson();
-                                        List<Object> list = new ArrayList<>();
+                                            Log.d(TAG, "onResponse: " + response);
+                                            Gson gson = new Gson();
+                                            List<Object> list = new ArrayList<>();
 
-                                        try {
-                                            for (int i = 0; i < response.length(); i++) {
-                                                JSONObject json = response.getJSONObject(response.length() - 1 - i);
-                                                CommentModel coModel = gson.fromJson(json.toString(), CommentModel.class);
-                                                list.add(coModel);
+                                            try {
+                                                for (int i = 0; i < response.length(); i++) {
+                                                    JSONObject json = response.getJSONObject(response.length() - 1 - i);
+                                                    CommentModel coModel = gson.fromJson(json.toString(), CommentModel.class);
+                                                    list.add(coModel);
 
-                                                if (json.has("reply")) {
-                                                    JSONArray jsonReply = json.getJSONArray("reply");
+                                                    if (json.has("reply")) {
+                                                        JSONArray jsonReply = json.getJSONArray("reply");
 
-                                                    for (int j = 0; j < jsonReply.length(); j++) {
-                                                        JSONObject jsontemp = jsonReply.getJSONObject(jsonReply.length() - 1 - j);
-                                                        ReplyCommentModel temp = gson.fromJson(jsontemp.toString(), ReplyCommentModel.class);
-                                                        list.add(temp);
+                                                        for (int j = 0; j < jsonReply.length(); j++) {
+                                                            JSONObject jsontemp = jsonReply.getJSONObject(jsonReply.length() - 1 - j);
+                                                            ReplyCommentModel temp = gson.fromJson(jsontemp.toString(), ReplyCommentModel.class);
+                                                            list.add(temp);
+                                                        }
                                                     }
+
                                                 }
+
+                                                adapterComment.add(list);
+                                                if (list.size() == 0) {
+                                                    nocommenttxt.setVisibility(View.VISIBLE);
+
+
+                                                } else nocommenttxt.setVisibility(View.INVISIBLE);
+
+
+                                                new Handler().post(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        recyclerView.smoothScrollToPosition(0);
+                                                    }
+                                                });
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                                Toast.makeText(mContext.getApplicationContext(), "something went wrong!", Toast.LENGTH_SHORT).show();
 
                                             }
-
-                                            adapterComment.add(list);
-                                            if (list.size() == 0) {
-                                                nocommenttxt.setVisibility(View.VISIBLE);
-
-
-                                            } else nocommenttxt.setVisibility(View.INVISIBLE);
-
-
-                                            new Handler().post(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    recyclerView.smoothScrollToPosition(0);
-                                                }
-                                            });
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                            Toast.makeText(mContext.getApplicationContext(), "something went wrong!", Toast.LENGTH_SHORT).show();
-
-                                        }
-                                    } else Log.e(TAG, "onResponse: activity finishing");
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                                        } else Log.e(TAG, "onResponse: activity finishing");
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             }
 
                             @Override
                             public void onError(ANError anError) {
-                                swipeRefreshLayout.setRefreshing(false);
+                                if (new NetworkHandler().isActivityAlive(TAG, mContext, anError)) {
 
-                                Log.d(TAG, "onError: " + anError);
-                                Toast.makeText(mContext, "couldn't connect", Toast.LENGTH_SHORT).show();
+                                    swipeRefreshLayout.setRefreshing(false);
+
+                                    Log.d(TAG, "onError: " + anError);
+                                    Toast.makeText(mContext, "couldn't connect", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         });
             }

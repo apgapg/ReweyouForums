@@ -47,6 +47,7 @@ import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.adapter.GroupBadegsAdapter;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.model.GroupBadgeModel;
+import in.reweyou.reweyouforums.utils.NetworkHandler;
 import in.reweyou.reweyouforums.utils.Utils;
 
 /**
@@ -161,27 +162,31 @@ public class UserInfoFragment extends Fragment {
                 .getAsJSONArray(new JSONArrayRequestListener() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        try {
-                            Log.d(TAG, "onResponse: members " + response);
-                            List<GroupBadgeModel> list = new ArrayList<>();
-                            Gson gson = new Gson();
-                            for (int i = 0; i < response.length(); i++) {
-                                GroupBadgeModel groupMemberModel = gson.fromJson(response.getJSONObject(i).toString(), GroupBadgeModel.class);
-                                list.add(groupMemberModel);
+                        if (new NetworkHandler().isActivityAlive(TAG, mContext, response)) {
+
+                            try {
+                                Log.d(TAG, "onResponse: members " + response);
+                                List<GroupBadgeModel> list = new ArrayList<>();
+                                Gson gson = new Gson();
+                                for (int i = 0; i < response.length(); i++) {
+                                    GroupBadgeModel groupMemberModel = gson.fromJson(response.getJSONObject(i).toString(), GroupBadgeModel.class);
+                                    list.add(groupMemberModel);
+                                }
+
+                                groupBadegsAdapter.add(list);
+                                //  populatedata(list);
+
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-
-                            groupBadegsAdapter.add(list);
-                            //  populatedata(list);
-
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
                         }
                     }
 
                     @Override
                     public void onError(ANError anError) {
-                        Log.e(TAG, "onError: " + anError);
+                        if (new NetworkHandler().isActivityAlive(TAG, mContext, anError)) {
+                        }
                     }
                 });
     }

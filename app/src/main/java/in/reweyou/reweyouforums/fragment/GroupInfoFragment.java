@@ -52,7 +52,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import in.reweyou.reweyouforums.EditActivity;
+import in.reweyou.reweyouforums.EditGroupActivity;
 import in.reweyou.reweyouforums.GroupActivity;
 import in.reweyou.reweyouforums.GroupMembers;
 import in.reweyou.reweyouforums.R;
@@ -305,7 +305,7 @@ public class GroupInfoFragment extends Fragment {
             edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(mContext, EditActivity.class);
+                    Intent i = new Intent(mContext, EditGroupActivity.class);
                     i.putExtra("description", groupdes);
                     i.putExtra("image", getArguments().getString("image"));
                     i.putExtra("rules", grouprules);

@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.reweyou.reweyouforums.CommentActivity;
-import in.reweyou.reweyouforums.NotiActivity;
+import in.reweyou.reweyouforums.NotificationActivity;
 import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.model.NotiModel;
@@ -119,7 +119,7 @@ public class NotiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             public void onResponse(String response) {
                 Log.d(TAG, "onResponse: noti: " + response);
 
-                ((NotiActivity) context).setResult(Activity.RESULT_OK);
+                ((NotificationActivity) context).setResult(Activity.RESULT_OK);
             }
 
             @Override

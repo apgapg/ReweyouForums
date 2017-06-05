@@ -11,6 +11,7 @@
         android:layout_marginBottom="36dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
+        app:cardBackgroundColor="#fff"
         app:cardCornerRadius="0dp"
         app:cardElevation="0dp"
         app:cardUseCompatPadding="true">

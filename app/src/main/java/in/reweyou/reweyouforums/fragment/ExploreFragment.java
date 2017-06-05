@@ -5,7 +5,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,6 +34,7 @@ import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.adapter.ForumAdapter;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.model.GroupModel;
+import in.reweyou.reweyouforums.utils.NetworkHandler;
 
 /**
  * Created by master on 1/5/17.
@@ -72,10 +75,14 @@ public class ExploreFragment extends Fragment {
         });
         txtexplore = (TextView) layout.findViewById(R.id.txtexplore);
 
+        DividerItemDecoration divider = new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL);
+        divider.setDrawable(ContextCompat.getDrawable(mContext, R.drawable.my_custom_divider));
+        recyclerViewExplore.addItemDecoration(divider);
+
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2, LinearLayoutManager.VERTICAL, false);
 
-        recyclerViewExplore.setLayoutManager(gridLayoutManager);
+        recyclerViewExplore.setLayoutManager(new LinearLayoutManager(mContext));
         adapterExplore = new ForumAdapter(mContext);
         recyclerViewExplore.setAdapter(adapterExplore);
         return layout;
@@ -135,42 +142,46 @@ public class ExploreFragment extends Fragment {
                 .getAsJSONArray(new JSONArrayRequestListener() {
                     @Override
                     public void onResponse(JSONArray jsonarray) {
-                        try {
-                            swiperefresh.setRefreshing(false);
-                            Gson gson = new Gson();
-                            JSONObject jsonobject = jsonarray.getJSONObject(0);
-                            Log.d(TAG, "onResponse: " + jsonobject);
+                        if (new NetworkHandler().isActivityAlive(TAG, mContext, jsonarray)) {
 
-                            JSONArray explorejsonarray = jsonobject.getJSONArray("explore");
+                            try {
+                                swiperefresh.setRefreshing(false);
+                                Gson gson = new Gson();
+                                JSONObject jsonobject = jsonarray.getJSONObject(0);
 
-                            List<GroupModel> explorelist = new ArrayList<GroupModel>();
-                            for (int i = 0; i < explorejsonarray.length(); i++) {
-                                JSONObject jsonObject = explorejsonarray.getJSONObject(i);
-                                GroupModel groupModel = gson.fromJson(jsonObject.toString(), GroupModel.class);
-                                explorelist.add(0, groupModel);
+                                JSONArray explorejsonarray = jsonobject.getJSONArray("explore");
+
+                                List<GroupModel> explorelist = new ArrayList<GroupModel>();
+                                for (int i = 0; i < explorejsonarray.length(); i++) {
+                                    JSONObject jsonObject = explorejsonarray.getJSONObject(i);
+                                    GroupModel groupModel = gson.fromJson(jsonObject.toString(), GroupModel.class);
+                                    explorelist.add(0, groupModel);
+                                }
+
+
+                                adapterExplore.add(explorelist);
+
+                                if (explorelist.size() == 0) {
+                                    txtexplore.setVisibility(View.VISIBLE);
+                                }
+
+
+                            } catch (Exception e) {
+                                swiperefresh.setRefreshing(false);
+
+                                e.printStackTrace();
                             }
-
-
-                            adapterExplore.add(explorelist);
-
-                            if (explorelist.size() == 0) {
-                                txtexplore.setVisibility(View.VISIBLE);
-                            }
-
-
-                        } catch (Exception e) {
-                            swiperefresh.setRefreshing(false);
-
-                            e.printStackTrace();
                         }
                     }
 
                     @Override
                     public void onError(ANError anError) {
-                        Log.d(TAG, "onError: " + anError);
-                        swiperefresh.setRefreshing(false);
-                        Toast.makeText(mContext, "couldn't connect", Toast.LENGTH_SHORT).show();
+                        if (new NetworkHandler().isActivityAlive(TAG, mContext, anError)) {
 
+                            Log.d(TAG, "onError: " + anError);
+                            swiperefresh.setRefreshing(false);
+                            Toast.makeText(mContext, "couldn't connect", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
 

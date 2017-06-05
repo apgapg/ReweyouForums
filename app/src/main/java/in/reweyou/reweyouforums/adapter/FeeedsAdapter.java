@@ -63,7 +63,7 @@ import java.util.Random;
 
 import in.reweyou.reweyouforums.CommentActivity;
 import in.reweyou.reweyouforums.ForumMainActivity;
-import in.reweyou.reweyouforums.FullImage;
+import in.reweyou.reweyouforums.FullImageActivity;
 import in.reweyou.reweyouforums.GroupActivity;
 import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.YoutubeActivity;
@@ -684,7 +684,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             image1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(mContext, FullImage.class);
+                    Intent i = new Intent(mContext, FullImageActivity.class);
                     i.putExtra("image", messagelist.get(getAdapterPosition()).getImage1());
                     mContext.startActivity(i);
                 }
@@ -703,7 +703,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             image1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(mContext, FullImage.class);
+                    Intent i = new Intent(mContext, FullImageActivity.class);
                     i.putExtra("image", messagelist.get(getAdapterPosition()).getImage1());
                     mContext.startActivity(i);
                 }
@@ -711,7 +711,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             image2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(mContext, FullImage.class);
+                    Intent i = new Intent(mContext, FullImageActivity.class);
                     i.putExtra("image", messagelist.get(getAdapterPosition()).getImage2());
                     mContext.startActivity(i);
                 }
@@ -730,7 +730,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             image1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(mContext, FullImage.class);
+                    Intent i = new Intent(mContext, FullImageActivity.class);
                     i.putExtra("image", messagelist.get(getAdapterPosition()).getImage1());
                     mContext.startActivity(i);
                 }
@@ -738,7 +738,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             image2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(mContext, FullImage.class);
+                    Intent i = new Intent(mContext, FullImageActivity.class);
                     i.putExtra("image", messagelist.get(getAdapterPosition()).getImage2());
                     mContext.startActivity(i);
                 }
@@ -746,7 +746,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             image3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(mContext, FullImage.class);
+                    Intent i = new Intent(mContext, FullImageActivity.class);
                     i.putExtra("image", messagelist.get(getAdapterPosition()).getImage3());
                     mContext.startActivity(i);
                 }
@@ -767,7 +767,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             image1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(mContext, FullImage.class);
+                    Intent i = new Intent(mContext, FullImageActivity.class);
                     i.putExtra("image", messagelist.get(getAdapterPosition()).getImage1());
 
                     mContext.startActivity(i);
@@ -776,7 +776,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             image2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(mContext, FullImage.class);
+                    Intent i = new Intent(mContext, FullImageActivity.class);
                     i.putExtra("image", messagelist.get(getAdapterPosition()).getImage2());
                     mContext.startActivity(i);
                 }
@@ -784,7 +784,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             image3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(mContext, FullImage.class);
+                    Intent i = new Intent(mContext, FullImageActivity.class);
                     i.putExtra("image", messagelist.get(getAdapterPosition()).getImage3());
                     mContext.startActivity(i);
                 }
@@ -792,7 +792,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             image4.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(mContext, FullImage.class);
+                    Intent i = new Intent(mContext, FullImageActivity.class);
                     i.putExtra("image", messagelist.get(getAdapterPosition()).getImage4());
                     mContext.startActivity(i);
                 }
