@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#56CCFF90"
-        android:scaleType="fitXY" />
+        android:scaleType="centerCrop" />
 
     <View
         android:layout_width="match_parent"

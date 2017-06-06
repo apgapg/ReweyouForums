@@ -63,7 +63,7 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:text="#Photography"
-        android:textColor="#6200EA"
+        android:textColor="#7279AC"
         android:textSize="12dp"
         android:textStyle="bold" />
 

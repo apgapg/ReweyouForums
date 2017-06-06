@@ -91,7 +91,7 @@ public class ForumMainActivity extends AppCompatActivity {
         Typeface type = Typeface.createFromAsset(getAssets(), "cr.ttf");
         tabnametoolbar.setTypeface(type);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
-        viewPager.setOffscreenPageLimit(1);
+        viewPager.setOffscreenPageLimit(4);
         pagerAdapter = new PagerAdapter(getSupportFragmentManager());
 
         viewPager.setAdapter(pagerAdapter);
@@ -106,8 +106,9 @@ public class ForumMainActivity extends AppCompatActivity {
 
                 if (position == 0)
                     tabnametoolbar.setText("Feeds");
-                else if (position == 1)
+                else if (position == 1) {
                     tabnametoolbar.setText("Explore Groups");
+                }
                 else if (position == 2)
                     tabnametoolbar.setText("Your Groups");
                 else if (position == 3)
@@ -140,7 +141,7 @@ public class ForumMainActivity extends AppCompatActivity {
         TabLayout.Tab tabCall5 = tabLayout.getTabAt(4);
         tabCall5.setIcon(R.drawable.tab4_selector);
 
-        switch (Utils.backgroundCode) {
+       /* switch (Utils.backgroundCode) {
             case 0:
                 break;
             case 1:
@@ -155,7 +156,9 @@ public class ForumMainActivity extends AppCompatActivity {
                 back.setColorFilter(ForumMainActivity.this.getResources().getColor(R.color.main_background_pink_alpha));
                 tabLayout.setSelectedTabIndicatorColor(ForumMainActivity.this.getResources().getColor(R.color.main_background_pink));
                 break;
-        }
+        }*/
+        tabLayout.setSelectedTabIndicatorColor(ForumMainActivity.this.getResources().getColor(R.color.main_back_purple_neutral));
+
 
         new Handler().postDelayed(new Runnable() {
             @Override

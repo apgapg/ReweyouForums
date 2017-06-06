@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
+    android:background="@drawable/gradient_main_back"
     tools:context="in.reweyou.reweyouforums.GroupActivity">
 
     <ImageView
@@ -11,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
+        android:visibility="gone"
         app:srcCompat="@drawable/ic_asb" />
 
     <android.support.design.widget.AppBarLayout

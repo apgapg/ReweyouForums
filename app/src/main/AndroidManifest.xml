@@ -22,6 +22,7 @@
         android:name=".ApplicationClass"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
+
         android:label="ReweyouForums"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
@@ -94,8 +95,9 @@
         <activity
             android:name=".LoginActivity"
             android:label="ReweyouForums"
+
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme2.NoActionBar">
+            android:theme="@style/AppTheme2.NoActionBar.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

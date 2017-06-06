@@ -6,7 +6,7 @@
 
     <color name="colorPrimary">#05A8AA</color>
     <color name="colorPrimaryDark">#048C8E</color>
-    <color name="colorAccent">#05A8AA</color>
+    <color name="colorAccent">#A15773</color>
     <color name="red">#f44336</color>
     <color name="red_alpha">#24f44336</color>
 
@@ -54,6 +54,7 @@
     GOAT >10000000000
 
     <color name="bright_blue">#6200EA</color>
+    <color name="main_back_purple_neutral">#A15773</color>
 
 
 </resources><!---->

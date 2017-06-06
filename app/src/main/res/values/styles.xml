@@ -32,6 +32,12 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="AppTheme2.NoActionBar.Splash">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/main_back_layer</item>
+    </style>
+
     <style name="Theme.Sliding.Lights" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
