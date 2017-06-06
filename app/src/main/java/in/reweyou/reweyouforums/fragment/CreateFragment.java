@@ -73,41 +73,40 @@ public class CreateFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_create, container, false);
-        keyboardListener();
+        if (mContext != null) {
+            keyboardListener();
+            img = (ImageView) layout.findViewById(R.id.image);
+            imgtext = (TextView) layout.findViewById(R.id.imgtext);
+            groupname = (EditText) layout.findViewById(R.id.groupname);
+            description = (EditText) layout.findViewById(R.id.description);
+            pd = (ProgressBar) layout.findViewById(R.id.progressBar);
 
-
-        img = (ImageView) layout.findViewById(R.id.image);
-        imgtext = (TextView) layout.findViewById(R.id.imgtext);
-        groupname = (EditText) layout.findViewById(R.id.groupname);
-        description = (EditText) layout.findViewById(R.id.description);
-        pd = (ProgressBar) layout.findViewById(R.id.progressBar);
-
-        create = (TextView) layout.findViewById(R.id.create);
-        create.setEnabled(false);
-        create.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                View view = mContext.getCurrentFocus();
-                if (view != null) {
-                    InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            create = (TextView) layout.findViewById(R.id.create);
+            create.setEnabled(false);
+            create.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    View view = mContext.getCurrentFocus();
+                    if (view != null) {
+                        InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    }
+                    compressImage();
                 }
-                compressImage();
-            }
-        });
+            });
 
-        img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    checkStoragePermission();
+            img.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        checkStoragePermission();
 
-                } else ((ForumMainActivity) mContext).showPickImage(3);
-            }
-        });
+                    } else ((ForumMainActivity) mContext).showPickImage(3);
+                }
+            });
 
-        initTextWatchers();
-
+            initTextWatchers();
+        }
         return layout;
     }
 
@@ -244,33 +243,36 @@ public class CreateFragment extends Fragment {
         mContext.findViewById(R.id.rootlayout).getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                Rect r = new Rect();
-                mContext.findViewById(R.id.rootlayout).getWindowVisibleDisplayFrame(r);
-                int heightDiff = mContext.findViewById(R.id.rootlayout).getRootView().getHeight() - (r.bottom - r.top);
+                if (mContext != null) {
+                    Rect r = new Rect();
+                    mContext.findViewById(R.id.rootlayout).getWindowVisibleDisplayFrame(r);
+                    int heightDiff = mContext.findViewById(R.id.rootlayout).getRootView().getHeight() - (r.bottom - r.top);
 
-                // int heightDiff = findViewById(R.id.main_content).getRootView().getHeight() - findViewById(R.id.main_content).getHeight();
+                    // int heightDiff = findViewById(R.id.main_content).getRootView().getHeight() - findViewById(R.id.main_content).getHeight();
 
-                //Log.d(TAG, "onGlobalLayout: height"+heightDiff+"   "+findViewById(R.id.main_content).getRootView().getHeight()+    "    "+(r.bottom - r.top));
-                if (heightDiff > pxFromDp(mContext, 150)) { // if more than 100 pixels, its probably a keyboard...
-                    //ok now we know the keyboard is up...
-                    mContext.findViewById(R.id.tabLayout).setVisibility(View.GONE);
-                    mContext.findViewById(R.id.line).setVisibility(View.GONE);
-                    mContext.findViewById(R.id.tabLayout).setAlpha(0);
-
-
-                } else {
-                    //ok now we know the keyboard is down...
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mContext.findViewById(R.id.tabLayout).setVisibility(View.VISIBLE);
-                            mContext.findViewById(R.id.line).setVisibility(View.VISIBLE);
-                            mContext.findViewById(R.id.tabLayout).animate().alpha(1).setDuration(150).start();
-
-                        }
-                    }, 150);
+                    //Log.d(TAG, "onGlobalLayout: height"+heightDiff+"   "+findViewById(R.id.main_content).getRootView().getHeight()+    "    "+(r.bottom - r.top));
+                    if (heightDiff > pxFromDp(mContext, 150)) { // if more than 100 pixels, its probably a keyboard...
+                        //ok now we know the keyboard is up...
+                        mContext.findViewById(R.id.tabLayout).setVisibility(View.GONE);
+                        mContext.findViewById(R.id.line).setVisibility(View.GONE);
+                        mContext.findViewById(R.id.tabLayout).setAlpha(0);
 
 
+                    } else {
+                        //ok now we know the keyboard is down...
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (mContext != null) {
+                                    mContext.findViewById(R.id.tabLayout).setVisibility(View.VISIBLE);
+                                    mContext.findViewById(R.id.line).setVisibility(View.VISIBLE);
+                                    mContext.findViewById(R.id.tabLayout).animate().alpha(1).setDuration(150).start();
+                                }
+                            }
+                        }, 150);
+
+
+                    }
                 }
             }
         });
@@ -279,6 +281,7 @@ public class CreateFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        Log.d(TAG, "onAttach: called");
         if (context instanceof Activity)
             mContext = (Activity) context;
         else throw new IllegalArgumentException("Context should be an instance of Activity");
@@ -287,6 +290,7 @@ public class CreateFragment extends Fragment {
     @Override
     public void onDestroy() {
         mContext = null;
+        Log.d(TAG, "onDestroy: called");
         super.onDestroy();
 
     }

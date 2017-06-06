@@ -67,6 +67,7 @@ public class UserInfoFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private GroupBadegsAdapter groupBadegsAdapter;
     private ImageView imageView;
+    private JSONArray jsonresponse;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -166,14 +167,9 @@ public class UserInfoFragment extends Fragment {
 
                             try {
                                 Log.d(TAG, "onResponse: members " + response);
-                                List<GroupBadgeModel> list = new ArrayList<>();
-                                Gson gson = new Gson();
-                                for (int i = 0; i < response.length(); i++) {
-                                    GroupBadgeModel groupMemberModel = gson.fromJson(response.getJSONObject(i).toString(), GroupBadgeModel.class);
-                                    list.add(groupMemberModel);
-                                }
+                                jsonresponse = response;
+                                parsejsonresponse();
 
-                                groupBadegsAdapter.add(list);
                                 //  populatedata(list);
 
 
@@ -189,6 +185,21 @@ public class UserInfoFragment extends Fragment {
                         }
                     }
                 });
+    }
+
+    private void parsejsonresponse() {
+        try {
+            List<GroupBadgeModel> list = new ArrayList<>();
+            Gson gson = new Gson();
+            for (int i = 0; i < jsonresponse.length(); i++) {
+                GroupBadgeModel groupMemberModel = gson.fromJson(jsonresponse.getJSONObject(i).toString(), GroupBadgeModel.class);
+                list.add(groupMemberModel);
+            }
+
+            groupBadegsAdapter.add(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -213,7 +224,17 @@ public class UserInfoFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         if (isAdded()) {
 
-
+            if (savedInstanceState == null)
+                getMembersData();
+            else {
+                Log.d(TAG, "onActivityCreated: reacheed here");
+                try {
+                    jsonresponse = new JSONArray(savedInstanceState.getString("response"));
+                    parsejsonresponse();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -255,6 +276,13 @@ public class UserInfoFragment extends Fragment {
             }
         });
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if (jsonresponse != null)
+            outState.putString("response", jsonresponse.toString());
+        super.onSaveInstanceState(outState);
     }
 
 }

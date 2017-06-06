@@ -22,6 +22,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -51,6 +52,7 @@ public class ExploreFragment extends Fragment {
     private TextView txtgroups;
     private TextView txtexplore;
     private SwipeRefreshLayout swiperefresh;
+    private JSONArray jsonresponse;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,7 +85,7 @@ public class ExploreFragment extends Fragment {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2, LinearLayoutManager.VERTICAL, false);
 
         recyclerViewExplore.setLayoutManager(new LinearLayoutManager(mContext));
-        adapterExplore = new ForumAdapter(mContext);
+        adapterExplore = new ForumAdapter(mContext, this);
         recyclerViewExplore.setAdapter(adapterExplore);
         return layout;
     }
@@ -99,10 +101,13 @@ public class ExploreFragment extends Fragment {
 
     @Override
     public void onDestroy() {
+        Glide.get(this.getContext()).clearMemory();
         mContext = null;
+
         super.onDestroy();
 
     }
+
 
     public float pxFromDp(final Context context, final float dp) {
         return dp * context.getResources().getDisplayMetrics().density;
@@ -112,8 +117,17 @@ public class ExploreFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (isAdded()) {
-            getDataFromServer();
-
+            if (savedInstanceState == null)
+                getDataFromServer();
+            else {
+                Log.d(TAG, "onActivityCreated: reacheed here");
+                try {
+                    jsonresponse = new JSONArray(savedInstanceState.getString("response"));
+                    parsejsonresponse();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -146,25 +160,8 @@ public class ExploreFragment extends Fragment {
 
                             try {
                                 swiperefresh.setRefreshing(false);
-                                Gson gson = new Gson();
-                                JSONObject jsonobject = jsonarray.getJSONObject(0);
-
-                                JSONArray explorejsonarray = jsonobject.getJSONArray("explore");
-
-                                List<GroupModel> explorelist = new ArrayList<GroupModel>();
-                                for (int i = 0; i < explorejsonarray.length(); i++) {
-                                    JSONObject jsonObject = explorejsonarray.getJSONObject(i);
-                                    GroupModel groupModel = gson.fromJson(jsonObject.toString(), GroupModel.class);
-                                    explorelist.add(0, groupModel);
-                                }
-
-
-                                adapterExplore.add(explorelist);
-
-                                if (explorelist.size() == 0) {
-                                    txtexplore.setVisibility(View.VISIBLE);
-                                }
-
+                                jsonresponse = jsonarray;
+                                parsejsonresponse();
 
                             } catch (Exception e) {
                                 swiperefresh.setRefreshing(false);
@@ -188,8 +185,42 @@ public class ExploreFragment extends Fragment {
 
     }
 
+    private void parsejsonresponse() {
+        try {
+            Gson gson = new Gson();
+            JSONObject jsonobject = jsonresponse.getJSONObject(0);
+
+            JSONArray explorejsonarray = jsonobject.getJSONArray("explore");
+
+            List<GroupModel> explorelist = new ArrayList<GroupModel>();
+            for (int i = 0; i < explorejsonarray.length(); i++) {
+                JSONObject jsonObject = explorejsonarray.getJSONObject(i);
+                GroupModel groupModel = gson.fromJson(jsonObject.toString(), GroupModel.class);
+                explorelist.add(0, groupModel);
+            }
+
+
+            adapterExplore.add(explorelist);
+
+            if (explorelist.size() == 0) {
+                txtexplore.setVisibility(View.VISIBLE);
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void refreshlist() {
         Log.d(TAG, "refreshlist: reached");
         getDataFromServer();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if (jsonresponse != null)
+            outState.putString("response", jsonresponse.toString());
+        super.onSaveInstanceState(outState);
     }
 }

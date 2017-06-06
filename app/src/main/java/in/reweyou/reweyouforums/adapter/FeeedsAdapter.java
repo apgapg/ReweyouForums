@@ -18,6 +18,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.customtabs.CustomTabsIntent;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -91,9 +92,10 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
     private final UserSessionManager userSessionManager;
     private final CustomTabsIntent mCustomTabsIntent;
     private final FirebaseAnalytics mFirebaseAnalytics;
+    private final Fragment fragmentContext;
     List<ThreadModel> messagelist;
 
-    public FeeedsAdapter(Context context) {
+    public FeeedsAdapter(Context context, Fragment mainThreadsFragment) {
         this.mContext = context;
         this.messagelist = new ArrayList<>();
         userSessionManager = new UserSessionManager(mContext);
@@ -105,7 +107,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                 .build();
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
-
+        this.fragmentContext = mainThreadsFragment;
     }
 
     @Override
@@ -139,7 +141,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         holder.date.setText(messagelist.get(position).getTimestamp().replace("about ", ""));
         holder.username.setText(messagelist.get(position).getUsername());
         holder.commentnum.setText(messagelist.get(position).getComments());
-        Glide.with(mContext).load(messagelist.get(position).getProfilepic()).into(holder.profileimage);
+        Glide.with(fragmentContext).load(messagelist.get(position).getProfilepic()).into(holder.profileimage);
         holder.userlevel.setText(messagelist.get(position).getBadge());
         holder.groupname.setText("#" + messagelist.get(position).getGroupname());
         Log.d(TAG, "onBindViewHolder: " + messagelist.get(position).getBadge());

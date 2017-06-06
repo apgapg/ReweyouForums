@@ -155,7 +155,7 @@ public class GroupThreadsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (isAdded()) {
-            feeedsAdapter = new FeeedsAdapter(mContext);
+            feeedsAdapter = new FeeedsAdapter(mContext, this);
             recyclerView.setAdapter(feeedsAdapter);
 
             if (getArguments().getBoolean("follow"))

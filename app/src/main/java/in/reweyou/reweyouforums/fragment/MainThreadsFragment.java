@@ -3,7 +3,6 @@ package in.reweyou.reweyouforums.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -19,9 +18,15 @@ import android.widget.Toast;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.ParsedRequestListener;
-import com.google.gson.reflect.TypeToken;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
+import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import in.reweyou.reweyouforums.ForumMainActivity;
@@ -29,6 +34,7 @@ import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.adapter.FeeedsAdapter;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.model.ThreadModel;
+import in.reweyou.reweyouforums.utils.NetworkHandler;
 import me.zhanghai.android.customtabshelper.CustomTabsHelperFragment;
 
 /**
@@ -46,14 +52,14 @@ public class MainThreadsFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private CustomTabsHelperFragment mCustomTabsHelperFragment;
     private FloatingActionButton fab;
+    private JSONArray jsonresponse;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         userSessionManager = new UserSessionManager(mContext);
-        if (savedInstanceState == null)
-            mCustomTabsHelperFragment = CustomTabsHelperFragment.attachTo(this);
+        mCustomTabsHelperFragment = CustomTabsHelperFragment.attachTo(this);
 
 
     }
@@ -100,6 +106,10 @@ public class MainThreadsFragment extends Fragment {
             }
         });
 
+        feeedsAdapter = new FeeedsAdapter(mContext, this);
+        recyclerView.setAdapter(feeedsAdapter);
+
+
         return layout;
     }
 
@@ -114,6 +124,8 @@ public class MainThreadsFragment extends Fragment {
 
     @Override
     public void onDestroy() {
+        Glide.get(this.getContext()).clearMemory();
+
         mContext = null;
         super.onDestroy();
 
@@ -127,11 +139,17 @@ public class MainThreadsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (isAdded()) {
-            feeedsAdapter = new FeeedsAdapter(mContext);
-            recyclerView.setAdapter(feeedsAdapter);
-
-            getData();
-
+            if (savedInstanceState == null)
+                getData();
+            else {
+                Log.d(TAG, "onActivityCreated: reacheed here");
+                try {
+                    jsonresponse = new JSONArray(savedInstanceState.getString("response"));
+                    parsejsonresponse();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
 
         }
     }
@@ -144,36 +162,68 @@ public class MainThreadsFragment extends Fragment {
                 .setTag("report")
                 .setPriority(Priority.HIGH)
                 .build()
-                .getAsParsed(new TypeToken<List<ThreadModel>>() {
-                }, new ParsedRequestListener<List<ThreadModel>>() {
-
+                .getAsJSONArray(new JSONArrayRequestListener() {
                     @Override
-                    public void onResponse(final List<ThreadModel> list) {
-                        swipeRefreshLayout.setRefreshing(false);
-                        new Handler().post(new Runnable() {
-                            @Override
-                            public void run() {
-                                feeedsAdapter.add(list);
+                    public void onResponse(JSONArray jsonarray) {
+                        if (new NetworkHandler().isActivityAlive(TAG, mContext, jsonarray)) {
+
+                            try {
+                                swipeRefreshLayout.setRefreshing(false);
+                                jsonresponse = jsonarray;
+                                parsejsonresponse();
+
+
+                            } catch (Exception e) {
+                                swipeRefreshLayout.setRefreshing(false);
+
+                                e.printStackTrace();
 
                             }
-                        });
-
+                        }
                     }
 
                     @Override
-                    public void onError(final ANError anError) {
-                        Log.e(TAG, "run: error: " + anError.getErrorDetail());
-                        Toast.makeText(mContext, "couldn't connect", Toast.LENGTH_SHORT).show();
-                        swipeRefreshLayout.setRefreshing(false);
+                    public void onError(ANError anError) {
+                        if (new NetworkHandler().isActivityAlive(TAG, mContext, anError)) {
 
-
+                            Log.d(TAG, "onError: " + anError);
+                            swipeRefreshLayout.setRefreshing(false);
+                            Toast.makeText(mContext, "couldn't connect", Toast.LENGTH_SHORT).show();
+                        }
                     }
+
                 });
+
+    }
+
+    private void parsejsonresponse() {
+        try {
+            Gson gson = new Gson();
+            List<ThreadModel> threadlist = new ArrayList<>();
+            for (int i = 0; i < jsonresponse.length(); i++) {
+                JSONObject jsonObject = jsonresponse.getJSONObject(i);
+                ThreadModel groupModel = gson.fromJson(jsonObject.toString(), ThreadModel.class);
+                threadlist.add(0, groupModel);
+            }
+
+            Collections.reverse(threadlist);
+
+            feeedsAdapter.add(threadlist);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
     public void refreshList() {
         getData();
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if (jsonresponse != null)
+            outState.putString("response", jsonresponse.toString());
+        super.onSaveInstanceState(outState);
     }
 }

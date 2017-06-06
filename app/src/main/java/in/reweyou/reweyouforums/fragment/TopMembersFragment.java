@@ -50,10 +50,12 @@ public class TopMembersFragment extends Fragment {
     private LinearLayoutManager linearLayoutManager;
     private String groupid;
     private TopGroupMembersAdapter topGroupMembersAdapter;
+    private JSONArray jsonresponse;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: called");
 
 
     }
@@ -62,7 +64,7 @@ public class TopMembersFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.content_top_members, container, false);
-
+        Log.d(TAG, "onCreateView: called");
         this.groupid = getArguments().getString("groupid");
         swipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swiperefresh);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -72,6 +74,7 @@ public class TopMembersFragment extends Fragment {
             }
         });
 
+
         recyclerView = (RecyclerView) layout.findViewById(R.id.recycler_view);
         linearLayoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -80,8 +83,6 @@ public class TopMembersFragment extends Fragment {
         topGroupMembersAdapter = new TopGroupMembersAdapter(mContext);
         recyclerView.setAdapter(topGroupMembersAdapter);
 
-
-        getData();
         return layout;
     }
 
@@ -106,33 +107,12 @@ public class TopMembersFragment extends Fragment {
 
                                     try {
                                         if (!mContext.isFinishing()) {
+
+                                            jsonresponse = response;
                                             swipeRefreshLayout.setRefreshing(false);
 
-                                            Log.d(TAG, "onResponse: " + response);
-                                            Gson gson = new Gson();
-                                            List<TopGroupMemberModel> list = new ArrayList<>();
+                                            parsejsonresponse();
 
-                                            try {
-                                                for (int i = 0; i < response.length(); i++) {
-                                                    JSONObject json = response.getJSONObject(i);
-                                                    TopGroupMemberModel coModel = gson.fromJson(json.toString(), TopGroupMemberModel.class);
-                                                    list.add(coModel);
-
-                                                }
-
-                                                topGroupMembersAdapter.add(list);
-
-                                                new Handler().post(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        recyclerView.smoothScrollToPosition(0);
-                                                    }
-                                                });
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
-                                                Toast.makeText(mContext.getApplicationContext(), "something went wrong!", Toast.LENGTH_SHORT).show();
-
-                                            }
                                         } else Log.e(TAG, "onResponse: activity finishing");
                                     } catch (Exception e) {
                                         e.printStackTrace();
@@ -156,9 +136,36 @@ public class TopMembersFragment extends Fragment {
         }, 500);
     }
 
+    private void parsejsonresponse() {
+        Gson gson = new Gson();
+        List<TopGroupMemberModel> list = new ArrayList<>();
+
+        try {
+            for (int i = 0; i < jsonresponse.length(); i++) {
+                JSONObject json = jsonresponse.getJSONObject(i);
+                TopGroupMemberModel coModel = gson.fromJson(json.toString(), TopGroupMemberModel.class);
+                list.add(coModel);
+
+            }
+
+            topGroupMembersAdapter.add(list);
+
+            new Handler().post(new Runnable() {
+                @Override
+                public void run() {
+                    recyclerView.smoothScrollToPosition(0);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+    }
+
 
     @Override
     public void onAttach(Context context) {
+        Log.d(TAG, "onAttach: called");
         super.onAttach(context);
         if (context instanceof Activity)
             mContext = (Activity) context;
@@ -167,8 +174,10 @@ public class TopMembersFragment extends Fragment {
 
     @Override
     public void onDestroy() {
+        Log.d(TAG, "onDestroy: called");
         mContext = null;
         super.onDestroy();
+
 
     }
 
@@ -178,9 +187,30 @@ public class TopMembersFragment extends Fragment {
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onActivityCreated: called");
         super.onActivityCreated(savedInstanceState);
         if (isAdded()) {
+            if (savedInstanceState == null)
+                getData();
+            else {
+                Log.d(TAG, "onActivityCreated: reacheed here");
+                try {
+                    jsonresponse = new JSONArray(savedInstanceState.getString("response"));
+                    parsejsonresponse();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        Log.d(TAG, "onSaveInstanceState: called");
+        if (jsonresponse != null)
+            outState.putString("response", jsonresponse.toString());
+        super.onSaveInstanceState(outState);
+    }
+
 
 }

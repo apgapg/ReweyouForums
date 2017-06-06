@@ -21,6 +21,7 @@ import java.util.List;
 
 import in.reweyou.reweyouforums.GroupActivity;
 import in.reweyou.reweyouforums.R;
+import in.reweyou.reweyouforums.fragment.ExploreFragment;
 import in.reweyou.reweyouforums.model.GroupModel;
 import in.reweyou.reweyouforums.utils.Utils;
 
@@ -32,12 +33,14 @@ public class ForumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private final Context context;
     private final FirebaseAnalytics mFirebaseAnalytics;
+    private final ExploreFragment fragmentcontext;
     List<GroupModel> messagelist;
 
-    public ForumAdapter(Context context) {
+    public ForumAdapter(Context context, ExploreFragment exploreFragment) {
         this.context = context;
         this.messagelist = new ArrayList<>();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
+        this.fragmentcontext = exploreFragment;
 
     }
 
@@ -49,7 +52,7 @@ public class ForumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ForumViewHolder forumViewHolder = (ForumViewHolder) holder;
-        Glide.with(context).load(messagelist.get(position).getImage()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(forumViewHolder.backgroundImage);
+        Glide.with(fragmentcontext).load(messagelist.get(position).getImage()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(forumViewHolder.backgroundImage);
         forumViewHolder.groupName.setText(messagelist.get(position).getGroupname());
         forumViewHolder.members.setText(messagelist.get(position).getMembers());
         forumViewHolder.threads.setText(messagelist.get(position).getThreads());

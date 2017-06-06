@@ -20,6 +20,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -47,6 +48,7 @@ public class YourGroupsFragment extends Fragment {
     private TextView txtgroups;
     private TextView txtexplore;
     private SwipeRefreshLayout swiperefresh;
+    private JSONArray jsonresponse;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,7 +83,7 @@ public class YourGroupsFragment extends Fragment {
         recyclerViewYourGroups.setLayoutManager(gridLayoutManager);
         //recyclerViewYourGroups.setLayoutManager(new LinearLayoutManager(mContext));
 
-        adapterYourGroups = new YourGroupsAdapter(mContext);
+        adapterYourGroups = new YourGroupsAdapter(mContext, this);
         recyclerViewYourGroups.setAdapter(adapterYourGroups);
         return layout;
     }
@@ -97,6 +99,8 @@ public class YourGroupsFragment extends Fragment {
 
     @Override
     public void onDestroy() {
+        Glide.get(this.getContext()).clearMemory();
+
         mContext = null;
         super.onDestroy();
 
@@ -110,8 +114,17 @@ public class YourGroupsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (isAdded()) {
-            getDataFromServer();
-
+            if (savedInstanceState == null)
+                getDataFromServer();
+            else {
+                Log.d(TAG, "onActivityCreated: reacheed here");
+                try {
+                    jsonresponse = new JSONArray(savedInstanceState.getString("response"));
+                    parsejsonresponse();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -143,26 +156,8 @@ public class YourGroupsFragment extends Fragment {
 
                             try {
                                 swiperefresh.setRefreshing(false);
-
-                                Gson gson = new Gson();
-                                JSONObject jsonobject = jsonarray.getJSONObject(0);
-
-                                JSONArray followjsonarray = jsonobject.getJSONArray("followed");
-
-                                List<GroupModel> followlist = new ArrayList<GroupModel>();
-
-                                for (int i = 0; i < followjsonarray.length(); i++) {
-                                    JSONObject jsonObject = followjsonarray.getJSONObject(i);
-                                    GroupModel groupModel = gson.fromJson(jsonObject.toString(), GroupModel.class);
-                                    followlist.add(0, groupModel);
-                                }
-                                adapterYourGroups.add(followlist);
-
-
-                                if (followlist.size() == 0) {
-                                    txtgroups.setVisibility(View.VISIBLE);
-                                }
-
+                                jsonresponse = jsonarray;
+                                parsejsonresponse();
 
                             } catch (Exception e) {
                                 swiperefresh.setRefreshing(false);
@@ -186,8 +181,43 @@ public class YourGroupsFragment extends Fragment {
 
     }
 
+    private void parsejsonresponse() {
+        try {
+
+            Gson gson = new Gson();
+            JSONObject jsonobject = jsonresponse.getJSONObject(0);
+
+            JSONArray followjsonarray = jsonobject.getJSONArray("followed");
+
+            List<GroupModel> followlist = new ArrayList<GroupModel>();
+
+            for (int i = 0; i < followjsonarray.length(); i++) {
+                JSONObject jsonObject = followjsonarray.getJSONObject(i);
+                GroupModel groupModel = gson.fromJson(jsonObject.toString(), GroupModel.class);
+                followlist.add(0, groupModel);
+            }
+            adapterYourGroups.add(followlist);
+
+
+            if (followlist.size() == 0) {
+                txtgroups.setVisibility(View.VISIBLE);
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void refreshlist() {
         Log.d(TAG, "refreshlist: reached");
         getDataFromServer();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if (jsonresponse != null)
+            outState.putString("response", jsonresponse.toString());
+        super.onSaveInstanceState(outState);
     }
 }

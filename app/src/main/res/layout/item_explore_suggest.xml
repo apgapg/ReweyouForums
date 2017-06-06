@@ -47,6 +47,7 @@
             android:drawableLeft="@drawable/ic_supervisor_account_black_24px"
             android:gravity="center"
             android:text="46"
+            android:textColor="#424242"
             android:textSize="11dp" />
 
         <TextView
@@ -58,6 +59,7 @@
 
             android:gravity="center"
             android:text="92"
+            android:textColor="#424242"
             android:textSize="11dp" />
 
 

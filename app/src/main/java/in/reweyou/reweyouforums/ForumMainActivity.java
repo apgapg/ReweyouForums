@@ -91,7 +91,7 @@ public class ForumMainActivity extends AppCompatActivity {
         Typeface type = Typeface.createFromAsset(getAssets(), "cr.ttf");
         tabnametoolbar.setTypeface(type);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
-        viewPager.setOffscreenPageLimit(4);
+        viewPager.setOffscreenPageLimit(1);
         pagerAdapter = new PagerAdapter(getSupportFragmentManager());
 
         viewPager.setAdapter(pagerAdapter);

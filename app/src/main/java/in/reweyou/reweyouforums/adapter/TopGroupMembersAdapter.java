@@ -48,7 +48,7 @@ public class TopGroupMembersAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         ((YourGroupsViewHolder) holder).username.setText(messagelist.get(position).getUsername());
         Glide.with(mContext).load(messagelist.get(position).getImageurl()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(forumViewHolder.image);
 
-        forumViewHolder.rank.setText("#" + position);
+        forumViewHolder.rank.setText("#" + (position + 1));
         forumViewHolder.userlevel.setText(messagelist.get(position).getBadge());
 
         Drawable background = forumViewHolder.userlevel.getBackground();
