@@ -9,10 +9,10 @@ android {
         minSdkVersion 16
 
         targetSdkVersion 25
-        versionCode 7
-        versionName "1.0.5"
-       /* versionCode 1
-        versionName "debug"*/
+      /*  versionCode 7
+        versionName "1.0.5"*/
+        versionCode 1
+         versionName "debug"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         resConfigs "en"
@@ -34,7 +34,7 @@ repositories
                     }
             jcenter()
 
-            maven{
+            maven {
                 url 'https://maven.google.com'
             }
         }
@@ -55,9 +55,9 @@ dependencies {
     compile 'com.google.firebase:firebase-messaging:10.2.6'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'it.sephiroth.android.library.imagezoom:imagezoom:2.2.5'
-    compile 'com.theartofdev.edmodo:android-image-cropper:2.3.1'
+    compile 'com.theartofdev.edmodo:android-image-cropper:2.4.6'
     compile 'com.google.firebase:firebase-crash:10.2.6'
-    compile 'com.amitshekhar.android:android-networking:0.3.0'
+    compile 'com.amitshekhar.android:android-networking:1.0.0'
     compile 'com.klinkerapps:sliding-activity:1.4.4'
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.google.android.gms:play-services-auth:10.2.6'

@@ -97,7 +97,7 @@
             android:label="ReweyouForums"
 
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme2.NoActionBar.Splash">
+            android:theme="@style/AppTheme2.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

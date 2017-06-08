@@ -735,6 +735,7 @@ public class CreatePostActivity extends SlidingActivity {
                 .setBorderLineColor(getResources().getColor(R.color.colorPrimary))
                 .setGuidelinesColor(getResources().getColor(R.color.divider))
                 .setGuidelines(CropImageView.Guidelines.ON)
+                .setOutputCompressQuality(100)
                 .start(this);
     }
 
@@ -749,7 +750,14 @@ public class CreatePostActivity extends SlidingActivity {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 handleImage(result.getUri().toString());
-
+               /* File compressedImage = new Compressor.Builder(this)
+                        .setMaxWidth(1000)
+                        .setMaxHeight(1000)
+                        .setQuality(90)
+                        .setDestinationDirectoryPath(Environment.getExternalStoragePublicDirectory(
+                                Environment.DIRECTORY_PICTURES).getAbsolutePath())
+                        .build()
+                        .compressToFile(result.getUri());*/
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
             }
@@ -876,6 +884,8 @@ public class CreatePostActivity extends SlidingActivity {
                 }
             });
         } else uploadPostShare();
+
+
     }
 
 }

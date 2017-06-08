@@ -11,10 +11,15 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +58,10 @@ public class ExploreFragment extends Fragment {
     private TextView txtexplore;
     private SwipeRefreshLayout swiperefresh;
     private JSONArray jsonresponse;
+    private List<GroupModel> explorelist = new ArrayList<>();
+    private List<GroupModel> explorelistsearch = new ArrayList<>();
+    private List<String> groupnamelist = new ArrayList<>();
+    private EditText editText;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,6 +85,45 @@ public class ExploreFragment extends Fragment {
             }
         });
         txtexplore = (TextView) layout.findViewById(R.id.txtexplore);
+        editText = (EditText) layout.findViewById(R.id.search);
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                txtexplore.setVisibility(View.GONE);
+
+                if (s.toString().trim().length() > 0) {
+
+                    explorelistsearch.clear();
+                    explorelistsearch.addAll(explorelist);
+                    for (int i = explorelistsearch.size() - 1; i >= 0; i--) {
+                        if (!explorelistsearch.get(i).getGroupname().contains(s.toString())) {
+                            explorelistsearch.remove(i);
+                        }
+                    }
+                    adapterExplore.add(explorelistsearch);
+
+                    if (explorelistsearch.size() == 0) {
+                        txtexplore.setVisibility(View.VISIBLE);
+                        txtexplore.setText("No matches found. Try searching something different");
+                    }
+
+                } else {
+                    adapterExplore.add(explorelist);
+                    Log.d(TAG, "onTextChanged: " + explorelist.size());
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         DividerItemDecoration divider = new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL);
         divider.setDrawable(ContextCompat.getDrawable(mContext, R.drawable.my_custom_divider));
@@ -87,6 +135,14 @@ public class ExploreFragment extends Fragment {
         recyclerViewExplore.setLayoutManager(new LinearLayoutManager(mContext));
         adapterExplore = new ForumAdapter(mContext, this);
         recyclerViewExplore.setAdapter(adapterExplore);
+        recyclerViewExplore.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(mContext.getCurrentFocus().getWindowToken(), 0);
+                return false;
+            }
+        });
         return layout;
     }
 
@@ -191,11 +247,12 @@ public class ExploreFragment extends Fragment {
             JSONObject jsonobject = jsonresponse.getJSONObject(0);
 
             JSONArray explorejsonarray = jsonobject.getJSONArray("explore");
-
-            List<GroupModel> explorelist = new ArrayList<GroupModel>();
+            explorelist.clear();
+            groupnamelist.clear();
             for (int i = 0; i < explorejsonarray.length(); i++) {
                 JSONObject jsonObject = explorejsonarray.getJSONObject(i);
                 GroupModel groupModel = gson.fromJson(jsonObject.toString(), GroupModel.class);
+                groupnamelist.add(groupModel.getGroupname());
                 explorelist.add(0, groupModel);
             }
 
@@ -204,6 +261,7 @@ public class ExploreFragment extends Fragment {
 
             if (explorelist.size() == 0) {
                 txtexplore.setVisibility(View.VISIBLE);
+                txtexplore.setText("No groups followed yet");
             }
 
 
