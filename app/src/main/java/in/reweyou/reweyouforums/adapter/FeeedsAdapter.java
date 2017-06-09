@@ -294,7 +294,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         if (payloads.contains("like")) {
             messagelist.get(position).setStatus("true");
             holder.like.setImageResource(R.drawable.ic_heart_like);
-            holder.liketemp.animate().rotation(80).setDuration(650).alpha(0.0f).translationYBy(-Utils.convertpxFromDp(70)).translationXBy(Utils.convertpxFromDp(60)).setInterpolator(new DecelerateInterpolator()).start();
+            holder.liketemp.animate().rotation(80).setDuration(650).alpha(0.0f).translationYBy(-Utils.convertpxFromDp(70)).translationXBy(Utils.convertpxFromDp(25)).setInterpolator(new DecelerateInterpolator()).start();
             holder.likenumber.setText(String.valueOf(Integer.parseInt(messagelist.get(position).getUpvotes()) + 1));
             messagelist.get(position).setUpvotes(String.valueOf(Integer.parseInt(messagelist.get(position).getUpvotes()) + 1));
         } else if (payloads.contains("unlike")) {

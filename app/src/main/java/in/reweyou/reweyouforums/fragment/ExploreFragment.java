@@ -232,6 +232,10 @@ public class ExploreFragment extends Fragment {
                         if (new NetworkHandler().isActivityAlive(TAG, mContext, jsonarray)) {
 
                             try {
+                                editText.setVisibility(View.VISIBLE);
+                                sort.setVisibility(View.VISIBLE);
+                                checkidposition = -1;
+
                                 editText.setText("");
                                 swiperefresh.setRefreshing(false);
                                 jsonresponse = jsonarray;

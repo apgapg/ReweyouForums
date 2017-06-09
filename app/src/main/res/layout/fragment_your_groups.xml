@@ -28,10 +28,11 @@
                 android:background="@color/transparent"
                 android:drawableLeft="@drawable/ic_search_layer"
                 android:drawablePadding="8dp"
-                android:hint="Search your interest..."
+                android:hint="Find your group..."
                 android:paddingLeft="14dp"
                 android:textColor="#424242"
-                android:textSize="13dp" />
+                android:textSize="13dp"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/sort"
@@ -44,7 +45,8 @@
                 android:text="SORT"
                 android:textColor="@color/main_background_pink_alpha"
                 android:textSize="12dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone" />
         </LinearLayout>
 
         <View
