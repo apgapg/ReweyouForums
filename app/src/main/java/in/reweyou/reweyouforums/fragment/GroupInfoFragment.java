@@ -391,7 +391,7 @@ public class GroupInfoFragment extends Fragment {
         for (int i = 0; i < groupModels.size(); i++) {
             View view = mContext.getLayoutInflater().inflate(R.layout.item_group_info_members, null);
             final ImageView image = (ImageView) view.findViewById(R.id.img);
-            Glide.with(mContext).load(groupModels.get(i).getImageurl()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(image);
+            Glide.with(mContext).load(groupModels.get(i).getImageurl()).error(R.drawable.download).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(image);
 
             flowLayout.addView(view);
         }

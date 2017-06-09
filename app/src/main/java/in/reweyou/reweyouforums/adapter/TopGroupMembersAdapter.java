@@ -46,8 +46,10 @@ public class TopGroupMembersAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         YourGroupsViewHolder forumViewHolder = (YourGroupsViewHolder) holder;
         ((YourGroupsViewHolder) holder).username.setText(messagelist.get(position).getUsername());
-        Glide.with(mContext).load(messagelist.get(position).getImageurl()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(forumViewHolder.image);
+        Glide.with(mContext).load(messagelist.get(position).getImageurl()).error(R.drawable.download).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(forumViewHolder.image);
 
+        forumViewHolder.username.setSelected(true);
+        forumViewHolder.points.setText(" - " + messagelist.get(position).getPoints() + " pts");
         forumViewHolder.rank.setText("#" + (position + 1));
         forumViewHolder.userlevel.setText(messagelist.get(position).getBadge());
 
@@ -63,6 +65,8 @@ public class TopGroupMembersAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_pro));
             } else if (messagelist.get(position).getBadge().equals("Rising Star")) {
                 shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_rising_star));
+            } else if (messagelist.get(position).getBadge().equals("Star")) {
+                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_star));
             } else if (messagelist.get(position).getBadge().equals("Expert")) {
                 shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_expert));
             } else if (messagelist.get(position).getBadge().equals("Leader")) {
@@ -96,7 +100,7 @@ public class TopGroupMembersAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     private class YourGroupsViewHolder extends RecyclerView.ViewHolder {
         private ImageView image;
-        private TextView username, userlevel, rank;
+        private TextView username, userlevel, rank, points;
 
 
         public YourGroupsViewHolder(View inflate) {
@@ -105,6 +109,7 @@ public class TopGroupMembersAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             image = (ImageView) inflate.findViewById(R.id.image);
             userlevel = (TextView) inflate.findViewById(R.id.userlevel);
             rank = (TextView) inflate.findViewById(R.id.rank);
+            points = (TextView) inflate.findViewById(R.id.points);
 
             username = (TextView) inflate.findViewById(R.id.username);
 

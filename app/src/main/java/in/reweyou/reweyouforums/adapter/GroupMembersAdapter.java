@@ -63,7 +63,7 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         YourGroupsViewHolder forumViewHolder = (YourGroupsViewHolder) holder;
         ((YourGroupsViewHolder) holder).username.setText(messagelist.get(position).getUsername());
-        Glide.with(context).load(messagelist.get(position).getImageurl()).dontAnimate().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(forumViewHolder.backgroundImage);
+        Glide.with(context).load(messagelist.get(position).getImageurl()).dontAnimate().error(R.drawable.download).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(forumViewHolder.backgroundImage);
         if (isadmin) {
             ((YourGroupsViewHolder) holder).block.setVisibility(View.VISIBLE);
         } else ((YourGroupsViewHolder) holder).block.setVisibility(View.INVISIBLE);

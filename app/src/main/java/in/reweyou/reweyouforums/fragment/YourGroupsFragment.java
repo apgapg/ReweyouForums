@@ -1,7 +1,10 @@
 package in.reweyou.reweyouforums.fragment;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,10 +12,17 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +37,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import in.reweyou.reweyouforums.R;
@@ -41,14 +53,21 @@ import in.reweyou.reweyouforums.utils.NetworkHandler;
 
 public class YourGroupsFragment extends Fragment {
     private static final String TAG = YourGroupsFragment.class.getName();
+    private static final int SORT_ALPHABETICALLY = 4;
+    private static final int SORT_MEMBERS = 5;
+    private static final int SORT_POSTS = 6;
     private Activity mContext;
     private RecyclerView recyclerViewYourGroups;
     private YourGroupsAdapter adapterYourGroups;
     private UserSessionManager userSessionManager;
     private TextView txtgroups;
-    private TextView txtexplore;
     private SwipeRefreshLayout swiperefresh;
     private JSONArray jsonresponse;
+    private EditText editText;
+    private List<GroupModel> followlist = new ArrayList<>();
+    private List<GroupModel> explorelistsearch = new ArrayList<>();
+    private int checkidposition = -1;
+    private TextView sort;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,6 +91,51 @@ public class YourGroupsFragment extends Fragment {
             }
         });
         txtgroups = (TextView) layout.findViewById(R.id.txtgroups);
+        editText = (EditText) layout.findViewById(R.id.search);
+        sort = (TextView) layout.findViewById(R.id.sort);
+        sort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showsortdialog();
+            }
+        });
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                txtgroups.setVisibility(View.GONE);
+
+                if (s.toString().trim().length() > 0) {
+
+                    explorelistsearch.clear();
+                    explorelistsearch.addAll(followlist);
+                    for (int i = explorelistsearch.size() - 1; i >= 0; i--) {
+                        if (!explorelistsearch.get(i).getGroupname().contains(s.toString()) && !explorelistsearch.get(i).getDescription().contains(s.toString())) {
+                            explorelistsearch.remove(i);
+                        }
+                    }
+                    adapterYourGroups.add(explorelistsearch);
+
+                    if (explorelistsearch.size() == 0) {
+                        txtgroups.setVisibility(View.VISIBLE);
+                        txtgroups.setText("No matches found. Try searching something different");
+                    }
+
+                } else {
+                    adapterYourGroups.add(followlist);
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
 
        /* DividerItemDecoration divider = new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL);
@@ -82,7 +146,14 @@ public class YourGroupsFragment extends Fragment {
 
         recyclerViewYourGroups.setLayoutManager(gridLayoutManager);
         //recyclerViewYourGroups.setLayoutManager(new LinearLayoutManager(mContext));
-
+        recyclerViewYourGroups.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(mContext.getCurrentFocus().getWindowToken(), 0);
+                return false;
+            }
+        });
         adapterYourGroups = new YourGroupsAdapter(mContext, this);
         recyclerViewYourGroups.setAdapter(adapterYourGroups);
         return layout;
@@ -155,6 +226,8 @@ public class YourGroupsFragment extends Fragment {
                         if (new NetworkHandler().isActivityAlive(TAG, mContext, jsonarray)) {
 
                             try {
+                                editText.setText("");
+
                                 swiperefresh.setRefreshing(false);
                                 jsonresponse = jsonarray;
                                 parsejsonresponse();
@@ -184,12 +257,12 @@ public class YourGroupsFragment extends Fragment {
     private void parsejsonresponse() {
         try {
 
+
             Gson gson = new Gson();
             JSONObject jsonobject = jsonresponse.getJSONObject(0);
-
+            followlist.clear();
             JSONArray followjsonarray = jsonobject.getJSONArray("followed");
-
-            List<GroupModel> followlist = new ArrayList<GroupModel>();
+            Log.d(TAG, "parsejsonresponse: " + followjsonarray);
 
             for (int i = 0; i < followjsonarray.length(); i++) {
                 JSONObject jsonObject = followjsonarray.getJSONObject(i);
@@ -219,6 +292,81 @@ public class YourGroupsFragment extends Fragment {
         if (jsonresponse != null)
             outState.putString("response", jsonresponse.toString());
         super.onSaveInstanceState(outState);
+    }
+
+    private void showsortdialog() {
+        final LayoutInflater li = LayoutInflater.from(mContext);
+        View confirmDialog = li.inflate(R.layout.dialog_sort_groups, null);
+
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+
+        alert.setView(confirmDialog);
+
+        final AlertDialog alertDialog = alert.create();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        RadioGroup rGroup = (RadioGroup) confirmDialog.findViewById(R.id.radioGroup1);
+        rGroup.check(checkidposition);
+        rGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.radioalpha:
+                        checkidposition = R.id.radioalpha;
+                        sortCollections(SORT_ALPHABETICALLY);
+                        alertDialog.dismiss();
+                        break;
+                    case R.id.radiomembers:
+                        checkidposition = R.id.radiomembers;
+                        sortCollections(SORT_MEMBERS);
+                        alertDialog.dismiss();
+
+                        break;
+                    case R.id.radioposts:
+                        checkidposition = R.id.radioposts;
+                        sortCollections(SORT_POSTS);
+                        alertDialog.dismiss();
+
+                        break;
+                }
+            }
+        });
+        alertDialog.show();
+
+
+    }
+
+    private void sortCollections(int code) {
+        if (code == SORT_ALPHABETICALLY) {
+            Collections.sort(followlist, new Comparator<GroupModel>() {
+                @Override
+                public int compare(GroupModel o1, GroupModel o2) {
+                    return o1.getGroupname().compareToIgnoreCase(o2.getGroupname());
+                }
+            });
+            adapterYourGroups.add(followlist);
+        } else if (code == SORT_MEMBERS) {
+            Collections.sort(followlist, new Comparator<GroupModel>() {
+                @Override
+                public int compare(GroupModel o1, GroupModel o2) {
+                    return (Integer.parseInt(o2.getMembers()) - Integer.parseInt(o1.getMembers()));
+                }
+            });
+            adapterYourGroups.add(followlist);
+
+
+        } else if (code == SORT_POSTS) {
+            Collections.sort(followlist, new Comparator<GroupModel>() {
+                @Override
+                public int compare(GroupModel o1, GroupModel o2) {
+                    return (Integer.parseInt(o2.getThreads()) - Integer.parseInt(o1.getThreads()));
+                }
+            });
+            adapterYourGroups.add(followlist);
+
+        }
+
+
     }
 
 

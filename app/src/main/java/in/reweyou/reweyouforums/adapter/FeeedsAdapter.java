@@ -141,7 +141,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         holder.date.setText(messagelist.get(position).getTimestamp().replace("about ", ""));
         holder.username.setText(messagelist.get(position).getUsername());
         holder.commentnum.setText(messagelist.get(position).getComments());
-        Glide.with(fragmentContext).load(messagelist.get(position).getProfilepic()).into(holder.profileimage);
+        Glide.with(fragmentContext).load(messagelist.get(position).getProfilepic()).error(R.drawable.download).into(holder.profileimage);
         holder.userlevel.setText(messagelist.get(position).getBadge());
         holder.groupname.setText("#" + messagelist.get(position).getGroupname());
         Log.d(TAG, "onBindViewHolder: " + messagelist.get(position).getBadge());
@@ -169,6 +169,8 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                 shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_pro));
             } else if (messagelist.get(position).getBadge().equals("Rising Star")) {
                 shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_rising_star));
+            } else if (messagelist.get(position).getBadge().equals("Star")) {
+                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_star));
             } else if (messagelist.get(position).getBadge().equals("Expert")) {
                 shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_expert));
             } else if (messagelist.get(position).getBadge().equals("Leader")) {
@@ -292,7 +294,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         if (payloads.contains("like")) {
             messagelist.get(position).setStatus("true");
             holder.like.setImageResource(R.drawable.ic_heart_like);
-            holder.liketemp.animate().rotation(80).setDuration(650).alpha(0.0f).translationYBy(-Utils.convertpxFromDp(70)).setInterpolator(new DecelerateInterpolator()).start();
+            holder.liketemp.animate().rotation(80).setDuration(650).alpha(0.0f).translationYBy(-Utils.convertpxFromDp(70)).translationXBy(Utils.convertpxFromDp(60)).setInterpolator(new DecelerateInterpolator()).start();
             holder.likenumber.setText(String.valueOf(Integer.parseInt(messagelist.get(position).getUpvotes()) + 1));
             messagelist.get(position).setUpvotes(String.valueOf(Integer.parseInt(messagelist.get(position).getUpvotes()) + 1));
         } else if (payloads.contains("unlike")) {

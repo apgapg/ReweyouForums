@@ -314,10 +314,9 @@ public class CreatePostActivity extends SlidingActivity {
                             Gson gson = new Gson();
                             List<GroupModel> groupModels = new ArrayList<>();
                             for (int i = 0; i < response.length(); i++) {
-                                if (i < 9) {
-                                    GroupModel groupModel = gson.fromJson(response.getJSONObject(i).toString(), GroupModel.class);
-                                    groupModels.add(groupModel);
-                                }
+
+                                GroupModel groupModel = gson.fromJson(response.getJSONObject(i).toString(), GroupModel.class);
+                                groupModels.add(groupModel);
 
 
                             }

@@ -80,7 +80,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if (((CommentModel) messagelist.get(position)).getUid().equals(userSessionManager.getUID()))
                 commentViewHolder.edit.setVisibility(View.VISIBLE);
             else commentViewHolder.edit.setVisibility(View.INVISIBLE);
-            Glide.with(mContext).load(((CommentModel) messagelist.get(position)).getImageurl()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(commentViewHolder.image);
+            Glide.with(mContext).load(((CommentModel) messagelist.get(position)).getImageurl()).error(R.drawable.download).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(commentViewHolder.image);
             commentViewHolder.userlevel.setText(((CommentModel) messagelist.get(position)).getBadge());
             commentViewHolder.likenumber.setText(((CommentModel) messagelist.get(position)).getUpvotes());
             if (((CommentModel) messagelist.get(position)).getStatus().equals("true")) {
@@ -126,7 +126,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             replyViewHolder.username.setText(replyCommentModel.getUsername());
             replyViewHolder.comment.setText(replyCommentModel.getReply());
             replyViewHolder.time.setText(replyCommentModel.getTimestamp().replace("about ", ""));
-            Glide.with(mContext).load(((ReplyCommentModel) messagelist.get(position)).getImageurl()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(replyViewHolder.image);
+            Glide.with(mContext).load(((ReplyCommentModel) messagelist.get(position)).getImageurl()).error(R.drawable.download).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(replyViewHolder.image);
             replyViewHolder.userlevel.setText(((ReplyCommentModel) messagelist.get(position)).getBadge());
             if (((ReplyCommentModel) messagelist.get(position)).getUid().equals(userSessionManager.getUID()))
                 replyViewHolder.edit.setVisibility(View.VISIBLE);

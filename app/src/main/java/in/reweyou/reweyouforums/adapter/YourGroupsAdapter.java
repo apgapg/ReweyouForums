@@ -56,7 +56,7 @@ public class YourGroupsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         forumViewHolder.groupName.setText(messagelist.get(position).getGroupname());
         forumViewHolder.members.setText(messagelist.get(position).getMembers());
         forumViewHolder.threads.setText(messagelist.get(position).getThreads());
-
+        forumViewHolder.groupName.setSelected(true);
     }
 
     @Override

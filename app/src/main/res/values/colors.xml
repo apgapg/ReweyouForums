@@ -6,7 +6,7 @@
 
     <color name="colorPrimary">#05A8AA</color>
     <color name="colorPrimaryDark">#048C8E</color>
-    <color name="colorAccent">#A15773</color>
+    <color name="colorAccent">#a45c77</color>
     <color name="red">#f44336</color>
     <color name="red_alpha">#24f44336</color>
 
@@ -31,6 +31,7 @@
     <color name="user_level_follower">#C51162</color>
     <color name="user_level_pro">#DD2C00</color>
     <color name="user_level_rising_star">#00C853</color>
+    <color name="user_level_star">#FFD600</color>
     <color name="user_level_expert">#6200EA</color>
     <color name="user_level_leader">#2962FF</color>
     <color name="user_level_king">#FF6D00</color>

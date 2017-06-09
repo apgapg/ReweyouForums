@@ -8,6 +8,11 @@ public class TopGroupMemberModel {
     private String imageurl;
     private String username;
     private String badge;
+    private String points;
+
+    public String getPoints() {
+        return points;
+    }
 
     public String getBadge() {
         return badge;

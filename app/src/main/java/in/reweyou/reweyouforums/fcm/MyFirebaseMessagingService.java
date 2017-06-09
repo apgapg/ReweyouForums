@@ -120,7 +120,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Calendar cal = Calendar.getInstance();
         int hour = cal.get(Calendar.HOUR_OF_DAY);
         if (hour < 7 || hour > 23) {
-            mBuilder.setDefaults(NotificationCompat.DEFAULT_VIBRATE);
+            if (hour < 7)
+                mBuilder.setDefaults(NotificationCompat.DEFAULT_VIBRATE);
 
         } else {
             mBuilder.setDefaults(NotificationCompat.DEFAULT_ALL);

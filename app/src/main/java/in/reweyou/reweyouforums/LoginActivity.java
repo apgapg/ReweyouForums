@@ -1,5 +1,6 @@
 package in.reweyou.reweyouforums;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -35,6 +37,9 @@ import com.kbeanie.multipicker.api.callbacks.ImagePickerCallback;
 import com.kbeanie.multipicker.api.entity.ChosenImage;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -56,6 +61,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private NonSwipeableViewPager nonSwipeableViewPager;
     private PagerAdapter pagerAdapter;
     private ImagePicker imagePicker;
+    private UserSessionManager userSessionManager;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,14 +116,75 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             Log.d(TAG, "handleSignInResult: LoginName: " + acct.getGivenName());
 
 
-            ((ProfileFragment) pagerAdapter.getRegisteredFragment(1)).onsignin(acct.getId(), acct.getIdToken(), acct.getDisplayName(), acct.getPhotoUrl(), acct.getServerAuthCode());
+           /* ((ProfileFragment) pagerAdapter.getRegisteredFragment(1)).onsignin(acct.getId(), acct.getIdToken(), acct.getDisplayName(), acct.getPhotoUrl(), acct.getServerAuthCode());
 
 
             nonSwipeableViewPager.setCurrentItem(1);
+
+*/
+            uploadsignin(acct);
         } else {
             // Signed out, show unauthenticated UI.
             Log.d(TAG, "handleSignInResult: signed out");
         }
+    }
+
+    private void uploadsignin(final GoogleSignInAccount acct) {
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+            jsonObject.put("0", "8");
+            jsonObject.put("1", "2");
+            jsonObject.put("2", "");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Authenticating");
+        progressDialog.setMessage("Signing in. Please wait!");
+        progressDialog.show();
+        userSessionManager = new UserSessionManager(this);
+
+        AndroidNetworking.post("https://www.reweyou.in/google/signup.php")
+                .addBodyParameter("profileurl", acct.getPhotoUrl().toString())
+                .addBodyParameter("name", acct.getDisplayName())
+                .addBodyParameter("userid", acct.getIdToken())
+                .addBodyParameter("uid", acct.getId())
+                .addBodyParameter("fcmid", userSessionManager.getfcmid())
+                .addBodyParameter("interest", jsonObject.toString())
+                .addBodyParameter("username", acct.getDisplayName())
+                .setTag("login")
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        progressDialog.dismiss();
+
+                        try {
+                            Log.d(TAG, "onResponse: " + response);
+                            userSessionManager.createUserRegisterSession(acct.getId(), acct.getDisplayName(), acct.getDisplayName(), acct.getPhotoUrl().toString(), response.getString("token"), response.getString("shortinfo"));
+                            startActivity(new Intent(LoginActivity.this, ForumMainActivity.class));
+                            finish();
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Toast.makeText(LoginActivity.this, "Something went wrong! Please try again", Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        progressDialog.dismiss();
+
+                        Log.d(TAG, "onError: " + anError);
+                        Toast.makeText(LoginActivity.this, "Something went wrong! Please try again", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
     }
 
 

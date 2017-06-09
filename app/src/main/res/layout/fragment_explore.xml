@@ -16,17 +16,37 @@
         app:cardCornerRadius="4dp"
         app:cardElevation="0dp">
 
-        <EditText
-            android:id="@+id/search"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:background="@color/transparent"
-            android:drawableLeft="@drawable/ic_search_layer"
-            android:drawablePadding="8dp"
-            android:hint="Search your interest..."
-            android:paddingLeft="14dp"
-            android:textColor="#424242"
-            android:textSize="13dp" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/search"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:background="@color/transparent"
+                android:drawableLeft="@drawable/ic_search_layer"
+                android:drawablePadding="8dp"
+                android:hint="Search your interest..."
+                android:paddingLeft="14dp"
+                android:textColor="#424242"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/sort"
+                android:layout_width="50dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="6dp"
+                android:background="@drawable/ripple_effect2"
+                android:gravity="center"
+                android:text="SORT"
+                android:textColor="@color/main_background_pink_alpha"
+                android:textSize="12dp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
@@ -38,8 +58,7 @@
             android:id="@id/swiperefresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="8dp"
+
             android:layout_marginTop="44.7dp">
 
             <android.support.v7.widget.RecyclerView
@@ -59,7 +78,6 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:minLines="2"
-            android:paddingTop="1dp"
             android:text="No groups followed yet"
             android:textColor="#757575"
             android:textSize="13dp"
