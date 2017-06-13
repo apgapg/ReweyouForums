@@ -58,6 +58,7 @@ import in.reweyou.reweyouforums.GroupMembers;
 import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.model.GroupMemberModel;
+import in.reweyou.reweyouforums.utils.NetworkHandler;
 import in.reweyou.reweyouforums.utils.Utils;
 
 import static in.reweyou.reweyouforums.utils.Utils.convertpxFromDp;
@@ -362,26 +363,31 @@ public class GroupInfoFragment extends Fragment {
                 .getAsJSONArray(new JSONArrayRequestListener() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        try {
-                            Log.d(TAG, "onResponse: members " + response.length());
-                            List<GroupMemberModel> list = new ArrayList<>();
-                            Gson gson = new Gson();
-                            for (int i = 0; i < response.length(); i++) {
-                                GroupMemberModel groupMemberModel = gson.fromJson(response.getJSONObject(i).toString(), GroupMemberModel.class);
-                                list.add(groupMemberModel);
+                        if (new NetworkHandler().isActivityAlive(TAG, mContext, response)) {
+
+                            try {
+                                Log.d(TAG, "onResponse: members " + response.length());
+                                List<GroupMemberModel> list = new ArrayList<>();
+                                Gson gson = new Gson();
+                                for (int i = 0; i < response.length(); i++) {
+                                    GroupMemberModel groupMemberModel = gson.fromJson(response.getJSONObject(i).toString(), GroupMemberModel.class);
+                                    list.add(groupMemberModel);
+                                }
+
+                                populatedata(list);
+
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-
-                            populatedata(list);
-
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
                         }
                     }
 
                     @Override
                     public void onError(ANError anError) {
-                        Log.e(TAG, "onError: " + anError);
+                        if (new NetworkHandler().isActivityAlive(TAG, mContext, anError)) {
+                            Log.e(TAG, "onError: " + anError);
+                        }
                     }
                 });
     }

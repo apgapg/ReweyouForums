@@ -114,7 +114,7 @@ public class YourGroupsFragment extends Fragment {
                     explorelistsearch.clear();
                     explorelistsearch.addAll(followlist);
                     for (int i = explorelistsearch.size() - 1; i >= 0; i--) {
-                        if (!explorelistsearch.get(i).getGroupname().contains(s.toString()) && !explorelistsearch.get(i).getDescription().contains(s.toString())) {
+                        if (!explorelistsearch.get(i).getGroupname().toLowerCase().contains(s.toString().toLowerCase()) && !explorelistsearch.get(i).getDescription().toLowerCase().contains(s.toString().toLowerCase())) {
                             explorelistsearch.remove(i);
                         }
                     }
@@ -207,26 +207,15 @@ public class YourGroupsFragment extends Fragment {
         AndroidNetworking.post("https://www.reweyou.in/google/discover_groups.php")
                 .addBodyParameter("uid", userSessionManager.getUID())
                 .setTag("fetchgroups")
-                .setPriority(Priority.MEDIUM)
+                .setPriority(Priority.LOW)
                 .build()
-                /*.getAsString(new StringRequestListener() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d(TAG, "onResponse: "+response);
-                    }
-
-                    @Override
-                    public void onError(ANError anError) {
-
-                    }
-                });*/
                 .getAsJSONArray(new JSONArrayRequestListener() {
                     @Override
                     public void onResponse(JSONArray jsonarray) {
                         if (new NetworkHandler().isActivityAlive(TAG, mContext, jsonarray)) {
 
                             try {
-                                checkidposition = -1;
+                                checkidposition = userSessionManager.getvaluefromsharedpref("checkyourgroup");
                                 editText.setText("");
                                 editText.setVisibility(View.VISIBLE);
                                 sort.setVisibility(View.VISIBLE);
@@ -271,6 +260,11 @@ public class YourGroupsFragment extends Fragment {
                 GroupModel groupModel = gson.fromJson(jsonObject.toString(), GroupModel.class);
                 followlist.add(0, groupModel);
             }
+
+            Log.d(TAG, "parsejsonresponse: " + checkidposition);
+            sortCollections2(checkidposition);
+
+
             adapterYourGroups.add(followlist);
 
 
@@ -315,17 +309,20 @@ public class YourGroupsFragment extends Fragment {
                 switch (checkedId) {
                     case R.id.radioalpha:
                         checkidposition = R.id.radioalpha;
+                        userSessionManager.putinsharedpref("checkyourgroup", checkidposition);
                         sortCollections(SORT_ALPHABETICALLY);
                         alertDialog.dismiss();
                         break;
                     case R.id.radiomembers:
                         checkidposition = R.id.radiomembers;
+                        userSessionManager.putinsharedpref("checkyourgroup", checkidposition);
                         sortCollections(SORT_MEMBERS);
                         alertDialog.dismiss();
 
                         break;
                     case R.id.radioposts:
                         checkidposition = R.id.radioposts;
+                        userSessionManager.putinsharedpref("checkyourgroup", checkidposition);
                         sortCollections(SORT_POSTS);
                         alertDialog.dismiss();
 
@@ -365,6 +362,36 @@ public class YourGroupsFragment extends Fragment {
                 }
             });
             adapterYourGroups.add(followlist);
+
+        }
+
+
+    }
+
+    private void sortCollections2(int code) {
+        if (code == R.id.radioalpha) {
+            Collections.sort(followlist, new Comparator<GroupModel>() {
+                @Override
+                public int compare(GroupModel o1, GroupModel o2) {
+                    return o1.getGroupname().compareToIgnoreCase(o2.getGroupname());
+                }
+            });
+        } else if (code == R.id.radiomembers) {
+            Collections.sort(followlist, new Comparator<GroupModel>() {
+                @Override
+                public int compare(GroupModel o1, GroupModel o2) {
+                    return (Integer.parseInt(o2.getMembers()) - Integer.parseInt(o1.getMembers()));
+                }
+            });
+
+
+        } else if (code == R.id.radioposts) {
+            Collections.sort(followlist, new Comparator<GroupModel>() {
+                @Override
+                public int compare(GroupModel o1, GroupModel o2) {
+                    return (Integer.parseInt(o2.getThreads()) - Integer.parseInt(o1.getThreads()));
+                }
+            });
 
         }
 

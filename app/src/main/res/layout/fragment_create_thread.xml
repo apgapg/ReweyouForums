@@ -108,7 +108,6 @@
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/headline1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
@@ -133,7 +132,6 @@
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/description1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
@@ -159,7 +157,6 @@
 
 
                 <Button
-                    android:id="@+id/post1"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_gravity="center_horizontal"
@@ -375,7 +372,6 @@
                     android:background="@color/greylight" />
 
                 <Button
-                    android:id="@+id/post3"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_gravity="center_horizontal"

@@ -48,10 +48,10 @@ import in.reweyou.reweyouforums.classes.UserSessionManager;
  * Created by master on 24/2/17.
  */
 
-public class CreateFragment extends Fragment {
+public class CreateGroupFragment extends Fragment {
 
 
-    private static final String TAG = CreateFragment.class.getName();
+    private static final String TAG = CreateGroupFragment.class.getName();
     private Activity mContext;
     private EditText description;
     private EditText groupname;
@@ -156,7 +156,7 @@ public class CreateFragment extends Fragment {
                             new Handler().postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ((ForumMainActivity) mContext).showExploreGroupFragment();
+                                    ((ForumMainActivity) mContext).showYourGroupsFragment();
                                 }
                             }, 500);
 

@@ -30,6 +30,7 @@ import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.adapter.FeeedsAdapter;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.model.ThreadModel;
+import in.reweyou.reweyouforums.utils.NetworkHandler;
 
 /**
  * Created by master on 24/2/17.
@@ -191,25 +192,30 @@ public class GroupThreadsFragment extends Fragment {
 
                     @Override
                     public void onResponse(final List<ThreadModel> list) {
-                        swipeRefreshLayout.setRefreshing(false);
-                        new Handler().post(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (list.size() == 0) {
-                                    nopostcard.setVisibility(View.VISIBLE);
-                                    swipeRefreshLayout.setEnabled(false);
-                                } else
-                                    feeedsAdapter.add(list);
-                            }
-                        });
+                        if (new NetworkHandler().isActivityAlive(TAG, mContext, list)) {
 
+                            swipeRefreshLayout.setRefreshing(false);
+                            new Handler().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (list.size() == 0) {
+                                        nopostcard.setVisibility(View.VISIBLE);
+                                        swipeRefreshLayout.setEnabled(false);
+                                    } else
+                                        feeedsAdapter.add(list);
+                                }
+                            });
+                        }
                     }
 
                     @Override
                     public void onError(final ANError anError) {
-                        Log.e(TAG, "run: error: " + anError.getErrorDetail());
+                        if (new NetworkHandler().isActivityAlive(TAG, mContext, anError)) {
 
-                        swipeRefreshLayout.setRefreshing(false);
+                            Log.e(TAG, "run: error: " + anError.getErrorDetail());
+
+                            swipeRefreshLayout.setRefreshing(false);
+                        }
                     }
                 });
     }

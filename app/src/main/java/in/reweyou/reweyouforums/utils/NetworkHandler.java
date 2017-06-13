@@ -18,24 +18,26 @@ public class NetworkHandler {
 
 
     private static void logwarning(String tag, String message) {
-        Log.w(TAG, tag + ": " + message);
+        Log.w(tag, message);
     }
 
     private static void logresponse(String tag, String s) {
-        Log.d(TAG, tag + ": " + s);
+        Log.d(tag, s);
     }
 
     public boolean isActivityAlive(String tag, Activity activity, Object s) {
+        if (s == null)
+            s = "Response is Empty";
         if (activity != null) {
             if (!activity.isFinishing()) {
-                logresponse(TAG, s.toString());
+                logresponse(tag, s.toString());
                 return true;
             } else {
-                logwarning(TAG, tag + ": " + "Activity is finishing");
+                logwarning(tag, "Activity is finishing");
                 return false;
             }
         } else {
-            logwarning(TAG, tag + ": " + "Activity context is null");
+            logwarning(tag, "Activity context is null");
             return false;
         }
     }

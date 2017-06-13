@@ -112,7 +112,7 @@ public class ExploreFragment extends Fragment {
                     explorelistsearch.clear();
                     explorelistsearch.addAll(explorelist);
                     for (int i = explorelistsearch.size() - 1; i >= 0; i--) {
-                        if (!explorelistsearch.get(i).getGroupname().contains(s.toString()) && !explorelistsearch.get(i).getDescription().contains(s.toString())) {
+                        if (!explorelistsearch.get(i).getGroupname().toLowerCase().contains(s.toString().toLowerCase()) && !explorelistsearch.get(i).getDescription().toLowerCase().contains(s.toString().toLowerCase())) {
                             explorelistsearch.remove(i);
                         }
                     }
@@ -213,7 +213,7 @@ public class ExploreFragment extends Fragment {
                 .addBodyParameter("uid", userSessionManager.getUID())
                 .addBodyParameter("authtoken", userSessionManager.getAuthToken())
                 .setTag("fetchgroups")
-                .setPriority(Priority.MEDIUM)
+                .setPriority(Priority.LOW)
                 .build()
                 /*.getAsString(new StringRequestListener() {
                     @Override
@@ -322,17 +322,20 @@ public class ExploreFragment extends Fragment {
                 switch (checkedId) {
                     case R.id.radioalpha:
                         checkidposition = R.id.radioalpha;
+
                         sortCollections(SORT_ALPHABETICALLY);
                         alertDialog.dismiss();
                         break;
                     case R.id.radiomembers:
                         checkidposition = R.id.radiomembers;
+
                         sortCollections(SORT_MEMBERS);
                         alertDialog.dismiss();
 
                         break;
                     case R.id.radioposts:
                         checkidposition = R.id.radioposts;
+
                         sortCollections(SORT_POSTS);
                         alertDialog.dismiss();
 
@@ -347,7 +350,7 @@ public class ExploreFragment extends Fragment {
 
     private void sortCollections(int code) {
         if (code == SORT_ALPHABETICALLY) {
-            Collections.sort(explorelist, new Comparator<GroupModel>() {
+            Collections.sort(explorelistsearch, new Comparator<GroupModel>() {
                 @Override
                 public int compare(GroupModel o1, GroupModel o2) {
                     return o1.getGroupname().compareToIgnoreCase(o2.getGroupname());

@@ -26,9 +26,7 @@
         android:clipChildren="false"
         android:orientation="vertical">
 
-        <include
-            android:id="@+id/include2"
-            layout="@layout/item_row_usernametop" />
+        <include layout="@layout/item_row_usernametop" />
 
         <View
             android:layout_width="match_parent"
@@ -115,7 +113,6 @@ terro"
 
 
         <View
-            android:id="@+id/c"
             android:layout_width="match_parent"
             android:layout_height="0.7dp"
             android:layout_marginLeft="8dp"
@@ -123,9 +120,7 @@ terro"
             android:alpha="0.44"
             android:background="@color/divider" />
 
-        <include
-            android:id="@+id/include1"
-            layout="@layout/item_row_like" />
+        <include layout="@layout/item_row_like" />
 
     </LinearLayout>
 

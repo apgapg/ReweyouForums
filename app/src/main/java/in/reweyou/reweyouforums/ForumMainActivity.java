@@ -39,7 +39,7 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import java.util.List;
 
 import in.reweyou.reweyouforums.classes.UserSessionManager;
-import in.reweyou.reweyouforums.fragment.CreateFragment;
+import in.reweyou.reweyouforums.fragment.CreateGroupFragment;
 import in.reweyou.reweyouforums.fragment.ExploreFragment;
 import in.reweyou.reweyouforums.fragment.MainThreadsFragment;
 import in.reweyou.reweyouforums.fragment.UserInfoFragment;
@@ -315,8 +315,8 @@ public class ForumMainActivity extends AppCompatActivity {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 if (positionFragment == 3) {
-                    CreateFragment createFragment = (CreateFragment) pagerAdapter.getRegisteredFragment(3);
-                    createFragment.onImageChoosen(result.getUri().toString());
+                    CreateGroupFragment createGroupFragment = (CreateGroupFragment) pagerAdapter.getRegisteredFragment(3);
+                    createGroupFragment.onImageChoosen(result.getUri().toString());
                 }
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
@@ -346,9 +346,9 @@ public class ForumMainActivity extends AppCompatActivity {
     }
 
 
-    public void showExploreGroupFragment() {
+    public void showYourGroupsFragment() {
 
-        viewPager.setCurrentItem(1);
+        viewPager.setCurrentItem(2);
         ((YourGroupsFragment) pagerAdapter.getRegisteredFragment(2)).refreshlist();
     }
 
@@ -416,7 +416,7 @@ public class ForumMainActivity extends AppCompatActivity {
             else if (position == 1)
                 return new ExploreFragment();
             else if (position == 3)
-                return new CreateFragment();
+                return new CreateGroupFragment();
             if (position == 2)
                 return new YourGroupsFragment();
             else

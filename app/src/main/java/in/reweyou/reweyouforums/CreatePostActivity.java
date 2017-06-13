@@ -377,25 +377,27 @@ public class CreatePostActivity extends SlidingActivity {
     private void uploadPost() {
 
 
-        if (edittextdescription.getText().toString().trim().length() > 0 && type != null) {
+        String edittextdestext = "";
+        if (edittextdescription.getText().toString().trim().length() != 0) {
+            edittextdestext = edittextdescription.getText().toString();
+        }
+        Intent intent = new Intent();
+        intent.putExtra("description", edittextdestext);
 
-            Intent intent = new Intent();
-            intent.putExtra("description", edittextdescription.getText().toString());
-
-            intent.putExtra("link", link);
-            intent.putExtra("linkhead", linkhead);
-            intent.putExtra("linkdesc", linkdesc);
-            intent.putExtra("counter", counter - 1);
-            intent.putExtra("image1", image1url);
-            intent.putExtra("image2", image2url);
-            intent.putExtra("image3", image3url);
-            intent.putExtra("image4", image4url);
-            intent.putExtra("linkimage", linkimage);
+        intent.putExtra("link", link);
+        intent.putExtra("linkhead", linkhead);
+        intent.putExtra("linkdesc", linkdesc);
+        intent.putExtra("counter", counter - 1);
+        intent.putExtra("image1", image1url);
+        intent.putExtra("image2", image2url);
+        intent.putExtra("image3", image3url);
+        intent.putExtra("image4", image4url);
+        intent.putExtra("linkimage", linkimage);
 
 
-            intent.putExtra("type", type);
-            setResult(RESULT_OK, intent);
-            finish();
+        intent.putExtra("type", type);
+        setResult(RESULT_OK, intent);
+        finish();
             /*AndroidNetworking.post("https://www.reweyou.in/google/create_threads.php")
                     .addBodyParameter("groupname", "Photography")
                     .addBodyParameter("description", edittextdescription.getText().toString())
@@ -424,64 +426,67 @@ public class CreatePostActivity extends SlidingActivity {
 
                         }
                     });*/
-        }
+
 
     }
 
     private void uploadPostShare() {
-        if (edittextdescription.getText().toString().trim().length() > 0 && type != null) {
+        String edittextdestext = "";
+        if (edittextdescription.getText().toString().trim().length() != 0) {
+            edittextdestext = edittextdescription.getText().toString();
+        }
+        showUploading();
+        AndroidNetworking.post("https://www.reweyou.in/google/create_threads.php")
+                .addBodyParameter("groupname", groupname)
+                .addBodyParameter("groupid", groupid)
+                .addBodyParameter("description", edittextdestext)
+                .addBodyParameter("link", link)
+                .addBodyParameter("linkdesc", linkdesc)
+                .addBodyParameter("linkhead", linkhead)
+                .addBodyParameter("linkimage", linkimage)
+                .addBodyParameter("image1", image1encoded)
+                .addBodyParameter("image2", image2encoded)
+                .addBodyParameter("image3", image3encoded)
+                .addBodyParameter("image4", image4encoded)
+                .addBodyParameter("type", type)
+                .addBodyParameter("uid", sessionManager.getUID())
+                .addBodyParameter("name", sessionManager.getUsername())
+                .addBodyParameter("profilepic", sessionManager.getProfilePicture())
+                .addBodyParameter("authtoken", sessionManager.getAuthToken())
+                .setTag("uploadpost")
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d(TAG, "onResponse: " + response);
+                        if (response.contains("Thread created")) {
+                            progressDialog.dismiss();
+                            Toast.makeText(CreatePostActivity.this, "Upload successful", Toast.LENGTH_SHORT).show();
 
-            showUploading();
-            AndroidNetworking.post("https://www.reweyou.in/google/create_threads.php")
-                    .addBodyParameter("groupname", groupname)
-                    .addBodyParameter("groupid", groupid)
-                    .addBodyParameter("description", edittextdescription.getText().toString().trim())
-                    .addBodyParameter("link", link)
-                    .addBodyParameter("linkdesc", linkdesc)
-                    .addBodyParameter("linkhead", linkhead)
-                    .addBodyParameter("linkimage", linkimage)
-                    .addBodyParameter("image1", image1encoded)
-                    .addBodyParameter("image2", image2encoded)
-                    .addBodyParameter("image3", image3encoded)
-                    .addBodyParameter("image4", image4encoded)
-                    .addBodyParameter("type", type)
-                    .addBodyParameter("uid", sessionManager.getUID())
-                    .addBodyParameter("name", sessionManager.getUsername())
-                    .addBodyParameter("profilepic", sessionManager.getProfilePicture())
-                    .addBodyParameter("authtoken", sessionManager.getAuthToken())
-                    .setTag("uploadpost")
-                    .setPriority(Priority.HIGH)
-                    .build()
-                    .getAsString(new StringRequestListener() {
-                        @Override
-                        public void onResponse(String response) {
-                            Log.d(TAG, "onResponse: " + response);
-                            if (response.contains("Thread created")) {
-                                progressDialog.dismiss();
-                                Toast.makeText(CreatePostActivity.this, "Upload successful", Toast.LENGTH_SHORT).show();
-
-                                if (!getIntent().getBooleanExtra("frommain", false)) {
-                                    Intent i = new Intent(CreatePostActivity.this, ForumMainActivity.class);
-                                    i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                                    startActivity(i);
-                                } else setResult(RESULT_OK);
-                                finish();
-                            } else {
-                                Toast.makeText(CreatePostActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
-
-                                progressDialog.dismiss();
-                            }
-                        }
-
-                        @Override
-                        public void onError(ANError anError) {
-                            Log.d(TAG, "onError: " + anError);
-                            Toast.makeText(CreatePostActivity.this, "Upload failed!", Toast.LENGTH_SHORT).show();
+                            if (!getIntent().getBooleanExtra("frommain", false)) {
+                                Intent i = new Intent(CreatePostActivity.this, ForumMainActivity.class);
+                                i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                                startActivity(i);
+                            } else setResult(RESULT_OK);
+                            finish();
+                        } else {
+                            Toast.makeText(CreatePostActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
 
                             progressDialog.dismiss();
                         }
-                    });
-        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        Log.d(TAG, "onError: " + anError);
+                        Toast.makeText(CreatePostActivity.this, "Upload failed!", Toast.LENGTH_SHORT).show();
+
+                        progressDialog.dismiss();
+                    }
+                });
+
+
     }
 
     private void showUploading() {
@@ -503,7 +508,7 @@ public class CreatePostActivity extends SlidingActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (edittextdescription.getText().toString().trim().length() > 0) {
+                if (edittextdescription.getText().toString().trim().length() > 0 || !type.equals("text")) {
                     updateCreateTextUI(true);
                 } else updateCreateTextUI(false);
             }
@@ -680,8 +685,10 @@ public class CreatePostActivity extends SlidingActivity {
         imagePicker.setImagePickerCallback(new ImagePickerCallback() {
                                                @Override
                                                public void onImagesChosen(List<ChosenImage> images) {
-
-                                                   onImageChoosenbyUser(images);
+                                                   if (images != null)
+                                                       onImageChoosenbyUser(images);
+                                                   else
+                                                       Log.e(TAG, "onError: onimagechoosen: ");
 
                                                }
 
@@ -741,7 +748,7 @@ public class CreatePostActivity extends SlidingActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        Log.d("reached", "activigty");
+        Log.d("reached", "activigty: " + data);
         super.onActivityResult(requestCode, resultCode, data);
 
 
@@ -764,6 +771,27 @@ public class CreatePostActivity extends SlidingActivity {
 
         if (resultCode == RESULT_OK) {
             if (requestCode == Picker.PICK_IMAGE_DEVICE) {
+                if (imagePicker == null) {
+                    imagePicker = new ImagePicker(this);
+                    imagePicker.setImagePickerCallback(new ImagePickerCallback() {
+                                                           @Override
+                                                           public void onImagesChosen(List<ChosenImage> images) {
+                                                               if (images != null)
+                                                                   onImageChoosenbyUser(images);
+                                                               else
+                                                                   Log.e(TAG, "onError: onimagechoosen: ");
+
+                                                           }
+
+                                                           @Override
+                                                           public void onError(String message) {
+                                                               // Do error handling
+                                                               Log.e(TAG, "onError: " + message);
+                                                           }
+                                                       }
+
+                    );
+                }
                 imagePicker.submit(data);
             }
         }
@@ -773,7 +801,7 @@ public class CreatePostActivity extends SlidingActivity {
     private void handleImage(final String s) {
 
         if (counter == 1) {
-
+            updateCreateTextUI(true);
             ll.setVisibility(View.VISIBLE);
             image1.setOnClickListener(null);
             type = "image1";

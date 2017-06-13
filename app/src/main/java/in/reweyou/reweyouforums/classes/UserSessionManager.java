@@ -213,4 +213,14 @@ public class UserSessionManager {
         editor.putBoolean("groupid" + groupid, b);
         editor.commit();
     }
+
+    public void putinsharedpref(String key, int value) {
+
+        editor.putInt(key, value);
+        editor.commit();
+    }
+
+    public int getvaluefromsharedpref(String key) {
+        return pref.getInt(key, -1);
+    }
 }

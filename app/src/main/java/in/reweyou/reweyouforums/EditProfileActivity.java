@@ -334,7 +334,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private void handleImage(String s) {
         Glide.with(this).load(s).into(image);
-        Glide.with(this).load(s).asBitmap().toBytes(Bitmap.CompressFormat.JPEG, 90).override(500, 500).into(new SimpleTarget<byte[]>() {
+        Glide.with(this).load(s).asBitmap().toBytes(Bitmap.CompressFormat.JPEG, 90).override(200, 200).into(new SimpleTarget<byte[]>() {
             @Override
             public void onResourceReady(byte[] resource, GlideAnimation<? super byte[]> glideAnimation) {
                 String encoded = Base64.encodeToString(resource, Base64.DEFAULT);

@@ -2,8 +2,6 @@ package in.reweyou.reweyouforums;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -11,7 +9,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
-import android.util.Base64;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.ViewGroup;
@@ -21,10 +18,6 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.androidnetworking.interfaces.StringRequestListener;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -32,21 +25,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.kbeanie.multipicker.api.ImagePicker;
-import com.kbeanie.multipicker.api.Picker;
-import com.kbeanie.multipicker.api.callbacks.ImagePickerCallback;
-import com.kbeanie.multipicker.api.entity.ChosenImage;
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
-
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.customView.NonSwipeableViewPager;
 import in.reweyou.reweyouforums.fragment.LoginFragment;
-import in.reweyou.reweyouforums.fragment.ProfileFragment;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
@@ -115,13 +100,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             GoogleSignInAccount acct = result.getSignInAccount();
             Log.d(TAG, "handleSignInResult: LoginName: " + acct.getGivenName());
 
-
-           /* ((ProfileFragment) pagerAdapter.getRegisteredFragment(1)).onsignin(acct.getId(), acct.getIdToken(), acct.getDisplayName(), acct.getPhotoUrl(), acct.getServerAuthCode());
-
-
-            nonSwipeableViewPager.setCurrentItem(1);
-
-*/
             uploadsignin(acct);
         } else {
             // Signed out, show unauthenticated UI.
@@ -164,7 +142,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                         try {
                             Log.d(TAG, "onResponse: " + response);
-                            userSessionManager.createUserRegisterSession(acct.getId(), acct.getDisplayName(), acct.getDisplayName(), acct.getPhotoUrl().toString(), response.getString("token"), response.getString("shortinfo"));
+                            userSessionManager.createUserRegisterSession(acct.getId(), acct.getDisplayName(), response.getString("username"), response.getString("profileurl"), response.getString("token"), response.getString("shortinfo"));
                             startActivity(new Intent(LoginActivity.this, ForumMainActivity.class));
                             finish();
 
@@ -188,68 +166,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
 
-    public void showPickImage() {
-        imagePicker = new ImagePicker(this);
-        imagePicker.setImagePickerCallback(new ImagePickerCallback() {
-                                               @Override
-                                               public void onImagesChosen(List<ChosenImage> images) {
 
-                                                   onImageChoosenbyUser(images);
-
-                                               }
-
-                                               @Override
-                                               public void onError(String message) {
-                                                   // Do error handling
-                                                   Log.e(TAG, "onError: " + message);
-                                               }
-                                           }
-
-        );
-
-        imagePicker.shouldGenerateMetadata(true);
-        imagePicker.shouldGenerateThumbnails(false);
-        imagePicker.pickImage();
-
-    }
-
-    private void onImageChoosenbyUser(List<ChosenImage> images) {
-        if (images != null) {
-
-            try {
-
-                Log.d(TAG, "onImagesChosen: size" + images.size());
-                if (images.size() > 0) {
-                    Log.d(TAG, "onImagesChosen: path" + images.get(0).getOriginalPath() + "  %%%   " + images.get(0).getThumbnailSmallPath());
-
-                    if (images.get(0).getOriginalPath() != null) {
-                        Log.d(TAG, "onImagesChosen: " + images.get(0).getFileExtensionFromMimeTypeWithoutDot());
-                        if (images.get(0).getFileExtensionFromMimeTypeWithoutDot().equals("gif")) {
-                            // handleGif(images.get(0).getOriginalPath());
-                            Toast.makeText(this, "Only image can be uploaded", Toast.LENGTH_SHORT).show();
-                        } else {
-                            startImageCropActivity(Uri.parse(images.get(0).getQueryUri()));
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                Toast.makeText(this, "Something went wrong. ErrorCode: 19", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    private void startImageCropActivity(Uri data) {
-        CropImage.activity(data)
-                .setActivityTitle("Crop Image")
-                .setBackgroundColor(Color.parseColor("#90000000"))
-                .setMinCropResultSize(200, 200)
-
-                .setBorderCornerColor(getResources().getColor(R.color.colorPrimaryDark))
-                .setBorderLineColor(getResources().getColor(R.color.colorPrimary))
-                .setGuidelinesColor(getResources().getColor(R.color.divider))
-                .setGuidelines(CropImageView.Guidelines.ON)
-                .start(this);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -262,57 +179,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             handleSignInResult(result);
         }
 
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-                handleImage(result.getUri().toString());
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Exception error = result.getError();
-            }
-        }
-
-        if (resultCode == RESULT_OK) {
-            if (requestCode == Picker.PICK_IMAGE_DEVICE) {
-                imagePicker.submit(data);
-            }
-        }
 
     }
 
-    private void handleImage(String s) {
-        ProfileFragment profileFragment = (ProfileFragment) pagerAdapter.getRegisteredFragment(1);
-        profileFragment.onImageChoosen(s);
 
-        Glide.with(this).load(s).asBitmap().toBytes().into(new SimpleTarget<byte[]>(150, 150) {
-            @Override
-            public void onResourceReady(byte[] resource, GlideAnimation<? super byte[]> glideAnimation) {
-                String encodedImage = Base64.encodeToString(resource, Base64.DEFAULT);
-                uploadImage(encodedImage);
-            }
-        });
-    }
-
-    private void uploadImage(String resource) {
-        AndroidNetworking.post("")
-                .addBodyParameter("image", resource)
-                .addBodyParameter("token", "token")
-                .addBodyParameter("userid", "Apg")
-                .setTag("test")
-                .setPriority(Priority.MEDIUM)
-                .build()
-                .getAsString(new StringRequestListener() {
-                    @Override
-                    public void onResponse(String response) {
-                        ProfileFragment profileFragment = (ProfileFragment) pagerAdapter.getRegisteredFragment(3);
-                        profileFragment.onImageUpload();
-                    }
-
-                    @Override
-                    public void onError(ANError anError) {
-                        Log.e(TAG, "onError: " + anError);
-                    }
-                });
-    }
 
     private class PagerAdapter extends FragmentStatePagerAdapter {
         SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
@@ -328,8 +198,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
             if (position == 0)
                 return new LoginFragment();
-            else if (position == 1)
-                return new ProfileFragment();
             else return null;
         }
 
@@ -353,7 +221,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         @Override
         public int getCount() {
-            return 2;
+            return 1;
         }
 
 

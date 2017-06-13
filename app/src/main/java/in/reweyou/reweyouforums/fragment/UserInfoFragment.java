@@ -158,7 +158,7 @@ public class UserInfoFragment extends Fragment {
                 .addBodyParameter("uid", userSessionManager.getUID())
                 .addBodyParameter("authtoken", userSessionManager.getAuthToken())
                 .setTag("uploadpost")
-                .setPriority(Priority.HIGH)
+                .setPriority(Priority.LOW)
                 .build()
                 .getAsJSONArray(new JSONArrayRequestListener() {
                     @Override
