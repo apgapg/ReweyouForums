@@ -237,13 +237,10 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         linkViewHolder.linkdescription.setText(messagelist.get(position).getLinkdesc());
         linkViewHolder.link.setText(messagelist.get(position).getLink());
         linkViewHolder.link.setSelected(true);
-        if (messagelist.get(position).getLinkimage().isEmpty()) {
-            linkViewHolder.linkimage.setVisibility(View.GONE);
-        } else {
-            linkViewHolder.linkimage.setVisibility(View.VISIBLE);
-            Glide.with(mContext).load(messagelist.get(position).getLinkimage()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(linkViewHolder.linkimage);
 
-        }
+        Glide.with(mContext).load(messagelist.get(position).getLinkimage()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(linkViewHolder.linkimage);
+
+
     }
 
     private void onbindyoutubelink(YoutubeViewHolder youtubeViewHolder, int position) {

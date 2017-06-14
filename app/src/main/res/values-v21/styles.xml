@@ -14,6 +14,8 @@
     <style name="AppTheme2.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorPrimaryDark">#2d2031</item>
+
     </style>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -28,7 +30,7 @@
 
     <style name="AppTheme2" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#212121</item>
+        <item name="colorPrimary">#64496D</item>
         <item name="colorPrimaryDark">#000000</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowContentTransitions">true</item>

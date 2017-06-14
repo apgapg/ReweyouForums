@@ -13,7 +13,7 @@
 
     <style name="AppTheme2" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#212121</item>
+        <item name="colorPrimary">#64496D</item>
         <item name="colorPrimaryDark">#111111</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="lollipop">false</item>
@@ -30,6 +30,16 @@
     <style name="AppTheme2.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorPrimaryDark">#2d2031</item>
+
+    </style>
+
+    <style name="AppTheme2.NoActionBar.Create">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimaryDark">#64496D</item>
+
+
     </style>
 
     <style name="Theme.Sliding.Lights" parent="@style/Theme.AppCompat.Light.NoActionBar">

@@ -110,14 +110,17 @@
             android:label="@string/title_activity_create"
             android:screenOrientation="portrait"
             android:taskAffinity=""
-            android:theme="@style/Theme.Sliding.Lights"
-            android:windowSoftInputMode="adjustResize">
+            android:theme="@style/AppTheme2.NoActionBar.Create"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data android:mimeType="text/plain" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
         <activity

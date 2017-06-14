@@ -2,8 +2,10 @@ package in.reweyou.reweyouforums;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -11,8 +13,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
@@ -49,8 +55,6 @@ import com.kbeanie.multipicker.api.ImagePicker;
 import com.kbeanie.multipicker.api.Picker;
 import com.kbeanie.multipicker.api.callbacks.ImagePickerCallback;
 import com.kbeanie.multipicker.api.entity.ChosenImage;
-import com.klinker.android.sliding.MultiShrinkScroller;
-import com.klinker.android.sliding.SlidingActivity;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -59,12 +63,15 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import in.reweyou.reweyouforums.adapter.GalleryImagesAdapter;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.model.GroupModel;
 
-public class CreatePostActivity extends SlidingActivity {
+public class CreatePostActivity extends AppCompatActivity {
     private static final String TAG = CreatePostActivity.class.getName();
 
     static {
@@ -75,11 +82,11 @@ public class CreatePostActivity extends SlidingActivity {
     private CardView cd;
     private TextView headlinelink;
     private TextView descriptionlink;
-    private RelativeLayout rl;
+    private RelativeLayout bottomAttachContainer;
     private RelativeLayout camerabtn;
     private RelativeLayout linkbtn;
     private TextView linklink;
-    private TextView create;
+    private TextView postbutton;
     private EditText edittextdescription;
     private ImagePicker imagePicker;
     private ImageView image1;
@@ -111,20 +118,16 @@ public class CreatePostActivity extends SlidingActivity {
     private String image2encoded = "";
     private String image3encoded = "";
     private String image4encoded = "";
+    private Uri messageimageUri;
+    private RecyclerView recyclerView;
+    private GalleryImagesAdapter galleryImagesAdapter;
+
 
     @Override
-    protected void configureScroller(MultiShrinkScroller scroller) {
-        super.configureScroller(scroller);
-        scroller.setIntermediateHeaderHeightRatio(0);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-    }
-
-    @Override
-    public void init(Bundle savedInstanceState) {
-        disableHeader();
-        enableFullscreen();
-
-        setContent(R.layout.content_create);
+        setContentView(R.layout.content_create);
 
 
         sessionManager = new UserSessionManager(this);
@@ -193,7 +196,7 @@ public class CreatePostActivity extends SlidingActivity {
         headlinelink = (TextView) findViewById(R.id.headlinelink);
         descriptionlink = (TextView) findViewById(R.id.descriptionlink);
         linklink = (TextView) findViewById(R.id.linklink);
-        rl = (RelativeLayout) findViewById(R.id.rl);
+        bottomAttachContainer = (RelativeLayout) findViewById(R.id.rl);
         linkbtn = (RelativeLayout) findViewById(R.id.link);
         camerabtn = (RelativeLayout) findViewById(R.id.camera);
         linkbtn.setOnClickListener(new View.OnClickListener() {
@@ -202,9 +205,9 @@ public class CreatePostActivity extends SlidingActivity {
                 editHeadline();
             }
         });
-        create = (TextView) findViewById(R.id.create);
-        create.setEnabled(false);
-        create.setOnClickListener(new View.OnClickListener() {
+        postbutton = (TextView) findViewById(R.id.create);
+        postbutton.setEnabled(false);
+        postbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 uploadPost();
@@ -223,6 +226,7 @@ public class CreatePostActivity extends SlidingActivity {
 
         try {
             if (getIntent().getBooleanExtra("frommain", false)) {
+
                 flowLayout = (FlowLayout) findViewById(R.id.flowlayout);
                 flowLayout.setVisibility(View.VISIBLE);
                 findViewById(R.id.selectgroup).setVisibility(View.VISIBLE);
@@ -231,8 +235,8 @@ public class CreatePostActivity extends SlidingActivity {
                     public void run() {
                         getData();
                     }
-                }, 800);
-                create.setOnClickListener(new View.OnClickListener() {
+                }, 200);
+                postbutton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (groupid != null && groupname != null)
@@ -242,27 +246,21 @@ public class CreatePostActivity extends SlidingActivity {
 
                     }
                 });
+
+
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         if (getIntent().getAction() != null)
             if (getIntent().getAction().equals(Intent.ACTION_SEND)) {
-
-                Log.d(TAG, "intent.getAction().equals(Intent.ACTION_SEND)");
-                String message = getIntent().getStringExtra(Intent.EXTRA_TEXT);
-                Log.d(TAG, "init: " + message);
-                if (!URLUtil.isValidUrl(message)) {
-                    Toast.makeText(this, "Please check link", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
                 flowLayout = (FlowLayout) findViewById(R.id.flowlayout);
                 flowLayout.removeAllViews();
                 flowLayout.setVisibility(View.VISIBLE);
                 findViewById(R.id.selectgroup).setVisibility(View.VISIBLE);
-                onLinkPasted(message);
                 getData();
-                create.setOnClickListener(new View.OnClickListener() {
+                postbutton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (groupid != null && groupname != null)
@@ -272,9 +270,84 @@ public class CreatePostActivity extends SlidingActivity {
 
                     }
                 });
+
+                Log.d(TAG, "init1: " + getIntent().getType());
+                String message = getIntent().getStringExtra(Intent.EXTRA_TEXT);
+                messageimageUri = getIntent().getParcelableExtra(Intent.EXTRA_STREAM);
+                Log.d(TAG, "init2: " + messageimageUri);
+                Log.d(TAG, "init3: " + message);
+
+                if ("text/plain".equals(type)) {
+                    if (!URLUtil.isValidUrl(message)) {
+                        Toast.makeText(this, "Please check link", Toast.LENGTH_SHORT).show();
+                    } else onLinkPasted(message);
+                } else if (getIntent().getType().startsWith("image/")) {
+                    if (message != null)
+                        edittextdescription.setText(message);
+                    try {
+                        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            checkStoragePermissionforshare();
+
+                        } else
+                            startImageCropActivity(messageimageUri);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+
+                    }
+
+                }
+
+
             }
 
 
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                checkStoragePermissionforGallery();
+            } else initPreviewGalleryImages();
+
+
+        }
+
+
+    }
+
+    private void checkStoragePermissionforGallery() {
+        Dexter.withActivity(this)
+                .withPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        initPreviewGalleryImages();
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        Toast.makeText(CreatePostActivity.this, "Storage Permission denied by user", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "onPermissionGranted: " + response.isPermanentlyDenied());
+
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        token.continuePermissionRequest();
+
+                    }
+                }).check();
+    }
+
+    private void initPreviewGalleryImages() {
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        galleryImagesAdapter = new GalleryImagesAdapter(this);
+
+        recyclerView.setAdapter(galleryImagesAdapter);
+        try {
+            getAllShownImagesPath();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -285,6 +358,30 @@ public class CreatePostActivity extends SlidingActivity {
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse response) {
                         showPickImage();
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        Toast.makeText(CreatePostActivity.this, "Storage Permission denied by user", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "onPermissionGranted: " + response.isPermanentlyDenied());
+
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        token.continuePermissionRequest();
+
+                    }
+                }).check();
+    }
+
+    private void checkStoragePermissionforshare() {
+        Dexter.withActivity(this)
+                .withPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        startImageCropActivity(messageimageUri);
                     }
 
                     @Override
@@ -318,8 +415,14 @@ public class CreatePostActivity extends SlidingActivity {
                                 GroupModel groupModel = gson.fromJson(response.getJSONObject(i).toString(), GroupModel.class);
                                 groupModels.add(groupModel);
 
-
                             }
+
+                            Collections.sort(groupModels, new Comparator<GroupModel>() {
+                                @Override
+                                public int compare(GroupModel o1, GroupModel o2) {
+                                    return o1.getGroupname().length() - o2.getGroupname().length();
+                                }
+                            });
                             populatedata(groupModels);
 
 
@@ -522,13 +625,13 @@ public class CreatePostActivity extends SlidingActivity {
 
     private void updateCreateTextUI(boolean b) {
         if (b) {
-            create.setEnabled(true);
-            create.setTextColor(this.getResources().getColor(R.color.main_background_pink));
-            create.setBackground(this.getResources().getDrawable(R.drawable.border_pink));
+            postbutton.setEnabled(true);
+            postbutton.setTextColor(this.getResources().getColor(R.color.main_background_pink));
+            postbutton.setBackground(this.getResources().getDrawable(R.drawable.border_pink));
         } else {
-            create.setEnabled(false);
-            create.setTextColor(this.getResources().getColor(R.color.grey_create));
-            create.setBackground(this.getResources().getDrawable(R.drawable.border_grey));
+            postbutton.setEnabled(false);
+            postbutton.setTextColor(this.getResources().getColor(R.color.grey_create));
+            postbutton.setBackground(this.getResources().getDrawable(R.drawable.border_grey));
         }
     }
 
@@ -596,7 +699,7 @@ public class CreatePostActivity extends SlidingActivity {
 
     private void onLinkPasted(String s) {
         cd.setVisibility(View.VISIBLE);
-        rl.setVisibility(View.GONE);
+        bottomAttachContainer.setVisibility(View.GONE);
 
         new Handler().post(new Runnable() {
             @Override
@@ -656,7 +759,7 @@ public class CreatePostActivity extends SlidingActivity {
                             else
                                 type = "link";
                         } catch (Exception e) {
-                            rl.setVisibility(View.VISIBLE);
+                            bottomAttachContainer.setVisibility(View.VISIBLE);
                             edittextdescription.setHint("Describe this link...");
                             cd.setVisibility(View.GONE);
                             Toast.makeText(CreatePostActivity.this, "Error in fetching data from link", Toast.LENGTH_SHORT).show();
@@ -670,7 +773,7 @@ public class CreatePostActivity extends SlidingActivity {
                     public void onError(ANError anError) {
                         Log.d(TAG, "onError: " + anError);
                         cd.setVisibility(View.GONE);
-                        rl.setVisibility(View.VISIBLE);
+                        bottomAttachContainer.setVisibility(View.VISIBLE);
 
 
                         Toast.makeText(CreatePostActivity.this, "Error in fetching data from link", Toast.LENGTH_SHORT).show();
@@ -743,6 +846,7 @@ public class CreatePostActivity extends SlidingActivity {
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setOutputCompressQuality(100)
                 .start(this);
+        messageimageUri = null;
     }
 
     @Override
@@ -801,6 +905,9 @@ public class CreatePostActivity extends SlidingActivity {
     private void handleImage(final String s) {
 
         if (counter == 1) {
+            recyclerView.setVisibility(View.GONE);
+            bottomAttachContainer.setVisibility(View.GONE);
+
             updateCreateTextUI(true);
             ll.setVisibility(View.VISIBLE);
             image1.setOnClickListener(null);
@@ -915,4 +1022,51 @@ public class CreatePostActivity extends SlidingActivity {
 
     }
 
+    public void getAllShownImagesPath() {
+        Uri uri;
+        Cursor cursor;
+        int column_index_data;
+        ArrayList<String> listOfAllImages = new ArrayList<String>();
+        String absolutePathOfImage = null;
+        uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        String orderBy = MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC";
+
+
+        String[] projection = {MediaStore.Images.ImageColumns.DATA, MediaStore.Images.ImageColumns._ID};
+
+        cursor = getContentResolver().query(uri, projection, null,
+                null, orderBy);
+
+        int tempcount;
+
+        if (cursor.getCount() < 10) {
+            tempcount = cursor.getCount();
+        } else {
+            tempcount = 10;
+        }
+
+        if (tempcount != 0) {
+            recyclerView.setVisibility(View.VISIBLE);
+
+            for (int i = 0; i < tempcount; i++) {
+                cursor.moveToNext();
+                Uri imageUri =
+                        ContentUris
+                                .withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                        cursor.getInt(cursor.getColumnIndex(MediaStore.Images.ImageColumns._ID)));
+                Log.d(TAG, "getAllShownImagesPath: " + imageUri.toString());
+
+                listOfAllImages.add(imageUri.toString());
+            }
+            cursor.close();
+
+            galleryImagesAdapter.add(listOfAllImages);
+        } else {
+            recyclerView.setVisibility(View.GONE);
+        }
+    }
+
+    public void onimageselected(String s) {
+        startImageCropActivity(Uri.parse(s));
+    }
 }

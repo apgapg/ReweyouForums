@@ -70,33 +70,27 @@ terro"
             <RelativeLayout
                 android:id="@+id/rlcont"
                 android:layout_width="match_parent"
-                android:layout_height="128dp"
+                android:layout_height="148dp"
 
                 android:background="@drawable/ripple_effect22">
 
                 <ImageView
                     android:id="@+id/imagelink"
-                    android:layout_width="86dp"
-                    android:layout_height="106dp"
-
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-
+                    android:layout_width="match_parent"
+                    android:layout_height="102dp"
                     android:scaleType="centerCrop" />
 
                 <TextView
                     android:id="@+id/headlinelink"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_toRightOf="@+id/imagelink"
+                    android:layout_below="@id/imagelink"
                     android:ellipsize="end"
-                    android:maxLines="2"
-                    android:paddingBottom="4dp"
+                    android:maxLines="1"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:paddingTop="4dp"
-                    android:text="headline bkbjbjkbjbkjbkjbjkbkjbjkb"
+                    android:text="headline bkb jbjkb jbkjb kjbjkb kjbjkb"
                     android:textColor="#424242"
                     android:textSize="14dp"
                     android:textStyle="bold" />
@@ -110,30 +104,26 @@ terro"
                     android:ellipsize="end"
                     android:maxLines="3"
                     android:paddingBottom="8dp"
-
                     android:paddingLeft="10dp"
 
                     android:paddingRight="10dp"
 
                     android:text="description fjwenfjnfjwenfwelnfffffffffffffffffffffffffffffnfjwnjwnfjqfnqlfnwljdlqflflfnqwjlflqwflqwnflqwfq"
+
                     android:textColor="#424242"
-                    android:textSize="13dp" />
+                    android:textSize="13dp"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/linklink"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="10dp"
-                    android:layout_toRightOf="@+id/imagelink"
-
-                    android:ellipsize="marquee"
+                    android:layout_below="@id/headlinelink"
+                    android:ellipsize="end"
                     android:fontFamily="sans-serif-condensed"
-                    android:marqueeRepeatLimit="marquee_forever"
+                    android:lines="1"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:scrollHorizontally="true"
-                    android:singleLine="true"
                     android:text="https:////vvjenvjwevw"
                     android:textColor="#757575"
                     android:textSize="13dp"

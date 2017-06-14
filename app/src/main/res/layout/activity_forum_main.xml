@@ -20,13 +20,15 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.NoActionBar.AppBarOverlay">
+        android:background="@color/transparent"
+        android:theme="@style/AppTheme.NoActionBar.AppBarOverlay"
+        app:elevation="0dp">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="?attr/colorPrimary"
+            android:background="@drawable/gradient_black_toolbar"
             app:popupTheme="@style/AppTheme.NoActionBar.PopupOverlay">
 
             <RelativeLayout
