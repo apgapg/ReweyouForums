@@ -264,7 +264,7 @@ public class CreatePostActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (groupid != null && groupname != null)
-                            uploadPostShare();
+                            compressImages();
                         else
                             Toast.makeText(CreatePostActivity.this, "Please select a group!", Toast.LENGTH_SHORT).show();
 
@@ -277,7 +277,7 @@ public class CreatePostActivity extends AppCompatActivity {
                 Log.d(TAG, "init2: " + messageimageUri);
                 Log.d(TAG, "init3: " + message);
 
-                if ("text/plain".equals(type)) {
+                if ("text/plain".equals(getIntent().getType())) {
                     if (!URLUtil.isValidUrl(message)) {
                         Toast.makeText(this, "Please check link", Toast.LENGTH_SHORT).show();
                     } else onLinkPasted(message);
@@ -538,7 +538,6 @@ public class CreatePostActivity extends AppCompatActivity {
         if (edittextdescription.getText().toString().trim().length() != 0) {
             edittextdestext = edittextdescription.getText().toString();
         }
-        showUploading();
         AndroidNetworking.post("https://www.reweyou.in/google/create_threads.php")
                 .addBodyParameter("groupname", groupname)
                 .addBodyParameter("groupid", groupid)
@@ -983,6 +982,7 @@ public class CreatePostActivity extends AppCompatActivity {
     }
 
     private void compressImages() {
+        showUploading();
         final int count = counter - 1;
         if (count > 0) {
             Glide.with(this).load(image1url).asBitmap().toBytes(Bitmap.CompressFormat.JPEG, 90).atMost().override(1200, 1200).into(new SimpleTarget<byte[]>() {
