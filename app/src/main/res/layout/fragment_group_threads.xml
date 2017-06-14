@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
-        android:layout_marginTop="2dp"
         android:visibility="gone"
         app:cardCornerRadius="2dp"
         app:cardElevation="4dp"
@@ -67,7 +66,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
-        android:layout_marginTop="2dp"
         android:visibility="gone"
         app:cardCornerRadius="2dp"
         app:cardElevation="4dp"
@@ -130,8 +128,7 @@
             android:clipToPadding="false"
             android:paddingBottom="2dp"
             android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            android:paddingTop="2dp">
+            android:paddingRight="4dp">
 
         </android.support.v7.widget.RecyclerView>
     </android.support.v4.widget.SwipeRefreshLayout>

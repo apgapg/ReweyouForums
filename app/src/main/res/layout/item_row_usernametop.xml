@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="78dp"
+    android:layout_height="80dp"
     android:paddingLeft="8dp">
 
     <in.reweyou.reweyouforums.customView.CircularImageView
@@ -51,7 +51,7 @@
     <TextView
         android:id="@+id/groupname"
         android:layout_width="wrap_content"
-        android:layout_height="18dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/linebar"
         android:layout_gravity="center"
         android:layout_marginTop="6dp"

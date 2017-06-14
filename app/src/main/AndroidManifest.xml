@@ -27,6 +27,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
 
+        <meta-data
+            android:name="firebase_analytics_collection_deactivated"
+            android:value="@bool/FIREBASE_ANALYTICS_DISABLED" />
+
         <!-- Firebase Notifications -->
         <service android:name=".fcm.MyFirebaseMessagingService">
             <intent-filter>

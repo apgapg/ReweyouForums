@@ -36,8 +36,7 @@
     <color name="user_level_legend">#C51162</color>
     <color name="user_level_GOAT">#4527A0</color>
     <color name="user_level_writer">#00695C</color>
-    <color name="user_level_editor">#33691E</color>
-    <color name="gradientblue">#64496D</color>
+    <color name="user_level_editor">#33691E</color><![CDATA[
 
 
     Noob 0
@@ -53,6 +52,7 @@
     Legend >1000000000
     GOAT >10000000000
 
+    ]]>
     <color name="bright_blue">#6200EA</color>
     <color name="main_back_purple_neutral">#A15773</color>
 

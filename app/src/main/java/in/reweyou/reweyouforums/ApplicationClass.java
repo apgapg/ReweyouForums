@@ -9,6 +9,7 @@ import android.util.Log;
 import com.androidnetworking.AndroidNetworking;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
+import com.google.firebase.crash.FirebaseCrash;
 
 import java.util.concurrent.TimeUnit;
 
@@ -39,6 +40,7 @@ public class ApplicationClass extends MultiDexApplication {
         super.onCreate();
         mInstance = this;
         Log.d(TAG, "onCreate: calledapp");
+
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
         Utils.setBackgroundColor(getApplicationContext());
@@ -59,10 +61,11 @@ public class ApplicationClass extends MultiDexApplication {
         if (BuildConfig.DEBUG)
             GoogleAnalytics.getInstance(this).setDryRun(true);
 
+        if (BuildConfig.DEBUG)
+            FirebaseCrash.setCrashCollectionEnabled(false);
 
-
-
-
+        if (BuildConfig.DEBUG) { //disable for debug
+        }
     }
 
     synchronized public Tracker getDefaultTracker() {
@@ -81,7 +84,6 @@ public class ApplicationClass extends MultiDexApplication {
         MultiDex.install(this);
 
     }
-
 
 
 }

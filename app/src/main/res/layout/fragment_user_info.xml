@@ -15,12 +15,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="44dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:layout_marginTop="4dp"
             app:cardBackgroundColor="#fff"
-            app:cardCornerRadius="2dp"
-            app:cardElevation="4dp"
-            app:cardUseCompatPadding="true">
+            app:cardCornerRadius="4dp"
+            app:cardElevation="4dp">
 
 
             <TextView
