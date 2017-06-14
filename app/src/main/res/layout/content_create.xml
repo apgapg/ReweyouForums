@@ -338,8 +338,7 @@
                 android:layout_gravity="bottom"
                 android:background="#1064496D"
                 android:clipToPadding="false"
-                android:paddingLeft="10dp"
-                android:visibility="gone" />
+                android:paddingLeft="10dp" />
 
             <RelativeLayout
                 android:id="@+id/rl"

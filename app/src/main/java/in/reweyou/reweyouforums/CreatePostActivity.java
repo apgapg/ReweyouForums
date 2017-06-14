@@ -224,6 +224,14 @@ public class CreatePostActivity extends AppCompatActivity {
             }
         });
 
+        initPreviewGalleryImages();
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                checkStoragePermissionforGallery();
+            }
+        } else recyclerView.setVisibility(View.GONE);
+
         try {
             if (getIntent().getBooleanExtra("frommain", false)) {
 
@@ -302,15 +310,6 @@ public class CreatePostActivity extends AppCompatActivity {
             }
 
 
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                checkStoragePermissionforGallery();
-            } else initPreviewGalleryImages();
-
-
-        }
-
-
     }
 
     private void checkStoragePermissionforGallery() {
@@ -319,11 +318,16 @@ public class CreatePostActivity extends AppCompatActivity {
                 .withListener(new PermissionListener() {
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse response) {
-                        initPreviewGalleryImages();
+                        try {
+                            getAllShownImagesPath();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     @Override
                     public void onPermissionDenied(PermissionDeniedResponse response) {
+                        recyclerView.setVisibility(View.GONE);
                         Toast.makeText(CreatePostActivity.this, "Storage Permission denied by user", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "onPermissionGranted: " + response.isPermanentlyDenied());
 
@@ -699,7 +703,7 @@ public class CreatePostActivity extends AppCompatActivity {
     private void onLinkPasted(String s) {
         cd.setVisibility(View.VISIBLE);
         bottomAttachContainer.setVisibility(View.GONE);
-
+        recyclerView.setVisibility(View.GONE);
         new Handler().post(new Runnable() {
             @Override
             public void run() {
@@ -1046,7 +1050,6 @@ public class CreatePostActivity extends AppCompatActivity {
         }
 
         if (tempcount != 0) {
-            recyclerView.setVisibility(View.VISIBLE);
 
             for (int i = 0; i < tempcount; i++) {
                 cursor.moveToNext();

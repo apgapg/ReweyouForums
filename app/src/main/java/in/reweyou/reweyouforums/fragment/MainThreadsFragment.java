@@ -59,8 +59,11 @@ public class MainThreadsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         userSessionManager = new UserSessionManager(mContext);
-        mCustomTabsHelperFragment = CustomTabsHelperFragment.attachTo(this);
-
+        try {
+            mCustomTabsHelperFragment = CustomTabsHelperFragment.attachTo(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
