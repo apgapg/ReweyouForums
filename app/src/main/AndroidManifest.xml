@@ -8,7 +8,6 @@
     <!-- <uses-permission android:name="android.permission.READ_PHONE_STATE" /> -->
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <!-- <uses-permission android:name="com.android.alarm.permission.SET_ALARM" /> -->
 
@@ -16,16 +15,13 @@
     <!-- Get permission for reliable local dispatching on non-Google Play devices. -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-
     <application
         android:name=".ApplicationClass"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-
         android:label="ReweyouForums"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-
         <meta-data
             android:name="firebase_analytics_collection_deactivated"
             android:value="@bool/FIREBASE_ANALYTICS_DISABLED" />
@@ -49,14 +45,16 @@
                 <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH" />
             </intent-filter>
         </receiver>
+
         <service
             android:name="com.google.android.gms.analytics.AnalyticsService"
             android:enabled="true"
             android:exported="false" />
 
-
-        <!-- Optionally, register CampaignTrackingReceiver and CampaignTrackingService to enable
-             installation campaign reporting -->
+        <!--
+             Optionally, register CampaignTrackingReceiver and CampaignTrackingService to enable
+             installation campaign reporting
+        -->
         <receiver
             android:name="com.google.android.gms.analytics.CampaignTrackingReceiver"
             android:enabled="true"
@@ -65,6 +63,7 @@
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
         </receiver>
+
         <service
             android:name="com.google.android.gms.analytics.CampaignTrackingService"
             android:enabled="true"
@@ -99,7 +98,6 @@
         <activity
             android:name=".LoginActivity"
             android:label="ReweyouForums"
-
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2.NoActionBar">
             <intent-filter>
@@ -117,12 +115,16 @@
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="text/plain" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
@@ -147,14 +149,17 @@
             android:name=".NotificationActivity"
             android:label="@string/title_activity_noti"
             android:screenOrientation="portrait"
-
             android:theme="@style/AppTheme2.NoActionBar" />
         <activity
             android:name=".YoutubeActivity"
             android:label="@string/title_activity_youtube"
             android:screenOrientation="portrait"
-
-            android:theme="@style/AppTheme.NoActionBar.Preview">
+            android:theme="@style/AppTheme.NoActionBar.Preview"></activity>
+        <activity
+            android:name=".EditImageActivity"
+            android:label="@string/title_activity_edit_image"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme2.NoActionBar.EditImage">
 
         </activity>
     </application>

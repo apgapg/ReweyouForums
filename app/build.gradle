@@ -48,7 +48,6 @@ repositories
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
-   // compile project(path: ':multipicker')
 
 
     compile 'com.android.support:appcompat-v7:25.3.1'
@@ -74,6 +73,7 @@ dependencies {
     compile 'com.kbeanie:multipicker:1.+'
 
 
+    compile 'com.minimize.library:seekbar-compat:0.2.5'
 
     testCompile 'junit:junit:4.12'
 }

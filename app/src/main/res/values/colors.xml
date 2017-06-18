@@ -55,6 +55,13 @@
     ]]>
     <color name="bright_blue">#6200EA</color>
     <color name="main_back_purple_neutral">#A15773</color>
+    <color name="c1">#d50000</color>
+    <color name="c2">#DD2C00</color>
+    <color name="c3">#FF6D00</color>
+    <color name="c4">#00C853</color>
+    <color name="c5">#0091EA</color>
+    <color name="c6">#AA00FF</color>
+    <color name="c7">#FFFFFF</color>
 
 
 </resources><!---->

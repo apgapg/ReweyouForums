@@ -34,6 +34,16 @@
 
     </style>
 
+    <style name="AppTheme2.NoActionBar.EditImage">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimaryDark">#000000</item>
+        <item name="colorPrimary">#212121</item>
+
+
+    </style>
+
+
     <style name="AppTheme2.NoActionBar.Create">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

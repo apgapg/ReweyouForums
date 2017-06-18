@@ -913,7 +913,14 @@ public class CreatePostActivity extends AppCompatActivity {
 
             updateCreateTextUI(true);
             ll.setVisibility(View.VISIBLE);
-            image1.setOnClickListener(null);
+            image1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(CreatePostActivity.this, EditImageActivity.class);
+                    i.putExtra("uri", s);
+                    startActivity(i);
+                }
+            });
             type = "image1";
             image1url = s;
             edittextdescription.setHint("Describe about this image...");
