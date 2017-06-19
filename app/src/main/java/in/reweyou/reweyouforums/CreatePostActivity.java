@@ -517,11 +517,10 @@ public class CreatePostActivity extends AppCompatActivity {
 
         String edittextdestext = "";
         if (edittextdescription.getText().toString().trim().length() != 0) {
-            edittextdestext = edittextdescription.getText().toString();
+            edittextdestext = edittextdescription.getText().toString().trim();
         }
         Intent intent = new Intent();
         intent.putExtra("description", edittextdestext);
-
         intent.putExtra("link", link);
         intent.putExtra("linkhead", linkhead);
         intent.putExtra("linkdesc", linkdesc);
@@ -571,7 +570,7 @@ public class CreatePostActivity extends AppCompatActivity {
     private void uploadPostShare() {
         String edittextdestext = "";
         if (edittextdescription.getText().toString().trim().length() != 0) {
-            edittextdestext = edittextdescription.getText().toString();
+            edittextdestext = edittextdescription.getText().toString().trim();
         }
         AndroidNetworking.post("https://www.reweyou.in/google/create_threads.php")
                 .addBodyParameter("groupname", groupname)

@@ -127,6 +127,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         AndroidNetworking.post("https://www.reweyou.in/google/signup.php")
                 .addBodyParameter("profileurl", acct.getPhotoUrl().toString())
                 .addBodyParameter("name", acct.getDisplayName())
+                .addBodyParameter("email", acct.getEmail())
                 .addBodyParameter("userid", acct.getIdToken())
                 .addBodyParameter("uid", acct.getId())
                 .addBodyParameter("fcmid", userSessionManager.getfcmid())

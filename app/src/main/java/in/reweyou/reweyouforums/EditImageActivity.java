@@ -47,19 +47,24 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
     private Uri finalimageuri;
     private String fromimageview;
 
-    public static Bitmap mergeImages(Bitmap bmp1, Bitmap bmp2) {
-        Bitmap bmOverlay = Bitmap.createBitmap(bmp1.getWidth(), bmp1.getHeight(), bmp1.getConfig());
+    private Toolbar toolbar;
+
+
+    public Bitmap mergeImages(Bitmap bmp1, Bitmap bmp2) {
+        Bitmap bmOverlay = Bitmap.createBitmap(bmp1.getWidth(), bmp1.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bmOverlay);
         canvas.drawBitmap(bmp1, 0, 0, null);
         canvas.drawBitmap(bmp2, 0, 0, null);
+
         return bmOverlay;
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_image);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -73,6 +78,7 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
 
         imageuri = getIntent().getStringExtra("uri");
         fromimageview = getIntent().getStringExtra("from");
+
 
         CircularImageView c1 = (CircularImageView) findViewById(R.id.c1);
         CircularImageView c2 = (CircularImageView) findViewById(R.id.c2);
@@ -225,6 +231,7 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
             }
         });
 
+
     }
 
     private void takeScreenshot(Bitmap b1, Bitmap b2) {
@@ -249,6 +256,8 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
             int quality = 99;
 
             mergeImages(b1, b2).compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
+
+
             outputStream.flush();
             outputStream.close();
 
@@ -314,6 +323,8 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
 
                 break;
         }
+
+
     }
 
     @Override
@@ -335,6 +346,8 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
                         mSignatureView.getWidth(), mSignatureView.getHeight(), Bitmap.Config.ARGB_8888);
                 Canvas mCanvas = new Canvas(mBitmap);
                 mSignatureView.draw(mCanvas);
+
+
                 takeScreenshot(((GlideBitmapDrawable) demoview.getDrawable()).getBitmap(), mBitmap);
 
 

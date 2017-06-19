@@ -10,275 +10,292 @@
     tools:showIn="@layout/activity_edit_image">
 
 
-    <RelativeLayout
+    <ImageView
+        android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="100dp"
-        android:layout_marginTop="44dp">
-
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#56ffffff" />
+        android:background="#56ffffff" />
 
 
-        <in.reweyou.reweyouforums.freedrawview.FreeDrawView
-            android:id="@+id/your_id"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:background="@color/transparent"
-
-            app:paintAlpha="255"
-            app:paintColor="@color/black"
-            app:paintWidth="4dp"
-            app:resizeBehaviour="crop" />
-    </RelativeLayout>
-
-    <TextView
-        android:id="@+id/redo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="7dp"
-        android:background="@drawable/ripple_effect_white_rec"
-        android:padding="8dp"
-
-        android:text="REDO"
-        android:textColor="#eeffffff"
-        android:textSize="12dp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/undo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="4dp"
-        android:layout_marginTop="7dp"
-        android:background="@drawable/ripple_effect_white_rec"
-        android:padding="8dp"
-        android:text="UNDO"
-        android:textColor="#eeffffff"
-        android:textSize="12dp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_toLeftOf="@+id/materialSeekBarSize"
-        android:text="Size"
-        android:textColor="#eeffffff"
-        android:textSize="12dp" />
-
-
-    <app.minimize.com.seek_bar_compat.SeekBarCompat
-        android:id="@+id/materialSeekBarSize"
-        android:layout_width="120dp"
-        android:layout_height="32dp"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center"
-        android:layout_marginTop="8dp"
-        app:progressBackgroundColor="#DDf4f4f4"
-        app:progressColor="#DDf4f4f4"
-        app:thumbAlpha="1.0"
-        app:thumbColor="#FFF" />
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/ss"
-        android:layout_marginBottom="9dp"
-        android:layout_toLeftOf="@+id/materialSeekBar"
-        android:text="Opacity"
-        android:textColor="#eeffffff"
-        android:textSize="12dp" />
-
-    <app.minimize.com.seek_bar_compat.SeekBarCompat
-        android:id="@+id/materialSeekBar"
-        android:layout_width="150dp"
-        android:layout_height="32dp"
-        android:layout_above="@+id/ss"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center"
-        app:progressBackgroundColor="#DDf4f4f4"
-        app:progressColor="#DDf4f4f4"
-        app:thumbAlpha="1.0"
-        app:thumbColor="#FFF" />
-
-    <TextView
-        android:id="@+id/percent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/ss"
-        android:layout_marginBottom="9dp"
-        android:layout_toRightOf="@+id/materialSeekBar"
-        android:text="100%"
-        android:textColor="#eeffffff"
-        android:textSize="12dp" />
-
-    <HorizontalScrollView
-        android:id="@+id/ss"
+    <in.reweyou.reweyouforums.freedrawview.FreeDrawView
+        android:id="@+id/your_id"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="8dp"
-        android:paddingLeft="4dp">
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:background="@color/transparent"
+
+        app:paintAlpha="255"
+        app:paintColor="@color/black"
+        app:paintWidth="4dp"
+        app:resizeBehaviour="crop" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+
+        android:background="#70000000">
+
+        <TextView
+            android:id="@+id/redo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="7dp"
+            android:background="@drawable/ripple_effect_white_rec"
+            android:padding="8dp"
+
+            android:text="REDO"
+            android:textColor="#eeffffff"
+            android:textSize="12dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/undo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="7dp"
+            android:background="@drawable/ripple_effect_white_rec"
+            android:padding="8dp"
+            android:text="UNDO"
+            android:textColor="#eeffffff"
+            android:textSize="12dp"
+            android:textStyle="bold" />
 
         <LinearLayout
-            android:id="@+id/acb"
-
+            android:id="@+id/sa"
             android:layout_width="wrap_content"
-            android:layout_height="56dp">
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
 
-            <in.reweyou.reweyouforums.customView.CircularImageView
-                android:id="@+id/c1"
-                android:layout_width="@dimen/color_pen"
-                android:layout_height="@dimen/color_pen"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_toLeftOf="@+id/materialSeekBarSize"
+                android:text="Pen Size"
+                android:textColor="#eeffffff"
+                android:textSize="12dp" />
+
+
+            <app.minimize.com.seek_bar_compat.SeekBarCompat
+                android:id="@+id/materialSeekBarSize"
+                android:layout_width="120dp"
+                android:layout_height="32dp"
                 android:layout_gravity="center"
-
-                android:background="@drawable/ripple_effect_white"
-                android:padding="4dp"
-                android:src="@color/c1"
-                app:myborderWidth="0dp" />
-
-            <in.reweyou.reweyouforums.customView.CircularImageView
-                android:id="@+id/c2"
-
-                android:layout_width="@dimen/color_pen"
-                android:layout_height="@dimen/color_pen"
-                android:layout_gravity="center"
-
-                android:background="@drawable/ripple_effect_white"
-                android:padding="4dp"
-
-                android:src="@color/c2"
-                app:myborderWidth="0dp" />
-
-            <in.reweyou.reweyouforums.customView.CircularImageView
-                android:id="@+id/c3"
-
-                android:layout_width="@dimen/color_pen"
-                android:layout_height="@dimen/color_pen"
-                android:layout_gravity="center"
-
-                android:background="@drawable/ripple_effect_white"
-                android:padding="4dp"
-
-                android:src="@color/c3"
-                app:myborderWidth="0dp" />
-
-            <in.reweyou.reweyouforums.customView.CircularImageView
-                android:id="@+id/c4"
-                android:layout_width="@dimen/color_pen"
-
-                android:layout_height="@dimen/color_pen"
-                android:layout_gravity="center"
-                android:background="@drawable/ripple_effect_white"
-
-                android:padding="4dp"
-
-                android:src="@color/c4"
-                app:myborderWidth="0dp" />
-
-            <in.reweyou.reweyouforums.customView.CircularImageView
-                android:id="@+id/c5"
-                android:layout_width="@dimen/color_pen"
-                android:layout_height="@dimen/color_pen"
-                android:layout_gravity="center"
-
-                android:background="@drawable/ripple_effect_white"
-                android:padding="4dp"
-
-
-                android:src="@color/c5"
-                app:myborderWidth="0dp" />
-
-            <in.reweyou.reweyouforums.customView.CircularImageView
-                android:id="@+id/c6"
-                android:layout_width="@dimen/color_pen"
-                android:layout_height="@dimen/color_pen"
-                android:layout_gravity="center"
-
-                android:background="@drawable/ripple_effect_white"
-
-                android:padding="4dp"
-
-                android:src="@color/c6"
-                app:myborderWidth="0dp" />
-
-            <in.reweyou.reweyouforums.customView.CircularImageView
-                android:id="@+id/c7"
-                android:layout_width="@dimen/color_pen"
-                android:layout_height="@dimen/color_pen"
-
-                android:layout_gravity="center"
-                android:background="@drawable/ripple_effect_white"
-                android:padding="4dp"
-
-
-                android:src="@color/c7"
-                app:myborderWidth="0dp" />
-
-            <in.reweyou.reweyouforums.customView.CircularImageView
-                android:id="@+id/c8"
-                android:layout_width="@dimen/color_pen"
-                android:layout_height="@dimen/color_pen"
-
-                android:layout_gravity="center"
-                android:background="@drawable/ripple_effect_white"
-                android:padding="4dp"
-
-
-                android:src="@color/c8"
-                app:myborderWidth="0dp" />
-
-            <in.reweyou.reweyouforums.customView.CircularImageView
-                android:id="@+id/c9"
-                android:layout_width="@dimen/color_pen"
-                android:layout_height="@dimen/color_pen"
-
-                android:layout_gravity="center"
-                android:background="@drawable/ripple_effect_white"
-                android:padding="4dp"
-
-
-                android:src="@color/c9"
-                app:myborderWidth="0dp" />
-
-            <in.reweyou.reweyouforums.customView.CircularImageView
-                android:id="@+id/c10"
-                android:layout_width="@dimen/color_pen"
-                android:layout_height="@dimen/color_pen"
-
-                android:layout_gravity="center"
-                android:background="@drawable/ripple_effect_white"
-                android:padding="4dp"
-
-
-                android:src="@color/c10"
-                app:myborderWidth="0dp" />
-
-            <in.reweyou.reweyouforums.customView.CircularImageView
-                android:id="@+id/c11"
-                android:layout_width="@dimen/color_pen"
-                android:layout_height="@dimen/color_pen"
-
-                android:layout_gravity="center"
-                android:layout_marginRight="8dp"
-                android:background="@drawable/ripple_effect_white"
-
-                android:padding="4dp"
-
-                android:src="@color/c11"
-                app:myborderWidth="0dp" />
-
-
+                android:layout_marginTop="5dp"
+                app:progressBackgroundColor="#DDf4f4f4"
+                app:progressColor="#DDf4f4f4"
+                app:thumbAlpha="1.0"
+                app:thumbColor="#FFF" />
         </LinearLayout>
 
-    </HorizontalScrollView>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:background="#70000000">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/ss"
+            android:layout_marginBottom="9dp"
+            android:layout_toLeftOf="@+id/materialSeekBar"
+            android:text="Opacity"
+            android:textColor="#eeffffff"
+            android:textSize="12dp" />
+
+        <app.minimize.com.seek_bar_compat.SeekBarCompat
+            android:id="@+id/materialSeekBar"
+            android:layout_width="150dp"
+            android:layout_height="32dp"
+            android:layout_above="@+id/ss"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            app:progressBackgroundColor="#DDf4f4f4"
+            app:progressColor="#DDf4f4f4"
+            app:thumbAlpha="1.0"
+            app:thumbColor="#FFF" />
+
+        <TextView
+            android:id="@+id/percent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/ss"
+            android:layout_marginBottom="9dp"
+            android:layout_toRightOf="@+id/materialSeekBar"
+            android:text="100%"
+            android:textColor="#eeffffff"
+            android:textSize="12dp" />
+
+
+        <HorizontalScrollView
+            android:id="@+id/ss"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="8dp"
+            android:paddingLeft="4dp">
+
+            <LinearLayout
+                android:id="@+id/acb"
+
+                android:layout_width="wrap_content"
+                android:layout_height="56dp">
+
+                <in.reweyou.reweyouforums.customView.CircularImageView
+                    android:id="@+id/c1"
+                    android:layout_width="@dimen/color_pen"
+                    android:layout_height="@dimen/color_pen"
+                    android:layout_gravity="center"
+
+                    android:background="@drawable/ripple_effect_white"
+                    android:padding="4dp"
+                    android:src="@color/c1"
+                    app:myborderWidth="0dp" />
+
+                <in.reweyou.reweyouforums.customView.CircularImageView
+                    android:id="@+id/c2"
+
+                    android:layout_width="@dimen/color_pen"
+                    android:layout_height="@dimen/color_pen"
+                    android:layout_gravity="center"
+
+                    android:background="@drawable/ripple_effect_white"
+                    android:padding="4dp"
+
+                    android:src="@color/c2"
+                    app:myborderWidth="0dp" />
+
+                <in.reweyou.reweyouforums.customView.CircularImageView
+                    android:id="@+id/c3"
+
+                    android:layout_width="@dimen/color_pen"
+                    android:layout_height="@dimen/color_pen"
+                    android:layout_gravity="center"
+
+                    android:background="@drawable/ripple_effect_white"
+                    android:padding="4dp"
+
+                    android:src="@color/c3"
+                    app:myborderWidth="0dp" />
+
+                <in.reweyou.reweyouforums.customView.CircularImageView
+                    android:id="@+id/c4"
+                    android:layout_width="@dimen/color_pen"
+
+                    android:layout_height="@dimen/color_pen"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ripple_effect_white"
+
+                    android:padding="4dp"
+
+                    android:src="@color/c4"
+                    app:myborderWidth="0dp" />
+
+                <in.reweyou.reweyouforums.customView.CircularImageView
+                    android:id="@+id/c5"
+                    android:layout_width="@dimen/color_pen"
+                    android:layout_height="@dimen/color_pen"
+                    android:layout_gravity="center"
+
+                    android:background="@drawable/ripple_effect_white"
+                    android:padding="4dp"
+
+
+                    android:src="@color/c5"
+                    app:myborderWidth="0dp" />
+
+                <in.reweyou.reweyouforums.customView.CircularImageView
+                    android:id="@+id/c6"
+                    android:layout_width="@dimen/color_pen"
+                    android:layout_height="@dimen/color_pen"
+                    android:layout_gravity="center"
+
+                    android:background="@drawable/ripple_effect_white"
+
+                    android:padding="4dp"
+
+                    android:src="@color/c6"
+                    app:myborderWidth="0dp" />
+
+                <in.reweyou.reweyouforums.customView.CircularImageView
+                    android:id="@+id/c7"
+                    android:layout_width="@dimen/color_pen"
+                    android:layout_height="@dimen/color_pen"
+
+                    android:layout_gravity="center"
+                    android:background="@drawable/ripple_effect_white"
+                    android:padding="4dp"
+
+
+                    android:src="@color/c7"
+                    app:myborderWidth="0dp" />
+
+                <in.reweyou.reweyouforums.customView.CircularImageView
+                    android:id="@+id/c8"
+                    android:layout_width="@dimen/color_pen"
+                    android:layout_height="@dimen/color_pen"
+
+                    android:layout_gravity="center"
+                    android:background="@drawable/ripple_effect_white"
+                    android:padding="4dp"
+
+
+                    android:src="@color/c8"
+                    app:myborderWidth="0dp" />
+
+                <in.reweyou.reweyouforums.customView.CircularImageView
+                    android:id="@+id/c9"
+                    android:layout_width="@dimen/color_pen"
+                    android:layout_height="@dimen/color_pen"
+
+                    android:layout_gravity="center"
+                    android:background="@drawable/ripple_effect_white"
+                    android:padding="4dp"
+
+
+                    android:src="@color/c9"
+                    app:myborderWidth="0dp" />
+
+                <in.reweyou.reweyouforums.customView.CircularImageView
+                    android:id="@+id/c10"
+                    android:layout_width="@dimen/color_pen"
+                    android:layout_height="@dimen/color_pen"
+
+                    android:layout_gravity="center"
+                    android:background="@drawable/ripple_effect_white"
+                    android:padding="4dp"
+
+
+                    android:src="@color/c10"
+                    app:myborderWidth="0dp" />
+
+                <in.reweyou.reweyouforums.customView.CircularImageView
+                    android:id="@+id/c11"
+                    android:layout_width="@dimen/color_pen"
+                    android:layout_height="@dimen/color_pen"
+
+                    android:layout_gravity="center"
+                    android:layout_marginRight="8dp"
+                    android:background="@drawable/ripple_effect_white"
+
+                    android:padding="4dp"
+
+                    android:src="@color/c11"
+                    app:myborderWidth="0dp" />
+
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+    </RelativeLayout>
 </RelativeLayout>
