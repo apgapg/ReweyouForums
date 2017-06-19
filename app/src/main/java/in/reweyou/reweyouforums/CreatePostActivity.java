@@ -70,6 +70,7 @@ import java.util.List;
 import in.reweyou.reweyouforums.adapter.GalleryImagesAdapter;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.model.GroupModel;
+import in.reweyou.reweyouforums.utils.Utils;
 
 public class CreatePostActivity extends AppCompatActivity {
     private static final String TAG = CreatePostActivity.class.getName();
@@ -121,6 +122,19 @@ public class CreatePostActivity extends AppCompatActivity {
     private Uri messageimageUri;
     private RecyclerView recyclerView;
     private GalleryImagesAdapter galleryImagesAdapter;
+    private LinearLayout image1edit;
+    private LinearLayout image2edit;
+    private LinearLayout image3edit;
+    private LinearLayout image4edit;
+    private ImageView image1writeedit;
+    private ImageView image2writeedit;
+    private ImageView image3writeedit;
+    private ImageView image4writeedit;
+    private ImageView image1cropeedit;
+    private ImageView image2cropeedit;
+    private ImageView image3cropeedit;
+    private ImageView image4cropeedit;
+    private String fromimageview = "image1";
 
 
     @Override
@@ -144,6 +158,24 @@ public class CreatePostActivity extends AppCompatActivity {
         image2 = (ImageView) findViewById(R.id.image2);
         image3 = (ImageView) findViewById(R.id.image3);
         image4 = (ImageView) findViewById(R.id.image4);
+
+        image1writeedit = (ImageView) findViewById(R.id.image1writeedit);
+        image2writeedit = (ImageView) findViewById(R.id.image2writeedit);
+        image3writeedit = (ImageView) findViewById(R.id.image3writeedit);
+        image4writeedit = (ImageView) findViewById(R.id.image4writeedit);
+
+
+        image1cropeedit = (ImageView) findViewById(R.id.image1cropedit);
+        image2cropeedit = (ImageView) findViewById(R.id.image2cropedit);
+        image3cropeedit = (ImageView) findViewById(R.id.image3cropedit);
+        image4cropeedit = (ImageView) findViewById(R.id.image4cropedit);
+
+
+        image1edit = (LinearLayout) findViewById(R.id.image1edit);
+        image2edit = (LinearLayout) findViewById(R.id.image2edit);
+        image3edit = (LinearLayout) findViewById(R.id.image3edit);
+        image4edit = (LinearLayout) findViewById(R.id.image4edit);
+
 
         imageviewlink = (ImageView) findViewById(R.id.imagelink);
 
@@ -296,8 +328,7 @@ public class CreatePostActivity extends AppCompatActivity {
                         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             checkStoragePermissionforshare();
 
-                        } else
-                            startImageCropActivity(messageimageUri);
+                        } else handleImage(messageimageUri.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
                         Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
@@ -828,7 +859,8 @@ public class CreatePostActivity extends AppCompatActivity {
                             // handleGif(images.get(0).getOriginalPath());
                             Toast.makeText(this, "Only image can be uploaded", Toast.LENGTH_SHORT).show();
                         } else {
-                            startImageCropActivity(Uri.parse(images.get(0).getQueryUri()));
+                            // startImageCropActivity(Uri.parse(images.get(0).getQueryUri()));
+                            handleImage(images.get(0).getQueryUri());
                         }
                     }
                 }
@@ -862,7 +894,8 @@ public class CreatePostActivity extends AppCompatActivity {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
-                handleImage(result.getUri().toString());
+                updateimage(fromimageview, result.getUri().toString());
+
                /* File compressedImage = new Compressor.Builder(this)
                         .setMaxWidth(1000)
                         .setMaxHeight(1000)
@@ -900,9 +933,71 @@ public class CreatePostActivity extends AppCompatActivity {
                     );
                 }
                 imagePicker.submit(data);
+            } else if (requestCode == Utils.REQ_CODE_EDIT_IMAGE) {
+                Log.d(TAG, "onActivityResult: fejfnejnfe called: " + data.getStringExtra("from"));
+                Log.d(TAG, "onActivityResult: intent: " + data.getStringExtra("uri"));
+                updateimage(data.getStringExtra("from"), data.getStringExtra("uri"));
             }
         }
 
+    }
+
+    private void updateimage(String from, String uri) {
+        if (from.equals("image1")) {
+            updateimageview1(uri);
+        } else if (from.equals("image2")) {
+            updateimageview2(uri);
+        } else if (from.equals("image3")) {
+            updateimageview3(uri);
+
+        } else if (from.equals("image4")) {
+            updateimageview4(uri);
+
+        }
+    }
+
+    private void updateimageview1(final String uri) {
+        image1url = uri;
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                Glide.with(CreatePostActivity.this).load(uri).into(image1);
+
+            }
+        });
+    }
+
+    private void updateimageview2(final String uri) {
+        image2url = uri;
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                Glide.with(CreatePostActivity.this).load(uri).into(image2);
+
+            }
+        });
+    }
+
+    private void updateimageview3(final String uri) {
+        image3url = uri;
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                Glide.with(CreatePostActivity.this).load(uri).into(image3);
+
+            }
+        });
+    }
+
+    private void updateimageview4(final String uri) {
+        image4url = uri;
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                Glide.with(CreatePostActivity.this).load(uri).into(image4);
+
+            }
+        });
     }
 
     private void handleImage(final String s) {
@@ -910,19 +1005,28 @@ public class CreatePostActivity extends AppCompatActivity {
         if (counter == 1) {
             recyclerView.setVisibility(View.GONE);
             bottomAttachContainer.setVisibility(View.GONE);
-
+            image1url = s;
             updateCreateTextUI(true);
             ll.setVisibility(View.VISIBLE);
-            image1.setOnClickListener(new View.OnClickListener() {
+            image1edit.setVisibility(View.VISIBLE);
+            image1writeedit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(CreatePostActivity.this, EditImageActivity.class);
-                    i.putExtra("uri", s);
-                    startActivity(i);
+                    i.putExtra("uri", image1url);
+                    i.putExtra("from", "image1");
+                    startActivityForResult(i, Utils.REQ_CODE_EDIT_IMAGE);
+                }
+            });
+            image1cropeedit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    fromimageview = "image1";
+                    startImageCropActivity(Uri.parse(image1url));
                 }
             });
             type = "image1";
-            image1url = s;
+
             edittextdescription.setHint("Describe about this image...");
             new Handler().post(new Runnable() {
                 @Override
@@ -935,10 +1039,25 @@ public class CreatePostActivity extends AppCompatActivity {
         } else if (counter == 2) {
             type = "image2";
             edittextdescription.setHint("Describe about these images...");
+            image2edit.setVisibility(View.VISIBLE);
 
             image2url = s;
-            image1.setOnClickListener(null);
-
+            image2writeedit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(CreatePostActivity.this, EditImageActivity.class);
+                    i.putExtra("uri", image2url);
+                    i.putExtra("from", "image2");
+                    startActivityForResult(i, Utils.REQ_CODE_EDIT_IMAGE);
+                }
+            });
+            image2cropeedit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    fromimageview = "image2";
+                    startImageCropActivity(Uri.parse(image2url));
+                }
+            });
             l2.setVisibility(View.VISIBLE);
             image4.setVisibility(View.INVISIBLE);
             new Handler().post(new Runnable() {
@@ -951,9 +1070,25 @@ public class CreatePostActivity extends AppCompatActivity {
 
         } else if (counter == 3) {
             type = "image3";
+            image3edit.setVisibility(View.VISIBLE);
 
             image3url = s;
-            image1.setOnClickListener(null);
+            image3writeedit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(CreatePostActivity.this, EditImageActivity.class);
+                    i.putExtra("uri", image3url);
+                    i.putExtra("from", "image3");
+                    startActivityForResult(i, Utils.REQ_CODE_EDIT_IMAGE);
+                }
+            });
+            image3cropeedit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    fromimageview = "image3";
+                    startImageCropActivity(Uri.parse(image3url));
+                }
+            });
             image4.setVisibility(View.VISIBLE);
 
             new Handler().post(new Runnable() {
@@ -968,7 +1103,24 @@ public class CreatePostActivity extends AppCompatActivity {
             image4url = s;
             type = "image4";
 
-            image1.setOnClickListener(null);
+            image4writeedit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(CreatePostActivity.this, EditImageActivity.class);
+                    i.putExtra("uri", image4url);
+                    i.putExtra("from", "image4");
+                    startActivityForResult(i, Utils.REQ_CODE_EDIT_IMAGE);
+                }
+            });
+            image4cropeedit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    fromimageview = "image4";
+                    startImageCropActivity(Uri.parse(image4url));
+                }
+            });
+            image4edit.setVisibility(View.VISIBLE);
+
 
             new Handler().post(new Runnable() {
                 @Override
@@ -1050,10 +1202,10 @@ public class CreatePostActivity extends AppCompatActivity {
 
         int tempcount;
 
-        if (cursor.getCount() < 10) {
+        if (cursor.getCount() < 20) {
             tempcount = cursor.getCount();
         } else {
-            tempcount = 10;
+            tempcount = 20;
         }
 
         if (tempcount != 0) {
@@ -1077,6 +1229,6 @@ public class CreatePostActivity extends AppCompatActivity {
     }
 
     public void onimageselected(String s) {
-        startImageCropActivity(Uri.parse(s));
+        handleImage(s);
     }
 }

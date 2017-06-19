@@ -1,5 +1,7 @@
 package in.reweyou.reweyouforums;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -7,10 +9,11 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -40,6 +43,9 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
     private ImageView demoview;
     private String TAG = EditImageActivity.class.getName();
     private String imageuri;
+    private boolean isEdited;
+    private Uri finalimageuri;
+    private String fromimageview;
 
     public static Bitmap mergeImages(Bitmap bmp1, Bitmap bmp2) {
         Bitmap bmOverlay = Bitmap.createBitmap(bmp1.getWidth(), bmp1.getHeight(), bmp1.getConfig());
@@ -61,22 +67,12 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                onBackPressed();
             }
         });
 
         imageuri = getIntent().getStringExtra("uri");
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bitmap mBitmap = Bitmap.createBitmap(
-                        mSignatureView.getWidth(), mSignatureView.getHeight(), Bitmap.Config.ARGB_8888);
-                Canvas mCanvas = new Canvas(mBitmap);
-                mSignatureView.draw(mCanvas);
-                takeScreenshot(((GlideBitmapDrawable) demoview.getDrawable()).getBitmap(), mBitmap);
-            }
-        });
+        fromimageview = getIntent().getStringExtra("from");
 
         CircularImageView c1 = (CircularImageView) findViewById(R.id.c1);
         CircularImageView c2 = (CircularImageView) findViewById(R.id.c2);
@@ -102,6 +98,7 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 ((TextView) findViewById(R.id.percent)).setText("" + (100 - ((int) (0.7 * progress))) + "%");
                 mSignatureView.setPaintAlpha((255 / 100) * (100 - ((int) (0.7 * progress))));
+
             }
 
             @Override
@@ -171,6 +168,7 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
         });
 
         // This will take a screenshot of the current drawn content of the view
+/*
         mSignatureView.getDrawScreenshot(new FreeDrawView.DrawCreatorListener() {
             @Override
             public void onDrawCreated(Bitmap draw) {
@@ -183,6 +181,7 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
                 // happen unless the async task has been canceled
             }
         });
+*/
 
 
         Glide.with(EditImageActivity.this).load(imageuri).listener(new RequestListener<String, GlideDrawable>() {
@@ -236,7 +235,7 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
 
             String mPath = mediaStorageDir.toString() + "/" + m + ".jpg";
             File imageFile = new File(mPath);
-            Uri uri = Uri.fromFile(imageFile);
+            finalimageuri = Uri.fromFile(imageFile);
 
             FileOutputStream outputStream = new FileOutputStream(imageFile);
             int quality = 99;
@@ -244,6 +243,12 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
             mergeImages(b1, b2).compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
             outputStream.flush();
             outputStream.close();
+
+            Intent i = new Intent();
+            i.putExtra("uri", finalimageuri.toString());
+            i.putExtra("from", fromimageview);
+            setResult(RESULT_OK, i);
+            finish();
 
             if (BuildConfig.DEBUG)
                 MediaScannerConnection.scanFile(EditImageActivity.this.getApplicationContext(), new String[]{mPath}, new String[]{"image/jpeg"}, null);
@@ -285,5 +290,51 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
 
                 break;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_edit_image, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    // handle button activities
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_done) {
+            // do something here
+            if (mSignatureView.isEdited()) {
+                Bitmap mBitmap = Bitmap.createBitmap(
+                        mSignatureView.getWidth(), mSignatureView.getHeight(), Bitmap.Config.ARGB_8888);
+                Canvas mCanvas = new Canvas(mBitmap);
+                mSignatureView.draw(mCanvas);
+                takeScreenshot(((GlideBitmapDrawable) demoview.getDrawable()).getBitmap(), mBitmap);
+
+
+            } else finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mSignatureView.isEdited()) {
+            AlertDialogBox alertDialogBox = new AlertDialogBox(EditImageActivity.this, "Discard Changes?", "Your changes would be lost! Proceed back?", "No", "Yes") {
+                @Override
+                public void onNegativeButtonClick(DialogInterface dialog) {
+                    dialog.dismiss();
+                    finish();
+                }
+
+                @Override
+                public void onPositiveButtonClick(DialogInterface dialog) {
+                    dialog.dismiss();
+                }
+            };
+            alertDialogBox.show();
+        } else finish();
     }
 }

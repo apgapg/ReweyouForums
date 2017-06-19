@@ -229,29 +229,93 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
-                            <in.reweyou.reweyouforums.customView.CustomImageView
-                                android:id="@+id/image1"
+                            <RelativeLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="8dp"
-                                android:layout_weight="1"
-                                android:background="@drawable/border_grey"
-                                android:padding="1dp"
-                                android:scaleType="centerInside"
-                                app:srcCompat="@drawable/ic_add_black_24dp" />
+                                android:layout_weight="1">
 
-                            <in.reweyou.reweyouforums.customView.CustomImageView
-                                android:id="@+id/image2"
+                                <in.reweyou.reweyouforums.customView.CustomImageView
+                                    android:id="@+id/image1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/border_grey"
+                                    android:padding="1dp"
+                                    android:scaleType="centerInside"
+                                    android:tint="#51000000"
+                                    app:srcCompat="@drawable/ic_add_black_24dp" />
+
+                                <LinearLayout
+                                    android:id="@+id/image1edit"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:orientation="horizontal"
+
+                                    android:visibility="gone">
+
+                                    <ImageView
+                                        android:id="@+id/image1cropedit"
+
+                                        android:layout_width="28dp"
+                                        android:layout_height="28dp"
+                                        android:layout_marginRight="6dp"
+                                        app:srcCompat="@drawable/edit_crop_image_layer" />
+
+                                    <ImageView
+                                        android:id="@+id/image1writeedit"
+                                        android:layout_width="28dp"
+                                        android:layout_height="28dp"
+                                        android:layout_marginLeft="6dp"
+                                        app:srcCompat="@drawable/edit_image_layer" />
+
+                                </LinearLayout>
+                            </RelativeLayout>
+
+                            <RelativeLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="8dp"
-                                android:layout_weight="1"
+                                android:layout_weight="1">
 
-                                android:background="@drawable/border_grey"
-                                android:padding="1dp"
-                                android:scaleType="centerInside"
+                                <in.reweyou.reweyouforums.customView.CustomImageView
+                                    android:id="@+id/image2"
+                                    android:layout_width="match_parent"
 
-                                app:srcCompat="@drawable/ic_add_black_24dp" />
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/border_grey"
+                                    android:padding="1dp"
+                                    android:scaleType="centerInside"
+                                    android:tint="#51000000"
+                                    app:srcCompat="@drawable/ic_add_black_24dp" />
+
+                                <LinearLayout
+                                    android:id="@+id/image2edit"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:orientation="horizontal"
+                                    android:visibility="gone">
+
+                                    <ImageView
+                                        android:id="@+id/image2cropedit"
+
+                                        android:layout_width="28dp"
+                                        android:layout_height="28dp"
+                                        android:layout_marginRight="6dp"
+                                        app:srcCompat="@drawable/edit_crop_image_layer" />
+
+                                    <ImageView
+                                        android:id="@+id/image2writeedit"
+
+                                        android:layout_width="28dp"
+                                        android:layout_height="28dp"
+                                        android:layout_marginLeft="6dp"
+                                        app:srcCompat="@drawable/edit_image_layer" />
+
+                                </LinearLayout>
+
+                            </RelativeLayout>
                         </LinearLayout>
 
                         <LinearLayout
@@ -261,30 +325,97 @@
                             android:orientation="horizontal"
                             android:visibility="gone">
 
-                            <in.reweyou.reweyouforums.customView.CustomImageView
-                                android:id="@+id/image3"
+                            <RelativeLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="8dp"
-                                android:layout_weight="1"
-                                android:background="@drawable/border_grey"
+                                android:layout_weight="1">
 
-                                android:padding="1dp"
-                                android:scaleType="centerInside"
-                                app:srcCompat="@drawable/ic_add_black_24dp" />
+                                <in.reweyou.reweyouforums.customView.CustomImageView
+                                    android:id="@+id/image3"
+                                    android:layout_width="match_parent"
 
-                            <in.reweyou.reweyouforums.customView.CustomImageView
-                                android:id="@+id/image4"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/border_grey"
+                                    android:padding="1dp"
+                                    android:scaleType="centerInside"
+                                    android:tint="#51000000"
+                                    app:srcCompat="@drawable/ic_add_black_24dp" />
+
+                                <LinearLayout
+                                    android:id="@+id/image3edit"
+                                    android:layout_width="wrap_content"
+
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:orientation="horizontal"
+                                    android:visibility="gone">
+
+                                    <ImageView
+                                        android:id="@+id/image3cropedit"
+
+                                        android:layout_width="28dp"
+                                        android:layout_height="28dp"
+                                        android:layout_marginRight="6dp"
+                                        app:srcCompat="@drawable/edit_crop_image_layer" />
+
+                                    <ImageView
+                                        android:id="@+id/image3writeedit"
+
+                                        android:layout_width="28dp"
+                                        android:layout_height="28dp"
+                                        android:layout_marginLeft="6dp"
+                                        app:srcCompat="@drawable/edit_image_layer" />
+
+                                </LinearLayout>
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="8dp"
-                                android:layout_weight="1"
-                                android:background="@drawable/border_grey"
+                                android:layout_weight="1">
 
-                                android:padding="1dp"
+                                <in.reweyou.reweyouforums.customView.CustomImageView
+                                    android:id="@+id/image4"
+                                    android:layout_width="match_parent"
 
-                                android:scaleType="centerInside"
-                                app:srcCompat="@drawable/ic_add_black_24dp" />
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/border_grey"
+                                    android:padding="1dp"
+                                    android:scaleType="centerInside"
+                                    android:tint="#51000000"
+                                    app:srcCompat="@drawable/ic_add_black_24dp" />
+
+                                <LinearLayout
+                                    android:id="@+id/image4edit"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:orientation="horizontal"
+
+                                    android:visibility="gone">
+
+                                    <ImageView
+                                        android:id="@+id/image4cropedit"
+
+                                        android:layout_width="28dp"
+                                        android:layout_height="28dp"
+                                        android:layout_marginRight="6dp"
+                                        app:srcCompat="@drawable/edit_crop_image_layer" />
+
+                                    <ImageView
+                                        android:id="@+id/image4writeedit"
+
+                                        android:layout_width="28dp"
+                                        android:layout_height="28dp"
+                                        android:layout_marginLeft="6dp"
+                                        app:srcCompat="@drawable/edit_image_layer" />
+
+                                </LinearLayout>
+
+                            </RelativeLayout>
                         </LinearLayout>
                     </LinearLayout>
 

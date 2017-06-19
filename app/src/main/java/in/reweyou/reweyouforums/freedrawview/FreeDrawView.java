@@ -53,6 +53,7 @@ public class FreeDrawView extends View implements View.OnTouchListener {
 
     private PathDrawnListener mPathDrawnListener;
     private PathRedoUndoCountChangeListener mPathRedoUndoCountChangeListener;
+    private boolean isEdited;
 
     public FreeDrawView(Context context) {
         this(context, null);
@@ -589,9 +590,12 @@ public class FreeDrawView extends View implements View.OnTouchListener {
         notifyRedoUndoCountChanged();
     }
 
+    public boolean isEdited() {
+        return isEdited;
+    }
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-
+        isEdited = true;
         if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
             notifyPathStart();
         }
