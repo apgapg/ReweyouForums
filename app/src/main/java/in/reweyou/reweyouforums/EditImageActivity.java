@@ -81,6 +81,10 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
         CircularImageView c5 = (CircularImageView) findViewById(R.id.c5);
         CircularImageView c6 = (CircularImageView) findViewById(R.id.c6);
         CircularImageView c7 = (CircularImageView) findViewById(R.id.c7);
+        CircularImageView c8 = (CircularImageView) findViewById(R.id.c8);
+        CircularImageView c9 = (CircularImageView) findViewById(R.id.c9);
+        CircularImageView c10 = (CircularImageView) findViewById(R.id.c10);
+        CircularImageView c11 = (CircularImageView) findViewById(R.id.c11);
 
         c1.setOnClickListener(this);
         c2.setOnClickListener(this);
@@ -89,6 +93,10 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
         c5.setOnClickListener(this);
         c6.setOnClickListener(this);
         c7.setOnClickListener(this);
+        c8.setOnClickListener(this);
+        c9.setOnClickListener(this);
+        c10.setOnClickListener(this);
+        c11.setOnClickListener(this);
 
         demoview = (ImageView) findViewById(R.id.image);
 
@@ -287,6 +295,22 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
                 break;
             case R.id.c7:
                 mSignatureView.setPaintColor(getResources().getColor(R.color.c7));
+
+                break;
+            case R.id.c8:
+                mSignatureView.setPaintColor(getResources().getColor(R.color.c8));
+
+                break;
+            case R.id.c9:
+                mSignatureView.setPaintColor(getResources().getColor(R.color.c9));
+
+                break;
+            case R.id.c10:
+                mSignatureView.setPaintColor(getResources().getColor(R.color.c10));
+
+                break;
+            case R.id.c11:
+                mSignatureView.setPaintColor(getResources().getColor(R.color.c11));
 
                 break;
         }

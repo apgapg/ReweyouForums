@@ -416,7 +416,7 @@ public class CreatePostActivity extends AppCompatActivity {
                 .withListener(new PermissionListener() {
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse response) {
-                        startImageCropActivity(messageimageUri);
+                        handleImage(messageimageUri.toString());
                     }
 
                     @Override
@@ -1009,6 +1009,8 @@ public class CreatePostActivity extends AppCompatActivity {
             updateCreateTextUI(true);
             ll.setVisibility(View.VISIBLE);
             image1edit.setVisibility(View.VISIBLE);
+            image1.setOnClickListener(null);
+
             image1writeedit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -1042,6 +1044,7 @@ public class CreatePostActivity extends AppCompatActivity {
             image2edit.setVisibility(View.VISIBLE);
 
             image2url = s;
+            image2.setOnClickListener(null);
             image2writeedit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -1071,6 +1074,7 @@ public class CreatePostActivity extends AppCompatActivity {
         } else if (counter == 3) {
             type = "image3";
             image3edit.setVisibility(View.VISIBLE);
+            image3.setOnClickListener(null);
 
             image3url = s;
             image3writeedit.setOnClickListener(new View.OnClickListener() {
@@ -1102,6 +1106,7 @@ public class CreatePostActivity extends AppCompatActivity {
         } else if (counter == 4) {
             image4url = s;
             type = "image4";
+            image4.setOnClickListener(null);
 
             image4writeedit.setOnClickListener(new View.OnClickListener() {
                 @Override
