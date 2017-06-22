@@ -14,6 +14,15 @@ public class GroupModel {
     private String admin;
     private String adminname;
     private String rules;
+    private String tempselect = "deselect";
+
+    public String getTempselect() {
+        return tempselect;
+    }
+
+    public void setTempselect(String tempselect) {
+        this.tempselect = tempselect;
+    }
 
     public String getAdminname() {
         return adminname;

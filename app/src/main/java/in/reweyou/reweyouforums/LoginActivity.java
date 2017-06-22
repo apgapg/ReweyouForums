@@ -29,8 +29,11 @@ import com.kbeanie.multipicker.api.ImagePicker;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.customView.NonSwipeableViewPager;
+import in.reweyou.reweyouforums.fragment.ChooseInterestFragment;
 import in.reweyou.reweyouforums.fragment.LoginFragment;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
@@ -48,6 +51,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private ImagePicker imagePicker;
     private UserSessionManager userSessionManager;
     private ProgressDialog progressDialog;
+    private GoogleSignInAccount acct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,27 +101,26 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
-            GoogleSignInAccount acct = result.getSignInAccount();
+            acct = result.getSignInAccount();
             Log.d(TAG, "handleSignInResult: LoginName: " + acct.getGivenName());
-
-            uploadsignin(acct);
+            nonSwipeableViewPager.setCurrentItem(1);
+            // uploadsignin(acct);
         } else {
             // Signed out, show unauthenticated UI.
             Log.d(TAG, "handleSignInResult: signed out");
         }
     }
 
-    private void uploadsignin(final GoogleSignInAccount acct) {
+    private void uploadsignin(final GoogleSignInAccount acct, List<String> selectlist) {
         JSONObject jsonObject = new JSONObject();
+        for (int i = 0; i < selectlist.size(); i++) {
+            try {
+                jsonObject.put("" + i, selectlist.get(i));
 
-        try {
-            jsonObject.put("0", "8");
-            jsonObject.put("1", "2");
-            jsonObject.put("2", "");
-        } catch (JSONException e) {
-            e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
-
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Authenticating");
         progressDialog.setMessage("Signing in. Please wait!");
@@ -167,8 +170,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
 
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -183,6 +184,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     }
 
+    public void onproceedclick(List<String> selectlist) {
+        uploadsignin(acct, selectlist);
+    }
 
 
     private class PagerAdapter extends FragmentStatePagerAdapter {
@@ -199,6 +203,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
             if (position == 0)
                 return new LoginFragment();
+            else if (position == 1)
+                return new ChooseInterestFragment();
             else return null;
         }
 
@@ -222,7 +228,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         @Override
         public int getCount() {
-            return 1;
+            return 2;
         }
 
 

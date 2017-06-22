@@ -16,7 +16,11 @@ public class CommentModel {
     private String uid;
     private String upvotes;
     private String status = "false";
+    private String tags = "";
 
+    public String getTags() {
+        return tags;
+    }
     public String getStatus() {
         return status;
     }

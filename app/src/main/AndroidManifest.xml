@@ -99,7 +99,8 @@
             android:name=".LoginActivity"
             android:label="ReweyouForums"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme2.NoActionBar">
+            android:theme="@style/AppTheme2.NoActionBar"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

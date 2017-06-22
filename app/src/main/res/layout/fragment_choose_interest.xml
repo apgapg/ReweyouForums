@@ -1,0 +1,79 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Choose your Interest: "
+        android:textColor="#212121"
+        android:textSize="16dp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/search"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/border_grey_white"
+        android:drawableLeft="@drawable/ic_search_layer"
+        android:drawablePadding="8dp"
+        android:hint="Search"
+        android:paddingLeft="14dp"
+        android:textColor="#424242"
+        android:textSize="13dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swiperefresh"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingTop="8dp" />
+
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <TextView
+            android:id="@+id/txtexplore"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="80dp"
+            android:gravity="center"
+            android:minLines="2"
+            android:text="No groups followed yet"
+            android:textColor="#757575"
+            android:textSize="13dp"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/proceed"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="#e0e0e0"
+        android:gravity="center"
+        android:text="Proceed"
+        android:textAllCaps="true"
+        android:textColor="#fff"
+        android:textSize="13dp"
+        android:textStyle="bold" />
+
+</LinearLayout>

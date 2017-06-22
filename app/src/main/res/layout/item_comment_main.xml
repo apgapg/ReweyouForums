@@ -30,7 +30,7 @@
         android:textSize="13dp"
         android:textStyle="bold" />
 
-    <TextView
+    <in.reweyou.reweyouforums.customView.ColorTextView
         android:id="@+id/comment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

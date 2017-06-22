@@ -30,12 +30,15 @@ import com.androidnetworking.interfaces.StringRequestListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import in.reweyou.reweyouforums.CommentActivity;
 import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
+import in.reweyou.reweyouforums.customView.ColorTextView;
 import in.reweyou.reweyouforums.model.CommentModel;
 import in.reweyou.reweyouforums.model.ReplyCommentModel;
 import in.reweyou.reweyouforums.utils.Utils;
@@ -74,7 +77,26 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             CommentModel commentModel = (CommentModel) messagelist.get(position);
             CommentViewHolder commentViewHolder = (CommentViewHolder) holder;
             commentViewHolder.username.setText(commentModel.getUsername());
+
+
             commentViewHolder.comment.setText(commentModel.getComment());
+
+            try {
+                JSONObject jsonObject = new JSONObject(commentModel.getTags().replace("\\", ""));
+                Log.d(TAG, "bbd: " + position + "   " + jsonObject.toString());
+                if (jsonObject.length() > 0) {
+                    for (int i = 0; i < jsonObject.length(); i++) {
+
+                        commentViewHolder.comment.findAndSetStrColor(jsonObject.getString("" + i), "#2962FF");
+                    }
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
             commentViewHolder.time.setText(commentModel.getTimestamp().replace("about ", ""));
 
             if (((CommentModel) messagelist.get(position)).getUid().equals(userSessionManager.getUID()))
@@ -124,7 +146,25 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             ReplyCommentModel replyCommentModel = (ReplyCommentModel) messagelist.get(position);
             ReplyViewHolder replyViewHolder = (ReplyViewHolder) holder;
             replyViewHolder.username.setText(replyCommentModel.getUsername());
+
             replyViewHolder.comment.setText(replyCommentModel.getReply());
+
+            try {
+                JSONObject jsonObject = new JSONObject(replyCommentModel.getTags().replace("\\", ""));
+                Log.d(TAG, "bbd: " + position + "   " + jsonObject.toString());
+                if (jsonObject.length() > 0) {
+                    for (int i = 0; i < jsonObject.length(); i++) {
+
+                        replyViewHolder.comment.findAndSetStrColor(jsonObject.getString("" + i), "#2962FF");
+                    }
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
             replyViewHolder.time.setText(replyCommentModel.getTimestamp().replace("about ", ""));
             Glide.with(mContext).load(((ReplyCommentModel) messagelist.get(position)).getImageurl()).error(R.drawable.download).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(replyViewHolder.image);
             replyViewHolder.userlevel.setText(((ReplyCommentModel) messagelist.get(position)).getBadge());
@@ -484,9 +524,10 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     private class CommentViewHolder extends RecyclerView.ViewHolder {
+        private ColorTextView comment;
         private TextView reply;
         private ImageView image, like, liketemp;
-        private TextView username, userlevel, comment, time, edit, likenumber;
+        private TextView username, userlevel, time, edit, likenumber;
 
 
         public CommentViewHolder(View inflate) {
@@ -499,7 +540,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             likenumber = (TextView) inflate.findViewById(R.id.likenumber);
             like = (ImageView) inflate.findViewById(R.id.like);
             liketemp = (ImageView) inflate.findViewById(R.id.templike);
-            comment = (TextView) inflate.findViewById(R.id.comment);
+            comment = (ColorTextView) inflate.findViewById(R.id.comment);
             time = (TextView) inflate.findViewById(R.id.time);
             reply = (TextView) inflate.findViewById(R.id.reply);
             edit.setOnClickListener(new View.OnClickListener() {
@@ -537,7 +578,8 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         private TextView edit;
         private TextView userlevel;
         private ImageView image;
-        private TextView username, comment, reply, time;
+        private TextView username, reply, time;
+        private ColorTextView comment;
 
 
         public ReplyViewHolder(View inflate) {
@@ -556,7 +598,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
             });
             username = (TextView) inflate.findViewById(R.id.message);
-            comment = (TextView) inflate.findViewById(R.id.comment);
+            comment = (ColorTextView) inflate.findViewById(R.id.comment);
             time = (TextView) inflate.findViewById(R.id.time);
 
             like.setOnClickListener(new View.OnClickListener() {

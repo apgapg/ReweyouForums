@@ -411,8 +411,9 @@ public class CommentFragment extends Fragment {
         editText.setFocusableInTouchMode(true);
         editText.requestFocus();
         editText.performClick();
+        /*editText.setSelection(editText.getText().toString().length());
         final InputMethodManager inputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+        inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);*/
     }
 
 

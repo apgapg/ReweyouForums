@@ -75,6 +75,18 @@ public class NotiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 notiViewHolder.message.setText(messagelist.get(position).getNotifier() + " commented on your post.");
 
                 break;
+            case "Comment Tag":
+                notiViewHolder.message.setText(messagelist.get(position).getNotifier() + " tagged you in a comment.");
+
+                break;
+            case "Reply Tag":
+                notiViewHolder.message.setText(messagelist.get(position).getNotifier() + " tagged you in a reply.");
+
+                break;
+            case "Post Tag":
+                notiViewHolder.message.setText(messagelist.get(position).getNotifier() + " tagged you in a post.");
+
+                break;
         }
         notiViewHolder.time.setText(messagelist.get(position).getTimestamp().replace("about ", ""));
         Glide.with(context).load(messagelist.get(position).getNotifier_image()).error(R.drawable.download).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(notiViewHolder.image);

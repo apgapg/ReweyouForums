@@ -235,6 +235,8 @@ public class MentionsEditText extends EditText implements TokenSource {
                     InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.showSoftInput(this, 0);
                 }
+
+
                 return true;
             }
         } else if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -271,6 +273,7 @@ public class MentionsEditText extends EditText implements TokenSource {
         }
         return superResult;
     }
+
 
     @Override
     public boolean onTextContextMenuItem(@MenuRes int id) {
