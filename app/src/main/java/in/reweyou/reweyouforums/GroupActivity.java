@@ -337,6 +337,8 @@ public class GroupActivity extends AppCompatActivity {
                 .addBodyParameter("type", data.getStringExtra("type"))
                 .addBodyParameter("uid", userSessionManager.getUID())
                 .addBodyParameter("name", userSessionManager.getUsername())
+                .addBodyParameter("tags", data.getStringExtra("tags"))
+                .addBodyParameter("tagsuid", data.getStringExtra("tagsuid"))
                 .addBodyParameter("profilepic", userSessionManager.getProfilePicture())
                 .addBodyParameter("authtoken", userSessionManager.getAuthToken())
                 .setTag("uploadpost")

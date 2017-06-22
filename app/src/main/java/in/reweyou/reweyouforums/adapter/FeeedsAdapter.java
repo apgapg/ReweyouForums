@@ -55,6 +55,7 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
 import org.chromium.customtabsclient.CustomTabsActivityHelper;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -69,6 +70,7 @@ import in.reweyou.reweyouforums.GroupActivity;
 import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.YoutubeActivity;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
+import in.reweyou.reweyouforums.customView.ColorTextView;
 import in.reweyou.reweyouforums.model.ThreadModel;
 import in.reweyou.reweyouforums.utils.Utils;
 import me.zhanghai.android.customtabshelper.CustomTabsHelperFragment;
@@ -135,16 +137,28 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
     @Override
     public void onBindViewHolder(BaseViewHolder holder, int position) {
-
-
         holder.description.setText(messagelist.get(position).getDescription());
+
+        try {
+            JSONObject jsonObject = new JSONObject(messagelist.get(position).getTags().replace("\\", ""));
+            Log.d(TAG, "bbd: " + position + "   " + jsonObject.toString());
+            if (jsonObject.length() > 0) {
+                for (int i = 0; i < jsonObject.length(); i++) {
+
+                    holder.description.findAndSetStrColor(jsonObject.getString("" + i), "#2962FF");
+                }
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         holder.date.setText(messagelist.get(position).getTimestamp().replace("about ", ""));
         holder.username.setText(messagelist.get(position).getUsername());
         holder.commentnum.setText(messagelist.get(position).getComments());
         Glide.with(fragmentContext).load(messagelist.get(position).getProfilepic()).error(R.drawable.download).into(holder.profileimage);
         holder.userlevel.setText(messagelist.get(position).getBadge());
         holder.groupname.setText("#" + messagelist.get(position).getGroupname());
-        Log.d(TAG, "onBindViewHolder: " + messagelist.get(position).getBadge());
         if (messagelist.get(position).getUid().equals(userSessionManager.getUID())) {
             holder.edit.setVisibility(View.VISIBLE);
         } else holder.edit.setVisibility(View.GONE);
@@ -591,7 +605,8 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         private ImageView profileimage, liketemp, comment, like, share;
         private TextView username, likenum, commentnum, likenumber;
         private TextView date, userlevel, groupname;
-        private TextView description, edit;
+        private TextView edit;
+        private ColorTextView description;
         private LinearLayout commentcontainer;
         private CardView cv;
 
@@ -610,7 +625,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
             likenumber = (TextView) inflate.findViewById(R.id.likenumber);
             userlevel = (TextView) inflate.findViewById(R.id.userlevel);
-            description = (TextView) inflate.findViewById(R.id.description);
+            description = (ColorTextView) inflate.findViewById(R.id.description);
             commentcontainer = (LinearLayout) inflate.findViewById(R.id.commentcontainer);
             username = (TextView) inflate.findViewById(R.id.usernamee);
             date = (TextView) inflate.findViewById(R.id.date);

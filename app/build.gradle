@@ -26,8 +26,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            minifyEnabled true
-            shrinkResources true
+           // minifyEnabled true
+           // shrinkResources true
             resValue("bool", "FIREBASE_ANALYTICS_DISABLED", "true")
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
@@ -76,6 +76,8 @@ dependencies {
     compile 'me.zhanghai.android.customtabshelper:library:1.0.3'
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.kbeanie:multipicker:1.1.31@aar'
+    compile project(':spyglass')
+    compile 'io.paperdb:paperdb:2.1'
 
 
     compile 'com.minimize.library:seekbar-compat:0.2.5'

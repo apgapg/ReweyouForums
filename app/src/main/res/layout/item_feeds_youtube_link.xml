@@ -29,8 +29,7 @@
         <include layout="@layout/item_row_usernametop" />
 
 
-
-        <TextView
+        <in.reweyou.reweyouforums.customView.ColorTextView
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

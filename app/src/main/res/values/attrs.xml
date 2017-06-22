@@ -29,4 +29,28 @@
             <enum name="crop" value="2" />
         </attr>
     </declare-styleable>
+
+    <attr name="mentionTextColor" format="color" />
+    <attr name="mentionTextBackgroundColor" format="color" />
+    <attr name="selectedMentionTextColor" format="color" />
+    <attr name="selectedMentionTextBackgroundColor" format="color" />
+
+    <declare-styleable name="MentionsEditText">
+        <attr name="mentionTextColor" />
+        <attr name="mentionTextBackgroundColor" />
+        <attr name="selectedMentionTextColor" />
+        <attr name="selectedMentionTextBackgroundColor" />
+    </declare-styleable>
+
+    <declare-styleable name="RichEditorView">
+        <attr name="mentionTextColor" />
+        <attr name="mentionTextBackgroundColor" />
+        <attr name="selectedMentionTextColor" />
+        <attr name="selectedMentionTextBackgroundColor" />
+    </declare-styleable>
+
+    <declare-styleable name="ColorTextView">
+        <attr name="color_texts" format="string" />
+        <attr name="color_arrays" format="string" />
+    </declare-styleable>
 </resources>

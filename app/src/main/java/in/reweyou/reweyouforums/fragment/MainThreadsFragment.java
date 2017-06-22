@@ -212,6 +212,8 @@ public class MainThreadsFragment extends Fragment {
             Collections.reverse(threadlist);
 
             feeedsAdapter.add(threadlist);
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }

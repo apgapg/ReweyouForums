@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -18,7 +19,6 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -30,11 +30,16 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.gson.Gson;
+import com.linkedin.android.spyglass.suggestions.SuggestionsResult;
+import com.linkedin.android.spyglass.tokenization.QueryToken;
+import com.linkedin.android.spyglass.tokenization.interfaces.QueryTokenReceiver;
+import com.linkedin.android.spyglass.ui.RichEditorViewInvert;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -43,7 +48,9 @@ import in.reweyou.reweyouforums.adapter.CommentsAdapter;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.model.CommentModel;
 import in.reweyou.reweyouforums.model.ReplyCommentModel;
+import in.reweyou.reweyouforums.model.TopGroupMemberModel;
 import in.reweyou.reweyouforums.utils.NetworkHandler;
+import io.paperdb.Paper;
 
 /**
  * Created by master on 24/2/17.
@@ -51,6 +58,7 @@ import in.reweyou.reweyouforums.utils.NetworkHandler;
 
 public class CommentFragment extends Fragment {
 
+    private static final String BUCKET = "cities-memory";
 
     private static final String TAG = CommentFragment.class.getName();
     private Activity mContext;
@@ -58,7 +66,6 @@ public class CommentFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private ProgressBar progressBar;
     private ImageView send;
-    private EditText editText;
     private TextView nocommenttxt;
     private UserSessionManager userSessionManager;
     private TextView replyheader;
@@ -66,6 +73,7 @@ public class CommentFragment extends Fragment {
     private String threadid;
     private String tempcommentid;
     private LinearLayoutManager linearLayoutManager;
+    private RichEditorViewInvert editText;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,7 +99,6 @@ public class CommentFragment extends Fragment {
         linearLayoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(linearLayoutManager);
         progressBar = (ProgressBar) layout.findViewById(R.id.progressBar);
-        editText = (EditText) layout.findViewById(R.id.edittext);
         send = (ImageView) layout.findViewById(R.id.send);
         nocommenttxt = (TextView) layout.findViewById(R.id.commenttxt);
 
@@ -100,6 +107,31 @@ public class CommentFragment extends Fragment {
 
         adapterComment = new CommentsAdapter(mContext);
         recyclerView.setAdapter(adapterComment);
+
+        editText = (RichEditorViewInvert) layout.findViewById(R.id.edittext);
+        editText.setQueryTokenReceiver(new QueryTokenReceiver() {
+            @Override
+            public List<String> onQueryReceived(@NonNull QueryToken queryToken) {
+                Paper.init(mContext);
+                List<TopGroupMemberModel> suggestio = Paper.book().read("member");
+                Log.d(TAG, "onQueryReceived: " + queryToken.getTokenString());
+                for (int i = suggestio.size() - 1; i >= 0; i--) {
+                    if (!suggestio.get(i).getUsername().toLowerCase().contains(queryToken.getTokenString().replace("@", "").toLowerCase())) {
+                        suggestio.remove(i);
+                    }
+                }
+                SuggestionsResult result = new SuggestionsResult(queryToken, suggestio);
+                editText.onReceiveSuggestionsResult(result, BUCKET);
+
+
+                // Lets the widget know which sources to expect results from based
+                // on a string key (only one source here)
+                return Arrays.asList(BUCKET);
+            }
+        });
+        editText.setHint("Add a comment...");
+        editText.displayTextCounter(false);
+        editText.setEditTextShouldWrapContent(true);
 
         initSendButton();
         initTextWatcherEditText();
@@ -206,12 +238,32 @@ public class CommentFragment extends Fragment {
                     editText.setEnabled(false);
                     send.setVisibility(View.INVISIBLE);
                     progressBar.setVisibility(View.VISIBLE);
+
+                    JSONObject jsonObjecttags = new JSONObject();
+                    JSONObject jsonObjectuid = new JSONObject();
+                    if (!editText.getMentionSpans().isEmpty()) {
+                        try {
+
+                            for (int i = 0; i < editText.getMentionSpans().size(); i++) {
+                                jsonObjecttags.put("" + i, editText.getMentionSpans().get(i).getDisplayString());
+                                jsonObjectuid.put("" + i, editText.getMentionSpans().get(i).getUid());
+                            }
+
+                            Log.d(TAG, "uploadPostShare: " + jsonObjecttags);
+                            Log.d(TAG, "uploadPostShare: " + jsonObjectuid);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
                     HashMap<String, String> hashMap = new HashMap<String, String>();
                     hashMap.put("uid", userSessionManager.getUID());
                     hashMap.put("username", userSessionManager.getUsername());
                     hashMap.put("imageurl", userSessionManager.getProfilePicture());
                     hashMap.put("threadid", threadid);
                     hashMap.put("image", "");
+                    hashMap.put("tags", jsonObjecttags.toString());
+                    hashMap.put("tagsuid", jsonObjectuid.toString());
                     String url;
                     if (replyheader.getVisibility() == View.VISIBLE) {
                         url = "https://www.reweyou.in/google/create_reply.php";
@@ -396,4 +448,6 @@ public class CommentFragment extends Fragment {
 
         getData();
     }
+
+
 }

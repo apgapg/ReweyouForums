@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.CardView;
@@ -55,6 +56,10 @@ import com.kbeanie.multipicker.api.ImagePicker;
 import com.kbeanie.multipicker.api.Picker;
 import com.kbeanie.multipicker.api.callbacks.ImagePickerCallback;
 import com.kbeanie.multipicker.api.entity.ChosenImage;
+import com.linkedin.android.spyglass.suggestions.SuggestionsResult;
+import com.linkedin.android.spyglass.tokenization.QueryToken;
+import com.linkedin.android.spyglass.tokenization.interfaces.QueryTokenReceiver;
+import com.linkedin.android.spyglass.ui.RichEditorView;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -63,6 +68,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -70,10 +76,14 @@ import java.util.List;
 import in.reweyou.reweyouforums.adapter.GalleryImagesAdapter;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.model.GroupModel;
+import in.reweyou.reweyouforums.model.TopGroupMemberModel;
 import in.reweyou.reweyouforums.utils.Utils;
+import in.reweyou.reweyouforums.utils.data.models.City;
+import io.paperdb.Paper;
 
-public class CreatePostActivity extends AppCompatActivity {
+public class CreatePostActivity extends AppCompatActivity implements QueryTokenReceiver {
     private static final String TAG = CreatePostActivity.class.getName();
+    private static final String BUCKET = "cities-memory";
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -88,7 +98,7 @@ public class CreatePostActivity extends AppCompatActivity {
     private RelativeLayout linkbtn;
     private TextView linklink;
     private TextView postbutton;
-    private EditText edittextdescription;
+    private RichEditorView edittextdescription;
     private ImagePicker imagePicker;
     private ImageView image1;
     private ImageView image2;
@@ -135,6 +145,8 @@ public class CreatePostActivity extends AppCompatActivity {
     private ImageView image3cropeedit;
     private ImageView image4cropeedit;
     private String fromimageview = "image1";
+    //  private RichEditorView editor;
+    private City.CityLoader cities;
 
 
     @Override
@@ -151,6 +163,14 @@ public class CreatePostActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
+
+        edittextdescription = (RichEditorView) findViewById(R.id.editor);
+        edittextdescription.setQueryTokenReceiver(this);
+        edittextdescription.setHint("Share your thoughts...");
+        edittextdescription.displayTextCounter(false);
+
+        cities = new City.CityLoader(getResources());
+
 
         linkpd = (ProgressBar) findViewById(R.id.linkpd);
         cd = (CardView) findViewById(R.id.cd);
@@ -224,7 +244,7 @@ public class CreatePostActivity extends AppCompatActivity {
         ll = (LinearLayout) findViewById(R.id.ll);
         l2 = (LinearLayout) findViewById(R.id.l2);
 
-        edittextdescription = (EditText) findViewById(R.id.groupname);
+        // edittextdescription = (EditText) findViewById(R.id.groupname);
         headlinelink = (TextView) findViewById(R.id.headlinelink);
         descriptionlink = (TextView) findViewById(R.id.descriptionlink);
         linklink = (TextView) findViewById(R.id.linklink);
@@ -279,6 +299,7 @@ public class CreatePostActivity extends AppCompatActivity {
                 postbutton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                         if (groupid != null && groupname != null)
                             compressImages();
                         else
@@ -519,6 +540,25 @@ public class CreatePostActivity extends AppCompatActivity {
         if (edittextdescription.getText().toString().trim().length() != 0) {
             edittextdestext = edittextdescription.getText().toString().trim();
         }
+
+        JSONObject jsonObjecttags = new JSONObject();
+        JSONObject jsonObjectuid = new JSONObject();
+        if (!edittextdescription.getMentionSpans().isEmpty()) {
+            try {
+
+                for (int i = 0; i < edittextdescription.getMentionSpans().size(); i++) {
+                    jsonObjecttags.put("" + i, edittextdescription.getMentionSpans().get(i).getDisplayString());
+                    jsonObjectuid.put("" + i, edittextdescription.getMentionSpans().get(i).getUid());
+                }
+
+                Log.d(TAG, "uploadPostShare: " + jsonObjecttags);
+                Log.d(TAG, "uploadPostShare: " + jsonObjectuid);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+
         Intent intent = new Intent();
         intent.putExtra("description", edittextdestext);
         intent.putExtra("link", link);
@@ -530,7 +570,8 @@ public class CreatePostActivity extends AppCompatActivity {
         intent.putExtra("image3", image3url);
         intent.putExtra("image4", image4url);
         intent.putExtra("linkimage", linkimage);
-
+        intent.putExtra("tags", jsonObjecttags.toString());
+        intent.putExtra("tagsuid", jsonObjectuid.toString());
 
         intent.putExtra("type", type);
         setResult(RESULT_OK, intent);
@@ -572,6 +613,23 @@ public class CreatePostActivity extends AppCompatActivity {
         if (edittextdescription.getText().toString().trim().length() != 0) {
             edittextdestext = edittextdescription.getText().toString().trim();
         }
+        JSONObject jsonObjecttags = new JSONObject();
+        JSONObject jsonObjectuid = new JSONObject();
+        if (!edittextdescription.getMentionSpans().isEmpty()) {
+            try {
+
+                for (int i = 0; i < edittextdescription.getMentionSpans().size(); i++) {
+                    jsonObjecttags.put("" + i, edittextdescription.getMentionSpans().get(i).getDisplayString());
+                    jsonObjectuid.put("" + i, edittextdescription.getMentionSpans().get(i).getUid());
+                }
+
+                Log.d(TAG, "uploadPostShare: " + jsonObjecttags);
+                Log.d(TAG, "uploadPostShare: " + jsonObjectuid);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         AndroidNetworking.post("https://www.reweyou.in/google/create_threads.php")
                 .addBodyParameter("groupname", groupname)
                 .addBodyParameter("groupid", groupid)
@@ -587,6 +645,8 @@ public class CreatePostActivity extends AppCompatActivity {
                 .addBodyParameter("type", type)
                 .addBodyParameter("uid", sessionManager.getUID())
                 .addBodyParameter("name", sessionManager.getUsername())
+                .addBodyParameter("tags", jsonObjecttags.toString())
+                .addBodyParameter("tagsuid", jsonObjectuid.toString())
                 .addBodyParameter("profilepic", sessionManager.getProfilePicture())
                 .addBodyParameter("authtoken", sessionManager.getAuthToken())
                 .setTag("uploadpost")
@@ -1234,5 +1294,33 @@ public class CreatePostActivity extends AppCompatActivity {
 
     public void onimageselected(String s) {
         handleImage(s);
+    }
+
+    @Override
+    public List<String> onQueryReceived(@NonNull QueryToken queryToken) {
+       /* List<String> buckets = Collections.singletonList(BUCKET);
+        List<City> suggestions = cities.getSuggestions(queryToken);
+
+        List<TopGroupMemberModel> queue = Paper.book().read("member");
+
+        SuggestionsResult result = new SuggestionsResult(queryToken, suggestions);
+        editor.onReceiveSuggestionsResult(result, BUCKET);
+        return buckets;*/
+
+        Paper.init(CreatePostActivity.this);
+        List<TopGroupMemberModel> suggestio = Paper.book().read("member");
+        Log.d(TAG, "onQueryReceived: " + queryToken.getTokenString());
+        for (int i = suggestio.size() - 1; i >= 0; i--) {
+            if (!suggestio.get(i).getUsername().toLowerCase().contains(queryToken.getTokenString().replace("@", "").toLowerCase())) {
+                suggestio.remove(i);
+            }
+        }
+        SuggestionsResult result = new SuggestionsResult(queryToken, suggestio);
+        edittextdescription.onReceiveSuggestionsResult(result, BUCKET);
+
+
+        // Lets the widget know which sources to expect results from based
+        // on a string key (only one source here)
+        return Arrays.asList(BUCKET);
     }
 }

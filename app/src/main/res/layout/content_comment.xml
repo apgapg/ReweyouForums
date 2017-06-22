@@ -39,75 +39,34 @@
 
         android:visibility="gone" />
 
-    <RelativeLayout
+
+    <com.linkedin.android.spyglass.ui.RichEditorViewInvert
+        android:id="@+id/edittext"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:layout_alignParentBottom="true"
-        android:background="#fff"
-        android:minHeight="48dp"
-        android:orientation="horizontal">
+        android:inputType="textMultiLine"
+        android:maxLines="10"
+        android:minHeight="150dp" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.7dp"
+    <ImageView
+        android:id="@+id/send"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="center"
+        android:layout_marginRight="6dp"
+        android:padding="4dp"
+        app:srcCompat="@drawable/button_send_disable" />
 
-            android:background="#757575" />
-
-        <TextView
-            android:id="@+id/t2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:layout_marginTop="8dp"
-            android:text="Reply to "
-            android:textColor="#424242"
-            android:textSize="12dp"
-            android:textStyle="bold"
-            android:visibility="gone" />
-
-        <EditText
-            android:id="@+id/edittext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/t2"
-            android:layout_marginRight="44dp"
-            android:background="@color/transparent"
-            android:hint="Add a comment..."
-
-            android:inputType="textMultiLine"
-            android:maxLines="10"
-            android:minHeight="48dp"
-            android:paddingBottom="8dp"
-            android:paddingLeft="12dp"
-            android:paddingRight="8dp"
-            android:paddingTop="8dp"
-
-            android:textSize="14dp" />
-
-        <ImageView
-            android:id="@+id/send"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/t2"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center"
-            android:layout_marginRight="8dp"
-            android:padding="4dp"
-            app:srcCompat="@drawable/button_send_disable" />
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/t2"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="8dp"
-            android:padding="8dp"
-            android:visibility="gone" />
-
-
-    </RelativeLayout>
-
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="6dp"
+        android:padding="8dp"
+        android:visibility="gone" />
 </RelativeLayout>

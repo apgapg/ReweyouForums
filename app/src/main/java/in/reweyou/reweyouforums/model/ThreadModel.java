@@ -29,6 +29,11 @@ public class ThreadModel {
     private String linkdesc = "";
     private String linkhead = "";
     private String status = "false";
+    private String tags = "";
+
+    public String getTags() {
+        return tags;
+    }
 
     public String getStatus() {
         return status;

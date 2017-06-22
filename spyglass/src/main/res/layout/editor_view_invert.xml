@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="0dp">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.7dp"
+        android:layout_above="@+id/t2"
+        android:background="#757575" />
+
+    <TextView
+        android:id="@+id/t2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/text_editor"
+        android:layout_marginLeft="12dp"
+        android:background="#fff"
+        android:gravity="bottom"
+        android:paddingTop="4dp"
+        android:text="Reply to "
+        android:textColor="#424242"
+        android:textSize="12dp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <ListView
+        android:id="@+id/suggestions_list"
+        android:layout_width="match_parent"
+        android:layout_height="108dp"
+        android:layout_above="@+id/text_editor"
+        android:background="@drawable/white_vorner"
+        android:padding="2dp"
+        android:visibility="gone" />
+
+    <com.linkedin.android.spyglass.ui.MentionsEditText
+        android:id="@+id/text_editor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:background="#ffffff"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:inputType="textCapSentences|textMultiLine|textAutoCorrect"
+        android:minHeight="48dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="44dp"
+        android:paddingTop="10dp"
+        android:scrollbars="vertical"
+        android:textSize="14dp" />
+
+    <TextView
+        android:id="@+id/text_counter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/text_editor"
+        android:layout_alignEnd="@+id/text_editor"
+        android:layout_alignRight="@+id/text_editor"
+        android:layout_marginBottom="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+
+</merge>

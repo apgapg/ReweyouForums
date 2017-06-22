@@ -28,7 +28,9 @@ import android.widget.Toast;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.StringRequestListener;
+import com.google.gson.Gson;
 import com.kbeanie.multipicker.api.ImagePicker;
 import com.kbeanie.multipicker.api.Picker;
 import com.kbeanie.multipicker.api.callbacks.ImagePickerCallback;
@@ -36,6 +38,10 @@ import com.kbeanie.multipicker.api.entity.ChosenImage;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import in.reweyou.reweyouforums.classes.UserSessionManager;
@@ -44,7 +50,10 @@ import in.reweyou.reweyouforums.fragment.ExploreFragment;
 import in.reweyou.reweyouforums.fragment.MainThreadsFragment;
 import in.reweyou.reweyouforums.fragment.UserInfoFragment;
 import in.reweyou.reweyouforums.fragment.YourGroupsFragment;
+import in.reweyou.reweyouforums.model.TopGroupMemberModel;
+import in.reweyou.reweyouforums.utils.NetworkHandler;
 import in.reweyou.reweyouforums.utils.Utils;
+import io.paperdb.Paper;
 
 public class ForumMainActivity extends AppCompatActivity {
 
@@ -108,8 +117,7 @@ public class ForumMainActivity extends AppCompatActivity {
                     tabnametoolbar.setText("Feeds");
                 else if (position == 1) {
                     tabnametoolbar.setText("Explore Groups");
-                }
-                else if (position == 2)
+                } else if (position == 2)
                     tabnametoolbar.setText("Your Groups");
                 else if (position == 3)
                     tabnametoolbar.setText("Create Group");
@@ -167,6 +175,57 @@ public class ForumMainActivity extends AppCompatActivity {
             }
         }, 7000);
 
+
+        getMembersData();
+
+    }
+
+    private void getMembersData() {
+
+
+        AndroidNetworking.post("https://www.reweyou.in/google/tag_user.php")
+                .addBodyParameter("uid", userSessionManager.getUID())
+                .addBodyParameter("authtoken", userSessionManager.getAuthToken())
+                .setTag("memberdata")
+
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONArray(new JSONArrayRequestListener() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        if (new NetworkHandler().isActivityAlive(TAG, ForumMainActivity.this, response)) {
+
+                            Gson gson = new Gson();
+                            List<TopGroupMemberModel> list = new ArrayList<>();
+
+                            try {
+                                for (int i = 0; i < response.length(); i++) {
+                                    JSONObject json = response.getJSONObject(i);
+                                    TopGroupMemberModel coModel = gson.fromJson(json.toString(), TopGroupMemberModel.class);
+                                    list.add(coModel);
+
+                                }
+
+                                Paper.init(ForumMainActivity.this);
+                                Paper.book().write("member", list);
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        if (new NetworkHandler().isActivityAlive(TAG, ForumMainActivity.this, anError)) {
+
+
+                            Log.d(TAG, "onError: " + anError);
+                        }
+                    }
+                });
     }
 
     private void getnoticount() {

@@ -1,1 +1,1 @@
-include ':app', ':multipicker'
+include ':app',':spyglass'
