@@ -415,23 +415,26 @@ public class ForumMainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        if (doubleBackToExitPressedOnce) {
+        if (viewPager.getCurrentItem() != 0) {
+            viewPager.setCurrentItem(0);
+        } else {
+            if (doubleBackToExitPressedOnce) {
 
-            finishAffinity();
-        }
-        if (!doubleBackToExitPressedOnce)
-            Toast.makeText(this, "Press again to exit.", Toast.LENGTH_SHORT).show();
-
-        this.doubleBackToExitPressedOnce = true;
-
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                doubleBackToExitPressedOnce = false;
+                finishAffinity();
             }
-        }, 3000);
+            if (!doubleBackToExitPressedOnce)
+                Toast.makeText(this, "Press again to exit.", Toast.LENGTH_SHORT).show();
 
+            this.doubleBackToExitPressedOnce = true;
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce = false;
+                }
+            }, 3000);
+        }
     }
 
     public void startCreateActivity() {
