@@ -202,7 +202,8 @@ public class ForumMainActivity extends AppCompatActivity {
                                 for (int i = 0; i < response.length(); i++) {
                                     JSONObject json = response.getJSONObject(i);
                                     TopGroupMemberModel coModel = gson.fromJson(json.toString(), TopGroupMemberModel.class);
-                                    list.add(coModel);
+                                    if (!coModel.getUid().equals(userSessionManager.getUID()))
+                                        list.add(coModel);
 
                                 }
 

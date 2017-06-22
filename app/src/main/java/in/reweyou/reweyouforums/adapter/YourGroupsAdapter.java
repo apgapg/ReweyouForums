@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -69,6 +70,12 @@ public class YourGroupsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         messagelist.addAll(list);
         Log.d("dhwh", "add: list" + list.size());
         notifyDataSetChanged();
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                fragmentcontext.scrolltotop();
+            }
+        });
     }
 
     private class YourGroupsViewHolder extends RecyclerView.ViewHolder {

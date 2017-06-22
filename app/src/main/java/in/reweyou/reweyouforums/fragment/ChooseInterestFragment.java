@@ -282,4 +282,12 @@ public class ChooseInterestFragment extends Fragment {
         if (selectlist.size() == 0)
             updateUIproceedbtn(false);
     }
+
+    public void scrolltotop() {
+        try {
+            recyclerview.scrollToPosition(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

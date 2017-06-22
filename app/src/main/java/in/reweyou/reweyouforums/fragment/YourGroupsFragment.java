@@ -398,5 +398,12 @@ public class YourGroupsFragment extends Fragment {
 
     }
 
+    public void scrolltotop() {
+        try {
+            recyclerViewYourGroups.scrollToPosition(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

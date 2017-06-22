@@ -1,6 +1,7 @@
 package in.reweyou.reweyouforums.adapter;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -89,6 +90,12 @@ public class ChooseInterestAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         messagelist.addAll(list);
         Log.d("dhwh", "add: list" + list.size());
         notifyDataSetChanged();
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                fragmentcontext.scrolltotop();
+            }
+        });
     }
 
     private class YourGroupsViewHolder extends RecyclerView.ViewHolder {
@@ -117,4 +124,6 @@ public class ChooseInterestAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         }
     }
+
+
 }

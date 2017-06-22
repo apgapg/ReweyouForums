@@ -380,4 +380,12 @@ public class ExploreFragment extends Fragment {
 
 
     }
+
+    public void scrolltotop() {
+        try {
+            recyclerViewExplore.scrollToPosition(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

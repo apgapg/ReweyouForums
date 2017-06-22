@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,6 +69,13 @@ public class ForumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         messagelist.clear();
         messagelist.addAll(list);
         notifyDataSetChanged();
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+
+                fragmentcontext.scrolltotop();
+            }
+        });
     }
 
     private class ForumViewHolder extends RecyclerView.ViewHolder {
