@@ -1,10 +1,13 @@
 package in.reweyou.reweyouforums;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,16 +15,20 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
@@ -32,10 +39,13 @@ import java.util.Random;
 
 import app.minimize.com.seek_bar_compat.SeekBarCompat;
 import in.reweyou.reweyouforums.customView.CircularImageView;
+import in.reweyou.reweyouforums.customView.DraggableEditText;
+import in.reweyou.reweyouforums.customView.DraggableImageView;
 import in.reweyou.reweyouforums.freedrawview.FreeDrawView;
 import in.reweyou.reweyouforums.freedrawview.PathDrawnListener;
 import in.reweyou.reweyouforums.freedrawview.PathRedoUndoCountChangeListener;
 import in.reweyou.reweyouforums.freedrawview.ResizeBehaviour;
+import in.reweyou.reweyouforums.utils.Utils;
 
 public class EditImageActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -48,6 +58,14 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
     private String fromimageview;
 
     private Toolbar toolbar;
+    private RelativeLayout drawcontainer;
+    private RelativeLayout emojicustomizecontainer;
+    private SeekBarCompat seekbar_emoji_scale;
+    private SeekBarCompat seekbar_emoji_rotate;
+    private View tempview;
+    private ImageView deleteemoji;
+    private TextView okbtn;
+    private boolean iskeyboardOpen;
 
 
     public Bitmap mergeImages(Bitmap bmp1, Bitmap bmp2) {
@@ -76,34 +94,13 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
             }
         });
 
+        drawcontainer = (RelativeLayout) findViewById(R.id.drawcontainer);
         imageuri = getIntent().getStringExtra("uri");
         fromimageview = getIntent().getStringExtra("from");
 
-
-        CircularImageView c1 = (CircularImageView) findViewById(R.id.c1);
-        CircularImageView c2 = (CircularImageView) findViewById(R.id.c2);
-        CircularImageView c3 = (CircularImageView) findViewById(R.id.c3);
-        CircularImageView c4 = (CircularImageView) findViewById(R.id.c4);
-        CircularImageView c5 = (CircularImageView) findViewById(R.id.c5);
-        CircularImageView c6 = (CircularImageView) findViewById(R.id.c6);
-        CircularImageView c7 = (CircularImageView) findViewById(R.id.c7);
-        CircularImageView c8 = (CircularImageView) findViewById(R.id.c8);
-        CircularImageView c9 = (CircularImageView) findViewById(R.id.c9);
-        CircularImageView c10 = (CircularImageView) findViewById(R.id.c10);
-        CircularImageView c11 = (CircularImageView) findViewById(R.id.c11);
-
-        c1.setOnClickListener(this);
-        c2.setOnClickListener(this);
-        c3.setOnClickListener(this);
-        c4.setOnClickListener(this);
-        c5.setOnClickListener(this);
-        c6.setOnClickListener(this);
-        c7.setOnClickListener(this);
-        c8.setOnClickListener(this);
-        c9.setOnClickListener(this);
-        c10.setOnClickListener(this);
-        c11.setOnClickListener(this);
-
+        initColorsBar();
+        initEmojiBar();
+        initTextviewBar();
         demoview = (ImageView) findViewById(R.id.image);
 
         SeekBarCompat seekBarCompat = (SeekBarCompat) findViewById(R.id.materialSeekBar);
@@ -149,6 +146,7 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
         mSignatureView = (FreeDrawView) findViewById(R.id.your_id);
 
         // Setup the View
+        mSignatureView.addcontainerview(emojicustomizecontainer);
         mSignatureView.setPaintColor(Color.BLACK);
         mSignatureView.setPaintWidthPx(12);
         mSignatureView.setPaintWidthDp(6);
@@ -181,6 +179,14 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
             }
         });
 
+        /*mSignatureView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                emojicustomizecontainer.setVisibility(View.INVISIBLE);
+                return false;
+
+            }
+        });*/
         // This will take a screenshot of the current drawn content of the view
 /*
         mSignatureView.getDrawScreenshot(new FreeDrawView.DrawCreatorListener() {
@@ -213,6 +219,9 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
                 params.width = resource.getIntrinsicWidth();
                 mSignatureView.setLayoutParams(params);
 
+                RelativeLayout.LayoutParams param = new RelativeLayout.LayoutParams(resource.getIntrinsicWidth(), resource.getIntrinsicHeight());
+                param.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+                drawcontainer.setLayoutParams(param);
                 return false;
             }
         }).into(demoview);
@@ -231,7 +240,190 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
             }
         });
 
+        keyboardListener();
 
+    }
+
+
+    private void initTextviewBar() {
+        TextView textTextview = (TextView) findViewById(R.id.text);
+        okbtn = (TextView) findViewById(R.id.okbuttontext);
+        okbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View view = EditImageActivity.this.getCurrentFocus();
+                if (view != null) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+                view.setEnabled(false);
+                view.setEnabled(true);
+            }
+        });
+        textTextview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DraggableEditText edittext = new DraggableEditText(EditImageActivity.this);
+                edittext.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                            tempview = v;
+                            emojicustomizecontainer.setVisibility(View.VISIBLE);
+                            seekbar_emoji_scale.setProgress((int) ((v.getScaleX() - 0.5) / 0.015));
+                            seekbar_emoji_rotate.setProgress((int) ((100.0 / 360.0) * v.getRotation()));
+
+                        }
+
+                        return false;
+                    }
+                });
+                edittext.setText("");
+                edittext.setTextSize(20);
+                edittext.setTextColor(getResources().getColor(R.color.white));
+                edittext.setTypeface(null, Typeface.BOLD);
+                edittext.setMinimumHeight(Utils.convertpxFromDp(32));
+                edittext.setMinimumWidth(Utils.convertpxFromDp(56));
+                edittext.setGravity(Gravity.CENTER);
+                int paddingtopbottom = Utils.convertpxFromDp(4);
+                int paddingleftright = Utils.convertpxFromDp(8);
+                edittext.setPadding(paddingleftright, paddingtopbottom, paddingleftright, paddingtopbottom);
+                edittext.setBackground(getResources().getDrawable(R.drawable.solid_pink));
+                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+
+                drawcontainer.addView(edittext, params);
+
+
+            }
+        });
+    }
+
+    private void keyboardListener() {
+        this.findViewById(R.id.rootlayout).getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+                EditImageActivity.this.findViewById(R.id.rootlayout).getWindowVisibleDisplayFrame(r);
+                int heightDiff = EditImageActivity.this.findViewById(R.id.rootlayout).getRootView().getHeight() - (r.bottom - r.top);
+
+                // int heightDiff = findViewById(R.id.main_content).getRootView().getHeight() - findViewById(R.id.main_content).getHeight();
+
+                //Log.d(TAG, "onGlobalLayout: height"+heightDiff+"   "+findViewById(R.id.main_content).getRootView().getHeight()+    "    "+(r.bottom - r.top));
+                if (heightDiff > Utils.convertpxFromDp(150)) { // if more than 100 pixels, its probably a keyboard...
+                    //ok now we know the keyboard is up...
+                    iskeyboardOpen = true;
+                    findViewById(R.id.bottomcont).setVisibility(View.GONE);
+                    findViewById(R.id.topcont).setVisibility(View.GONE);
+                    okbtn.setVisibility(View.VISIBLE);
+                } else {
+                    iskeyboardOpen = false;
+                    //ok now we know the keyboard is down...
+                    findViewById(R.id.bottomcont).setVisibility(View.VISIBLE);
+                    findViewById(R.id.topcont).setVisibility(View.VISIBLE);
+                    okbtn.setVisibility(View.GONE);
+
+
+                }
+            }
+
+        });
+    }
+
+
+    private void initEmojiBar() {
+        CircularImageView e1 = (CircularImageView) findViewById(R.id.e1);
+        CircularImageView e2 = (CircularImageView) findViewById(R.id.e2);
+        CircularImageView e3 = (CircularImageView) findViewById(R.id.e3);
+        CircularImageView e4 = (CircularImageView) findViewById(R.id.e4);
+        CircularImageView e5 = (CircularImageView) findViewById(R.id.e5);
+        e1.setOnClickListener(this);
+        e2.setOnClickListener(this);
+        e3.setOnClickListener(this);
+        e4.setOnClickListener(this);
+        e5.setOnClickListener(this);
+
+        emojicustomizecontainer = (RelativeLayout) findViewById(R.id.emojicustomizecontainer);
+        seekbar_emoji_scale = (SeekBarCompat) findViewById(R.id.seekbar_scale);
+        seekbar_emoji_rotate = (SeekBarCompat) findViewById(R.id.seekbar_rotate);
+
+        seekbar_emoji_scale.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    tempview.setScaleX((float) ((progress * 0.015) + 0.50));
+                    tempview.setScaleY((float) ((progress * 0.015) + 0.50));
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        seekbar_emoji_rotate.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser)
+                    tempview.setRotation((float) (3.6 * progress));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        deleteemoji = (ImageView) findViewById(R.id.deleteemoji);
+        deleteemoji.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawcontainer.removeView(tempview);
+                emojicustomizecontainer.setVisibility(View.INVISIBLE);
+            }
+        });
+
+    }
+
+    private void initColorsBar() {
+
+        CircularImageView c1 = (CircularImageView) findViewById(R.id.c1);
+        CircularImageView c2 = (CircularImageView) findViewById(R.id.c2);
+        CircularImageView c3 = (CircularImageView) findViewById(R.id.c3);
+        CircularImageView c4 = (CircularImageView) findViewById(R.id.c4);
+        CircularImageView c5 = (CircularImageView) findViewById(R.id.c5);
+        CircularImageView c6 = (CircularImageView) findViewById(R.id.c6);
+        CircularImageView c7 = (CircularImageView) findViewById(R.id.c7);
+        CircularImageView c8 = (CircularImageView) findViewById(R.id.c8);
+        CircularImageView c9 = (CircularImageView) findViewById(R.id.c9);
+        CircularImageView c10 = (CircularImageView) findViewById(R.id.c10);
+        CircularImageView c11 = (CircularImageView) findViewById(R.id.c11);
+        CircularImageView c12 = (CircularImageView) findViewById(R.id.c12);
+        CircularImageView c13 = (CircularImageView) findViewById(R.id.c13);
+
+        c1.setOnClickListener(this);
+        c2.setOnClickListener(this);
+        c3.setOnClickListener(this);
+        c4.setOnClickListener(this);
+        c5.setOnClickListener(this);
+        c6.setOnClickListener(this);
+        c7.setOnClickListener(this);
+        c8.setOnClickListener(this);
+        c9.setOnClickListener(this);
+        c10.setOnClickListener(this);
+        c11.setOnClickListener(this);
+        c12.setOnClickListener(this);
+        c13.setOnClickListener(this);
     }
 
     private void takeScreenshot(Bitmap b1, Bitmap b2) {
@@ -322,9 +514,93 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
                 mSignatureView.setPaintColor(getResources().getColor(R.color.c11));
 
                 break;
+            case R.id.c12:
+                mSignatureView.setPaintColor(getResources().getColor(R.color.c12));
+
+                break;
+            case R.id.c13:
+                mSignatureView.setPaintColor(getResources().getColor(R.color.c13));
+
+                break;
+
+
+            case R.id.e1:
+                emojicustomizecontainer.setVisibility(View.VISIBLE);
+
+                addemoji(1);
+                break;
+            case R.id.e2:
+                emojicustomizecontainer.setVisibility(View.VISIBLE);
+
+                addemoji(2);
+                break;
+            case R.id.e3:
+                emojicustomizecontainer.setVisibility(View.VISIBLE);
+
+                addemoji(3);
+                break;
+            case R.id.e4:
+                emojicustomizecontainer.setVisibility(View.VISIBLE);
+
+                addemoji(4);
+                break;
+            case R.id.e5:
+                emojicustomizecontainer.setVisibility(View.VISIBLE);
+
+                addemoji(5);
+                break;
         }
 
 
+    }
+
+    private void addemoji(int i) {
+        seekbar_emoji_scale.setProgress(33);
+        seekbar_emoji_rotate.setProgress(0);
+        DraggableImageView draggableImageView = new DraggableImageView(EditImageActivity.this);
+        draggableImageView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    showCustomizeEmojiBar(v);
+                    EditImageActivity.this.tempview = v;
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+
+                }
+                return false;
+            }
+        });
+        EditImageActivity.this.tempview = draggableImageView;
+
+        switch (i) {
+            case 1:
+                draggableImageView.setImageResource(R.drawable.emoji_laugh);
+                break;
+            case 2:
+                draggableImageView.setImageResource(R.drawable.emoji_love);
+                break;
+            case 3:
+                draggableImageView.setImageResource(R.drawable.emoji_cry);
+                break;
+            case 4:
+                draggableImageView.setImageResource(R.drawable.emoji_sad);
+                break;
+            case 5:
+                draggableImageView.setImageResource(R.drawable.emoji_surprise);
+                break;
+        }
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        drawcontainer.addView(draggableImageView, params);
+
+    }
+
+    private void showCustomizeEmojiBar(View v) {
+        Log.d(TAG, "showCustomizeEmojiBar: ewfnwejfnwejfwfw");
+        emojicustomizecontainer.setVisibility(View.VISIBLE);
+        seekbar_emoji_scale.setProgress((int) ((v.getScaleX() - 0.5) / 0.015));
+        seekbar_emoji_rotate.setProgress((int) ((100.0 / 360.0) * v.getRotation()));
+        // seekbar_emoji_scale.setProgress(v.getScaleX());
     }
 
     @Override
@@ -341,8 +617,7 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
 
         if (id == R.id.action_done) {
             // do something here
-            if (mSignatureView.isEdited()) {
-                Bitmap mBitmap = Bitmap.createBitmap(
+              /*  Bitmap mBitmap = Bitmap.createBitmap(
                         mSignatureView.getWidth(), mSignatureView.getHeight(), Bitmap.Config.ARGB_8888);
                 Canvas mCanvas = new Canvas(mBitmap);
                 mSignatureView.draw(mCanvas);
@@ -350,15 +625,65 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
 
                 takeScreenshot(((GlideBitmapDrawable) demoview.getDrawable()).getBitmap(), mBitmap);
 
+*/
+            takeScreenshot(loadBitmapFromView(drawcontainer, drawcontainer.getWidth(), drawcontainer.getHeight()));
 
-            } else finish();
         }
         return super.onOptionsItemSelected(item);
     }
 
+
+    public Bitmap loadBitmapFromView(View v, int width, int height) {
+        Bitmap b = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(b);
+        v.invalidate();
+        v.draw(c);
+        return b;
+    }
+
+    private void takeScreenshot(Bitmap bitmap) {
+
+        if (!iskeyboardOpen) {
+            try {
+
+                File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "Pictures/ReweyouForums");
+
+                if (!mediaStorageDir.exists()) {
+                    if (!mediaStorageDir.mkdirs()) {
+                        Log.d("Reweyou", "failed to create directory");
+                    }
+                }
+                Random random = new Random();
+                int m = random.nextInt(999999 - 100000) + 100000;
+
+                String mPath = mediaStorageDir.toString() + "/" + m + ".jpg";
+                File imageFile = new File(mPath);
+                Uri uri = Uri.fromFile(imageFile);
+
+                FileOutputStream outputStream = new FileOutputStream(imageFile);
+
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                outputStream.flush();
+                outputStream.close();
+
+                Intent i = new Intent();
+                i.putExtra("uri", uri.toString());
+                i.putExtra("from", fromimageview);
+                setResult(RESULT_OK, i);
+                finish();
+
+                if (BuildConfig.DEBUG)
+                    MediaScannerConnection.scanFile(EditImageActivity.this, new String[]{mPath}, new String[]{"image/jpeg"}, null);
+
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     @Override
     public void onBackPressed() {
-        if (mSignatureView.isEdited()) {
+        if (!iskeyboardOpen) {
             AlertDialogBox alertDialogBox = new AlertDialogBox(EditImageActivity.this, "Discard Changes?", "Your changes would be lost! Proceed back?", "No", "Yes") {
                 @Override
                 public void onNegativeButtonClick(DialogInterface dialog) {
@@ -372,6 +697,21 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
                 }
             };
             alertDialogBox.show();
-        } else finish();
+
+        } else {
+
+            View view = EditImageActivity.this.getCurrentFocus();
+            if (view != null) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+            if (((DraggableEditText) tempview).getText().toString().trim().length() == 0) {
+                emojicustomizecontainer.removeView(tempview);
+                tempview.setEnabled(false);
+                tempview.setEnabled(true);
+            }
+
+        }
     }
+
 }

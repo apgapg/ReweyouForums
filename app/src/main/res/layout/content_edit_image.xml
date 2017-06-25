@@ -5,31 +5,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000"
+
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="in.reweyou.reweyouforums.EditImageActivity"
     tools:showIn="@layout/activity_edit_image">
 
 
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#56ffffff" />
+    <RelativeLayout
+        android:id="@+id/drawcontainer"
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#56ffffff"
+            android:scaleType="center" />
 
 
-    <in.reweyou.reweyouforums.freedrawview.FreeDrawView
-        android:id="@+id/your_id"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:background="@color/transparent"
+        <in.reweyou.reweyouforums.freedrawview.FreeDrawView
+            android:id="@+id/your_id"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:background="@color/transparent"
 
-        app:paintAlpha="255"
-        app:paintColor="@color/black"
-        app:paintWidth="4dp"
-        app:resizeBehaviour="crop" />
+            app:paintAlpha="255"
+            app:paintColor="@color/black"
+            app:paintWidth="4dp"
+            app:resizeBehaviour="crop" />
+    </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/topcont"
         android:layout_width="match_parent"
         android:layout_height="44dp"
 
@@ -95,18 +106,191 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/emojicustomizecontainer"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+
+        android:background="#000"
+
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/s1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:paddingBottom="2dp"
+                android:text=" Scale "
+                android:textColor="#eeffffff"
+                android:textSize="12dp" />
+
+            <app.minimize.com.seek_bar_compat.SeekBarCompat
+                android:id="@+id/seekbar_scale"
+                android:layout_width="150dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                app:progressBackgroundColor="#DDf4f4f4"
+                app:progressColor="#DDf4f4f4"
+                app:thumbAlpha="1.0"
+                app:thumbColor="#FFF" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/s2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/s1"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+
+                android:paddingBottom="2dp"
+                android:text="Rotate"
+                android:textColor="#eeffffff"
+                android:textSize="12dp" />
+
+            <app.minimize.com.seek_bar_compat.SeekBarCompat
+                android:id="@+id/seekbar_rotate"
+                android:layout_width="150dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                app:progressBackgroundColor="#DDf4f4f4"
+                app:progressColor="#DDf4f4f4"
+                app:thumbAlpha="1.0"
+                app:thumbColor="#FFF" />
+
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/deleteemoji"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="12dp"
+            android:background="@drawable/ripple_effect_white"
+            android:padding="2dp"
+            app:srcCompat="@drawable/ic_delete_black_24dp" />
+
+    </RelativeLayout>
+
 
     <RelativeLayout
+        android:id="@+id/bottomcont"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="112dp"
         android:layout_alignParentBottom="true"
         android:background="#70000000">
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/ripple_effect_white_rec"
+            android:text="Aa"
+            android:textColor="#fff"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_centerHorizontal="true">
+
+            <in.reweyou.reweyouforums.customView.CircularImageView
+                android:id="@+id/e1"
+                android:layout_width="@dimen/color_pen"
+                android:layout_height="@dimen/color_pen"
+                android:layout_gravity="center"
+
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:background="@drawable/ripple_effect_white"
+                android:padding="4dp"
+                android:src="@drawable/emoji_laugh"
+                app:myborderWidth="0dp" />
+
+            <in.reweyou.reweyouforums.customView.CircularImageView
+                android:id="@+id/e2"
+                android:layout_width="@dimen/color_pen"
+                android:layout_height="@dimen/color_pen"
+                android:layout_gravity="center"
+
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:background="@drawable/ripple_effect_white"
+                android:padding="4dp"
+                android:src="@drawable/emoji_love"
+                app:myborderWidth="0dp" />
+
+            <in.reweyou.reweyouforums.customView.CircularImageView
+                android:id="@+id/e3"
+                android:layout_width="@dimen/color_pen"
+                android:layout_height="@dimen/color_pen"
+                android:layout_gravity="center"
+
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:background="@drawable/ripple_effect_white"
+                android:padding="4dp"
+                android:src="@drawable/emoji_cry"
+                app:myborderWidth="0dp" />
+
+            <in.reweyou.reweyouforums.customView.CircularImageView
+                android:id="@+id/e4"
+                android:layout_width="@dimen/color_pen"
+                android:layout_height="@dimen/color_pen"
+                android:layout_gravity="center"
+
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:background="@drawable/ripple_effect_white"
+                android:padding="4dp"
+                android:src="@drawable/emoji_sad"
+                app:myborderWidth="0dp" />
+
+            <in.reweyou.reweyouforums.customView.CircularImageView
+                android:id="@+id/e5"
+                android:layout_width="@dimen/color_pen"
+                android:layout_height="@dimen/color_pen"
+                android:layout_gravity="center"
+
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:background="@drawable/ripple_effect_white"
+                android:padding="4dp"
+                android:src="@drawable/emoji_surprise"
+                app:myborderWidth="0dp" />
+
+
+        </LinearLayout>
+
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/ss"
-            android:layout_marginBottom="9dp"
+            android:layout_marginBottom="5dp"
             android:layout_toLeftOf="@+id/materialSeekBar"
             android:text="Opacity"
             android:textColor="#eeffffff"
@@ -115,7 +299,7 @@
         <app.minimize.com.seek_bar_compat.SeekBarCompat
             android:id="@+id/materialSeekBar"
             android:layout_width="150dp"
-            android:layout_height="32dp"
+            android:layout_height="24dp"
             android:layout_above="@+id/ss"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
@@ -129,7 +313,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/ss"
-            android:layout_marginBottom="9dp"
+            android:layout_marginBottom="5dp"
             android:layout_toRightOf="@+id/materialSeekBar"
             android:text="100%"
             android:textColor="#eeffffff"
@@ -142,14 +326,14 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="8dp"
-            android:paddingLeft="4dp">
+            android:paddingLeft="4dp"
+            android:scrollbars="none">
 
             <LinearLayout
                 android:id="@+id/acb"
 
                 android:layout_width="wrap_content"
-                android:layout_height="56dp">
+                android:layout_height="44dp">
 
                 <in.reweyou.reweyouforums.customView.CircularImageView
                     android:id="@+id/c1"
@@ -285,7 +469,6 @@
                     android:layout_height="@dimen/color_pen"
 
                     android:layout_gravity="center"
-                    android:layout_marginRight="8dp"
                     android:background="@drawable/ripple_effect_white"
 
                     android:padding="4dp"
@@ -293,9 +476,54 @@
                     android:src="@color/c11"
                     app:myborderWidth="0dp" />
 
+                <in.reweyou.reweyouforums.customView.CircularImageView
+                    android:id="@+id/c12"
+                    android:layout_width="@dimen/color_pen"
+                    android:layout_height="@dimen/color_pen"
+
+                    android:layout_gravity="center"
+                    android:background="@drawable/ripple_effect_white"
+
+                    android:padding="4dp"
+
+                    android:src="@color/c12"
+                    app:myborderWidth="0dp" />
+
+                <in.reweyou.reweyouforums.customView.CircularImageView
+                    android:id="@+id/c13"
+                    android:layout_width="@dimen/color_pen"
+                    android:layout_height="@dimen/color_pen"
+
+                    android:layout_gravity="center"
+                    android:layout_marginRight="4dp"
+                    android:background="@drawable/ripple_effect_white"
+
+                    android:padding="4dp"
+
+                    android:src="@color/c13"
+                    app:myborderWidth="0dp" />
+
 
             </LinearLayout>
 
         </HorizontalScrollView>
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/okbuttontext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="56dp"
+        android:background="@drawable/grey_white_border"
+
+        android:paddingBottom="4dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="4dp"
+        android:text="OK"
+        android:textColor="#fff"
+        android:textSize="14dp"
+        android:visibility="gone" />
+
 </RelativeLayout>

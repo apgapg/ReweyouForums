@@ -46,6 +46,7 @@ import in.reweyou.reweyouforums.adapter.YourGroupsAdapter;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.model.GroupModel;
 import in.reweyou.reweyouforums.utils.NetworkHandler;
+import io.paperdb.Paper;
 
 /**
  * Created by master on 1/5/17.
@@ -266,7 +267,7 @@ public class YourGroupsFragment extends Fragment {
 
 
             adapterYourGroups.add(followlist);
-
+            Paper.book().write("yourgroups", followlist);
 
             if (followlist.size() == 0) {
                 txtgroups.setVisibility(View.VISIBLE);

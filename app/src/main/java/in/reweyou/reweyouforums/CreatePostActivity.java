@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -26,6 +27,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.webkit.URLUtil;
 import android.widget.Button;
@@ -147,6 +149,7 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
     private String fromimageview = "image1";
     //  private RichEditorView editor;
     private City.CityLoader cities;
+    private boolean shouldshowgallery = true;
 
 
     @Override
@@ -154,7 +157,7 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.content_create);
-
+        Paper.init(CreatePostActivity.this);
 
         sessionManager = new UserSessionManager(this);
 
@@ -282,7 +285,10 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 checkStoragePermissionforGallery();
             }
-        } else recyclerView.setVisibility(View.GONE);
+        } else {
+            recyclerView.setVisibility(View.GONE);
+            shouldshowgallery = false;
+        }
 
         try {
             if (getIntent().getBooleanExtra("frommain", false)) {
@@ -293,7 +299,9 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        getData();
+
+                        List<GroupModel> groupsdatalist = Paper.book().read("yourgroups");
+                        populatedata(groupsdatalist);
                     }
                 }, 200);
                 postbutton.setOnClickListener(new View.OnClickListener() {
@@ -320,7 +328,8 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
                 flowLayout.removeAllViews();
                 flowLayout.setVisibility(View.VISIBLE);
                 findViewById(R.id.selectgroup).setVisibility(View.VISIBLE);
-                getData();
+                List<GroupModel> groupsdatalist = Paper.book().read("yourgroups");
+                populatedata(groupsdatalist);
                 postbutton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -360,9 +369,46 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
 
 
             }
-
+        keyboardListener();
 
     }
+
+    private void keyboardListener() {
+
+        CreatePostActivity.this.findViewById(R.id.rootlayout).getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (CreatePostActivity.this != null) {
+                    Rect r = new Rect();
+                    CreatePostActivity.this.findViewById(R.id.rootlayout).getWindowVisibleDisplayFrame(r);
+                    int heightDiff = CreatePostActivity.this.findViewById(R.id.rootlayout).getRootView().getHeight() - (r.bottom - r.top);
+
+                    // int heightDiff = findViewById(R.id.main_content).getRootView().getHeight() - findViewById(R.id.main_content).getHeight();
+
+                    //Log.d(TAG, "onGlobalLayout: height"+heightDiff+"   "+findViewById(R.id.main_content).getRootView().getHeight()+    "    "+(r.bottom - r.top));
+                    if (heightDiff > Utils.convertpxFromDp(150)) { // if more than 100 pixels, its probably a keyboard...
+                        //ok now we know the keyboard is up...
+                        if (shouldshowgallery)
+                            recyclerView.setVisibility(View.GONE);
+
+                    } else {
+                        //ok now we know the keyboard is down...
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (shouldshowgallery)
+                                    recyclerView.setVisibility(View.VISIBLE);
+
+                            }
+                        }, 150);
+
+
+                    }
+                }
+            }
+        });
+    }
+
 
     private void checkStoragePermissionforGallery() {
         Dexter.withActivity(this)
@@ -380,6 +426,8 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
                     @Override
                     public void onPermissionDenied(PermissionDeniedResponse response) {
                         recyclerView.setVisibility(View.GONE);
+                        shouldshowgallery = false;
+
                         Toast.makeText(CreatePostActivity.this, "Storage Permission denied by user", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "onPermissionGranted: " + response.isPermanentlyDenied());
 
@@ -794,6 +842,9 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
         cd.setVisibility(View.VISIBLE);
         bottomAttachContainer.setVisibility(View.GONE);
         recyclerView.setVisibility(View.GONE);
+        shouldshowgallery = false;
+
+
         new Handler().post(new Runnable() {
             @Override
             public void run() {
@@ -1063,6 +1114,8 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
 
         if (counter == 1) {
             recyclerView.setVisibility(View.GONE);
+            shouldshowgallery = false;
+
             bottomAttachContainer.setVisibility(View.GONE);
             image1url = s;
             updateCreateTextUI(true);
@@ -1289,6 +1342,8 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
             galleryImagesAdapter.add(listOfAllImages);
         } else {
             recyclerView.setVisibility(View.GONE);
+            shouldshowgallery = false;
+
         }
     }
 

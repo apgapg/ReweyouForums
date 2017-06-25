@@ -16,6 +16,7 @@ import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,6 +55,7 @@ public class FreeDrawView extends View implements View.OnTouchListener {
     private PathDrawnListener mPathDrawnListener;
     private PathRedoUndoCountChangeListener mPathRedoUndoCountChangeListener;
     private boolean isEdited;
+    private RelativeLayout emojiview;
 
     public FreeDrawView(Context context) {
         this(context, null);
@@ -596,6 +598,7 @@ public class FreeDrawView extends View implements View.OnTouchListener {
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         isEdited = true;
+        emojiview.setVisibility(INVISIBLE);
         if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
             notifyPathStart();
         }
@@ -712,6 +715,10 @@ public class FreeDrawView extends View implements View.OnTouchListener {
             point.x *= xMultiplyFactor;
             point.y *= yMultiplyFactor;
         }
+    }
+
+    public void addcontainerview(RelativeLayout emojicustomizecontainer) {
+        this.emojiview = emojicustomizecontainer;
     }
 
     public interface DrawCreatorListener {

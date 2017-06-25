@@ -141,7 +141,6 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
         try {
             JSONObject jsonObject = new JSONObject(messagelist.get(position).getTags().replace("\\", ""));
-            Log.d(TAG, "bbd: " + position + "   " + jsonObject.toString());
             if (jsonObject.length() > 0) {
                 for (int i = 0; i < jsonObject.length(); i++) {
 
@@ -151,12 +150,11 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
         }
         holder.date.setText(messagelist.get(position).getTimestamp().replace("about ", ""));
         holder.username.setText(messagelist.get(position).getUsername());
         holder.commentnum.setText(messagelist.get(position).getComments());
-        Glide.with(fragmentContext).load(messagelist.get(position).getProfilepic()).error(R.drawable.download).into(holder.profileimage);
+        Glide.with(fragmentContext).load(messagelist.get(position).getProfilepic()).diskCacheStrategy(DiskCacheStrategy.SOURCE).error(R.drawable.download).into(holder.profileimage);
         holder.userlevel.setText(messagelist.get(position).getBadge());
         holder.groupname.setText("#" + messagelist.get(position).getGroupname());
         if (messagelist.get(position).getUid().equals(userSessionManager.getUID())) {
@@ -252,7 +250,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         linkViewHolder.link.setText(messagelist.get(position).getLink());
         linkViewHolder.link.setSelected(true);
 
-        Glide.with(mContext).load(messagelist.get(position).getLinkimage()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(linkViewHolder.linkimage);
+        Glide.with(mContext).load(messagelist.get(position).getLinkimage()).diskCacheStrategy(DiskCacheStrategy.SOURCE).skipMemoryCache(true).into(linkViewHolder.linkimage);
 
 
     }
@@ -261,35 +259,35 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
         youtubeViewHolder.linkheadline.setText(messagelist.get(position).getLinkhead());
         youtubeViewHolder.linkheadline.setSelected(true);
-        Glide.with(mContext).load(messagelist.get(position).getLinkimage()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(youtubeViewHolder.linkimage);
+        Glide.with(mContext).load(messagelist.get(position).getLinkimage()).diskCacheStrategy(DiskCacheStrategy.SOURCE).skipMemoryCache(true).into(youtubeViewHolder.linkimage);
 
 
     }
 
     private void onbindimage1(Image1ViewHolder image1ViewHolder, final int position) {
-        Glide.with(mContext).load(messagelist.get(position).getImage1()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(image1ViewHolder.image1);
+        Glide.with(mContext).load(messagelist.get(position).getImage1()).diskCacheStrategy(DiskCacheStrategy.SOURCE).skipMemoryCache(true).into(image1ViewHolder.image1);
 
     }
 
     private void onbindimage2(Image2ViewHolder image2ViewHolder, int position) {
-        Glide.with(mContext).load(messagelist.get(position).getImage1()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(image2ViewHolder.image1);
-        Glide.with(mContext).load(messagelist.get(position).getImage2()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(image2ViewHolder.image2);
+        Glide.with(mContext).load(messagelist.get(position).getImage1()).diskCacheStrategy(DiskCacheStrategy.SOURCE).skipMemoryCache(true).into(image2ViewHolder.image1);
+        Glide.with(mContext).load(messagelist.get(position).getImage2()).diskCacheStrategy(DiskCacheStrategy.SOURCE).skipMemoryCache(true).into(image2ViewHolder.image2);
 
 
     }
 
     private void onbindimage3(Image3ViewHolder image3ViewHolder, int position) {
-        Glide.with(mContext).load(messagelist.get(position).getImage1()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(image3ViewHolder.image1);
-        Glide.with(mContext).load(messagelist.get(position).getImage2()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(image3ViewHolder.image2);
-        Glide.with(mContext).load(messagelist.get(position).getImage3()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(image3ViewHolder.image3);
+        Glide.with(mContext).load(messagelist.get(position).getImage1()).diskCacheStrategy(DiskCacheStrategy.SOURCE).skipMemoryCache(true).into(image3ViewHolder.image1);
+        Glide.with(mContext).load(messagelist.get(position).getImage2()).diskCacheStrategy(DiskCacheStrategy.SOURCE).skipMemoryCache(true).into(image3ViewHolder.image2);
+        Glide.with(mContext).load(messagelist.get(position).getImage3()).diskCacheStrategy(DiskCacheStrategy.SOURCE).skipMemoryCache(true).into(image3ViewHolder.image3);
 
     }
 
     private void onbindimage4(Image4ViewHolder image4ViewHolder, int position) {
-        Glide.with(mContext).load(messagelist.get(position).getImage1()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(image4ViewHolder.image1);
-        Glide.with(mContext).load(messagelist.get(position).getImage2()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(image4ViewHolder.image2);
-        Glide.with(mContext).load(messagelist.get(position).getImage3()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(image4ViewHolder.image3);
-        Glide.with(mContext).load(messagelist.get(position).getImage4()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(image4ViewHolder.image4);
+        Glide.with(mContext).load(messagelist.get(position).getImage1()).diskCacheStrategy(DiskCacheStrategy.SOURCE).skipMemoryCache(true).into(image4ViewHolder.image1);
+        Glide.with(mContext).load(messagelist.get(position).getImage2()).diskCacheStrategy(DiskCacheStrategy.SOURCE).skipMemoryCache(true).into(image4ViewHolder.image2);
+        Glide.with(mContext).load(messagelist.get(position).getImage3()).diskCacheStrategy(DiskCacheStrategy.SOURCE).skipMemoryCache(true).into(image4ViewHolder.image3);
+        Glide.with(mContext).load(messagelist.get(position).getImage4()).diskCacheStrategy(DiskCacheStrategy.SOURCE).skipMemoryCache(true).into(image4ViewHolder.image4);
 
 
     }

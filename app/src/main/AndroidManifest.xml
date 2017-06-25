@@ -160,7 +160,8 @@
             android:name=".EditImageActivity"
             android:label="@string/title_activity_edit_image"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme2.NoActionBar.EditImage">
+            android:theme="@style/AppTheme2.NoActionBar.EditImage"
+            android:windowSoftInputMode="adjustPan">
 
         </activity>
     </application>

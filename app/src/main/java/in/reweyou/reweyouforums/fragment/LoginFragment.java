@@ -59,7 +59,6 @@ public class LoginFragment extends Fragment {
 
         TextView textView1 = (TextView) layout.findViewById(R.id.text2);
         textView1.setTypeface(type);
-
         return layout;
     }
 

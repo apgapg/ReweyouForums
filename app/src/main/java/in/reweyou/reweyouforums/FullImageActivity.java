@@ -204,7 +204,7 @@ public class FullImageActivity extends AppCompatActivity {
     }
 
     private void showimage(String i) {
-        Glide.with(FullImageActivity.this).load(i).diskCacheStrategy(DiskCacheStrategy.SOURCE).fitCenter().into(imageView);
+        Glide.with(FullImageActivity.this).load(i).diskCacheStrategy(DiskCacheStrategy.SOURCE).skipMemoryCache(true).fitCenter().into(imageView);
     }
 
     @Override

@@ -46,7 +46,7 @@ public class TopGroupMembersAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         YourGroupsViewHolder forumViewHolder = (YourGroupsViewHolder) holder;
         ((YourGroupsViewHolder) holder).username.setText(messagelist.get(position).getUsername());
-        Glide.with(mContext).load(messagelist.get(position).getImageurl()).error(R.drawable.download).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(forumViewHolder.image);
+        Glide.with(mContext).load(messagelist.get(position).getImageurl()).error(R.drawable.download).diskCacheStrategy(DiskCacheStrategy.SOURCE).skipMemoryCache(true).into(forumViewHolder.image);
 
         forumViewHolder.username.setSelected(true);
         forumViewHolder.points.setText(" - " + messagelist.get(position).getPoints() + " pts");

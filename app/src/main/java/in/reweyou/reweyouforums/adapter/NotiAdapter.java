@@ -83,13 +83,13 @@ public class NotiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 notiViewHolder.message.setText(messagelist.get(position).getNotifier() + " tagged you in a reply.");
 
                 break;
-            case "Post Tag":
+            case "Thread Tag":
                 notiViewHolder.message.setText(messagelist.get(position).getNotifier() + " tagged you in a post.");
 
                 break;
         }
         notiViewHolder.time.setText(messagelist.get(position).getTimestamp().replace("about ", ""));
-        Glide.with(context).load(messagelist.get(position).getNotifier_image()).error(R.drawable.download).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(notiViewHolder.image);
+        Glide.with(context).load(messagelist.get(position).getNotifier_image()).error(R.drawable.download).diskCacheStrategy(DiskCacheStrategy.SOURCE).skipMemoryCache(true).into(notiViewHolder.image);
         if (messagelist.get(position).getReadstatus().equals("0"))
             notiViewHolder.container.setBackgroundColor(context.getResources().getColor(R.color.red_alpha));
         else

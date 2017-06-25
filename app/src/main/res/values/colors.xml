@@ -68,7 +68,9 @@
     <color name="c8">#283593</color>
     <color name="c9">#2962FF</color>
     <color name="c10">#00B8D4</color>
-    <color name="c11">#FFF</color>
+    <color name="c11">#4E342E</color>
+    <color name="c12">#FFF</color>
+    <color name="c13">#000</color>
 
 
 </resources><!---->
