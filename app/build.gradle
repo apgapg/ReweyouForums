@@ -26,8 +26,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-           // minifyEnabled true
-           // shrinkResources true
+            // minifyEnabled true
+            // shrinkResources true
             resValue("bool", "FIREBASE_ANALYTICS_DISABLED", "true")
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
@@ -83,6 +83,7 @@ dependencies {
     compile 'com.minimize.library:seekbar-compat:0.2.5'
 
     testCompile 'junit:junit:4.12'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 }
 
 apply plugin: 'com.google.gms.google-services'

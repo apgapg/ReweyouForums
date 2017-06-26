@@ -34,6 +34,18 @@
 
     </style>
 
+    <style name="AppTheme2.NoActionBar.Transparent">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorAccent">#fff</item>
+
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
     <style name="AppTheme2.NoActionBar.EditImage">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

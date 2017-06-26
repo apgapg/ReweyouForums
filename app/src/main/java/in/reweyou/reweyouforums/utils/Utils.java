@@ -20,6 +20,7 @@ public class Utils {
     public static final String YOUTUBE_API_KEY = "AIzaSyBBnhu7Kx-4QAEmoSddzU9zFYutex-p5l4";
     public static final int RECOVERY_DIALOG_YOUTUBE_APP = 111;
     public static final int REQ_CODE_EDIT_IMAGE = 32;
+    public static final int REQ_CODE_INSERT_TEXT = 12;
 
     public static boolean isNight;
     public static int backgroundCode;

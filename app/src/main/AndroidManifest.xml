@@ -155,15 +155,19 @@
             android:name=".YoutubeActivity"
             android:label="@string/title_activity_youtube"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar.Preview"></activity>
+            android:theme="@style/AppTheme.NoActionBar.Preview" />
         <activity
             android:name=".EditImageActivity"
             android:label="@string/title_activity_edit_image"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2.NoActionBar.EditImage"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan"></activity>
+        <activity
+            android:name=".InsertTextActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme2.NoActionBar.Transparent"
 
-        </activity>
+            android:windowSoftInputMode="adjustResize"></activity>
     </application>
 
 </manifest>

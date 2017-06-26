@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,13 +13,11 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -39,8 +35,8 @@ import java.util.Random;
 
 import app.minimize.com.seek_bar_compat.SeekBarCompat;
 import in.reweyou.reweyouforums.customView.CircularImageView;
-import in.reweyou.reweyouforums.customView.DraggableEditText;
 import in.reweyou.reweyouforums.customView.DraggableImageView;
+import in.reweyou.reweyouforums.customView.DraggableTextView;
 import in.reweyou.reweyouforums.freedrawview.FreeDrawView;
 import in.reweyou.reweyouforums.freedrawview.PathDrawnListener;
 import in.reweyou.reweyouforums.freedrawview.PathRedoUndoCountChangeListener;
@@ -64,8 +60,6 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
     private SeekBarCompat seekbar_emoji_rotate;
     private View tempview;
     private ImageView deleteemoji;
-    private TextView okbtn;
-    private boolean iskeyboardOpen;
 
 
     public Bitmap mergeImages(Bitmap bmp1, Bitmap bmp2) {
@@ -179,31 +173,6 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
             }
         });
 
-        /*mSignatureView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                emojicustomizecontainer.setVisibility(View.INVISIBLE);
-                return false;
-
-            }
-        });*/
-        // This will take a screenshot of the current drawn content of the view
-/*
-        mSignatureView.getDrawScreenshot(new FreeDrawView.DrawCreatorListener() {
-            @Override
-            public void onDrawCreated(Bitmap draw) {
-                // The draw Bitmap is the drawn content of the View
-            }
-
-            @Override
-            public void onDrawCreationError() {
-                // Something went wrong creating the bitmap, should never
-                // happen unless the async task has been canceled
-            }
-        });
-*/
-
-
         Glide.with(EditImageActivity.this).load(imageuri).listener(new RequestListener<String, GlideDrawable>() {
             @Override
             public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -240,96 +209,69 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
             }
         });
 
-        keyboardListener();
 
     }
 
 
     private void initTextviewBar() {
-        TextView textTextview = (TextView) findViewById(R.id.text);
-        okbtn = (TextView) findViewById(R.id.okbuttontext);
-        okbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                View view = EditImageActivity.this.getCurrentFocus();
-                if (view != null) {
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                }
-                view.setEnabled(false);
-                view.setEnabled(true);
-            }
-        });
+        final TextView textTextview = (TextView) findViewById(R.id.text);
+
         textTextview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DraggableEditText edittext = new DraggableEditText(EditImageActivity.this);
-                edittext.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                            tempview = v;
-                            emojicustomizecontainer.setVisibility(View.VISIBLE);
-                            seekbar_emoji_scale.setProgress((int) ((v.getScaleX() - 0.5) / 0.015));
-                            seekbar_emoji_rotate.setProgress((int) ((100.0 / 360.0) * v.getRotation()));
+                Intent i = new Intent(EditImageActivity.this, InsertTextActivity.class);
+                i.putExtra("text", "");
+                startActivityForResult(i, Utils.REQ_CODE_INSERT_TEXT);
 
-                        }
 
-                        return false;
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == Utils.REQ_CODE_INSERT_TEXT) {
+                if (tempview != null) {
+                    if (tempview instanceof DraggableTextView) {
+                        ((DraggableTextView) tempview).setText(data.getStringExtra("text"));
                     }
-                });
-                edittext.setText("");
-                edittext.setTextSize(20);
-                edittext.setTextColor(getResources().getColor(R.color.white));
-                edittext.setTypeface(null, Typeface.BOLD);
-                edittext.setMinimumHeight(Utils.convertpxFromDp(32));
-                edittext.setMinimumWidth(Utils.convertpxFromDp(56));
-                edittext.setGravity(Gravity.CENTER);
-                int paddingtopbottom = Utils.convertpxFromDp(4);
-                int paddingleftright = Utils.convertpxFromDp(8);
-                edittext.setPadding(paddingleftright, paddingtopbottom, paddingleftright, paddingtopbottom);
-                edittext.setBackground(getResources().getDrawable(R.drawable.solid_pink));
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-
-                drawcontainer.addView(edittext, params);
-
+                } else insertDraggableTextView(data.getStringExtra("text"));
 
             }
-        });
+        }
     }
 
-    private void keyboardListener() {
-        this.findViewById(R.id.rootlayout).getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+    private void insertDraggableTextView(String text) {
+        DraggableTextView textview = new DraggableTextView(EditImageActivity.this);
+        textview.setText(text);
+        textview.setOnSingleClickListener(new DraggableTextView.SingleClickcallback() {
             @Override
-            public void onGlobalLayout() {
-                Rect r = new Rect();
-                EditImageActivity.this.findViewById(R.id.rootlayout).getWindowVisibleDisplayFrame(r);
-                int heightDiff = EditImageActivity.this.findViewById(R.id.rootlayout).getRootView().getHeight() - (r.bottom - r.top);
-
-                // int heightDiff = findViewById(R.id.main_content).getRootView().getHeight() - findViewById(R.id.main_content).getHeight();
-
-                //Log.d(TAG, "onGlobalLayout: height"+heightDiff+"   "+findViewById(R.id.main_content).getRootView().getHeight()+    "    "+(r.bottom - r.top));
-                if (heightDiff > Utils.convertpxFromDp(150)) { // if more than 100 pixels, its probably a keyboard...
-                    //ok now we know the keyboard is up...
-                    iskeyboardOpen = true;
-                    findViewById(R.id.bottomcont).setVisibility(View.GONE);
-                    findViewById(R.id.topcont).setVisibility(View.GONE);
-                    okbtn.setVisibility(View.VISIBLE);
-                } else {
-                    iskeyboardOpen = false;
-                    //ok now we know the keyboard is down...
-                    findViewById(R.id.bottomcont).setVisibility(View.VISIBLE);
-                    findViewById(R.id.topcont).setVisibility(View.VISIBLE);
-                    okbtn.setVisibility(View.GONE);
-
-
-                }
+            public void onSingleClick(DraggableTextView draggableTextView) {
+                EditImageActivity.this.tempview = draggableTextView;
+                Intent i = new Intent(EditImageActivity.this, InsertTextActivity.class);
+                i.putExtra("text", draggableTextView.getText().toString());
+                startActivityForResult(i, Utils.REQ_CODE_INSERT_TEXT);
             }
-
         });
-    }
 
+        textview.setonActionDownListener(new DraggableTextView.ActionDowncallback() {
+            @Override
+            public void onActionDown(DraggableTextView draggableTextView) {
+                tempview = draggableTextView;
+                emojicustomizecontainer.setVisibility(View.VISIBLE);
+                seekbar_emoji_scale.setProgress((int) ((draggableTextView.getScaleX() - 0.5) / 0.015));
+                seekbar_emoji_rotate.setProgress((int) ((100.0 / 360.0) * draggableTextView.getRotation()));
+            }
+        });
+
+
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+
+        drawcontainer.addView(textview, params);
+    }
 
     private void initEmojiBar() {
         CircularImageView e1 = (CircularImageView) findViewById(R.id.e1);
@@ -643,47 +585,46 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
 
     private void takeScreenshot(Bitmap bitmap) {
 
-        if (!iskeyboardOpen) {
-            try {
+        try {
 
-                File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "Pictures/ReweyouForums");
+            File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "Pictures/ReweyouForums");
 
-                if (!mediaStorageDir.exists()) {
-                    if (!mediaStorageDir.mkdirs()) {
-                        Log.d("Reweyou", "failed to create directory");
-                    }
+            if (!mediaStorageDir.exists()) {
+                if (!mediaStorageDir.mkdirs()) {
+                    Log.d("Reweyou", "failed to create directory");
                 }
-                Random random = new Random();
-                int m = random.nextInt(999999 - 100000) + 100000;
-
-                String mPath = mediaStorageDir.toString() + "/" + m + ".jpg";
-                File imageFile = new File(mPath);
-                Uri uri = Uri.fromFile(imageFile);
-
-                FileOutputStream outputStream = new FileOutputStream(imageFile);
-
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-                outputStream.flush();
-                outputStream.close();
-
-                Intent i = new Intent();
-                i.putExtra("uri", uri.toString());
-                i.putExtra("from", fromimageview);
-                setResult(RESULT_OK, i);
-                finish();
-
-                if (BuildConfig.DEBUG)
-                    MediaScannerConnection.scanFile(EditImageActivity.this, new String[]{mPath}, new String[]{"image/jpeg"}, null);
-
-            } catch (Throwable e) {
-                e.printStackTrace();
             }
+            Random random = new Random();
+            int m = random.nextInt(999999 - 100000) + 100000;
+
+            String mPath = mediaStorageDir.toString() + "/" + m + ".jpg";
+            File imageFile = new File(mPath);
+            Uri uri = Uri.fromFile(imageFile);
+
+            FileOutputStream outputStream = new FileOutputStream(imageFile);
+
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            outputStream.flush();
+            outputStream.close();
+
+            Intent i = new Intent();
+            i.putExtra("uri", uri.toString());
+            i.putExtra("from", fromimageview);
+            setResult(RESULT_OK, i);
+            finish();
+
+            if (BuildConfig.DEBUG)
+                MediaScannerConnection.scanFile(EditImageActivity.this, new String[]{mPath}, new String[]{"image/jpeg"}, null);
+
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
+
     }
 
     @Override
     public void onBackPressed() {
-        if (!iskeyboardOpen) {
+        if (mSignatureView.isEdited()) {
             AlertDialogBox alertDialogBox = new AlertDialogBox(EditImageActivity.this, "Discard Changes?", "Your changes would be lost! Proceed back?", "No", "Yes") {
                 @Override
                 public void onNegativeButtonClick(DialogInterface dialog) {
@@ -705,7 +646,7 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
-            if (((DraggableEditText) tempview).getText().toString().trim().length() == 0) {
+            if (((DraggableTextView) tempview).getText().toString().trim().length() == 0) {
                 emojicustomizecontainer.removeView(tempview);
                 tempview.setEnabled(false);
                 tempview.setEnabled(true);
