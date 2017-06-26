@@ -1,12 +1,19 @@
 package in.reweyou.reweyouforums;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -16,10 +23,13 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,6 +40,8 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.StringRequestListener;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 import com.kbeanie.multipicker.api.ImagePicker;
 import com.kbeanie.multipicker.api.Picker;
@@ -41,15 +53,20 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import in.reweyou.reweyouforums.classes.UserSessionManager;
+import in.reweyou.reweyouforums.customView.ColorTextView;
 import in.reweyou.reweyouforums.fragment.CreateGroupFragment;
 import in.reweyou.reweyouforums.fragment.ExploreFragment;
 import in.reweyou.reweyouforums.fragment.MainThreadsFragment;
 import in.reweyou.reweyouforums.fragment.UserInfoFragment;
 import in.reweyou.reweyouforums.fragment.YourGroupsFragment;
+import in.reweyou.reweyouforums.model.BadgeModel;
 import in.reweyou.reweyouforums.model.TopGroupMemberModel;
 import in.reweyou.reweyouforums.utils.NetworkHandler;
 import in.reweyou.reweyouforums.utils.Utils;
@@ -73,6 +90,8 @@ public class ForumMainActivity extends AppCompatActivity {
     private TextView notinum;
     private TextView notiback;
     private boolean firstload;
+    private Uri uri;
+    private boolean isBadgeDialogShown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +99,8 @@ public class ForumMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_forum_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
         userSessionManager = new UserSessionManager(this);
 
         notiback = (TextView) toolbar.findViewById(R.id.notiback);
@@ -449,6 +470,62 @@ public class ForumMainActivity extends AppCompatActivity {
         ((MainThreadsFragment) pagerAdapter.getRegisteredFragment(0)).refreshList();
     }
 
+    private void showBadgeUpdate() {
+        //Creating a LayoutInflater object for the dialog box
+        final LayoutInflater li = LayoutInflater.from(ForumMainActivity.this);
+        //Creating a view to get the dialog box
+        final View confirmDialog = li.inflate(R.layout.dialog_badge_update, null);
+        //  number=session.getMobileNumber();
+        //Initizliaing confirm button fo dialog box and edittext of dialog box
+        final TextView buttonconfirm = (TextView) confirmDialog.findViewById(R.id.buttonConfirm);
+        final TextView share = (TextView) confirmDialog.findViewById(R.id.share);
+        final ColorTextView des = (ColorTextView) confirmDialog.findViewById(R.id.des);
+        final ImageView groupimage = (ImageView) confirmDialog.findViewById(R.id.groupimage);
+
+
+        Paper.init(this);
+        final BadgeModel badgeModel = Paper.book().read("notibadge");
+        des.setText("You have earned " + badgeModel.getBadge() + " badge in " + badgeModel.getGroupname() + ". Share your achievement with friends.");
+        des.findAndSetStrColor(badgeModel.getBadge(), "#C51162");
+        des.findAndSetStrColor(badgeModel.getGroupname(), "#C51162");
+
+
+        Glide.with(ForumMainActivity.this).load(badgeModel.getImage()).diskCacheStrategy(DiskCacheStrategy.SOURCE).skipMemoryCache(true).into(groupimage);
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(ForumMainActivity.this);
+
+        alert.setView(confirmDialog);
+
+        final AlertDialog alertDialog = alert.create();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        alertDialog.setCancelable(false);
+        alertDialog.show();
+
+
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                takeScreenshot(confirmDialog.findViewById(R.id.rootlayout), badgeModel.getGroupname());
+
+            }
+        });
+
+        //On the click of the confirm button from alert dialog
+        buttonconfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                alertDialog.dismiss();
+                userSessionManager.putinsharedpref("notibadge", 0);
+
+            }
+        });
+
+    }
+
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -460,6 +537,106 @@ public class ForumMainActivity extends AppCompatActivity {
             }
         }
         firstload = true;
+
+        if (userSessionManager.getvaluefromsharedpref("notibadge") == 1 && !isBadgeDialogShown) {
+            isBadgeDialogShown = true;
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    showBadgeUpdate();
+                }
+            }, 2000);
+        }
+    }
+
+    private void takeScreenshot(View cv, String groupname) {
+        Date now = new Date();
+        android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);
+
+        try {
+
+            File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "Pictures/ReweyouForums/Screenshot");
+
+            if (!mediaStorageDir.exists()) {
+                if (!mediaStorageDir.mkdirs()) {
+                    Log.d("Reweyou", "failed to create directory");
+                }
+            }
+
+            String mPath = mediaStorageDir.toString() + "/" + now + ".jpg";
+            File imageFile = new File(mPath);
+            Uri uri = Uri.fromFile(imageFile);
+            FileOutputStream outputStream = new FileOutputStream(imageFile);
+            int quality = 99;
+            cv.setDrawingCacheEnabled(true);
+            cv.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+            loadBitmapFromView(cv).compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
+            outputStream.flush();
+            outputStream.close();
+
+            try {
+                shareIntent(uri, groupname);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private Bitmap loadBitmapFromView(View v) {
+        Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight() - Utils.convertpxFromDp(8), Bitmap.Config.ARGB_4444);
+        Canvas c = new Canvas(b);
+        v.draw(c);
+
+        final DisplayMetrics metrics = ForumMainActivity.this.getResources().getDisplayMetrics();
+        final Bitmap b2 = drawToBitmap(ForumMainActivity.this, R.layout.share_reweyou_tag, metrics.widthPixels, metrics.heightPixels);
+
+        return combineImages(b, b2);
+    }
+
+    private Bitmap drawToBitmap(Context context, final int layoutResId, final int width, final int height) {
+
+        final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View layout = inflater.inflate(layoutResId, null);
+        layout.setDrawingCacheEnabled(true);
+        layout.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.AT_MOST));
+        layout.layout(0, 0, layout.getMeasuredWidth(), layout.getMeasuredHeight());
+        final Bitmap bmp = Bitmap.createBitmap(layout.getMeasuredWidth(), layout.getMeasuredHeight(), Bitmap.Config.ARGB_4444);
+        final Canvas canvas = new Canvas(bmp);
+        canvas.drawBitmap(layout.getDrawingCache(), 0, 0, new Paint());
+        return bmp;
+    }
+
+    private Bitmap combineImages(Bitmap c, Bitmap s) {
+        Bitmap cs = null;
+
+        int width, height = 0;
+
+        width = c.getWidth();
+        height = c.getHeight() + s.getHeight();
+
+        cs = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+
+        Canvas comboImage = new Canvas(cs);
+        comboImage.drawBitmap(c, 0f, 0f, null);
+        comboImage.drawBitmap(s, 0f, c.getHeight(), null);
+        Bitmap resizedbitmap1 = Bitmap.createBitmap(cs, Utils.convertpxFromDp(10), Utils.convertpxFromDp(10), cs.getWidth() - Utils.convertpxFromDp(16), cs.getHeight() - Utils.convertpxFromDp(10));
+
+        return resizedbitmap1;
+    }
+
+    private void shareIntent(Uri uri, String groupname) {
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT, "Join '" + groupname + "' group in ReweyouForums app. Download now: https://play.google.com/store/apps/details?id=in.reweyou.reweyouforums");
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        intent.setType("image/jpeg");
+        startActivity(Intent.createChooser(intent, "Share Group using"));
     }
 
     private class PagerAdapter extends FragmentStatePagerAdapter {
@@ -511,4 +688,5 @@ public class ForumMainActivity extends AppCompatActivity {
 
 
     }
+
 }

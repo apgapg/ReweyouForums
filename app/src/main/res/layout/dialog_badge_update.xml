@@ -1,0 +1,98 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootlayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/button_background2"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_centerHorizontal="true"
+        android:alpha="0.14"
+        android:scaleType="fitXY"
+        android:src="@drawable/balooon" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="242dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="4dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="28dp"
+
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="8dp"
+            android:alpha="0.87"
+            android:background="@color/transparent"
+            android:gravity="center_horizontal"
+
+
+            android:text="Congratulations"
+            android:textColor="#000000"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+
+        <in.reweyou.reweyouforums.customView.ColorTextView
+            android:id="@+id/des"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:lines="3"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="You have earned FOLLOWER badge in PHOTOGRAPHY"
+            android:textColor="#424242"
+            android:textSize="14dp"
+            android:textStyle="bold" />
+
+
+        <ImageView
+            android:id="@+id/groupimage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:scaleType="center" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="4dp">
+
+            <TextView
+                android:id="@+id/share"
+                android:layout_width="70dp"
+                android:layout_height="32dp"
+                android:layout_marginRight="8dp"
+                android:layout_toLeftOf="@+id/buttonConfirm"
+
+                android:background="@drawable/ripple_effect2"
+                android:gravity="center"
+                android:text="SHARE"
+                android:textColor="@color/main_background_pink"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/buttonConfirm"
+                android:layout_width="50dp"
+                android:layout_height="32dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="16dp"
+
+                android:background="@drawable/ripple_effect2"
+                android:gravity="center"
+
+
+                android:text="OK"
+                android:textColor="@color/main_background_pink"
+                android:textStyle="bold" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

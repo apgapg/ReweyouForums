@@ -36,13 +36,13 @@
             android:autoLink="web"
             android:ellipsize="end"
             android:paddingBottom="10dp"
-            android:paddingLeft="14dp"
-            android:paddingRight="14dp"
+            android:paddingLeft="@dimen/padding_main_description"
+            android:paddingRight="@dimen/padding_main_description"
             android:paddingTop="4dp"
             android:text="The unprecedented policy decision by the Government to Demonetize the economy of the higher denomination currencies (i.e. Rs. 500 and Rs. 1000), comprises of three broad aspects. With the objective of cracking down on Black money, counterfeit (fake currency),
 terro"
             android:textColor="#424242"
-            android:textSize="13dp" />
+            android:textSize="@dimen/main_description_text_size" />
 
 
 

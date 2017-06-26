@@ -1,6 +1,5 @@
 package in.reweyou.reweyouforums;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -18,14 +17,13 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
@@ -173,22 +171,20 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
             }
         });
 
-        Glide.with(EditImageActivity.this).load(imageuri).listener(new RequestListener<String, GlideDrawable>() {
+        Glide.with(EditImageActivity.this).load(imageuri).asBitmap().format(DecodeFormat.PREFER_ARGB_8888).listener(new RequestListener<String, Bitmap>() {
             @Override
-            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+            public boolean onException(Exception e, String model, Target<Bitmap> target, boolean isFirstResource) {
                 return false;
             }
 
             @Override
-            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                Log.d(TAG, "onResourceReady:height " + resource.getIntrinsicHeight());
-                Log.d(TAG, "onResourceReady:width " + resource.getIntrinsicWidth());
+            public boolean onResourceReady(Bitmap resource, String model, Target<Bitmap> target, boolean isFromMemoryCache, boolean isFirstResource) {
                 ViewGroup.LayoutParams params = mSignatureView.getLayoutParams();
-                params.height = resource.getIntrinsicHeight();
-                params.width = resource.getIntrinsicWidth();
+                params.height = resource.getHeight();
+                params.width = resource.getWidth();
                 mSignatureView.setLayoutParams(params);
 
-                RelativeLayout.LayoutParams param = new RelativeLayout.LayoutParams(resource.getIntrinsicWidth(), resource.getIntrinsicHeight());
+                RelativeLayout.LayoutParams param = new RelativeLayout.LayoutParams(resource.getWidth(), resource.getHeight());
                 param.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
                 drawcontainer.setLayoutParams(param);
                 return false;
@@ -236,7 +232,7 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
                 if (tempview != null) {
                     if (tempview instanceof DraggableTextView) {
                         ((DraggableTextView) tempview).setText(data.getStringExtra("text"));
-                    }
+                    } else insertDraggableTextView(data.getStringExtra("text"));
                 } else insertDraggableTextView(data.getStringExtra("text"));
 
             }
@@ -624,35 +620,21 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onBackPressed() {
-        if (mSignatureView.isEdited()) {
-            AlertDialogBox alertDialogBox = new AlertDialogBox(EditImageActivity.this, "Discard Changes?", "Your changes would be lost! Proceed back?", "No", "Yes") {
-                @Override
-                public void onNegativeButtonClick(DialogInterface dialog) {
-                    dialog.dismiss();
-                    finish();
-                }
-
-                @Override
-                public void onPositiveButtonClick(DialogInterface dialog) {
-                    dialog.dismiss();
-                }
-            };
-            alertDialogBox.show();
-
-        } else {
-
-            View view = EditImageActivity.this.getCurrentFocus();
-            if (view != null) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-            }
-            if (((DraggableTextView) tempview).getText().toString().trim().length() == 0) {
-                emojicustomizecontainer.removeView(tempview);
-                tempview.setEnabled(false);
-                tempview.setEnabled(true);
+        AlertDialogBox alertDialogBox = new AlertDialogBox(EditImageActivity.this, "Discard Changes?", "Your changes would be lost! Proceed back?", "No", "Yes") {
+            @Override
+            public void onNegativeButtonClick(DialogInterface dialog) {
+                dialog.dismiss();
+                finish();
             }
 
-        }
+            @Override
+            public void onPositiveButtonClick(DialogInterface dialog) {
+                dialog.dismiss();
+            }
+        };
+        alertDialogBox.show();
+
+
     }
 
 }

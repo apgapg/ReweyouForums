@@ -143,7 +143,7 @@ public class YourGroupsFragment extends Fragment {
         divider.setDrawable(ContextCompat.getDrawable(mContext, R.drawable.my_custom_divider));
         recyclerViewYourGroups.addItemDecoration(divider);
 */
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2, LinearLayoutManager.VERTICAL, false);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 3, LinearLayoutManager.VERTICAL, false);
 
         recyclerViewYourGroups.setLayoutManager(gridLayoutManager);
         //recyclerViewYourGroups.setLayoutManager(new LinearLayoutManager(mContext));

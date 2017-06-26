@@ -250,7 +250,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         linkViewHolder.link.setText(messagelist.get(position).getLink());
         linkViewHolder.link.setSelected(true);
 
-        Glide.with(mContext).load(messagelist.get(position).getLinkimage()).diskCacheStrategy(DiskCacheStrategy.SOURCE).skipMemoryCache(true).into(linkViewHolder.linkimage);
+        Glide.with(mContext).load(messagelist.get(position).getLinkimage()).diskCacheStrategy(DiskCacheStrategy.SOURCE).skipMemoryCache(true).error(R.drawable.link_no_image_default).into(linkViewHolder.linkimage);
 
 
     }

@@ -24,6 +24,8 @@ import in.reweyou.reweyouforums.CommentActivity;
 import in.reweyou.reweyouforums.ForumMainActivity;
 import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
+import in.reweyou.reweyouforums.model.BadgeModel;
+import io.paperdb.Paper;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -78,7 +80,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 shownoti(m, message, title, i);
 
             } else if (payload.has("ids")) {
-                if (userSessionManager.getGroupsilentstatus(payload.getString("groupid"))) {
+
+                if (payload.has("badge")) {
+                    Paper.init(getApplicationContext());
+                    BadgeModel badgeModel = new BadgeModel();
+                    badgeModel.setBadge(payload.getString("badge"));
+                    badgeModel.setGroupname(payload.getString("groupname"));
+                    badgeModel.setImage(payload.getString("image"));
+                    Paper.book().write("notibadge", badgeModel);
+                    UserSessionManager userSessionManager1 = new UserSessionManager(this);
+                    userSessionManager1.putinsharedpref("notibadge", 1);
+
+
+                } else if (userSessionManager.getGroupsilentstatus(payload.getString("groupid"))) {
                     Log.d(TAG, "handleDataMessage: group is silent");
                 } else {
                     Log.d(TAG, "handleDataMessage: hereeeee");
@@ -120,7 +134,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Calendar cal = Calendar.getInstance();
         int hour = cal.get(Calendar.HOUR_OF_DAY);
         if (hour < 7 || hour > 22) {
-                mBuilder.setDefaults(NotificationCompat.DEFAULT_VIBRATE);
+            mBuilder.setDefaults(NotificationCompat.DEFAULT_VIBRATE);
         } else {
             mBuilder.setDefaults(NotificationCompat.DEFAULT_ALL);
 

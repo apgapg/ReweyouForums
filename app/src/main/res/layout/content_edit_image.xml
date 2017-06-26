@@ -128,7 +128,7 @@
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
                 android:paddingBottom="2dp"
-                android:text=" Scale "
+                android:text=" Size "
                 android:textColor="#eeffffff"
                 android:textSize="12dp" />
 

@@ -220,6 +220,7 @@ public class UserSessionManager {
         editor.commit();
     }
 
+
     public int getvaluefromsharedpref(String key) {
         return pref.getInt(key, -1);
     }

@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -204,7 +205,7 @@ public class FullImageActivity extends AppCompatActivity {
     }
 
     private void showimage(String i) {
-        Glide.with(FullImageActivity.this).load(i).diskCacheStrategy(DiskCacheStrategy.SOURCE).skipMemoryCache(true).fitCenter().into(imageView);
+        Glide.with(FullImageActivity.this).load(i).asBitmap().format(DecodeFormat.PREFER_ARGB_8888).diskCacheStrategy(DiskCacheStrategy.SOURCE).skipMemoryCache(true).fitCenter().into(imageView);
     }
 
     @Override
