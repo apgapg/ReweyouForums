@@ -54,7 +54,7 @@ public class ColorTextView extends AppCompatTextView {
     public void setText(String text) {
         mCurrentText = text;
         super.setText(text);
-        initData(colorTexts, colors);
+        // initData(colorTexts, colors);
 
         //setHtmlText();
 
@@ -104,7 +104,7 @@ public class ColorTextView extends AppCompatTextView {
                 mCurrentText = mCurrentText.replaceAll(str, color(color, str));
             }
             if (!TextUtils.isEmpty(mCurrentText)) {
-                setText(Html.fromHtml(mCurrentText));
+                super.setText(Html.fromHtml(mCurrentText.replace("\n", "<br />")));
             }
         } catch (Exception e) {
             e.printStackTrace();
