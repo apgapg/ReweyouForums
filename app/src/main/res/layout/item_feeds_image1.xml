@@ -1,75 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cv"
+
+
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="2dp"
     android:layout_marginTop="2dp"
-
-
-    android:clickable="true"
-    android:stateListAnimator="@animator/lift_on_touch"
-    card_view:cardBackgroundColor="#fff"
-    card_view:cardCornerRadius="2dp"
-    card_view:cardElevation="1.5dp"
-    card_view:cardPreventCornerOverlap="false"
-    card_view:cardUseCompatPadding="true"
-    tools:targetApi="lollipop">
-
+    android:scrollbars="none">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        android:clipChildren="false"
-        android:orientation="vertical">
-
-        <include layout="@layout/item_row_usernametop" />
-
-
-        <in.reweyou.reweyouforums.customView.ColorTextView
-            android:id="@+id/description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:autoLink="web"
-            android:ellipsize="end"
-            android:paddingBottom="10dp"
-
-            android:paddingLeft="@dimen/padding_main_description"
-            android:paddingRight="@dimen/padding_main_description"
-            android:paddingTop="4dp"
-            android:text="The unprecedented policy decision by the Government to Demonetize the economy of the higher denomination currencies (i.e. Rs. 500 and Rs. 1000), comprises of three broad aspects. With the objective of cracking down on Black money, counterfeit (fake currency),
-terro"
-            android:textColor="#424242"
-            android:textIsSelectable="true"
-            android:textSize="@dimen/main_description_text_size" />
+        <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/cv"
+            android:layout_width="wrap_content"
+            android:layout_height="290dp"
 
 
+            android:clickable="true"
+            android:stateListAnimator="@animator/lift_on_touch"
+            card_view:cardBackgroundColor="#fff"
+            card_view:cardCornerRadius="2dp"
+            card_view:cardElevation="1.5dp"
+            card_view:cardPreventCornerOverlap="false"
+            card_view:cardUseCompatPadding="true"
+            tools:targetApi="lollipop">
 
             <ImageView
                 android:id="@+id/image1"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginBottom="12dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="240dp"
                 android:foreground="@drawable/ripple_effect_white_rec" />
 
 
+            <TextView
+                android:id="@+id/groupname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/linebar"
+                android:background="#87000000"
+                android:drawablePadding="2dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical|end"
+                android:lines="1"
+                android:paddingBottom="4dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="4dp"
+                android:text="#Photography"
+                android:textColor="#fff"
+                android:textSize="13dp"
+                android:textStyle="bold" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.7dp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@drawable/gradient_black_bottom"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/usernamee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:text="Username"
+                    android:textColor="#fdfdfd"
+
+                    android:textSize="12dp" />
+
+                <in.reweyou.reweyouforums.customView.ColorTextView
+                    android:id="@+id/description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autoLink="web"
+                    android:background="@drawable/gradient_black_bottom"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:lines="2"
+
+                    android:paddingBottom="6dp"
+                    android:paddingLeft="@dimen/padding_main_description"
+                    android:paddingRight="@dimen/padding_main_description"
+                    android:paddingTop="4dp"
+                    android:text="The unprecedented policy decision by the Government to Demonetize the economy of the higher denomination currencies (i.e. Rs. 500 and Rs. 1000), comprises of three broad aspects. With the objective of cracking down on Black money, counterfeit (fake currency),
+terro"
+                    android:textColor="#ffffff"
+                    android:textIsSelectable="true"
+                    android:textSize="@dimen/main_description_text_size" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:clipChildren="false"
+                android:orientation="vertical">
+
+                <include
+                    layout="@layout/item_row_usernametop"
+                    android:visibility="gone" />
+
+
+                <include
+                    layout="@layout/item_row_like"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="270dp"
+            android:layout_height="290dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:alpha="0.44"
-            android:background="@color/divider" />
 
-        <include layout="@layout/item_row_like" />
+
+            android:clickable="true"
+            android:stateListAnimator="@animator/lift_on_touch"
+            card_view:cardBackgroundColor="#fff"
+            card_view:cardCornerRadius="4dp"
+            card_view:cardElevation="1.5dp"
+            card_view:cardPreventCornerOverlap="false"
+            card_view:cardUseCompatPadding="true"
+            tools:targetApi="lollipop">
+
+
+        </android.support.v7.widget.CardView>
 
     </LinearLayout>
-
-</android.support.v7.widget.CardView>
-
+</HorizontalScrollView>

@@ -152,7 +152,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         } catch (Exception e) {
         }
         holder.date.setText(messagelist.get(position).getTimestamp().replace("about ", ""));
-        holder.username.setText(messagelist.get(position).getUsername());
+        holder.username.setText("@" + messagelist.get(position).getUsername());
         holder.commentnum.setText(messagelist.get(position).getComments());
         Glide.with(fragmentContext).load(messagelist.get(position).getProfilepic()).diskCacheStrategy(DiskCacheStrategy.SOURCE).error(R.drawable.download).into(holder.profileimage);
         holder.userlevel.setText(messagelist.get(position).getBadge());
