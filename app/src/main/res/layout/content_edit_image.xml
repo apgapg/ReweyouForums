@@ -179,13 +179,14 @@
 
         <ImageView
             android:id="@+id/deleteemoji"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="12dp"
             android:background="@drawable/ripple_effect_white"
             android:padding="2dp"
+            android:scaleType="center"
             app:srcCompat="@drawable/ic_delete_black_24dp" />
 
     </RelativeLayout>

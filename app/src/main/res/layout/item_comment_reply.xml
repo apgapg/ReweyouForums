@@ -93,6 +93,7 @@
         android:background="@drawable/ripple_effect2"
 
         android:paddingBottom="1dp"
+
         android:paddingTop="1dp"
         android:text="0"
 
@@ -108,9 +109,10 @@
         android:layout_toRightOf="@+id/likenumber"
         android:background="@drawable/ripple_effect2"
         android:paddingBottom="1dp"
+        android:paddingLeft="2dp"
         android:paddingRight="2dp"
         android:paddingTop="1dp"
-        android:text=" like"
+        android:text="like"
 
         android:textColor="#757575"
         android:textSize="12dp"

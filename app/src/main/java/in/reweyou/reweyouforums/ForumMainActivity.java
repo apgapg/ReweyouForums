@@ -12,6 +12,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -43,6 +44,12 @@ import com.androidnetworking.interfaces.StringRequestListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.kbeanie.multipicker.api.ImagePicker;
 import com.kbeanie.multipicker.api.Picker;
 import com.kbeanie.multipicker.api.callbacks.ImagePickerCallback;
@@ -92,6 +99,8 @@ public class ForumMainActivity extends AppCompatActivity {
     private boolean firstload;
     private Uri uri;
     private boolean isBadgeDialogShown;
+    private View confirmDialog;
+    private BadgeModel badgeModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +108,6 @@ public class ForumMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_forum_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         userSessionManager = new UserSessionManager(this);
 
@@ -474,7 +482,7 @@ public class ForumMainActivity extends AppCompatActivity {
         //Creating a LayoutInflater object for the dialog box
         final LayoutInflater li = LayoutInflater.from(ForumMainActivity.this);
         //Creating a view to get the dialog box
-        final View confirmDialog = li.inflate(R.layout.dialog_badge_update, null);
+        confirmDialog = li.inflate(R.layout.dialog_badge_update, null);
         //  number=session.getMobileNumber();
         //Initizliaing confirm button fo dialog box and edittext of dialog box
         final TextView buttonconfirm = (TextView) confirmDialog.findViewById(R.id.buttonConfirm);
@@ -484,7 +492,7 @@ public class ForumMainActivity extends AppCompatActivity {
 
 
         Paper.init(this);
-        final BadgeModel badgeModel = Paper.book().read("notibadge");
+        badgeModel = Paper.book().read("notibadge");
         des.setText("You have earned " + badgeModel.getBadge() + " badge in " + badgeModel.getGroupname() + ". Share your achievement with friends.");
         des.findAndSetStrColor(badgeModel.getBadge(), "#C51162");
         des.findAndSetStrColor(badgeModel.getGroupname(), "#C51162");
@@ -506,8 +514,12 @@ public class ForumMainActivity extends AppCompatActivity {
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                takeScreenshot(confirmDialog.findViewById(R.id.rootlayout), badgeModel.getGroupname());
+                //   takeScreenshot(confirmDialog.findViewById(R.id.rootlayout), badgeModel.getGroupname());
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    checkStoragePermission();
 
+                } else
+                    takeScreenshot(confirmDialog.findViewById(R.id.rootlayout), badgeModel.getGroupname());
             }
         });
 
@@ -523,6 +535,34 @@ public class ForumMainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void checkStoragePermission() {
+        Dexter.withActivity(this)
+                .withPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        try {
+                            takeScreenshot(confirmDialog.findViewById(R.id.rootlayout), badgeModel.getGroupname());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        Toast.makeText(ForumMainActivity.this, "Storage Permission denied by user", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "onPermissionGranted: " + response.isPermanentlyDenied());
+
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        token.continuePermissionRequest();
+
+                    }
+                }).check();
     }
 
 

@@ -40,6 +40,8 @@ import com.google.gson.Gson;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import in.reweyou.reweyouforums.EditProfileActivity;
@@ -125,7 +127,7 @@ public class UserInfoFragment extends Fragment {
             }
         });
 
-        //  setcoloranimation();
+        //setcoloranimation();
         return layout;
     }
 
@@ -137,7 +139,7 @@ public class UserInfoFragment extends Fragment {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 Drawable background = imageView.getBackground();
-                if (background instanceof GradientDrawable) {
+                if (background instanceof Drawable) {
                     // cast to 'ShapeDrawable'
                     GradientDrawable shapeDrawable = (GradientDrawable) background;
                     shapeDrawable.setColor((Integer) valueAnimator.getAnimatedValue());
@@ -146,7 +148,7 @@ public class UserInfoFragment extends Fragment {
             }
         });
 
-        anim.setDuration(4000);
+        anim.setDuration(2000);
         anim.setRepeatMode(ValueAnimator.REVERSE);
         anim.setRepeatCount(ValueAnimator.INFINITE);
         anim.start();
@@ -195,6 +197,13 @@ public class UserInfoFragment extends Fragment {
                 GroupBadgeModel groupMemberModel = gson.fromJson(jsonresponse.getJSONObject(i).toString(), GroupBadgeModel.class);
                 list.add(groupMemberModel);
             }
+
+            Collections.sort(list, new Comparator<GroupBadgeModel>() {
+                @Override
+                public int compare(GroupBadgeModel o1, GroupBadgeModel o2) {
+                    return (Integer.parseInt(o2.getPoints()) - Integer.parseInt(o1.getPoints()));
+                }
+            });
 
             groupBadegsAdapter.add(list);
         } catch (Exception e) {
