@@ -40,3 +40,7 @@
   **[] $VALUES;
   public *;
 }
+
+-keepclassmembers class com.google.android.youtube.** {
+  *;
+}
