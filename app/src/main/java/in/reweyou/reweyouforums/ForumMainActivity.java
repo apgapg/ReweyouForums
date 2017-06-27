@@ -71,6 +71,7 @@ import in.reweyou.reweyouforums.customView.ColorTextView;
 import in.reweyou.reweyouforums.fragment.CreateGroupFragment;
 import in.reweyou.reweyouforums.fragment.ExploreFragment;
 import in.reweyou.reweyouforums.fragment.MainThreadsFragment;
+import in.reweyou.reweyouforums.fragment.TestMainThreadsFragment;
 import in.reweyou.reweyouforums.fragment.UserInfoFragment;
 import in.reweyou.reweyouforums.fragment.YourGroupsFragment;
 import in.reweyou.reweyouforums.model.BadgeModel;
@@ -700,7 +701,7 @@ public class ForumMainActivity extends AppCompatActivity {
             if (position == 2)
                 return new YourGroupsFragment();
             else
-                return new MainThreadsFragment();
+                return new TestMainThreadsFragment();
         }
 
         @Override
