@@ -208,7 +208,6 @@ public class MainThreadsFragment extends Fragment {
                 ThreadModel groupModel = gson.fromJson(jsonObject.toString(), ThreadModel.class);
                 threadlist.add(0, groupModel);
             }
-
             Collections.reverse(threadlist);
 
             feeedsAdapter.add(threadlist);

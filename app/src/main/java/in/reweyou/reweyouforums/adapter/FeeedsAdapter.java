@@ -10,16 +10,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
 import android.os.Environment;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -46,6 +41,7 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.Target;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -54,7 +50,6 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
-import org.chromium.customtabsclient.CustomTabsActivityHelper;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -73,7 +68,6 @@ import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.customView.ColorTextView;
 import in.reweyou.reweyouforums.model.ThreadModel;
 import in.reweyou.reweyouforums.utils.Utils;
-import me.zhanghai.android.customtabshelper.CustomTabsHelperFragment;
 
 /**
  * Created by master on 1/5/17.
@@ -136,8 +130,21 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
     }
 
     @Override
-    public void onBindViewHolder(BaseViewHolder holder, int position) {
-        holder.description.setText(messagelist.get(position).getDescription());
+    public void onBindViewHolder(final BaseViewHolder holder, int position) {
+        holder.description.setText(messagelist.get(position).getDescription().trim());
+        if (messagelist.get(position).getType().equals("text")) {
+            if (messagelist.get(position).getDescription().length() <= 50)
+                holder.description.setTextSize((float) (13.5 * 2));
+            else if (messagelist.get(position).getDescription().length() <= 100)
+                holder.description.setTextSize((float) (13.5 * 1.5));
+            else holder.description.setTextSize((float) 13.5);
+        } else {
+            if (messagelist.get(position).getDescription().length() <= 90)
+                holder.description.setTextSize((float) (13.5 * 1.5));
+            else if (messagelist.get(position).getDescription().length() <= 150)
+                holder.description.setTextSize((float) (13.5 * 1.2));
+            else holder.description.setTextSize((float) 13.5);
+        }
 
         try {
             JSONObject jsonObject = new JSONObject(messagelist.get(position).getTags().replace("\\", ""));
@@ -151,60 +158,12 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
         } catch (Exception e) {
         }
-        holder.date.setText(messagelist.get(position).getTimestamp().replace("about ", ""));
-        holder.username.setText("@" + messagelist.get(position).getUsername());
-        holder.commentnum.setText(messagelist.get(position).getComments());
+        holder.username.setText(messagelist.get(position).getUsername());
         Glide.with(fragmentContext).load(messagelist.get(position).getProfilepic()).diskCacheStrategy(DiskCacheStrategy.SOURCE).error(R.drawable.download).into(holder.profileimage);
-        holder.userlevel.setText(messagelist.get(position).getBadge());
         holder.groupname.setText("#" + messagelist.get(position).getGroupname());
-        if (messagelist.get(position).getUid().equals(userSessionManager.getUID())) {
-            holder.edit.setVisibility(View.VISIBLE);
-        } else holder.edit.setVisibility(View.GONE);
-
-        holder.likenumber.setText(messagelist.get(position).getUpvotes());
-        if (messagelist.get(position).getStatus().equals("true")) {
-            holder.like.setImageResource(R.drawable.ic_heart_like);
-        } else if (messagelist.get(position).getStatus().equals("false")) {
-
-            holder.like.setImageResource(R.drawable.ic_heart_like_grey);
-
-        }
-        Drawable background = holder.userlevel.getBackground();
-        if (background instanceof GradientDrawable) {
-            // cast to 'ShapeDrawable'
-            GradientDrawable shapeDrawable = (GradientDrawable) background;
-            if (messagelist.get(position).getBadge().equals("Noob")) {
-                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_noob));
-            } else if (messagelist.get(position).getBadge().equals("Follower")) {
-                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_follower));
-            } else if (messagelist.get(position).getBadge().equals("Pro")) {
-                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_pro));
-            } else if (messagelist.get(position).getBadge().equals("Rising Star")) {
-                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_rising_star));
-            } else if (messagelist.get(position).getBadge().equals("Star")) {
-                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_star));
-            } else if (messagelist.get(position).getBadge().equals("Expert")) {
-                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_expert));
-            } else if (messagelist.get(position).getBadge().equals("Leader")) {
-                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_leader));
-            } else if (messagelist.get(position).getBadge().equals("King")) {
-                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_king));
-            } else if (messagelist.get(position).getBadge().equals("Legend")) {
-                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_legend));
-            } else if (messagelist.get(position).getBadge().equals("Editor")) {
-                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_editor));
-            } else if (messagelist.get(position).getBadge().equals("Writer")) {
-                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_writer));
-            } else if (messagelist.get(position).getBadge().equals("GOAT")) {
-                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_GOAT));
-
-            }
-        }
 
 
-        switch (
-
-                getItemViewType(position))
+        switch (getItemViewType(position))
 
         {
             case VIEW_TYPE_IMAGE_1:
@@ -246,11 +205,12 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
     private void onbindlink(LinkViewHolder linkViewHolder, int position) {
 
         linkViewHolder.linkheadline.setText(messagelist.get(position).getLinkhead());
+
         linkViewHolder.linkdescription.setText(messagelist.get(position).getLinkdesc());
         linkViewHolder.link.setText(messagelist.get(position).getLink());
-        linkViewHolder.link.setSelected(true);
+        //linkViewHolder.link.setSelected(true);
 
-        Glide.with(mContext).load(messagelist.get(position).getLinkimage()).diskCacheStrategy(DiskCacheStrategy.SOURCE).skipMemoryCache(true).error(R.drawable.link_no_image_default).into(linkViewHolder.linkimage);
+        Glide.with(mContext).load(messagelist.get(position).getLinkimage()).diskCacheStrategy(DiskCacheStrategy.SOURCE).error(R.drawable.link_no_image_default).into(linkViewHolder.linkimage);
 
 
     }
@@ -265,7 +225,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
     }
 
     private void onbindimage1(Image1ViewHolder image1ViewHolder, final int position) {
-        Glide.with(mContext).load(messagelist.get(position).getImage1()).diskCacheStrategy(DiskCacheStrategy.SOURCE).override(700, 700).skipMemoryCache(true).into(image1ViewHolder.image1);
+        Glide.with(mContext).load(messagelist.get(position).getImage1()).diskCacheStrategy(DiskCacheStrategy.SOURCE).override(Utils.screenWidth - Utils.convertpxFromDp(12), Target.SIZE_ORIGINAL).into(image1ViewHolder.image1);
 
     }
 
@@ -606,7 +566,6 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         private TextView edit;
         private ColorTextView description;
         private LinearLayout commentcontainer;
-        private CardView cv;
 
         public BaseViewHolder(View inflate) {
             super(inflate);
@@ -616,7 +575,6 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             share = (ImageView) inflate.findViewById(R.id.share);
             like = (ImageView) inflate.findViewById(R.id.like);
             liketemp = (ImageView) inflate.findViewById(R.id.templike);
-            cv = (CardView) inflate.findViewById(R.id.cv);
 
             groupname = (TextView) inflate.findViewById(R.id.groupname);
             edit = (TextView) inflate.findViewById(R.id.edit);
@@ -629,7 +587,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             date = (TextView) inflate.findViewById(R.id.date);
             commentnum = (TextView) inflate.findViewById(R.id.commentnumber);
 
-            share.setOnClickListener(new View.OnClickListener() {
+            /*share.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     try {
@@ -642,46 +600,8 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                         e.printStackTrace();
                     }
                 }
-            });
-            edit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            });*/
 
-                    editdescription(getAdapterPosition());
-                }
-            });
-            like.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    if (messagelist.get(getAdapterPosition()).getStatus().equals("false"))
-                        notifyItemChanged(getAdapterPosition(), "like");
-                    else notifyItemChanged(getAdapterPosition(), "unlike");
-
-                    sendrequestforlike(getAdapterPosition());
-
-                }
-            });
-
-            commentcontainer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mContext instanceof CommentActivity) {
-                        ((CommentActivity) mContext).showCommentPage();
-                    } else {
-                        Intent i = new Intent(mContext, CommentActivity.class);
-                        i.putExtra("threadid", messagelist.get(getAdapterPosition()).getThreadid());
-                        if (mContext instanceof ForumMainActivity)
-                            i.putExtra("from", "f");
-                        else if (mContext instanceof GroupActivity)
-                            i.putExtra("from", "g");
-                        mContext.startActivity(i);
-                        Bundle params = new Bundle();
-                        params.putString("groupname", messagelist.get(getAdapterPosition()).getGroupname());
-                        mFirebaseAnalytics.logEvent("comment_btn_click", params);
-                    }
-                }
-            });
 
         }
     }
@@ -693,7 +613,8 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         public Image1ViewHolder(View inflate) {
             super(inflate);
             image1 = (ImageView) inflate.findViewById(R.id.image1);
-
+            image1.setMinimumWidth(Utils.screenWidth - Utils.convertpxFromDp(8));
+            image1.setMinimumHeight(Utils.convertpxFromDp(100));
 
             image1.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -703,6 +624,19 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                     mContext.startActivity(i);
                 }
             });
+
+        }
+    }
+
+    private class TextViewHolder extends BaseViewHolder {
+
+        private CardView cv;
+
+        public TextViewHolder(View inflate) {
+            super(inflate);
+            cv = (CardView) inflate.findViewById(R.id.cv);
+            cv.setLayoutParams(new LinearLayout.LayoutParams(Utils.screenWidth - Utils.convertpxFromDp(8), ViewGroup.LayoutParams.WRAP_CONTENT));
+
 
         }
     }
@@ -814,14 +748,9 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         }
     }
 
-    private class TextViewHolder extends BaseViewHolder {
-
-        public TextViewHolder(View inflate) {
-            super(inflate);
-        }
-    }
 
     private class LinkViewHolder extends BaseViewHolder {
+        private CardView cv;
         private TextView linkheadline, linkdescription, link;
         private RelativeLayout container;
         private ImageView linkimage;
@@ -831,14 +760,16 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             link = (TextView) inflate.findViewById(R.id.linklink);
             linkheadline = (TextView) inflate.findViewById(R.id.headlinelink);
             linkdescription = (TextView) inflate.findViewById(R.id.descriptionlink);
+            cv = (CardView) inflate.findViewById(R.id.cv);
+            cv.setLayoutParams(new RelativeLayout.LayoutParams(Utils.screenWidth - Utils.convertpxFromDp(8), ViewGroup.LayoutParams.WRAP_CONTENT));
             linkimage = (ImageView) inflate.findViewById(R.id.imagelink);
-            container = (RelativeLayout) inflate.findViewById(R.id.rlcont);
+           /* container = (RelativeLayout) inflate.findViewById(R.id.rlcont);
             container.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (messagelist.get(getAdapterPosition()).getLink() != null) {
-                       /* Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(messagelist.get(getAdapterPosition()).getLink()));
-                        mContext.startActivity(browserIntent);*/
+                       *//* Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(messagelist.get(getAdapterPosition()).getLink()));
+                        mContext.startActivity(browserIntent);*//*
                         Log.d(TAG, "onClick: " + messagelist.get(getAdapterPosition()).getLink());
                         CustomTabsHelperFragment.open((Activity) mContext, mCustomTabsIntent, Uri.parse(messagelist.get(getAdapterPosition()).getLink()),
                                 new CustomTabsActivityHelper.CustomTabsFallback() {
@@ -851,7 +782,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                                 });
                     }
                 }
-            });
+            });*/
         }
     }
 

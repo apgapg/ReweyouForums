@@ -54,6 +54,8 @@ public class ColorTextView extends AppCompatTextView {
     public void setText(String text) {
         mCurrentText = text;
         super.setText(text);
+
+
         // initData(colorTexts, colors);
 
         //setHtmlText();

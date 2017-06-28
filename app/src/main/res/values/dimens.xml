@@ -11,6 +11,6 @@
     <dimen name="tab_grey">16dp</dimen>
     <dimen name="color_pen">32dp</dimen>
     <dimen name="main_description_text_size">13.5dp</dimen>
-    <dimen name="padding_main_description">10dp</dimen>
+    <dimen name="padding_main_description">8dp</dimen>
 
 </resources>

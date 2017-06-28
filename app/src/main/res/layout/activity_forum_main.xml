@@ -5,7 +5,7 @@
     android:id="@+id/rootlayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_main_back"
+    android:background="#495A71"
 
     tools:context="in.reweyou.reweyouforums.ForumMainActivity">
 
@@ -28,7 +28,6 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@drawable/gradient_black_toolbar"
             app:popupTheme="@style/AppTheme.NoActionBar.PopupOverlay">
 
             <RelativeLayout
