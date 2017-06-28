@@ -138,12 +138,6 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             else if (messagelist.get(position).getDescription().length() <= 100)
                 holder.description.setTextSize((float) (13.5 * 1.5));
             else holder.description.setTextSize((float) 13.5);
-        } else {
-            if (messagelist.get(position).getDescription().length() <= 90)
-                holder.description.setTextSize((float) (13.5 * 1.5));
-            else if (messagelist.get(position).getDescription().length() <= 150)
-                holder.description.setTextSize((float) (13.5 * 1.2));
-            else holder.description.setTextSize((float) 13.5);
         }
 
         try {
