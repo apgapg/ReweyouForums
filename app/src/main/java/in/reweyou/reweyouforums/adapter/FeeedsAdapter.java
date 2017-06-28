@@ -133,9 +133,9 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
     public void onBindViewHolder(final BaseViewHolder holder, int position) {
         holder.description.setText(messagelist.get(position).getDescription().trim());
         if (messagelist.get(position).getType().equals("text")) {
-            if (messagelist.get(position).getDescription().length() <= 50)
+            if (messagelist.get(position).getDescription().length() <= 70)
                 holder.description.setTextSize((float) (13.5 * 2));
-            else if (messagelist.get(position).getDescription().length() <= 100)
+            else if (messagelist.get(position).getDescription().length() <= 120)
                 holder.description.setTextSize((float) (13.5 * 1.5));
             else holder.description.setTextSize((float) 13.5);
         }
