@@ -607,7 +607,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         public Image1ViewHolder(View inflate) {
             super(inflate);
             image1 = (ImageView) inflate.findViewById(R.id.image1);
-            image1.setMinimumWidth(Utils.screenWidth - Utils.convertpxFromDp(8));
+            image1.setMinimumWidth(Utils.screenWidth - Utils.convertpxFromDp(12));
             image1.setMinimumHeight(Utils.convertpxFromDp(100));
 
             image1.setOnClickListener(new View.OnClickListener() {

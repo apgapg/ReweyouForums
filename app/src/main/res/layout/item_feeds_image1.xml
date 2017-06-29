@@ -59,10 +59,14 @@
                     android:textIsSelectable="true"
                     android:textSize="@dimen/main_description_text_size" />
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/divider" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#212121"
                     android:orientation="horizontal"
                     android:paddingBottom="6dp">
 
@@ -85,7 +89,7 @@
                         android:paddingLeft="6dp"
                         android:paddingTop="4dp"
                         android:text="Username"
-                        android:textColor="#ffffff"
+                        android:textColor="#212121"
                         android:textSize="13dp"
                         android:textStyle="bold" />
 
@@ -102,7 +106,7 @@
 
                         android:paddingTop="4dp"
                         android:text="#Photography"
-                        android:textColor="#ffffff"
+                        android:textColor="#212121"
                         android:textSize="13dp"
                         android:textStyle="bold" />
                 </LinearLayout>
