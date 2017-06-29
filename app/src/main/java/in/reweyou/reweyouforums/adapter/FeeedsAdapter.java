@@ -41,6 +41,8 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.karumi.dexter.Dexter;
@@ -196,7 +198,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         }*/
     }
 
-    private void onbindlink(LinkViewHolder linkViewHolder, int position) {
+    private void onbindlink(final LinkViewHolder linkViewHolder, int position) {
 
         linkViewHolder.linkheadline.setText(messagelist.get(position).getLinkhead());
 
@@ -204,7 +206,18 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         linkViewHolder.link.setText(messagelist.get(position).getLink());
         //linkViewHolder.link.setSelected(true);
 
-        Glide.with(mContext).load(messagelist.get(position).getLinkimage()).diskCacheStrategy(DiskCacheStrategy.SOURCE).error(R.drawable.link_no_image_default).into(linkViewHolder.linkimage);
+        Glide.with(mContext).load(messagelist.get(position).getLinkimage()).diskCacheStrategy(DiskCacheStrategy.SOURCE).error(R.drawable.link_no_image_default).override(Utils.screenWidth - Utils.convertpxFromDp(12), Target.SIZE_ORIGINAL).listener(new RequestListener<String, GlideDrawable>() {
+            @Override
+            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                linkViewHolder.linkimage.invalidate();
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                return false;
+            }
+        }).into(linkViewHolder.linkimage);
 
 
     }
@@ -602,13 +615,13 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
 
     private class Image1ViewHolder extends BaseViewHolder {
+        private CardView cv;
         private ImageView image1;
 
         public Image1ViewHolder(View inflate) {
             super(inflate);
             image1 = (ImageView) inflate.findViewById(R.id.image1);
-            image1.setMinimumWidth(Utils.screenWidth - Utils.convertpxFromDp(12));
-            image1.setMinimumHeight(Utils.convertpxFromDp(100));
+            cv = (CardView) inflate.findViewById(R.id.cv);
 
             image1.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -628,8 +641,6 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
         public TextViewHolder(View inflate) {
             super(inflate);
-            cv = (CardView) inflate.findViewById(R.id.cv);
-            cv.setLayoutParams(new LinearLayout.LayoutParams(Utils.screenWidth - Utils.convertpxFromDp(8), ViewGroup.LayoutParams.WRAP_CONTENT));
 
 
         }
@@ -754,9 +765,9 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             link = (TextView) inflate.findViewById(R.id.linklink);
             linkheadline = (TextView) inflate.findViewById(R.id.headlinelink);
             linkdescription = (TextView) inflate.findViewById(R.id.descriptionlink);
-            cv = (CardView) inflate.findViewById(R.id.cv);
-            cv.setLayoutParams(new RelativeLayout.LayoutParams(Utils.screenWidth - Utils.convertpxFromDp(8), ViewGroup.LayoutParams.WRAP_CONTENT));
+
             linkimage = (ImageView) inflate.findViewById(R.id.imagelink);
+
            /* container = (RelativeLayout) inflate.findViewById(R.id.rlcont);
             container.setOnClickListener(new View.OnClickListener() {
                 @Override
