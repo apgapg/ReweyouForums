@@ -1,6 +1,5 @@
 package in.reweyou.reweyouforums;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -31,7 +30,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -101,6 +99,7 @@ public class ForumMainActivity extends AppCompatActivity {
     private boolean isBadgeDialogShown;
     private View confirmDialog;
     private BadgeModel badgeModel;
+    private TextView tabnametoolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +124,7 @@ public class ForumMainActivity extends AppCompatActivity {
 
 
         ImageView back = (ImageView) findViewById(R.id.backgroundimageview);
-        final TextView tabnametoolbar = (TextView) toolbar.findViewById(R.id.tabnametoolbar);
+        tabnametoolbar = (TextView) toolbar.findViewById(R.id.tabnametoolbar);
         Typeface type = Typeface.createFromAsset(getAssets(), "cr.ttf");
         tabnametoolbar.setTypeface(type);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
@@ -133,7 +132,9 @@ public class ForumMainActivity extends AppCompatActivity {
         pagerAdapter = new PagerAdapter(getSupportFragmentManager());
 
         viewPager.setAdapter(pagerAdapter);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+        viewPager.setCurrentItem(1);
+      /*  viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -164,7 +165,7 @@ public class ForumMainActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {
 
             }
-        });
+        });*/
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
         TabLayout.Tab tabCall1 = tabLayout.getTabAt(0);
@@ -444,8 +445,8 @@ public class ForumMainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        if (viewPager.getCurrentItem() != 0) {
-            viewPager.setCurrentItem(0);
+        if (viewPager.getCurrentItem() != 1) {
+            viewPager.setCurrentItem(1);
         } else {
             if (doubleBackToExitPressedOnce) {
 
@@ -679,6 +680,18 @@ public class ForumMainActivity extends AppCompatActivity {
         startActivity(Intent.createChooser(intent, "Share Group using"));
     }
 
+    public void onFeedCardChange(String s) {
+        tabnametoolbar.setText(s);
+    }
+
+    public void setFeedPage() {
+        viewPager.setCurrentItem(1);
+    }
+
+    public void movetonextcard() {
+        ((MainThreadsFragment) pagerAdapter.getRegisteredFragment(1)).changenextcard();
+    }
+
     private class PagerAdapter extends FragmentStatePagerAdapter {
         SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
 
@@ -693,11 +706,11 @@ public class ForumMainActivity extends AppCompatActivity {
 
             if (position == 4)
                 return new UserInfoFragment();
-            else if (position == 1)
+            else if (position == 2)
                 return new ExploreFragment();
             else if (position == 3)
                 return new CreateGroupFragment();
-            if (position == 2)
+            if (position == 0)
                 return new YourGroupsFragment();
             else
                 return new MainThreadsFragment();

@@ -15,9 +15,33 @@
         app:cardCornerRadius="4dp"
         app:cardElevation="0dp">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginLeft="12dp"
+            android:gravity="center_vertical"
+            android:paddingTop="4dp"
+            android:text="Groups followed by you: "
+            android:textColor="#212121"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/backarrow"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="end"
+            android:paddingBottom="6dp"
+            android:rotation="180"
+            android:scaleType="center"
+            app:srcCompat="@drawable/ic_chevron_left_black_24dp" />
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+
             android:orientation="horizontal">
 
             <EditText
@@ -28,7 +52,7 @@
                 android:background="@color/transparent"
                 android:drawableLeft="@drawable/ic_search_layer"
                 android:drawablePadding="8dp"
-                android:hint="Find your group..."
+                android:hint="Search..."
                 android:paddingLeft="14dp"
                 android:textColor="#424242"
                 android:textSize="13dp"
@@ -52,14 +76,14 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.7dp"
-            android:layout_marginTop="44dp"
+            android:layout_marginTop="80dp"
             android:background="@color/divider" />
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@id/swiperefresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="44.7dp">
+            android:layout_marginTop="80.7dp">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/explore_recycler_view_your_groups"

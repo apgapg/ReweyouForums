@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +19,7 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
+import com.lsjwzh.widget.recyclerviewpager.RecyclerViewPager;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -45,12 +45,13 @@ public class MainThreadsFragment extends Fragment {
 
     private static final String TAG = MainThreadsFragment.class.getName();
     private Activity mContext;
-    private RecyclerView recyclerView;
+    private RecyclerViewPager recyclerView;
     private FeeedsAdapter feeedsAdapter;
     private UserSessionManager userSessionManager;
     private CustomTabsHelperFragment mCustomTabsHelperFragment;
     private FloatingActionButton fab;
     private JSONArray jsonresponse;
+    private List<ThreadModel> threadlist;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,36 +71,15 @@ public class MainThreadsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_main_threads, container, false);
 
-        recyclerView = (RecyclerView) layout.findViewById(R.id.recycler_view);
+        recyclerView = (RecyclerViewPager) layout.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
-
-        fab = (FloatingActionButton) layout.findViewById(R.id.fab);
-
-        fab.setOnClickListener(new View.OnClickListener() {
+        recyclerView.addOnPageChangedListener(new RecyclerViewPager.OnPageChangedListener() {
             @Override
-            public void onClick(View v) {
-
-                ((ForumMainActivity) mContext).startCreateActivity();
-
+            public void OnPageChanged(int i, int i1) {
+                ((ForumMainActivity) mContext).onFeedCardChange(threadlist.get(i1).getGroupname());
             }
         });
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0 || dy < 0 && fab.isShown()) {
-                    fab.hide();
-                }
-            }
 
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    fab.show();
-                }
-
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-        });
 
         feeedsAdapter = new FeeedsAdapter(mContext, this);
         recyclerView.setAdapter(feeedsAdapter);
@@ -190,7 +170,7 @@ public class MainThreadsFragment extends Fragment {
     private void parsejsonresponse() {
         try {
             Gson gson = new Gson();
-            List<ThreadModel> threadlist = new ArrayList<>();
+            threadlist = new ArrayList<>();
             for (int i = 0; i < jsonresponse.length(); i++) {
                 JSONObject jsonObject = jsonresponse.getJSONObject(i);
                 ThreadModel groupModel = gson.fromJson(jsonObject.toString(), ThreadModel.class);
@@ -217,5 +197,12 @@ public class MainThreadsFragment extends Fragment {
         if (jsonresponse != null)
             outState.putString("response", jsonresponse.toString());
         super.onSaveInstanceState(outState);
+    }
+
+    public void changenextcard() {
+        if (feeedsAdapter.getItemCount() == recyclerView.getCurrentPosition() + 1) {
+
+        } else
+            recyclerView.smoothScrollToPosition(recyclerView.getCurrentPosition() + 1);
     }
 }

@@ -15,6 +15,7 @@
         android:clipToPadding="false"
         android:paddingTop="44dp"
 
+
         app:rvp_singlePageFling="true"
         app:rvp_triggerOffset="0.3" />
 

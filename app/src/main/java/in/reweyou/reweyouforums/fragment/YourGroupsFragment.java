@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +42,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import in.reweyou.reweyouforums.ForumMainActivity;
 import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.adapter.YourGroupsAdapter;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
@@ -157,6 +159,14 @@ public class YourGroupsFragment extends Fragment {
         });
         adapterYourGroups = new YourGroupsAdapter(mContext, this);
         recyclerViewYourGroups.setAdapter(adapterYourGroups);
+        ImageView imageView = (ImageView) layout.findViewById(R.id.backarrow);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((ForumMainActivity) mContext).setFeedPage();
+            }
+        });
+
         return layout;
     }
 
