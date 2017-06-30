@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="2dp"
-    android:layout_marginLeft="4dp"
-    android:layout_marginRight="4dp"
-    android:layout_marginTop="2dp"
+    android:layout_height="match_parent"
+
     android:scrollbars="none">
 
     <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -16,14 +13,14 @@
         android:id="@+id/cv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
 
-        android:layout_marginTop="2dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
         android:clickable="true"
         android:stateListAnimator="@animator/lift_on_touch"
         card_view:cardBackgroundColor="#fff"
-        card_view:cardCornerRadius="4dp"
-        card_view:cardElevation="1.5dp"
+        card_view:cardCornerRadius="8dp"
+        card_view:cardElevation="4dp"
         card_view:cardPreventCornerOverlap="false"
         card_view:cardUseCompatPadding="true"
         tools:targetApi="lollipop">
@@ -47,19 +44,21 @@
                 android:layout_height="wrap_content"
                 android:autoLink="web"
                 android:gravity="center_vertical"
-                android:paddingBottom="4dp"
+                android:lineSpacingExtra="2dp"
+                android:paddingBottom="10dp"
                 android:paddingLeft="@dimen/padding_main_description"
                 android:paddingRight="@dimen/padding_main_description"
-                android:paddingTop="4dp"
+                android:paddingTop="8dp"
                 android:text=""
-                android:textColor="#495A71"
+                android:textColor="@color/main_description_text"
                 android:textIsSelectable="true"
                 android:textSize="@dimen/main_description_text_size" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.7dp"
-                android:background="@color/divider" />
+                android:alpha="0.54"
+                android:background="#577583" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -86,7 +85,7 @@
                     android:paddingLeft="6dp"
                     android:paddingTop="4dp"
                     android:text="Username"
-                    android:textColor="#212121"
+                    android:textColor="@color/main_bottom_user_text"
                     android:textSize="13dp"
                     android:textStyle="bold" />
 
@@ -103,7 +102,7 @@
 
                     android:paddingTop="4dp"
                     android:text="#Photography"
-                    android:textColor="#212121"
+                    android:textColor="@color/main_bottom_user_text"
                     android:textSize="13dp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -117,4 +116,4 @@
     </android.support.v7.widget.CardView>
 
 
-</ScrollView>
+</android.support.v4.widget.NestedScrollView>

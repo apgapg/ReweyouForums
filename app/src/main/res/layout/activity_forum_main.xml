@@ -5,7 +5,7 @@
     android:id="@+id/rootlayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#495A71"
+    android:background="#F5F6FB"
 
     tools:context="in.reweyou.reweyouforums.ForumMainActivity">
 
@@ -43,7 +43,7 @@
                     android:paddingBottom="2dp"
                     android:paddingRight="8dp"
                     android:text="Feeds"
-                    android:textColor="#fff"
+                    android:textColor="@color/main_description_text"
                     android:textSize="18dp" />
 
                 <ImageView
@@ -91,18 +91,8 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="match_parent" />
 
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-    <View
-        android:id="@+id/line"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="44dp"
-
-        android:background="#BB757575" />
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tabLayout"
@@ -110,6 +100,7 @@
         android:layout_height="44dp"
         android:layout_gravity="bottom"
         android:background="#F5F5F5"
+        android:visibility="gone"
         app:tabIndicatorColor="@color/main_background_orange"
         app:tabIndicatorHeight="4dp"
         app:tabMode="fixed">

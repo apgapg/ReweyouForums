@@ -253,8 +253,7 @@ public class CreateGroupFragment extends Fragment {
                     //Log.d(TAG, "onGlobalLayout: height"+heightDiff+"   "+findViewById(R.id.main_content).getRootView().getHeight()+    "    "+(r.bottom - r.top));
                     if (heightDiff > pxFromDp(mContext, 150)) { // if more than 100 pixels, its probably a keyboard...
                         //ok now we know the keyboard is up...
-                        mContext.findViewById(R.id.tabLayout).setVisibility(View.GONE);
-                        mContext.findViewById(R.id.line).setVisibility(View.GONE);
+                        // //mContext.findViewById(R.id.tabLayout).setVisibility(View.GONE);
                         mContext.findViewById(R.id.tabLayout).setAlpha(0);
 
 
@@ -264,9 +263,8 @@ public class CreateGroupFragment extends Fragment {
                             @Override
                             public void run() {
                                 if (mContext != null) {
-                                    mContext.findViewById(R.id.tabLayout).setVisibility(View.VISIBLE);
-                                    mContext.findViewById(R.id.line).setVisibility(View.VISIBLE);
-                                    mContext.findViewById(R.id.tabLayout).animate().alpha(1).setDuration(150).start();
+                                    //   mContext.findViewById(R.id.tabLayout).setVisibility(View.VISIBLE);
+                                    // mContext.findViewById(R.id.tabLayout).animate().alpha(1).setDuration(150).start();
                                 }
                             }
                         }, 150);

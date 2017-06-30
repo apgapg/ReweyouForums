@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="2dp"
-    android:layout_marginLeft="4dp"
-    android:layout_marginRight="4dp"
-    android:layout_marginTop="2dp"
+    android:layout_height="match_parent"
+    android:paddingLeft="2dp"
+    android:paddingRight="2dp"
     android:scrollbars="none">
 
 
@@ -22,8 +20,8 @@
             android:clickable="true"
             android:stateListAnimator="@animator/lift_on_touch"
             card_view:cardBackgroundColor="#fff"
-            card_view:cardCornerRadius="4dp"
-            card_view:cardElevation="1.5dp"
+            card_view:cardCornerRadius="8dp"
+            card_view:cardElevation="4dp"
             card_view:cardPreventCornerOverlap="false"
             card_view:cardUseCompatPadding="true"
             tools:targetApi="lollipop">
@@ -108,20 +106,22 @@
                         android:autoLink="web"
                         android:ellipsize="end"
                         android:gravity="center_vertical"
-                        android:paddingBottom="4dp"
+                        android:lineSpacingExtra="2dp"
+                        android:paddingBottom="10dp"
                         android:paddingLeft="@dimen/padding_main_description"
                         android:paddingRight="@dimen/padding_main_description"
-                        android:paddingTop="4dp"
-                        android:text="The unprecedented policy decision by the Government to Demonetize the economy of the higher denomination currencies (i.e. Rs. 500 and Rs. 1000), comprises of three broad aspects. With the objective of cracking down on Black money, counterfeit (fake currency),
-terro"
-                        android:textColor="#495A71"
+                        android:paddingTop="8dp"
+                        android:text=""
+                        android:textColor="@color/main_description_text"
+
                         android:textIsSelectable="true"
                         android:textSize="@dimen/main_description_text_size" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0.7dp"
-                        android:background="@color/divider" />
+                        android:alpha="0.54"
+                        android:background="#577583" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -151,7 +151,7 @@ terro"
 
                             android:paddingTop="2dp"
                             android:text="Username"
-                            android:textColor="#212121"
+                            android:textColor="@color/main_bottom_user_text"
                             android:textSize="13dp"
 
                             android:textStyle="bold" />
@@ -169,7 +169,7 @@ terro"
                             android:paddingTop="2dp"
 
                             android:text="#Photography"
-                            android:textColor="#212121"
+                            android:textColor="@color/main_bottom_user_text"
                             android:textSize="13dp"
                             android:textStyle="bold" />
                     </LinearLayout>

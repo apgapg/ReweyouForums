@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -134,13 +135,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
     @Override
     public void onBindViewHolder(final BaseViewHolder holder, int position) {
         holder.description.setText(messagelist.get(position).getDescription().trim());
-        if (messagelist.get(position).getType().equals("text")) {
-            if (messagelist.get(position).getDescription().length() <= 70)
-                holder.description.setTextSize((float) (13.5 * 2));
-            else if (messagelist.get(position).getDescription().length() <= 120)
-                holder.description.setTextSize((float) (13.5 * 1.5));
-            else holder.description.setTextSize((float) 13.5);
-        }
+
 
         try {
             JSONObject jsonObject = new JSONObject(messagelist.get(position).getTags().replace("\\", ""));
@@ -232,7 +227,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
     }
 
     private void onbindimage1(Image1ViewHolder image1ViewHolder, final int position) {
-        Glide.with(mContext).load(messagelist.get(position).getImage1()).diskCacheStrategy(DiskCacheStrategy.SOURCE).override(Utils.screenWidth - Utils.convertpxFromDp(12), Target.SIZE_ORIGINAL).into(image1ViewHolder.image1);
+        Glide.with(mContext).load(messagelist.get(position).getImage1()).diskCacheStrategy(DiskCacheStrategy.SOURCE).override(Utils.screenWidth - Utils.convertpxFromDp(16), Target.SIZE_ORIGINAL).into(image1ViewHolder.image1);
 
     }
 
@@ -589,11 +584,17 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             likenumber = (TextView) inflate.findViewById(R.id.likenumber);
             userlevel = (TextView) inflate.findViewById(R.id.userlevel);
             description = (ColorTextView) inflate.findViewById(R.id.description);
+
+
             commentcontainer = (LinearLayout) inflate.findViewById(R.id.commentcontainer);
             username = (TextView) inflate.findViewById(R.id.usernamee);
             date = (TextView) inflate.findViewById(R.id.date);
             commentnum = (TextView) inflate.findViewById(R.id.commentnumber);
 
+            Typeface type = Typeface.createFromAsset(mContext.getAssets(), "Quicksand-Medium.ttf");
+            description.setTypeface(type);
+            username.setTypeface(type);
+            groupname.setTypeface(type);
             /*share.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
