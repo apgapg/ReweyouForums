@@ -25,6 +25,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -235,7 +237,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         linkViewHolder.link.setText(messagelist.get(position).getLink());
         //linkViewHolder.link.setSelected(true);
 
-        Glide.with(mContext).load(messagelist.get(position).getLinkimage()).diskCacheStrategy(DiskCacheStrategy.SOURCE).error(R.drawable.link_no_image_default).override(Utils.screenWidth - Utils.convertpxFromDp(20), Target.SIZE_ORIGINAL).listener(new RequestListener<String, GlideDrawable>() {
+        Glide.with(mContext).load(messagelist.get(position).getLinkimage()).diskCacheStrategy(DiskCacheStrategy.SOURCE).error(R.drawable.link_no_image_default).listener(new RequestListener<String, GlideDrawable>() {
             @Override
             public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
                 linkViewHolder.linkimage.invalidate();
@@ -261,7 +263,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
     }
 
     private void onbindimage1(Image1ViewHolder image1ViewHolder, final int position) {
-        Glide.with(mContext).load(messagelist.get(position).getImage1()).diskCacheStrategy(DiskCacheStrategy.SOURCE).override(Utils.screenWidth - Utils.convertpxFromDp(24), Target.SIZE_ORIGINAL).into(image1ViewHolder.image1);
+        Glide.with(mContext).load(messagelist.get(position).getImage1()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(image1ViewHolder.image1);
 
     }
 
@@ -596,6 +598,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
 
     public class BaseViewHolder extends RecyclerView.ViewHolder {
+        private CardView cv;
         private ImageView profileimage, liketemp, comment, like, share;
         private TextView username, likenum, commentnum, likenumber;
         private TextView date, userlevel;
@@ -617,8 +620,9 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             likenumber = (TextView) inflate.findViewById(R.id.likenumber);
             userlevel = (TextView) inflate.findViewById(R.id.userlevel);
             description = (ColorTextView) inflate.findViewById(R.id.description);
-
-
+            cv = (CardView) inflate.findViewById(R.id.cv);
+            FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(Utils.screenWidth - Utils.convertpxFromDp(8), ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL);
+            cv.setLayoutParams(layoutParams);
             commentcontainer = (LinearLayout) inflate.findViewById(R.id.commentcontainer);
             username = (TextView) inflate.findViewById(R.id.usernamee);
             date = (TextView) inflate.findViewById(R.id.date);

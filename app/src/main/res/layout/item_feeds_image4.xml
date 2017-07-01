@@ -1,140 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cv"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="2dp"
-    android:layout_marginTop="2dp"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:paddingTop="@dimen/card_padding_top"
+    android:scrollbars="none">
 
-
-    android:clickable="true"
-    android:stateListAnimator="@animator/lift_on_touch"
-    card_view:cardBackgroundColor="#fff"
-    card_view:cardCornerRadius="2dp"
-    card_view:cardElevation="1.5dp"
-    card_view:cardPreventCornerOverlap="false"
-    card_view:cardUseCompatPadding="true"
-    tools:targetApi="lollipop">
-
-
-    <LinearLayout
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/cv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clipChildren="false"
-        android:orientation="vertical">
-
-        <include layout="@layout/item_row_usernametop" />
-
-
-        <in.reweyou.reweyouforums.customView.ColorTextView
-            android:id="@+id/description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:autoLink="web"
-            android:ellipsize="end"
-            android:paddingBottom="10dp"
-            android:paddingLeft="@dimen/padding_main_description"
-
-
-            android:paddingRight="@dimen/padding_main_description"
-            android:paddingTop="4dp"
-            android:text="The unprecedented policy decision by the Government to Demonetize the economy of the higher denomination currencies (i.e. Rs. 500 and Rs. 1000), comprises of three broad aspects. With the objective of cracking down on Black money, counterfeit (fake currency),
-terro"
-            android:textColor="#424242"
-            android:textIsSelectable="true"
-            android:textSize="@dimen/main_description_text_size" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:clickable="true"
+        android:stateListAnimator="@animator/lift_on_touch"
+        card_view:cardBackgroundColor="#fff"
+        card_view:cardCornerRadius="8dp"
+        card_view:cardElevation="3dp"
+        card_view:cardPreventCornerOverlap="false"
+        card_view:cardUseCompatPadding="true"
+        tools:targetApi="lollipop">
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <in.reweyou.reweyouforums.customView.CustomImageView
-                android:id="@+id/image1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="4dp"
+            <include layout="@layout/item_row_usernametop" />
+
+
+            <in.reweyou.reweyouforums.customView.ColorTextView
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:gravity="center_vertical"
+                android:lineSpacingExtra="2dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="@dimen/padding_main_description"
+                android:paddingRight="@dimen/padding_main_description"
+                android:paddingTop="8dp"
+                android:text=""
+                android:textColor="@color/main_description_text"
+                android:textIsSelectable="true"
+                android:textSize="@dimen/main_description_text_size" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <in.reweyou.reweyouforums.customView.CustomImageView
+                    android:id="@+id/image1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="4dp"
+
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/border_grey"
+                    android:foreground="@drawable/ripple_effect_white_rec"
+
+                    android:padding="1dp"
+                    android:scaleType="centerCrop" />
+
+                <in.reweyou.reweyouforums.customView.CustomImageView
+                    android:id="@+id/image2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="8dp"
+
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/border_grey"
+                    android:foreground="@drawable/ripple_effect_white_rec"
+
+                    android:padding="1dp"
+                    android:scaleType="centerCrop" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <in.reweyou.reweyouforums.customView.CustomImageView
+                    android:id="@+id/image3"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginLeft="8dp"
+
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/border_grey"
+                    android:foreground="@drawable/ripple_effect_white_rec"
+                    android:padding="1dp"
+                    android:scaleType="centerCrop" />
+
+                <in.reweyou.reweyouforums.customView.CustomImageView
+                    android:id="@+id/image4"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1"
+
+                    android:background="@drawable/border_grey"
+
+                    android:foreground="@drawable/ripple_effect_white_rec"
+                    android:padding="1dp"
+                    android:scaleType="centerCrop" />
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.7dp"
                 android:layout_marginLeft="8dp"
-                android:layout_marginRight="4dp"
-
-                android:layout_marginTop="4dp"
-                android:layout_weight="1"
-                android:background="@drawable/border_grey"
-                android:foreground="@drawable/ripple_effect_white_rec"
-
-                android:padding="1dp"
-                android:scaleType="centerCrop" />
-
-            <in.reweyou.reweyouforums.customView.CustomImageView
-                android:id="@+id/image2"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="4dp"
-                android:layout_marginLeft="4dp"
                 android:layout_marginRight="8dp"
+                android:alpha="0.44"
+                android:background="@color/divider" />
 
-                android:layout_marginTop="4dp"
-                android:layout_weight="1"
-                android:background="@drawable/border_grey"
-                android:foreground="@drawable/ripple_effect_white_rec"
-
-                android:padding="1dp"
-                android:scaleType="centerCrop" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <in.reweyou.reweyouforums.customView.CustomImageView
-                android:id="@+id/image3"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="12dp"
-                android:layout_marginLeft="8dp"
-
-                android:layout_marginRight="4dp"
-                android:layout_marginTop="4dp"
-                android:layout_weight="1"
-                android:background="@drawable/border_grey"
-                android:foreground="@drawable/ripple_effect_white_rec"
-                android:padding="1dp"
-                android:scaleType="centerCrop" />
-
-            <in.reweyou.reweyouforums.customView.CustomImageView
-                android:id="@+id/image4"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="12dp"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="4dp"
-                android:layout_weight="1"
-
-                android:background="@drawable/border_grey"
-
-                android:foreground="@drawable/ripple_effect_white_rec"
-                android:padding="1dp"
-                android:scaleType="centerCrop" />
-
-        </LinearLayout>
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.7dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:alpha="0.44"
-            android:background="@color/divider" />
-
-        <include layout="@layout/item_row_like" />
-
-    </LinearLayout>
-
-</android.support.v7.widget.CardView>
-
+    </android.support.v7.widget.CardView>
+</android.support.v4.widget.NestedScrollView>

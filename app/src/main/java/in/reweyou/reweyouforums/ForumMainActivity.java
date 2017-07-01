@@ -66,6 +66,7 @@ import java.util.List;
 
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.customView.ColorTextView;
+import in.reweyou.reweyouforums.customView.CustomViewPager;
 import in.reweyou.reweyouforums.fragment.CreateGroupFragment;
 import in.reweyou.reweyouforums.fragment.ExploreFragment;
 import in.reweyou.reweyouforums.fragment.MainThreadsFragment;
@@ -80,6 +81,11 @@ import io.paperdb.Paper;
 public class ForumMainActivity extends AppCompatActivity {
 
     private static final String TAG = ForumMainActivity.class.getName();
+    private static final int POSITION_USER_PROFILE = 0;
+    private static final int POSITION_MAIN_FEEDS = 2;
+    private static final int POSITION_YOUR_GROUPS = 1;
+    private static final int POSITION_EXPLORE_GROUPS = 3;
+    private static final int POSITION_CREATE_GROUP = 4;
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -88,7 +94,7 @@ public class ForumMainActivity extends AppCompatActivity {
     private ImagePicker imagePicker;
     private PagerAdapter pagerAdapter;
     private int positionFragment = -1;
-    private ViewPager viewPager;
+    private CustomViewPager viewPager;
     private UserSessionManager userSessionManager;
     private boolean doubleBackToExitPressedOnce = false;
     private ImageView noti;
@@ -123,17 +129,37 @@ public class ForumMainActivity extends AppCompatActivity {
         getnoticount();
 
 
-        ImageView back = (ImageView) findViewById(R.id.backgroundimageview);
         tabnametoolbar = (TextView) toolbar.findViewById(R.id.tabnametoolbar);
         Typeface type = Typeface.createFromAsset(getAssets(), "cr.ttf");
         tabnametoolbar.setTypeface(type);
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        viewPager = (CustomViewPager) findViewById(R.id.viewPager);
+
         viewPager.setOffscreenPageLimit(4);
+
         pagerAdapter = new PagerAdapter(getSupportFragmentManager());
 
         viewPager.setAdapter(pagerAdapter);
 
-        viewPager.setCurrentItem(1);
+        viewPager.setCurrentItem(POSITION_MAIN_FEEDS);
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        initmenuitems();
       /*  viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -208,6 +234,28 @@ public class ForumMainActivity extends AppCompatActivity {
 
         getMembersData();
 
+    }
+
+    private void initmenuitems() {
+        findViewById(R.id.leftmenu).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewPager.setCurrentItem(POSITION_YOUR_GROUPS);
+            }
+        });
+        findViewById(R.id.rightmenu).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewPager.setCurrentItem(POSITION_EXPLORE_GROUPS);
+            }
+        });
+
+        findViewById(R.id.profilemenu).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewPager.setCurrentItem(POSITION_USER_PROFILE);
+            }
+        });
     }
 
     private void getMembersData() {
@@ -405,7 +453,7 @@ public class ForumMainActivity extends AppCompatActivity {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 if (positionFragment == 3) {
-                    CreateGroupFragment createGroupFragment = (CreateGroupFragment) pagerAdapter.getRegisteredFragment(3);
+                    CreateGroupFragment createGroupFragment = (CreateGroupFragment) pagerAdapter.getRegisteredFragment(POSITION_CREATE_GROUP);
                     createGroupFragment.onImageChoosen(result.getUri().toString());
                 }
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
@@ -417,13 +465,13 @@ public class ForumMainActivity extends AppCompatActivity {
             if (requestCode == Picker.PICK_IMAGE_DEVICE) {
                 imagePicker.submit(data);
             } else if (requestCode == Utils.REQ_CODE_GROP_ACITIVTY) {
-                ((ExploreFragment) pagerAdapter.getRegisteredFragment(1)).refreshlist();
-                ((YourGroupsFragment) pagerAdapter.getRegisteredFragment(2)).refreshlist();
+                ((ExploreFragment) pagerAdapter.getRegisteredFragment(POSITION_EXPLORE_GROUPS)).refreshlist();
+                ((YourGroupsFragment) pagerAdapter.getRegisteredFragment(POSITION_YOUR_GROUPS)).refreshlist();
             } else if (requestCode == Utils.REQ_CODE_EDIT_PROFILE) {
-                ((UserInfoFragment) pagerAdapter.getRegisteredFragment(4)).refreshprofile();
+                ((UserInfoFragment) pagerAdapter.getRegisteredFragment(POSITION_USER_PROFILE)).refreshprofile();
 
             } else if (requestCode == Utils.REQ_CODE_CREATE_FROM_FORUMACTVITY) {
-                ((MainThreadsFragment) pagerAdapter.getRegisteredFragment(0)).refreshList();
+                ((MainThreadsFragment) pagerAdapter.getRegisteredFragment(POSITION_MAIN_FEEDS)).refreshList();
 
             } else if (requestCode == Utils.REQ_CODE_NOTI) {
                 Log.d(TAG, "onActivityResult: dwjdnwndwdwnoti");
@@ -438,15 +486,15 @@ public class ForumMainActivity extends AppCompatActivity {
 
     public void showYourGroupsFragment() {
 
-        viewPager.setCurrentItem(2);
-        ((YourGroupsFragment) pagerAdapter.getRegisteredFragment(2)).refreshlist();
+        viewPager.setCurrentItem(POSITION_YOUR_GROUPS);
+        ((YourGroupsFragment) pagerAdapter.getRegisteredFragment(POSITION_YOUR_GROUPS)).refreshlist();
     }
 
     @Override
     public void onBackPressed() {
 
-        if (viewPager.getCurrentItem() != 1) {
-            viewPager.setCurrentItem(1);
+        if (viewPager.getCurrentItem() != POSITION_MAIN_FEEDS) {
+            viewPager.setCurrentItem(POSITION_MAIN_FEEDS);
         } else {
             if (doubleBackToExitPressedOnce) {
 
@@ -476,7 +524,7 @@ public class ForumMainActivity extends AppCompatActivity {
     public void refreshfeeds() {
         Log.d(TAG, "onResponse: dkwmdkwkkkkk11swsws11");
 
-        ((MainThreadsFragment) pagerAdapter.getRegisteredFragment(0)).refreshList();
+        ((MainThreadsFragment) pagerAdapter.getRegisteredFragment(POSITION_MAIN_FEEDS)).refreshList();
     }
 
     private void showBadgeUpdate() {
@@ -685,11 +733,11 @@ public class ForumMainActivity extends AppCompatActivity {
     }
 
     public void setFeedPage() {
-        viewPager.setCurrentItem(1);
+        viewPager.setCurrentItem(POSITION_MAIN_FEEDS);
     }
 
     public void movetonextcard() {
-        ((MainThreadsFragment) pagerAdapter.getRegisteredFragment(1)).changenextcard();
+        ((MainThreadsFragment) pagerAdapter.getRegisteredFragment(POSITION_MAIN_FEEDS)).changenextcard();
     }
 
     private class PagerAdapter extends FragmentStatePagerAdapter {
@@ -704,16 +752,21 @@ public class ForumMainActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
 
-            if (position == 4)
-                return new UserInfoFragment();
-            else if (position == 2)
-                return new ExploreFragment();
-            else if (position == 3)
-                return new CreateGroupFragment();
-            if (position == 0)
-                return new YourGroupsFragment();
-            else
-                return new MainThreadsFragment();
+            switch (position) {
+                case POSITION_CREATE_GROUP:
+                    return new CreateGroupFragment();
+                case POSITION_EXPLORE_GROUPS:
+                    return new ExploreFragment();
+                case POSITION_MAIN_FEEDS:
+                    return new MainThreadsFragment();
+                case POSITION_USER_PROFILE:
+                    return new UserInfoFragment();
+                case POSITION_YOUR_GROUPS:
+                    return new YourGroupsFragment();
+                default:
+                    return null;
+            }
+
         }
 
         @Override
