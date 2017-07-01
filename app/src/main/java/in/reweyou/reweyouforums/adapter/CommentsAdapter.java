@@ -93,7 +93,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
             }
 
 

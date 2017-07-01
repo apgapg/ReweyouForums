@@ -88,7 +88,7 @@ public class RichEditorViewInvert extends RelativeLayout implements TextWatcher,
     private OnSuggestionsVisibilityChangeListener mActionListener;
 
     private ViewGroup.LayoutParams mPrevEditTextParams;
-    private boolean mEditTextShouldWrapContent = false; // Default to match parent in height
+    private boolean mEditTextShouldWrapContent = true; // Default to match parent in height
     private int mPrevEditTextBottomPadding;
 
     private int mTextCountLimit = -1;

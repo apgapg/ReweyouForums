@@ -83,8 +83,8 @@ public class ForumMainActivity extends AppCompatActivity {
     private static final String TAG = ForumMainActivity.class.getName();
     private static final int POSITION_USER_PROFILE = 0;
     private static final int POSITION_MAIN_FEEDS = 2;
-    private static final int POSITION_YOUR_GROUPS = 1;
-    private static final int POSITION_EXPLORE_GROUPS = 3;
+    private static final int POSITION_YOUR_GROUPS = 3;
+    private static final int POSITION_EXPLORE_GROUPS = 1;
     private static final int POSITION_CREATE_GROUP = 4;
 
     static {

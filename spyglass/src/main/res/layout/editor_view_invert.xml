@@ -6,7 +6,9 @@
         android:layout_width="match_parent"
         android:layout_height="0.7dp"
         android:layout_above="@+id/t2"
-        android:background="#757575" />
+        android:alpha="0.34"
+        android:background="#577583" />
+
 
     <TextView
         android:id="@+id/t2"

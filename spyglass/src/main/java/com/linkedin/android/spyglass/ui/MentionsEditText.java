@@ -21,6 +21,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcel;
@@ -1210,6 +1211,12 @@ public class MentionsEditText extends EditText implements TokenSource {
         setText(savedState.mentionsEditable);
     }
 
+    @Override
+    public void setTypeface(Typeface tf) {
+        Typeface type = Typeface.createFromAsset(getContext().getAssets(), "Quicksand-Medium.ttf");
+        super.setTypeface(type);
+    }
+
     /**
      * Interface to receive a callback for mention events.
      */
@@ -1301,6 +1308,10 @@ public class MentionsEditText extends EditText implements TokenSource {
 
     }
 
+    // --------------------------------------------------
+    // Save & Restore State
+    // --------------------------------------------------
+
     /**
      * Convenience class to save/restore the MentionsEditable state.
      */
@@ -1333,10 +1344,6 @@ public class MentionsEditText extends EditText implements TokenSource {
             dest.writeParcelable(mentionsEditable, flags);
         }
     }
-
-    // --------------------------------------------------
-    // Save & Restore State
-    // --------------------------------------------------
 
     private class MyWatcher implements TextWatcher {
 
@@ -1431,15 +1438,15 @@ public class MentionsEditText extends EditText implements TokenSource {
         }
     }
 
+    // --------------------------------------------------
+    // MentionWatcher Interface & Simple Implementation
+    // --------------------------------------------------
+
     /**
      * Simple class to mark a span of text to delete later.
      */
     private class DeleteSpan {
     }
-
-    // --------------------------------------------------
-    // MentionWatcher Interface & Simple Implementation
-    // --------------------------------------------------
 
     /**
      * Runnable which detects the long click action.

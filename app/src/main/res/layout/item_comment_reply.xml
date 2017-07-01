@@ -19,7 +19,7 @@
         android:src="@drawable/download"
         app:myborderWidth="0dp" />
 
-    <TextView
+    <in.reweyou.reweyouforums.customView.TextViewCustomFont
         android:id="@+id/message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
         android:textSize="13dp"
         android:textStyle="bold" />
 
-    <TextView
+    <in.reweyou.reweyouforums.customView.TextViewCustomFont
         android:id="@+id/userlevel"
         android:layout_width="wrap_content"
         android:layout_height="18dp"
@@ -69,7 +69,7 @@
         android:textColor="#515151"
         android:textSize="13dp" />
 
-    <TextView
+    <in.reweyou.reweyouforums.customView.TextViewCustomFont
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
         android:textSize="11dp"
         android:textStyle="italic" />
 
-    <TextView
+    <in.reweyou.reweyouforums.customView.TextViewCustomFont
         android:id="@+id/likenumber"
 
         android:layout_width="wrap_content"
@@ -101,7 +101,7 @@
         android:textSize="12dp"
         android:textStyle="bold" />
 
-    <TextView
+    <in.reweyou.reweyouforums.customView.TextViewCustomFont
         android:id="@+id/tempnum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -138,7 +138,7 @@
         android:padding="10dp"
         app:srcCompat="@drawable/ic_heart_like_grey" />
 
-    <TextView
+    <in.reweyou.reweyouforums.customView.TextViewCustomFont
         android:id="@+id/edit"
 
         android:layout_width="wrap_content"

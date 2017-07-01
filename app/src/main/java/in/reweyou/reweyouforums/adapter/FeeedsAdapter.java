@@ -20,6 +20,7 @@ import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -158,6 +159,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         Glide.with(fragmentContext).load(messagelist.get(position).getProfilepic()).diskCacheStrategy(DiskCacheStrategy.SOURCE).error(R.drawable.download).into(holder.profileimage);
         holder.date.setText(messagelist.get(position).getTimestamp().replace("about ", "").replace(" ago", ""));
 
+        holder.adapterComment.add(messagelist.get(position).getCommentlistshow());
         switch (getItemViewType(position))
 
         {
@@ -227,6 +229,8 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             forumViewHolder.image.setVisibility(View.VISIBLE);
             Glide.with(mContext).load(messagelist.get(position).getImage()).into(forumViewHolder.image);
         }*/
+
+
     }
 
     private void onbindlink(final LinkViewHolder linkViewHolder, int position) {
@@ -598,11 +602,13 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
 
     public class BaseViewHolder extends RecyclerView.ViewHolder {
+        private CommentsAdapter adapterComment;
+        private RecyclerView recyclerView;
         private CardView cv;
         private ImageView profileimage, liketemp, comment, like, share;
         private TextView username, likenum, commentnum, likenumber;
         private TextView date, userlevel;
-        private TextView edit;
+        private TextView edit, commenttxt;
         private ColorTextView description;
         private LinearLayout commentcontainer;
 
@@ -633,6 +639,17 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             username.setTypeface(type);
             date.setTypeface(type);
             userlevel.setTypeface(type);
+
+
+            recyclerView = (RecyclerView) inflate.findViewById(R.id.recycler_view);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
+            recyclerView.setLayoutManager(linearLayoutManager);
+
+            adapterComment = new CommentsAdapter(mContext);
+            recyclerView.setNestedScrollingEnabled(false);
+            recyclerView.setAdapter(adapterComment);
+
+
             /*share.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

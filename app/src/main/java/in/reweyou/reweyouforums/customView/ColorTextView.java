@@ -6,6 +6,7 @@ package in.reweyou.reweyouforums.customView;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Typeface;
 import android.support.v7.widget.AppCompatTextView;
 import android.text.Html;
 import android.text.TextUtils;
@@ -119,5 +120,9 @@ public class ColorTextView extends AppCompatTextView {
         return "<font color=\"" + colorCode + "\">" + str + "</font>";
     }
 
-
+    @Override
+    public void setTypeface(Typeface tf) {
+        Typeface type = Typeface.createFromAsset(getContext().getAssets(), "Quicksand-Medium.ttf");
+        super.setTypeface(type);
+    }
 }

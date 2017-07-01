@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="false"
     android:paddingTop="@dimen/card_padding_top"
+
     android:scrollbars="none">
 
     <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -132,13 +134,56 @@
                 android:layout_height="0.7dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:alpha="0.44"
+                android:alpha="@dimen/view_line_alpha"
                 android:background="@color/divider" />
 
-            <RelativeLayout
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="200dp" />
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="52dp"
+
+                />
+
+
         </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom">
+
+
+            <com.linkedin.android.spyglass.ui.RichEditorViewInvert
+                android:id="@+id/edittext"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_alignParentBottom="true"
+                android:inputType="textMultiLine"
+                android:maxLines="10"
+                android:minHeight="150dp" />
+
+            <ImageView
+                android:id="@+id/send"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center"
+                android:layout_marginRight="6dp"
+                android:padding="4dp"
+                app:srcCompat="@drawable/button_send_disable" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="6dp"
+                android:padding="8dp"
+                android:visibility="gone" />
+        </RelativeLayout>
 
     </android.support.v7.widget.CardView>
 </android.support.v4.widget.NestedScrollView>

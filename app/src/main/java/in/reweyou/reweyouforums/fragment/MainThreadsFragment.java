@@ -32,6 +32,8 @@ import in.reweyou.reweyouforums.ForumMainActivity;
 import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.adapter.FeeedsAdapter;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
+import in.reweyou.reweyouforums.model.CommentModel;
+import in.reweyou.reweyouforums.model.ReplyCommentModel;
 import in.reweyou.reweyouforums.model.ThreadModel;
 import in.reweyou.reweyouforums.utils.NetworkHandler;
 import me.zhanghai.android.customtabshelper.CustomTabsHelperFragment;
@@ -130,7 +132,7 @@ public class MainThreadsFragment extends Fragment {
     }
 
     private void getData() {
-        AndroidNetworking.post("https://www.reweyou.in/google/list_threads.php")
+        AndroidNetworking.post("https://www.reweyou.in/google/list_thread_new.php")
                 .addBodyParameter("uid", userSessionManager.getUID())
                 .addBodyParameter("authtoken", userSessionManager.getAuthToken())
                 .setTag("report")
@@ -174,6 +176,35 @@ public class MainThreadsFragment extends Fragment {
             for (int i = 0; i < jsonresponse.length(); i++) {
                 JSONObject jsonObject = jsonresponse.getJSONObject(i);
                 ThreadModel groupModel = gson.fromJson(jsonObject.toString(), ThreadModel.class);
+
+
+                List<Object> list = new ArrayList<>();
+
+                try {
+                    JSONArray jsonArray = jsonObject.getJSONArray("commentlist");
+                    for (int j = 0; j < jsonArray.length(); j++) {
+                        JSONObject json = jsonArray.getJSONObject(jsonArray.length() - 1 - j);
+                        CommentModel coModel = gson.fromJson(json.toString(), CommentModel.class);
+                        list.add(coModel);
+
+                        if (json.has("reply")) {
+                            JSONArray jsonReply = json.getJSONArray("reply");
+
+                            for (int k = 0; k < jsonReply.length(); k++) {
+                                JSONObject jsontemp = jsonReply.getJSONObject(jsonReply.length() - 1 - k);
+                                ReplyCommentModel temp = gson.fromJson(jsontemp.toString(), ReplyCommentModel.class);
+                                list.add(temp);
+                            }
+                        }
+
+                    }
+
+                    groupModel.setcommentlistshow(list);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
                 threadlist.add(0, groupModel);
             }
             Collections.reverse(threadlist);

@@ -1,5 +1,7 @@
 package in.reweyou.reweyouforums.model;
 
+import java.util.List;
+
 /**
  * Created by master on 9/5/17.
  */
@@ -30,6 +32,9 @@ public class ThreadModel {
     private String linkhead = "";
     private String status = "false";
     private String tags = "";
+    private List<Object> commentlistshow;
+
+
 
     public String getTags() {
         return tags;
@@ -141,4 +146,11 @@ public class ThreadModel {
         this.liketype = liketype;
     }
 
+    public void setcommentlistshow(List<Object> commentlistshow) {
+        this.commentlistshow = commentlistshow;
+    }
+
+    public List<Object> getCommentlistshow() {
+        return commentlistshow;
+    }
 }

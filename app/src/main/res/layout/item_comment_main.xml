@@ -18,15 +18,15 @@
         android:src="@drawable/download"
         app:myborderWidth="0dp" />
 
-    <TextView
+    <in.reweyou.reweyouforums.customView.TextViewCustomFont
         android:id="@+id/message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="8dp"
         android:layout_toRightOf="@+id/image"
         android:text="Username"
-        android:textColor="#212121"
+        android:textColor="#455A64"
         android:textSize="13dp"
         android:textStyle="bold" />
 
@@ -35,13 +35,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/message"
-        android:layout_marginLeft="12dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginRight="40dp"
         android:layout_toRightOf="@+id/image"
         android:autoLink="web"
         android:paddingRight="8dp"
         android:text="Hello World!"
-        android:textColor="#515151"
+        android:textColor="#78909C"
         android:textSize="13dp" />
 
     <TextView
@@ -49,22 +49,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/comment"
-        android:layout_marginLeft="12dp"
+        android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/image"
         android:paddingRight="8dp"
         android:paddingTop="1dp"
         android:text="2 hr ago"
-        android:textColor="#959595"
+        android:textColor="#B0BEC5"
         android:textSize="11dp"
         android:textStyle="italic" />
 
-    <TextView
+    <in.reweyou.reweyouforums.customView.TextViewCustomFont
         android:id="@+id/userlevel"
         android:layout_width="wrap_content"
-        android:layout_height="18dp"
+        android:layout_height="16dp"
         android:layout_gravity="center"
         android:layout_marginLeft="6dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         android:layout_toRightOf="@id/message"
         android:background="@drawable/background_user_level"
         android:drawableLeft="@drawable/ic_user_level_layer_small"
@@ -81,13 +81,13 @@
         android:textSize="10.5dp"
         android:textStyle="bold" />
 
-    <TextView
+    <in.reweyou.reweyouforums.customView.TextViewCustomFont
         android:id="@+id/reply"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/time"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="4dp"
         android:layout_toRightOf="@+id/image"
         android:background="@drawable/ripple_effect2"
         android:drawablePadding="6dp"
@@ -97,11 +97,11 @@
         android:paddingRight="10dp"
         android:paddingTop="4dp"
         android:text="Reply"
-        android:textColor="#424242"
+        android:textColor="#607D8B"
         android:textSize="12dp"
         android:textStyle="bold" />
 
-    <TextView
+    <in.reweyou.reweyouforums.customView.TextViewCustomFont
         android:id="@+id/likenumber"
 
         android:layout_width="wrap_content"
@@ -117,7 +117,7 @@
         android:textSize="12dp"
         android:textStyle="bold" />
 
-    <TextView
+    <in.reweyou.reweyouforums.customView.TextViewCustomFont
         android:id="@+id/tempnum"
 
         android:layout_width="wrap_content"
@@ -131,11 +131,11 @@
         android:paddingTop="4dp"
         android:text="like"
 
-        android:textColor="#757575"
+        android:textColor="#607D8B"
         android:textSize="12dp"
         android:textStyle="bold" />
 
-    <TextView
+    <in.reweyou.reweyouforums.customView.TextViewCustomFont
         android:id="@+id/edit"
 
         android:layout_width="wrap_content"

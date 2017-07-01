@@ -14,6 +14,7 @@ import com.google.firebase.crash.FirebaseCrash;
 import java.util.concurrent.TimeUnit;
 
 import in.reweyou.reweyouforums.utils.Utils;
+import io.paperdb.Paper;
 import okhttp3.OkHttpClient;
 
 /**
@@ -38,6 +39,7 @@ public class ApplicationClass extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        Paper.init(getApplicationContext());
         mInstance = this;
         Log.d(TAG, "onCreate: calledapp");
 
