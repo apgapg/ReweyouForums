@@ -13,34 +13,39 @@
         android:alpha="0.14"
         android:scaleType="fitXY"
         app:srcCompat="@drawable/ic_asb_grey" />
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
 
-        android:theme="@style/AppTheme.NoActionBar.AppBarOverlay">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/gradient_black_toolbar"
-            app:popupTheme="@style/AppTheme.NoActionBar.PopupOverlay" />
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabLayout"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@color/transparent"
-            app:tabIndicatorColor="#651FFF"
-            app:tabIndicatorHeight="4dp"
-            app:tabTextColor="#fff" />
-    </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:layout_height="match_parent" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="4dp">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="36dp"
+            android:layout_height="40dp"
+            android:paddingTop="4dp"
+            android:scaleType="center"
+            app:srcCompat="@drawable/ic_chevron_left_black_24dp" />
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="40dp"
+            android:background="@color/transparent"
+            app:tabIndicatorColor="@color/transparent"
+            app:tabIndicatorHeight="4dp"
+            app:tabSelectedTextColor="#FF34454D"
+            app:tabTextColor="@color/sub_description_color" />
+    </RelativeLayout>
+
 
 </android.support.design.widget.CoordinatorLayout>

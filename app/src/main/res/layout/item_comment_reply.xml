@@ -7,6 +7,7 @@
     android:background="@drawable/ripple_effect4"
     android:minHeight="48dp"
     android:orientation="horizontal"
+    android:paddingBottom="4dp"
 
     android:paddingLeft="60dp">
 
@@ -23,21 +24,21 @@
         android:id="@+id/message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="8dp"
         android:layout_toRightOf="@+id/image"
         android:text="Username"
-        android:textColor="#212121"
+        android:textColor="#455A64"
         android:textSize="13dp"
         android:textStyle="bold" />
 
     <in.reweyou.reweyouforums.customView.TextViewCustomFont
         android:id="@+id/userlevel"
         android:layout_width="wrap_content"
-        android:layout_height="18dp"
+        android:layout_height="16dp"
         android:layout_gravity="center"
         android:layout_marginLeft="6dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         android:layout_toRightOf="@id/message"
         android:background="@drawable/background_user_level"
         android:drawableLeft="@drawable/ic_user_level_layer_small"
@@ -59,14 +60,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/message"
-        android:layout_marginLeft="12dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginRight="40dp"
 
         android:layout_toRightOf="@+id/image"
         android:autoLink="web"
         android:paddingRight="8dp"
         android:text="Hello World!"
-        android:textColor="#515151"
+        android:textColor="#78909C"
         android:textSize="13dp" />
 
     <in.reweyou.reweyouforums.customView.TextViewCustomFont
@@ -74,12 +75,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/comment"
-        android:layout_marginLeft="12dp"
+        android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/image"
         android:paddingRight="8dp"
         android:paddingTop="1dp"
         android:text="2hr ago"
-        android:textColor="#959595"
+        android:textColor="#B0BEC5"
         android:textSize="11dp"
         android:textStyle="italic" />
 
@@ -97,7 +98,7 @@
         android:paddingTop="1dp"
         android:text="0"
 
-        android:textColor="#757575"
+        android:textColor="#607D8B"
         android:textSize="12dp"
         android:textStyle="bold" />
 
@@ -114,7 +115,7 @@
         android:paddingTop="1dp"
         android:text="like"
 
-        android:textColor="#757575"
+        android:textColor="#607D8B"
         android:textSize="12dp"
         android:textStyle="bold" />
 

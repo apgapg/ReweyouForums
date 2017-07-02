@@ -56,6 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/usernamee"
+        android:layout_marginBottom="8dp"
         android:layout_marginRight="12dp"
         android:alpha="0.54"
         android:gravity="top"
@@ -64,14 +65,7 @@
         android:textColor="#5f808f"
         android:textSize="12dp" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.7dp"
-        android:layout_below="@+id/userlevel"
-        android:layout_marginTop="8dp"
-        android:alpha="0.54"
 
-        android:background="#577583" />
 
 
 </RelativeLayout>

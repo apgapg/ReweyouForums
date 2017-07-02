@@ -38,6 +38,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,7 +59,9 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
+import com.linkedin.android.spyglass.ui.RichEditorViewInvert;
 
+import org.chromium.customtabsclient.CustomTabsActivityHelper;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -71,18 +74,22 @@ import in.reweyou.reweyouforums.CommentActivity;
 import in.reweyou.reweyouforums.ForumMainActivity;
 import in.reweyou.reweyouforums.FullImageActivity;
 import in.reweyou.reweyouforums.GroupActivity;
+import in.reweyou.reweyouforums.NotificationActivity;
 import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.YoutubeActivity;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.customView.ColorTextView;
 import in.reweyou.reweyouforums.model.ThreadModel;
 import in.reweyou.reweyouforums.utils.Utils;
+import me.zhanghai.android.customtabshelper.CustomTabsHelperFragment;
 
 /**
  * Created by master on 1/5/17.
  */
 
 public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHolder> {
+
+    private static final String BUCKET = "cities-memory";
 
     private static final int VIEW_TYPE_IMAGE_1 = 21;
     private static final int VIEW_TYPE_IMAGE_2 = 22;
@@ -99,6 +106,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
     private final FirebaseAnalytics mFirebaseAnalytics;
     private final Fragment fragmentContext;
     List<ThreadModel> messagelist;
+    private String tempcommentid;
 
     public FeeedsAdapter(Context context, Fragment mainThreadsFragment) {
         this.mContext = context;
@@ -142,7 +150,6 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
     public void onBindViewHolder(final BaseViewHolder holder, int position) {
         holder.description.setText(messagelist.get(position).getDescription().trim());
 
-
         try {
             JSONObject jsonObject = new JSONObject(messagelist.get(position).getTags().replace("\\", ""));
             if (jsonObject.length() > 0) {
@@ -159,7 +166,8 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         Glide.with(fragmentContext).load(messagelist.get(position).getProfilepic()).diskCacheStrategy(DiskCacheStrategy.SOURCE).error(R.drawable.download).into(holder.profileimage);
         holder.date.setText(messagelist.get(position).getTimestamp().replace("about ", "").replace(" ago", ""));
 
-        holder.adapterComment.add(messagelist.get(position).getCommentlistshow());
+        if (mContext instanceof ForumMainActivity)
+            holder.adapterComment.add(messagelist.get(position).getCommentlistshow());
         switch (getItemViewType(position))
 
         {
@@ -237,11 +245,8 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
         linkViewHolder.linkheadline.setText(messagelist.get(position).getLinkhead());
 
-        linkViewHolder.linkdescription.setText(messagelist.get(position).getLinkdesc());
-        linkViewHolder.link.setText(messagelist.get(position).getLink());
-        //linkViewHolder.link.setSelected(true);
 
-        Glide.with(mContext).load(messagelist.get(position).getLinkimage()).diskCacheStrategy(DiskCacheStrategy.SOURCE).error(R.drawable.link_no_image_default).listener(new RequestListener<String, GlideDrawable>() {
+        Glide.with(mContext).load(messagelist.get(position).getLinkimage()).diskCacheStrategy(DiskCacheStrategy.SOURCE).override(Utils.screenWidth - Utils.convertpxFromDp(8), Target.SIZE_ORIGINAL).listener(new RequestListener<String, GlideDrawable>() {
             @Override
             public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
                 linkViewHolder.linkimage.invalidate();
@@ -267,7 +272,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
     }
 
     private void onbindimage1(Image1ViewHolder image1ViewHolder, final int position) {
-        Glide.with(mContext).load(messagelist.get(position).getImage1()).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(image1ViewHolder.image1);
+        Glide.with(mContext).load(messagelist.get(position).getImage1()).diskCacheStrategy(DiskCacheStrategy.SOURCE).override(Utils.screenWidth - Utils.convertpxFromDp(8), Target.SIZE_ORIGINAL).into(image1ViewHolder.image1);
 
     }
 
@@ -602,6 +607,11 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
 
     public class BaseViewHolder extends RecyclerView.ViewHolder {
+        private RelativeLayout commentcont;
+        private TextView replyheader;
+        private ProgressBar progressBar;
+        private ImageView send;
+        private RichEditorViewInvert editText;
         private CommentsAdapter adapterComment;
         private RecyclerView recyclerView;
         private CardView cv;
@@ -633,6 +643,27 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             username = (TextView) inflate.findViewById(R.id.usernamee);
             date = (TextView) inflate.findViewById(R.id.date);
             commentnum = (TextView) inflate.findViewById(R.id.commentnumber);
+            commentcont = (RelativeLayout) inflate.findViewById(R.id.commmentcont);
+            commentcont.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (mContext instanceof CommentActivity) {
+                        ((CommentActivity) mContext).showCommentPage();
+                    } else {
+                        Intent i = new Intent(mContext, CommentActivity.class);
+                        i.putExtra("threadid", messagelist.get(getAdapterPosition()).getThreadid());
+                        if (mContext instanceof ForumMainActivity)
+                            i.putExtra("from", "f");
+                        else if (mContext instanceof GroupActivity)
+                            i.putExtra("from", "g");
+                        else if (mContext instanceof NotificationActivity)
+                            i.putExtra("from", "nb");
+
+                        mContext.startActivity(i);
+                    }
+                }
+            });
 
             Typeface type = Typeface.createFromAsset(mContext.getAssets(), "Quicksand-Medium.ttf");
             description.setTypeface(type);
@@ -640,14 +671,16 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             date.setTypeface(type);
             userlevel.setTypeface(type);
 
+            if (mContext instanceof ForumMainActivity) {
+                recyclerView = (RecyclerView) inflate.findViewById(R.id.recycler_view);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
+                recyclerView.setLayoutManager(linearLayoutManager);
 
-            recyclerView = (RecyclerView) inflate.findViewById(R.id.recycler_view);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
-            recyclerView.setLayoutManager(linearLayoutManager);
+                adapterComment = new CommentsAdapter(mContext);
 
-            adapterComment = new CommentsAdapter(mContext);
-            recyclerView.setNestedScrollingEnabled(false);
-            recyclerView.setAdapter(adapterComment);
+                recyclerView.setNestedScrollingEnabled(false);
+                recyclerView.setAdapter(adapterComment);
+            }
 
 
             /*share.setOnClickListener(new View.OnClickListener() {
@@ -681,7 +714,8 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             cv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((ForumMainActivity) mContext).movetonextcard();
+                    if (mContext instanceof ForumMainActivity)
+                        ((ForumMainActivity) mContext).movetonextcard();
                 }
             });
             /*image1.setOnClickListener(new View.OnClickListener() {
@@ -822,6 +856,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
 
     private class LinkViewHolder extends BaseViewHolder {
+        private TextView openlink;
         private CardView cv;
         private TextView linkheadline, linkdescription, link;
         private RelativeLayout container;
@@ -836,13 +871,13 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             linkimage = (ImageView) inflate.findViewById(R.id.imagelink);
             Typeface type = Typeface.createFromAsset(mContext.getAssets(), "Quicksand-Medium.ttf");
             linkheadline.setTypeface(type);
-           /* container = (RelativeLayout) inflate.findViewById(R.id.rlcont);
-            container.setOnClickListener(new View.OnClickListener() {
+
+            openlink = (TextView) inflate.findViewById(R.id.openlink);
+            openlink.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (messagelist.get(getAdapterPosition()).getLink() != null) {
-                       *//* Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(messagelist.get(getAdapterPosition()).getLink()));
-                        mContext.startActivity(browserIntent);*//*
+
                         Log.d(TAG, "onClick: " + messagelist.get(getAdapterPosition()).getLink());
                         CustomTabsHelperFragment.open((Activity) mContext, mCustomTabsIntent, Uri.parse(messagelist.get(getAdapterPosition()).getLink()),
                                 new CustomTabsActivityHelper.CustomTabsFallback() {
@@ -854,8 +889,10 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                                     }
                                 });
                     }
+
                 }
-            });*/
+            });
+
         }
     }
 
@@ -884,5 +921,6 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             });
         }
     }
+
 
 }

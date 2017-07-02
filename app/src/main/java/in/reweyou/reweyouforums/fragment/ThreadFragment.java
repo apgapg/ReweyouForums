@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -44,7 +43,6 @@ public class ThreadFragment extends Fragment {
     private RecyclerView recyclerView;
     private FeeedsAdapter feeedsAdapter;
     private UserSessionManager userSessionManager;
-    private SwipeRefreshLayout swipeRefreshLayout;
     private CustomTabsHelperFragment mCustomTabsHelperFragment;
     private FloatingActionButton fab;
     private String threadid;
@@ -62,20 +60,11 @@ public class ThreadFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View layout = inflater.inflate(R.layout.fragment_main_threads, container, false);
+        View layout = inflater.inflate(R.layout.fragment_main_threads_single, container, false);
 
         recyclerView = (RecyclerView) layout.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        swipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swiperefresh);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                getData();
-            }
-        });
-        fab = (FloatingActionButton) layout.findViewById(R.id.fab);
 
-        fab.setVisibility(View.GONE);
         return layout;
     }
 
@@ -113,7 +102,6 @@ public class ThreadFragment extends Fragment {
     }
 
     private void getData() {
-        swipeRefreshLayout.setRefreshing(true);
         AndroidNetworking.post("https://www.reweyou.in/google/single_thread.php")
                 .addBodyParameter("threadid", threadid)
                 .addBodyParameter("uid", userSessionManager.getUID())
@@ -125,7 +113,6 @@ public class ThreadFragment extends Fragment {
                     @Override
                     public void onResponse(JSONArray response) {
                         Log.d(TAG, "onResponse: resp: " + response);
-                        swipeRefreshLayout.setRefreshing(false);
                         List<ThreadModel> list = new ArrayList<>();
                         try {
                             Gson gson = new Gson();
@@ -138,7 +125,6 @@ public class ThreadFragment extends Fragment {
                             e.printStackTrace();
                             Toast.makeText(mContext, "something went wrong!", Toast.LENGTH_SHORT).show();
 
-                            swipeRefreshLayout.setRefreshing(false);
 
                         }
                     }
@@ -147,7 +133,6 @@ public class ThreadFragment extends Fragment {
                     public void onError(ANError anError) {
                         Log.e(TAG, "run: error: " + anError.getErrorDetail());
                         Toast.makeText(mContext, "couldn't connect", Toast.LENGTH_SHORT).show();
-                        swipeRefreshLayout.setRefreshing(false);
 
 
                     }

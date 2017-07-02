@@ -10,7 +10,7 @@
         android:background="#577583" />
 
 
-    <TextView
+    <in.reweyou.reweyouforums.customView.TextViewCustomFont
         android:id="@+id/t2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
         android:gravity="bottom"
         android:paddingTop="4dp"
         android:text="Reply to "
-        android:textColor="#424242"
+        android:textColor="#3c5059"
         android:textSize="12dp"
         android:textStyle="bold"
         android:visibility="gone" />
@@ -50,6 +50,8 @@
         android:paddingRight="44dp"
         android:paddingTop="10dp"
         android:scrollbars="vertical"
+        android:textColor="#455A64"
+        android:textColorHint="#78909C"
         android:textSize="14dp" />
 
     <TextView

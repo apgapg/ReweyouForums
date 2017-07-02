@@ -71,8 +71,14 @@
     <color name="c11">#4E342E</color>
     <color name="c12">#FFF</color>
     <color name="c13">#000</color>
-    <color name="main_description_text">#3c5059</color>
+    <color name="main_description_text">#49616c</color>
     <color name="main_bottom_user_text">#90A4AE</color>
+    <color name="main_headline">#455A64</color>
+    <color name="sub_description_color">#78909C</color>
+    <color name="sub_date_color">#a4b1b7</color>
+
+
+    <color name="blue_alpha">#9ac1d0d7</color>
 
 
 </resources><!---->

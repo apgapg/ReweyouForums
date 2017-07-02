@@ -1,6 +1,7 @@
 package in.reweyou.reweyouforums;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -11,7 +12,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
@@ -61,12 +61,7 @@ public class CommentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_comment);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
@@ -98,7 +93,6 @@ public class CommentActivity extends AppCompatActivity {
         viewpager = (ViewPager) findViewById(R.id.viewPager);
         tablayout = (TabLayout) findViewById(R.id.tabLayout);
 
-
         if (isfromNoti || isfromNotiAdapter) {
             pagerAdapter = new PagerAdapter(getSupportFragmentManager());
             viewpager.setAdapter(pagerAdapter);
@@ -109,8 +103,27 @@ public class CommentActivity extends AppCompatActivity {
             viewpager.setAdapter(pagerAdapterSingle);
 
         }
+        changeTabsFont();
 
 
+    }
+
+    private void changeTabsFont() {
+
+        ViewGroup vg = (ViewGroup) tablayout.getChildAt(0);
+        int tabsCount = vg.getChildCount();
+        for (int j = 0; j < tabsCount; j++) {
+            ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
+            int tabChildsCount = vgTab.getChildCount();
+            for (int i = 0; i < tabChildsCount; i++) {
+                View tabViewChild = vgTab.getChildAt(i);
+                if (tabViewChild instanceof TextView) {
+                    Typeface type = Typeface.createFromAsset(CommentActivity.this.getAssets(), "Quicksand-Medium.ttf");
+
+                    ((TextView) tabViewChild).setTypeface(type);
+                }
+            }
+        }
     }
 
 

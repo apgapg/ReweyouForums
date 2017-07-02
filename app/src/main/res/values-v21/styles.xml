@@ -30,9 +30,9 @@
 
     <style name="AppTheme2" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#64496D</item>
-        <item name="colorPrimaryDark">#000000</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/sub_description_color</item>
+        <item name="colorPrimaryDark">@color/main_description_text</item>
+        <item name="colorAccent">@color/main_description_text</item>
         <item name="android:windowContentTransitions">true</item>
 
 

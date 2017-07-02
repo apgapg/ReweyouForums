@@ -8,7 +8,7 @@
         android:right="2dp"
         android:top="2dp">
         <shape android:shape="oval">
-            <solid android:color="@color/main_background_pink" />
+            <solid android:color="@color/sub_description_color" />
 
         </shape>
     </item>

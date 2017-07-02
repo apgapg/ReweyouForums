@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:paddingTop="30dp"
     tools:context="in.reweyou.reweyouforums.CommentActivity">
 
 
@@ -26,7 +26,7 @@
             android:paddingTop="8dp" />
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <TextView
+    <in.reweyou.reweyouforums.customView.TextViewCustomFont
         android:id="@+id/commenttxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
         android:gravity="center"
         android:paddingTop="1dp"
         android:text="No comments yet\nBe the first one to comment"
-        android:textColor="#757575"
+        android:textColor="@color/sub_description_color"
         android:textSize="13dp"
 
         android:visibility="gone" />

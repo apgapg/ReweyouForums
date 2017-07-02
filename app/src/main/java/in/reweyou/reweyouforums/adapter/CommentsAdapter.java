@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.reweyou.reweyouforums.CommentActivity;
+import in.reweyou.reweyouforums.ForumMainActivity;
 import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.customView.ColorTextView;
@@ -55,6 +56,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private final Context mContext;
     private final UserSessionManager userSessionManager;
     List<Object> messagelist;
+
 
     public CommentsAdapter(Context context) {
         this.mContext = context;
@@ -548,12 +550,17 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     editcomment(getAdapterPosition());
                 }
             });
-            reply.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((CommentActivity) mContext).passClicktoEditText(((CommentModel) messagelist.get(getAdapterPosition())).getUsername(), (((CommentModel) messagelist.get((getAdapterPosition()))).getCommentid()), getAdapterPosition());
-                }
-            });
+
+            if (mContext instanceof ForumMainActivity) {
+
+            } else
+                reply.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        ((CommentActivity) mContext).passClicktoEditText(((CommentModel) messagelist.get(getAdapterPosition())).getUsername(), (((CommentModel) messagelist.get((getAdapterPosition()))).getCommentid()), getAdapterPosition());
+                    }
+                });
 
             like.setOnClickListener(new View.OnClickListener() {
                 @Override

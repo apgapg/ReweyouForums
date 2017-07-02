@@ -26,7 +26,7 @@
         android:layout_marginTop="8dp"
         android:layout_toRightOf="@+id/image"
         android:text="Username"
-        android:textColor="#455A64"
+        android:textColor="@color/main_headline"
         android:textSize="13dp"
         android:textStyle="bold" />
 
@@ -54,7 +54,7 @@
         android:paddingRight="8dp"
         android:paddingTop="1dp"
         android:text="2 hr ago"
-        android:textColor="#B0BEC5"
+        android:textColor="@color/sub_date_color"
         android:textSize="11dp"
         android:textStyle="italic" />
 
@@ -113,7 +113,7 @@
         android:paddingTop="4dp"
         android:text="0"
 
-        android:textColor="#757575"
+        android:textColor="#607D8B"
         android:textSize="12dp"
         android:textStyle="bold" />
 
