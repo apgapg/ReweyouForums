@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    android:background="@drawable/gradient_main_back"
+    android:background="#F5F6FB"
     tools:context="in.reweyou.reweyouforums.GroupActivity">
 
     <ImageView
@@ -19,24 +19,38 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/gradient_black_toolbar"
+        android:background="@color/transparent"
         android:theme="@style/AppTheme.NoActionBar.AppBarOverlay"
         app:elevation="0dp">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@color/transparent"
-            app:popupTheme="@style/AppTheme.NoActionBar.PopupOverlay" />
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabLayout"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:background="@color/transparent"
-            app:tabIndicatorColor="#651FFF"
-            app:tabIndicatorHeight="4dp" />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="4dp">
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="36dp"
+                android:layout_height="40dp"
+                android:paddingTop="3dp"
+                android:scaleType="center"
+                app:srcCompat="@drawable/ic_chevron_left_black_24dp" />
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="40dp"
+                android:background="@color/transparent"
+                app:tabIndicatorColor="@color/transparent"
+                app:tabIndicatorHeight="4dp"
+                app:tabSelectedTextColor="#FF34454D"
+                app:tabTextColor="@color/sub_description_color" />
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/uploadingContainer"

@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -45,7 +44,6 @@ public class GroupThreadsFragment extends Fragment {
     private FeeedsAdapter feeedsAdapter;
     private UserSessionManager userSessionManager;
     private CardView nopostcard;
-    private SwipeRefreshLayout swipeRefreshLayout;
     private Button createpost;
     private CardView joingroupcard;
     private FloatingActionButton fab;
@@ -64,24 +62,11 @@ public class GroupThreadsFragment extends Fragment {
         Log.d(TAG, "onCreateView: djwjnjwendjwenjdwjdn");
         View layout = inflater.inflate(R.layout.fragment_group_threads, container, false);
         recyclerView = (RecyclerView) layout.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
         nopostcard = (CardView) layout.findViewById(R.id.nopostcard);
         joingroupcard = (CardView) layout.findViewById(R.id.joincard);
-        fab = (FloatingActionButton) layout.findViewById(R.id.fab);
-        swipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swiperefresh);
         isfollow = getArguments().getBoolean("follow");
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                if (isfollow)
-                    getData();
-                else {
-                    joingroupcard.setVisibility(View.VISIBLE);
-                    fab.setVisibility(View.INVISIBLE);
 
-                }
-            }
-        });
         createpost = (Button) layout.findViewById(R.id.createpost);
 
         createpost.setOnClickListener(new View.OnClickListener() {
@@ -95,7 +80,7 @@ public class GroupThreadsFragment extends Fragment {
                 });
             }
         });
-        fab.setOnClickListener(new View.OnClickListener() {
+        layout.findViewById(R.id.create).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -112,23 +97,7 @@ public class GroupThreadsFragment extends Fragment {
             }
         });
 
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0 || dy < 0 && fab.isShown()) {
-                    fab.hide();
-                }
-            }
 
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    fab.show();
-                }
-
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-        });
         return layout;
     }
 
@@ -174,12 +143,9 @@ public class GroupThreadsFragment extends Fragment {
     private void getData() {
 
         recyclerView.setVisibility(View.VISIBLE);
-        swipeRefreshLayout.setEnabled(true);
         nopostcard.setVisibility(View.GONE);
         joingroupcard.setVisibility(View.GONE);
-        fab.setVisibility(View.VISIBLE);
 
-        swipeRefreshLayout.setRefreshing(true);
         AndroidNetworking.post("https://www.reweyou.in/google/list_threads.php")
                 .addBodyParameter("uid", userSessionManager.getUID())
                 .addBodyParameter("authtoken", userSessionManager.getAuthToken())
@@ -194,13 +160,11 @@ public class GroupThreadsFragment extends Fragment {
                     public void onResponse(final List<ThreadModel> list) {
                         if (new NetworkHandler().isActivityAlive(TAG, mContext, list)) {
 
-                            swipeRefreshLayout.setRefreshing(false);
                             new Handler().post(new Runnable() {
                                 @Override
                                 public void run() {
                                     if (list.size() == 0) {
                                         nopostcard.setVisibility(View.VISIBLE);
-                                        swipeRefreshLayout.setEnabled(false);
                                     } else
                                         feeedsAdapter.add(list);
                                 }
@@ -214,7 +178,6 @@ public class GroupThreadsFragment extends Fragment {
 
                             Log.e(TAG, "run: error: " + anError.getErrorDetail());
 
-                            swipeRefreshLayout.setRefreshing(false);
                         }
                     }
                 });

@@ -3,7 +3,6 @@ package in.reweyou.reweyouforums.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -37,8 +36,7 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_login, container, false);
         TextView textView = (TextView) layout.findViewById(R.id.text);
-        Typeface type = Typeface.createFromAsset(mContext.getAssets(), "cr.ttf");
-        textView.setTypeface(type);
+
         layout.findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,7 +56,6 @@ public class LoginFragment extends Fragment {
         });
 
         TextView textView1 = (TextView) layout.findViewById(R.id.text2);
-        textView1.setTypeface(type);
         return layout;
     }
 

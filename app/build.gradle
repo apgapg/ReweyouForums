@@ -78,7 +78,6 @@ dependencies {
     compile 'com.kbeanie:multipicker:1.1.31@aar'
     compile project(':spyglass')
     compile 'io.paperdb:paperdb:2.1'
-    compile 'com.github.lsjwzh.RecyclerViewPager:lib:v1.1.2@aar'
 
 
 

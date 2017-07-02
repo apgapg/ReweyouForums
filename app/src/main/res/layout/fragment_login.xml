@@ -10,7 +10,7 @@
         android:layout_marginTop="60dp"
         android:src="@mipmap/ic_launcher" />
 
-    <TextView
+    <in.reweyou.reweyouforums.customView.TextViewCustomFont
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
         android:textSize="24dp"
         android:textStyle="bold" />
 
-    <TextView
+    <in.reweyou.reweyouforums.customView.TextViewCustomFont
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text"
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
 
-    <TextView
+    <in.reweyou.reweyouforums.customView.TextViewCustomFont
         android:id="@+id/text2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
         android:textSize="14dp" />
 
 
-    <TextView
+    <in.reweyou.reweyouforums.customView.TextViewCustomFont
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -65,7 +65,7 @@
         android:textColor="#757575"
         android:textSize="11dp" />
 
-    <TextView
+    <in.reweyou.reweyouforums.customView.TextViewCustomFont
         android:id="@+id/terms"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

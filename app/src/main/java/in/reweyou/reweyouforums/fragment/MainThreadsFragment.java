@@ -2,6 +2,7 @@ package in.reweyou.reweyouforums.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -19,7 +20,6 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
-import com.lsjwzh.widget.recyclerviewpager.RecyclerViewPager;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,10 +28,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import in.reweyou.reweyouforums.CreatePostActivity;
 import in.reweyou.reweyouforums.ForumMainActivity;
 import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.adapter.FeeedsAdapter;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
+import in.reweyou.reweyouforums.customView.RecyclerViewPager;
 import in.reweyou.reweyouforums.model.CommentModel;
 import in.reweyou.reweyouforums.model.ReplyCommentModel;
 import in.reweyou.reweyouforums.model.ThreadModel;
@@ -86,6 +88,12 @@ public class MainThreadsFragment extends Fragment {
         feeedsAdapter = new FeeedsAdapter(mContext, this);
         recyclerView.setAdapter(feeedsAdapter);
 
+        layout.findViewById(R.id.create).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mContext.startActivity(new Intent(mContext, CreatePostActivity.class));
+            }
+        });
 
         return layout;
     }

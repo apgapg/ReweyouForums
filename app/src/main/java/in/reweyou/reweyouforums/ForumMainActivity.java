@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -130,8 +129,7 @@ public class ForumMainActivity extends AppCompatActivity {
 
 
         tabnametoolbar = (TextView) toolbar.findViewById(R.id.tabnametoolbar);
-        Typeface type = Typeface.createFromAsset(getAssets(), "cr.ttf");
-        tabnametoolbar.setTypeface(type);
+
         viewPager = (CustomViewPager) findViewById(R.id.viewPager);
 
         viewPager.setOffscreenPageLimit(4);
@@ -240,13 +238,13 @@ public class ForumMainActivity extends AppCompatActivity {
         findViewById(R.id.leftmenu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewPager.setCurrentItem(POSITION_YOUR_GROUPS);
+                viewPager.setCurrentItem(POSITION_EXPLORE_GROUPS);
             }
         });
         findViewById(R.id.rightmenu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewPager.setCurrentItem(POSITION_EXPLORE_GROUPS);
+                viewPager.setCurrentItem(POSITION_YOUR_GROUPS);
             }
         });
 

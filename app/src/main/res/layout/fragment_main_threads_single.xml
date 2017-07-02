@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
 
-    <com.lsjwzh.widget.recyclerviewpager.RecyclerViewPager
+    <in.reweyou.reweyouforums.customView.RecyclerViewPager
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
 

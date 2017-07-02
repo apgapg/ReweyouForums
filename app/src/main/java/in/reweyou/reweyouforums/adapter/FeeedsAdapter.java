@@ -1,6 +1,9 @@
 package in.reweyou.reweyouforums.adapter;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -16,9 +19,11 @@ import android.graphics.drawable.GradientDrawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -69,6 +74,8 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import in.reweyou.reweyouforums.CommentActivity;
 import in.reweyou.reweyouforums.ForumMainActivity;
@@ -148,7 +155,13 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
     @Override
     public void onBindViewHolder(final BaseViewHolder holder, int position) {
+
+        Log.d(TAG, "onBindViewHolder: callledddd");
+        holder.nested.scrollTo(0, 0);
         holder.description.setText(messagelist.get(position).getDescription().trim());
+        holder.likenumber.setText(messagelist.get(position).getUpvotes());
+        holder.commentnum.setText(messagelist.get(position).getComments());
+        holder.userlevel.setText(messagelist.get(position).getBadge());
 
         try {
             JSONObject jsonObject = new JSONObject(messagelist.get(position).getTags().replace("\\", ""));
@@ -271,7 +284,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
     }
 
-    private void onbindimage1(Image1ViewHolder image1ViewHolder, final int position) {
+    private void onbindimage1(final Image1ViewHolder image1ViewHolder, final int position) {
         Glide.with(mContext).load(messagelist.get(position).getImage1()).diskCacheStrategy(DiskCacheStrategy.SOURCE).override(Utils.screenWidth - Utils.convertpxFromDp(8), Target.SIZE_ORIGINAL).into(image1ViewHolder.image1);
 
     }
@@ -305,24 +318,99 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
 
     @Override
-    public void onBindViewHolder(BaseViewHolder holder, int position, List<Object> payloads) {
-
+    public void onBindViewHolder(final BaseViewHolder holder, int position, List<Object> payloads) {
+        Log.d(TAG, "onBindViewHolder: called");
         if (payloads.contains("like")) {
             messagelist.get(position).setStatus("true");
             holder.like.setImageResource(R.drawable.ic_heart_like);
-            holder.liketemp.animate().rotation(80).setDuration(650).alpha(0.0f).translationYBy(-Utils.convertpxFromDp(70)).translationXBy(Utils.convertpxFromDp(25)).setInterpolator(new DecelerateInterpolator()).start();
+
+            Log.d(TAG, "onBindViewHolder: wfejqfwjkefkjwfwebfkwebqkfweqjfw");
+
+            ValueAnimator valueAnimator = ValueAnimator.ofFloat(0.0f, 1.0f);
+            valueAnimator.setDuration(500);
+            valueAnimator.setInterpolator(new DecelerateInterpolator());
+            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    holder.like.setScaleX((Float) animation.getAnimatedValue());
+                    holder.like.setScaleY((Float) animation.getAnimatedValue());
+                    holder.like.setAlpha(1.0f - ((Float) animation.getAnimatedValue()));
+                }
+
+
+            });
+
+            valueAnimator.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    holder.like.setScaleX(0.0f);
+                    holder.like.setScaleY(0.0f);
+                    holder.like.setAlpha(1.0f);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
+            valueAnimator.start();
+
             holder.likenumber.setText(String.valueOf(Integer.parseInt(messagelist.get(position).getUpvotes()) + 1));
             messagelist.get(position).setUpvotes(String.valueOf(Integer.parseInt(messagelist.get(position).getUpvotes()) + 1));
         } else if (payloads.contains("unlike")) {
             messagelist.get(position).setStatus("false");
             holder.like.setImageResource(R.drawable.ic_heart_like_grey);
+
+
+            holder.like.animate().setDuration(600).alpha(0.0f).scaleX(1).scaleY(1).withEndAction(new Runnable() {
+                @Override
+                public void run() {
+                    holder.like.setScaleX(0.0f);
+                    holder.like.setScaleY(0.0f);
+                    holder.like.setAlpha(1.0f);
+                }
+            }).setInterpolator(new DecelerateInterpolator()).start();
+
+            ValueAnimator valueAnimator = ValueAnimator.ofFloat(0.0f, 1.0f);
+            valueAnimator.setDuration(500);
+            valueAnimator.setInterpolator(new DecelerateInterpolator());
+            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    holder.like.setScaleX((Float) animation.getAnimatedValue());
+                    holder.like.setScaleY((Float) animation.getAnimatedValue());
+                    holder.like.setAlpha(1.0f - ((Float) animation.getAnimatedValue()));
+                }
+
+
+            });
+
+            valueAnimator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    holder.like.setScaleX(0.0f);
+                    holder.like.setScaleY(0.0f);
+                    holder.like.setAlpha(1.0f);
+                }
+            });
+            valueAnimator.start();
+
             if (Integer.parseInt(messagelist.get(position).getUpvotes()) != 0) {
                 holder.likenumber.setText(String.valueOf(Integer.parseInt(messagelist.get(position).getUpvotes()) - 1));
                 messagelist.get(position).setUpvotes(String.valueOf(Integer.parseInt(messagelist.get(position).getUpvotes()) - 1));
 
             }
-        } else
-            super.onBindViewHolder(holder, position, payloads);
+        } else super.onBindViewHolder(holder, position, payloads);
     }
 
     @Override
@@ -373,7 +461,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                 .getAsString(new StringRequestListener() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d(TAG, "onResponse: " + response);
+                        Log.d(TAG, "onResponsep: " + response);
 
                     }
 
@@ -607,6 +695,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
 
     public class BaseViewHolder extends RecyclerView.ViewHolder {
+        private NestedScrollView nested;
         private RelativeLayout commentcont;
         private TextView replyheader;
         private ProgressBar progressBar;
@@ -629,20 +718,44 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             comment = (ImageView) inflate.findViewById(R.id.comment);
             share = (ImageView) inflate.findViewById(R.id.share);
             like = (ImageView) inflate.findViewById(R.id.like);
-            liketemp = (ImageView) inflate.findViewById(R.id.templike);
 
             edit = (TextView) inflate.findViewById(R.id.edit);
 
-            likenumber = (TextView) inflate.findViewById(R.id.likenumber);
+            likenumber = (TextView) inflate.findViewById(R.id.numlikes);
             userlevel = (TextView) inflate.findViewById(R.id.userlevel);
             description = (ColorTextView) inflate.findViewById(R.id.description);
             cv = (CardView) inflate.findViewById(R.id.cv);
+            commentnum = (TextView) inflate.findViewById(R.id.numcomments);
+
             FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(Utils.screenWidth - Utils.convertpxFromDp(8), ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL);
             cv.setLayoutParams(layoutParams);
+
+            cv.setOnClickListener(new DoubleClickListener() {
+                @Override
+                public void onSingleClick(View v) {
+                    if (mContext instanceof ForumMainActivity)
+                        ((ForumMainActivity) mContext).movetonextcard();
+                }
+
+                @Override
+                public void onDoubleClick(View v) {
+
+                    if (messagelist.get(getAdapterPosition()).getStatus().equals("false")) {
+                        FeeedsAdapter.this.notifyItemChanged(getAdapterPosition(), "like");
+                    } else FeeedsAdapter.this.notifyItemChanged(getAdapterPosition(), "unlike");
+
+                    sendrequestforlike(getAdapterPosition());
+
+
+                }
+            });
+
+
+            nested = (NestedScrollView) inflate.findViewById(R.id.nested);
+
             commentcontainer = (LinearLayout) inflate.findViewById(R.id.commentcontainer);
             username = (TextView) inflate.findViewById(R.id.usernamee);
             date = (TextView) inflate.findViewById(R.id.date);
-            commentnum = (TextView) inflate.findViewById(R.id.commentnumber);
             commentcont = (RelativeLayout) inflate.findViewById(R.id.commmentcont);
             commentcont.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -702,22 +815,69 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         }
     }
 
+    public abstract class DoubleClickListener implements View.OnClickListener {
+
+        private static final long DOUBLE_CLICK_TIME_DELTA = 300;//milliseconds
+        long lastClickTime = 0;
+        private Timer timer = null;  //at class level;
+        private int DELAY = 320;
+
+        @Override
+        public void onClick(View v) {
+            long clickTime = System.currentTimeMillis();
+            if (clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA) {
+                processDoubleClickEvent(v);
+            } else {
+                processSingleClickEvent(v);
+            }
+            lastClickTime = clickTime;
+        }
+
+
+        public void processSingleClickEvent(final View v) {
+
+            final Handler handler = new Handler();
+            final Runnable mRunnable = new Runnable() {
+                public void run() {
+                    onSingleClick(v); //Do what ever u want on single click
+
+                }
+            };
+
+            TimerTask timertask = new TimerTask() {
+                @Override
+                public void run() {
+                    handler.post(mRunnable);
+                }
+            };
+            timer = new Timer();
+            timer.schedule(timertask, DELAY);
+
+        }
+
+
+        public void processDoubleClickEvent(View v) {
+            if (timer != null) {
+                timer.cancel(); //Cancels Running Tasks or Waiting Tasks.
+                timer.purge();  //Frees Memory by erasing cancelled Tasks.
+            }
+            onDoubleClick(v);//Do what ever u want on Double Click
+        }
+
+        public abstract void onSingleClick(View v);
+
+        public abstract void onDoubleClick(View v);
+    }
 
     private class Image1ViewHolder extends BaseViewHolder {
+        private NestedScrollView nested;
         private CardView cv;
         private ImageView image1;
 
         public Image1ViewHolder(View inflate) {
             super(inflate);
             image1 = (ImageView) inflate.findViewById(R.id.image1);
-            cv = (CardView) inflate.findViewById(R.id.cv);
-            cv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mContext instanceof ForumMainActivity)
-                        ((ForumMainActivity) mContext).movetonextcard();
-                }
-            });
+
             /*image1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -737,12 +897,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         public TextViewHolder(View inflate) {
             super(inflate);
             cv = (CardView) inflate.findViewById(R.id.cv);
-            cv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((ForumMainActivity) mContext).movetonextcard();
-                }
-            });
+
 
         }
     }

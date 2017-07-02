@@ -2,11 +2,13 @@
 
 
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nested"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipToPadding="false"
     android:paddingTop="@dimen/card_padding_top"
     android:scrollbars="none">
+
 
     <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -38,8 +40,7 @@
             <ImageView
                 android:id="@+id/image1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:foreground="@drawable/ripple_effect_white_rec" />
+                android:layout_height="wrap_content" />
 
             <in.reweyou.reweyouforums.customView.ColorTextView
                 android:id="@+id/description"
@@ -48,7 +49,7 @@
                 android:autoLink="web"
                 android:gravity="center_vertical"
                 android:lineSpacingExtra="2dp"
-                android:paddingBottom="10dp"
+                android:paddingBottom="8dp"
                 android:paddingLeft="@dimen/padding_main_description"
                 android:paddingRight="@dimen/padding_main_description"
                 android:paddingTop="8dp"
@@ -56,6 +57,63 @@
                 android:textColor="@color/main_description_text"
                 android:textIsSelectable="true"
                 android:textSize="@dimen/main_description_text_size" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+
+                android:orientation="horizontal">
+
+                <in.reweyou.reweyouforums.customView.TextViewCustomFont
+                    android:id="@+id/numlikes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="12dp"
+                    android:gravity="center_vertical"
+                    android:text="0"
+                    android:textColor="@color/main_description_text"
+                    android:textSize="15dp" />
+
+                <in.reweyou.reweyouforums.customView.TextViewCustomFont
+                    android:id="@+id/fe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/numlikes"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="6dp"
+
+
+                    android:text="Likes"
+                    android:textColor="@color/sub_description_color"
+                    android:textSize="13dp" />
+
+                <in.reweyou.reweyouforums.customView.TextViewCustomFont
+                    android:id="@+id/numcomments"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="12dp"
+                    android:layout_toLeftOf="@+id/ddd"
+                    android:layout_toRightOf="@+id/fe"
+                    android:gravity="center_vertical"
+                    android:text="0"
+                    android:textColor="@color/main_description_text"
+                    android:textSize="15dp" />
+
+                <in.reweyou.reweyouforums.customView.TextViewCustomFont
+                    android:id="@+id/ddd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="12dp"
+
+                    android:gravity="center_vertical"
+                    android:paddingLeft="6dp"
+                    android:text="Comments"
+                    android:textColor="@color/sub_description_color"
+                    android:textSize="13dp" />
+
+
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -106,6 +164,15 @@
 
         </LinearLayout>
 
+        <ImageView
+            android:id="@+id/like"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:alpha="1.0"
+            android:scaleX="0"
+            android:scaleY="0"
+            app:srcCompat="@drawable/ic_heart_like" />
 
     </android.support.v7.widget.CardView>
 

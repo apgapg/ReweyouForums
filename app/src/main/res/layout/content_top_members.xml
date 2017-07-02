@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="44dp"
 
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="in.reweyou.reweyouforums.CommentActivity">
@@ -15,6 +16,7 @@
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginTop="5dp"
+        app:cardCornerRadius="8dp"
         app:cardElevation="4dp">
 
         <android.support.v4.widget.SwipeRefreshLayout

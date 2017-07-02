@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,7 +15,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
 import android.util.SparseArray;
@@ -82,16 +82,18 @@ public class GroupActivity extends AppCompatActivity {
     private boolean isUploading;
     private AlertDialogBox uploadingalertbox;
     private String groupadminname = "";
+    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
+        findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         try {
 
@@ -115,12 +117,7 @@ public class GroupActivity extends AppCompatActivity {
 
         userSessionManager = new UserSessionManager(this);
         initUploadingContainer();
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+
 
         back = (ImageView) findViewById(R.id.backgroundimageview);
         setBackgroundtint();
@@ -129,7 +126,7 @@ public class GroupActivity extends AppCompatActivity {
         viewPager.setOffscreenPageLimit(2);
         pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
 
         if (isfollowed)
@@ -148,6 +145,26 @@ public class GroupActivity extends AppCompatActivity {
 
             }
         };
+        changeTabsFont();
+
+    }
+
+    private void changeTabsFont() {
+
+        ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
+        int tabsCount = vg.getChildCount();
+        for (int j = 0; j < tabsCount; j++) {
+            ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
+            int tabChildsCount = vgTab.getChildCount();
+            for (int i = 0; i < tabChildsCount; i++) {
+                View tabViewChild = vgTab.getChildAt(i);
+                if (tabViewChild instanceof TextView) {
+                    Typeface type = Typeface.createFromAsset(GroupActivity.this.getAssets(), "Quicksand-Medium.ttf");
+
+                    ((TextView) tabViewChild).setTypeface(type);
+                }
+            }
+        }
     }
 
     private void initUploadingContainer() {

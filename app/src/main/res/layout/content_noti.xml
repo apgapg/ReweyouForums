@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="40dp"
+    android:layout_marginTop="44dp"
     tools:context="in.reweyou.reweyouforums.NotificationActivity"
     tools:showIn="@layout/activity_noti">
 
