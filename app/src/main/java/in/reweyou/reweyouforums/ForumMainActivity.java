@@ -740,6 +740,10 @@ public class ForumMainActivity extends AppCompatActivity {
         ((MainThreadsFragment) pagerAdapter.getRegisteredFragment(POSITION_MAIN_FEEDS)).changenextcard();
     }
 
+    public void showCreateGroupFragment() {
+        viewPager.setCurrentItem(POSITION_CREATE_GROUP);
+    }
+
     private class PagerAdapter extends FragmentStatePagerAdapter {
         SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
 

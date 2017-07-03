@@ -102,6 +102,12 @@ public class YourGroupsFragment extends Fragment {
                 showsortdialog();
             }
         });
+        layout.findViewById(R.id.create).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((ForumMainActivity) mContext).showCreateGroupFragment();
+            }
+        });
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
