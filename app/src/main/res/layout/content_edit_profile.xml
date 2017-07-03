@@ -36,7 +36,7 @@
                 app:myborderColor="#6200EA"
                 app:myborderWidth="2dp" />
 
-            <TextView
+            <in.reweyou.reweyouforums.customView.TextViewCustomFont
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -47,12 +47,13 @@
 
         </LinearLayout>
 
-        <TextView
+        <in.reweyou.reweyouforums.customView.TextViewCustomFont
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:paddingLeft="2dp"
             android:text="USERNAME"
+            android:textColor="@color/main_description_text"
             android:textSize="12dp"
             android:textStyle="bold" />
 
@@ -83,12 +84,13 @@
             android:layout_marginTop="4dp"
             android:background="@color/greylight" />
 
-        <TextView
+        <in.reweyou.reweyouforums.customView.TextViewCustomFont
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:paddingLeft="2dp"
             android:text="SHORT INFO"
+            android:textColor="@color/main_description_text"
             android:textSize="12dp"
             android:textStyle="bold" />
 

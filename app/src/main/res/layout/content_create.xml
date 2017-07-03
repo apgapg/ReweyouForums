@@ -43,13 +43,13 @@
                         android:layout_marginLeft="16dp"
                         android:layout_marginTop="16dp">
 
-                        <TextView
+                        <in.reweyou.reweyouforums.customView.TextViewCustomFont
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
 
                             android:layout_marginTop="2dp"
                             android:text="Create a Post"
-                            android:textColor="#424242"
+                            android:textColor="@color/main_description_text"
                             android:textSize="16dp"
                             android:textStyle="bold" />
 
@@ -496,7 +496,7 @@
 
                     android:background="#757575" />
 
-                <TextView
+                <in.reweyou.reweyouforums.customView.TextViewCustomFont
                     android:id="@+id/attach"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -504,7 +504,7 @@
                     android:paddingLeft="12dp"
                     android:paddingRight="2dp"
                     android:text="ATTACH ->"
-                    android:textColor="@color/main_background_pink"
+                    android:textColor="@color/main_description_text"
                     android:textSize="11dp" />
 
                 <RelativeLayout
@@ -528,14 +528,14 @@
                         android:scaleType="center"
                         app:srcCompat="@drawable/ic_photo_camera_black_24px_grey" />
 
-                    <TextView
+                    <in.reweyou.reweyouforums.customView.TextViewCustomFont
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_toRightOf="@+id/c1"
                         android:gravity="center_vertical"
                         android:paddingRight="8dp"
                         android:text="IMAGE"
-                        android:textColor="#757575"
+                        android:textColor="@color/sub_description_color"
                         android:textSize="11dp" />
                 </RelativeLayout>
 
@@ -556,7 +556,7 @@
                         android:scaleType="center"
                         app:srcCompat="@drawable/ic_attach_file_black_24px" />
 
-                    <TextView
+                    <in.reweyou.reweyouforums.customView.TextViewCustomFont
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_toRightOf="@+id/c2"
@@ -564,7 +564,7 @@
                         android:paddingRight="10dp"
 
                         android:text="LINK"
-                        android:textColor="#757575"
+                        android:textColor="@color/sub_description_color"
                         android:textSize="11dp" />
                 </RelativeLayout>
 

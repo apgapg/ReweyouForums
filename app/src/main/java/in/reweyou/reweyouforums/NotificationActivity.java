@@ -8,9 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
@@ -38,12 +37,22 @@ public class NotificationActivity extends AppCompatActivity {
     private UserSessionManager userSessionManager;
     private AlertDialogBox alertDialogBox;
     private boolean dataloaded;
+    private ImageView doneall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_noti);
 
+        doneall = (ImageView) findViewById(R.id.doneall);
+        doneall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (dataloaded) {
+                    alertDialogBox.show();
+                }
+            }
+        });
         userSessionManager = new UserSessionManager(this);
         findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,26 +152,6 @@ public class NotificationActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_forum, menu);
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    // handle button activities
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_noti) {
-            // do something here
-            if (dataloaded) {
-                alertDialogBox.show();
-            }
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     private void sendrequestforseenchange() {
         AndroidNetworking.post("https://www.reweyou.in/google/notification_read.php")

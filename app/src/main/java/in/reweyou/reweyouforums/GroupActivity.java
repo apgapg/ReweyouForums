@@ -108,8 +108,6 @@ public class GroupActivity extends AppCompatActivity {
             grouprules = getIntent().getStringExtra("rules");
             isfollowed = getIntent().getBooleanExtra("follow", false);
 
-            getSupportActionBar().setTitle(groupname);
-
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -41,6 +41,6 @@
   public *;
 }
 
--keepclassmembers class com.google.android.youtube.** {
+-keepnames class com.google.android.youtube.** {
   *;
 }

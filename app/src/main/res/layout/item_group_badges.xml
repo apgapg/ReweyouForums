@@ -7,25 +7,25 @@
     android:orientation="horizontal">
 
 
-    <TextView
+    <in.reweyou.reweyouforums.customView.TextViewCustomFont
         android:id="@+id/groupname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:maxWidth="150dp"
         android:text="Groupname"
-        android:textColor="#212121"
+        android:textColor="@color/main_description_text"
         android:textSize="14dp"
         android:textStyle="bold" />
 
-    <TextView
+    <in.reweyou.reweyouforums.customView.TextViewCustomFont
         android:id="@+id/grouppoints"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:paddingLeft="4dp"
         android:text="-100 pts"
-        android:textColor="#757575"
+        android:textColor="@color/sub_description_color"
         android:textSize="12dp"
         android:textStyle="" />
 
@@ -34,10 +34,10 @@
         android:layout_height="match_parent"
         android:layout_weight="1" />
 
-    <TextView
+    <in.reweyou.reweyouforums.customView.TextViewCustomFont
         android:id="@+id/userlevel"
         android:layout_width="wrap_content"
-        android:layout_height="24dp"
+        android:layout_height="22dp"
         android:layout_gravity="center"
         android:background="@drawable/background_user_level"
         android:drawableLeft="@drawable/ic_user_level_layer"

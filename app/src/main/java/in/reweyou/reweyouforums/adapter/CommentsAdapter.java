@@ -286,6 +286,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         messagelist.clear();
         messagelist.addAll(list);
         notifyDataSetChanged();
+
     }
 
     private void editcomment(final int adapterPosition) {

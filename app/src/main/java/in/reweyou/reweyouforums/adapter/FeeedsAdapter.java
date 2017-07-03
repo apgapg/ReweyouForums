@@ -53,6 +53,7 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
@@ -179,37 +180,19 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         Glide.with(fragmentContext).load(messagelist.get(position).getProfilepic()).diskCacheStrategy(DiskCacheStrategy.SOURCE).error(R.drawable.download).into(holder.profileimage);
         holder.date.setText(messagelist.get(position).getTimestamp().replace("about ", "").replace(" ago", ""));
 
-        if (mContext instanceof ForumMainActivity)
+        if (mContext instanceof ForumMainActivity || mContext instanceof GroupActivity)
             holder.adapterComment.add(messagelist.get(position).getCommentlistshow());
-        switch (getItemViewType(position))
 
-        {
-            case VIEW_TYPE_IMAGE_1:
-                Image1ViewHolder image1ViewHolder = (Image1ViewHolder) holder;
-                onbindimage1(image1ViewHolder, position);
-                return;
-            case VIEW_TYPE_IMAGE_2:
-                Image2ViewHolder image2ViewHolder = (Image2ViewHolder) holder;
-                onbindimage2(image2ViewHolder, position);
-                return;
-            case VIEW_TYPE_IMAGE_3:
-                Image3ViewHolder image3ViewHolder = (Image3ViewHolder) holder;
-                onbindimage3(image3ViewHolder, position);
-                return;
-            case VIEW_TYPE_IMAGE_4:
-                Image4ViewHolder image4ViewHolder = (Image4ViewHolder) holder;
-                onbindimage4(image4ViewHolder, position);
-                return;
-            case VIEW_TYPE_TEXT:
-                return;
-            case VIEW_TYPE_LINK:
-                LinkViewHolder linkViewHolder = (LinkViewHolder) holder;
-                onbindlink(linkViewHolder, position);
-                return;
-            case VIEW_TYPE_YOUTUBE_LINK:
-                YoutubeViewHolder youtubeViewHolder = (YoutubeViewHolder) holder;
-                onbindyoutubelink(youtubeViewHolder, position);
-                return;
+        if (messagelist.get(position).getUid().equals(userSessionManager.getUID())) {
+            holder.edit.setVisibility(View.VISIBLE);
+        } else holder.edit.setVisibility(View.GONE);
+
+
+        if (messagelist.get(position).getStatus().equals("true")) {
+            holder.likebuttn.setImageResource(R.drawable.ic_heart_like);
+        } else if (messagelist.get(position).getStatus().equals("false")) {
+
+            holder.likebuttn.setImageResource(R.drawable.ic_heart_like_grey);
 
         }
 
@@ -244,6 +227,39 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
             }
         }
+        switch (getItemViewType(position))
+
+        {
+            case VIEW_TYPE_IMAGE_1:
+                Image1ViewHolder image1ViewHolder = (Image1ViewHolder) holder;
+                onbindimage1(image1ViewHolder, position);
+                return;
+            case VIEW_TYPE_IMAGE_2:
+                Image2ViewHolder image2ViewHolder = (Image2ViewHolder) holder;
+                onbindimage2(image2ViewHolder, position);
+                return;
+            case VIEW_TYPE_IMAGE_3:
+                Image3ViewHolder image3ViewHolder = (Image3ViewHolder) holder;
+                onbindimage3(image3ViewHolder, position);
+                return;
+            case VIEW_TYPE_IMAGE_4:
+                Image4ViewHolder image4ViewHolder = (Image4ViewHolder) holder;
+                onbindimage4(image4ViewHolder, position);
+                return;
+            case VIEW_TYPE_TEXT:
+                return;
+            case VIEW_TYPE_LINK:
+                LinkViewHolder linkViewHolder = (LinkViewHolder) holder;
+                onbindlink(linkViewHolder, position);
+                return;
+            case VIEW_TYPE_YOUTUBE_LINK:
+                YoutubeViewHolder youtubeViewHolder = (YoutubeViewHolder) holder;
+                onbindyoutubelink(youtubeViewHolder, position);
+                return;
+
+        }
+
+
        /* if (messagelist.get(position).getImage().isEmpty())
             forumViewHolder.image.setVisibility(View.GONE);
         else {
@@ -285,7 +301,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
     }
 
     private void onbindimage1(final Image1ViewHolder image1ViewHolder, final int position) {
-        Glide.with(mContext).load(messagelist.get(position).getImage1()).diskCacheStrategy(DiskCacheStrategy.SOURCE).override(Utils.screenWidth - Utils.convertpxFromDp(8), Target.SIZE_ORIGINAL).into(image1ViewHolder.image1);
+        Glide.with(mContext).load(messagelist.get(position).getImage1()).asBitmap().format(DecodeFormat.PREFER_ARGB_8888).diskCacheStrategy(DiskCacheStrategy.SOURCE).override(Utils.screenWidth - Utils.convertpxFromDp(8), Target.SIZE_ORIGINAL).into(image1ViewHolder.image1);
 
     }
 
@@ -323,6 +339,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         if (payloads.contains("like")) {
             messagelist.get(position).setStatus("true");
             holder.like.setImageResource(R.drawable.ic_heart_like);
+            holder.likebuttn.setImageResource(R.drawable.ic_heart_like);
 
             Log.d(TAG, "onBindViewHolder: wfejqfwjkefkjwfwebfkwebqkfweqjfw");
 
@@ -370,6 +387,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         } else if (payloads.contains("unlike")) {
             messagelist.get(position).setStatus("false");
             holder.like.setImageResource(R.drawable.ic_heart_like_grey);
+            holder.likebuttn.setImageResource(R.drawable.ic_heart_like_grey);
 
 
             holder.like.animate().setDuration(600).alpha(0.0f).scaleX(1).scaleY(1).withEndAction(new Runnable() {
@@ -704,7 +722,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         private CommentsAdapter adapterComment;
         private RecyclerView recyclerView;
         private CardView cv;
-        private ImageView profileimage, liketemp, comment, like, share;
+        private ImageView profileimage, liketemp, comment, like, share, likebuttn;
         private TextView username, likenum, commentnum, likenumber;
         private TextView date, userlevel;
         private TextView edit, commenttxt;
@@ -718,7 +736,19 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             comment = (ImageView) inflate.findViewById(R.id.comment);
             share = (ImageView) inflate.findViewById(R.id.share);
             like = (ImageView) inflate.findViewById(R.id.like);
+            likebuttn = (ImageView) inflate.findViewById(R.id.likebutton);
 
+            likebuttn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (messagelist.get(getAdapterPosition()).getStatus().equals("false")) {
+                        FeeedsAdapter.this.notifyItemChanged(getAdapterPosition(), "like");
+                    } else FeeedsAdapter.this.notifyItemChanged(getAdapterPosition(), "unlike");
+
+                    sendrequestforlike(getAdapterPosition());
+
+                }
+            });
             edit = (TextView) inflate.findViewById(R.id.edit);
 
             likenumber = (TextView) inflate.findViewById(R.id.numlikes);
@@ -773,7 +803,9 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                         else if (mContext instanceof NotificationActivity)
                             i.putExtra("from", "nb");
 
-                        mContext.startActivity(i);
+                        if (mContext instanceof ForumMainActivity) {
+                            ((ForumMainActivity) mContext).startActivityForResult(i, Utils.MAINACTIVITY_COMMENT);
+                        } else mContext.startActivity(i);
                     }
                 }
             });
@@ -784,7 +816,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             date.setTypeface(type);
             userlevel.setTypeface(type);
 
-            if (mContext instanceof ForumMainActivity) {
+            if (mContext instanceof ForumMainActivity || mContext instanceof GroupActivity) {
                 recyclerView = (RecyclerView) inflate.findViewById(R.id.recycler_view);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
                 recyclerView.setLayoutManager(linearLayoutManager);

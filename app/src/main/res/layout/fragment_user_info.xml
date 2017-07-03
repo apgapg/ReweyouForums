@@ -21,7 +21,7 @@
             app:cardElevation="0dp">
 
 
-            <TextView
+            <in.reweyou.reweyouforums.customView.TextViewCustomFont
                 android:id="@+id/edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
                 </RelativeLayout>
 
 
-                <TextView
+                <in.reweyou.reweyouforums.customView.TextViewCustomFont
                     android:id="@+id/message"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -76,11 +76,11 @@
                     android:drawablePadding="6dp"
                     android:gravity="center"
                     android:text="Ayush P Gupta"
-                    android:textColor="#212121"
+                    android:textColor="@color/main_description_text"
                     android:textSize="16dp"
                     android:textStyle="bold" />
 
-                <TextView
+                <in.reweyou.reweyouforums.customView.TextViewCustomFont
 
                     android:id="@+id/userStatus"
                     android:layout_width="match_parent"
@@ -89,7 +89,7 @@
                     android:maxLines="5"
                     android:paddingTop="2dp"
                     android:text="One isn't born Genius"
-                    android:textColor="#616161"
+                    android:textColor="@color/sub_description_color"
                     android:textSize="13dp" />
 
 
@@ -105,17 +105,17 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <TextView
+                    <in.reweyou.reweyouforums.customView.TextViewCustomFont
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:layout_weight="1"
                         android:text="YOUR BADGES IN GROUPS"
-                        android:textColor="@color/main_background_pink"
+                        android:textColor="@color/main_description_text"
                         android:textSize="12dp"
                         android:textStyle="bold" />
 
-                    <TextView
+                    <in.reweyou.reweyouforums.customView.TextViewCustomFont
                         android:id="@+id/more"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -128,12 +128,12 @@
 
                 </LinearLayout>
 
-                <TextView
+                <in.reweyou.reweyouforums.customView.TextViewCustomFont
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
                     android:text="Get your badge updated by adding posts, comments, and likes."
-                    android:textColor="#616161"
+                    android:textColor="@color/sub_description_color"
                     android:textSize="13dp"
 
                     />

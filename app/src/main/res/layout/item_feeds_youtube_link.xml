@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nested"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/card_padding_top"
+
+    android:scrollbars="none">
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -32,18 +41,16 @@
         <in.reweyou.reweyouforums.customView.ColorTextView
             android:id="@+id/description"
             android:layout_width="match_parent"
-
             android:layout_height="wrap_content"
             android:autoLink="web"
-            android:ellipsize="end"
-            android:paddingBottom="6dp"
+            android:gravity="center_vertical"
+            android:lineSpacingExtra="2dp"
+            android:paddingBottom="10dp"
             android:paddingLeft="@dimen/padding_main_description"
             android:paddingRight="@dimen/padding_main_description"
-            android:paddingTop="4dp"
-
-            android:text="The unprecedented policy decision by the Government to Demonetize the economy of the higher denomination currencies (i.e. Rs. 500 and Rs. 1000), comprises of three broad aspects. With the objective of cracking down on Black money, counterfeit (fake currency),
-terro"
-            android:textColor="#424242"
+            android:paddingTop="8dp"
+            android:text="Default"
+            android:textColor="@color/main_description_text"
             android:textIsSelectable="true"
             android:textSize="@dimen/main_description_text_size" />
 
@@ -82,7 +89,7 @@ terro"
                     android:layout_marginTop="42dp"
                     app:srcCompat="@drawable/ic_youtube" />
 
-                <TextView
+                <in.reweyou.reweyouforums.customView.TextViewCustomFont
                     android:id="@+id/headlinelink"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -96,7 +103,7 @@ terro"
                     android:scrollHorizontally="true"
                     android:singleLine="true"
                     android:text="kewndwendewn"
-                    android:textColor="#424242"
+                    android:textColor="@color/sub_description_color"
                     android:textSize="14dp"
                     android:textStyle="bold" />
 
@@ -105,17 +112,143 @@ terro"
         </android.support.v7.widget.CardView>
 
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+
+            android:orientation="horizontal">
+
+            <in.reweyou.reweyouforums.customView.TextViewCustomFont
+                android:id="@+id/numlikes"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="12dp"
+                android:gravity="center_vertical"
+                android:text="0"
+                android:textColor="@color/main_description_text"
+                android:textSize="15dp" />
+
+            <in.reweyou.reweyouforums.customView.TextViewCustomFont
+                android:id="@+id/fe"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/numlikes"
+                android:gravity="center_vertical"
+                android:paddingLeft="6dp"
+
+
+                android:text="Likes"
+                android:textColor="@color/sub_description_color"
+                android:textSize="13dp" />
+
+            <in.reweyou.reweyouforums.customView.TextViewCustomFont
+                android:id="@+id/numcomments"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="12dp"
+                android:layout_toLeftOf="@+id/ddd"
+                android:layout_toRightOf="@+id/fe"
+                android:gravity="center_vertical"
+                android:text="0"
+                android:textColor="@color/main_description_text"
+                android:textSize="15dp" />
+
+            <in.reweyou.reweyouforums.customView.TextViewCustomFont
+                android:id="@+id/ddd"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="12dp"
+
+                android:gravity="center_vertical"
+                android:paddingLeft="6dp"
+                android:text="Comments"
+                android:textColor="@color/sub_description_color"
+                android:textSize="13dp" />
+
+            <in.reweyou.reweyouforums.customView.TextViewCustomFont
+                android:id="@+id/edit"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="EDIT"
+                android:textColor="@color/red" />
+
+            <android.support.v4.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:id="@+id/likebutton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginTop="2dp"
+                android:padding="11dp"
+                app:srcCompat="@drawable/ic_heart_like" />
+
+        </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0.7dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:alpha="0.44"
-            android:background="@color/divider" />
+            android:alpha="@dimen/view_line_alpha"
+            android:background="#577583" />
 
-        <include layout="@layout/item_row_like" />
+        <RelativeLayout
+            android:id="@+id/commmentcont"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
 
+            android:background="@drawable/ripple_effect2">
+
+            <in.reweyou.reweyouforums.customView.TextViewCustomFont
+                android:id="@+id/addcomment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:paddingLeft="12dp"
+                android:text="Add a comment..."
+
+                android:textColor="#78909C" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="4dp"
+                android:padding="2dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/button_send_disable" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.7dp"
+            android:alpha="@dimen/view_line_alpha"
+            android:background="#577583" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            />
     </LinearLayout>
 
-</android.support.v7.widget.CardView>
+    <ImageView
+        android:id="@+id/like"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:alpha="1.0"
+        android:scaleX="0"
+        android:scaleY="0"
+        app:srcCompat="@drawable/ic_heart_like" />
 
+
+</android.support.v7.widget.CardView>
+</android.support.v4.widget.NestedScrollView>

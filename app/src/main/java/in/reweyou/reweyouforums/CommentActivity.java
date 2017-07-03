@@ -135,9 +135,10 @@ public class CommentActivity extends AppCompatActivity {
         AndroidNetworking.cancel("comment2");
         AndroidNetworking.cancel("comment3");
         Intent i;
-        if (isfromGroupActivity || isfromNotiAdapter || isfromForumMainActivity)
+        if (isfromGroupActivity || isfromNotiAdapter || isfromForumMainActivity) {
+            setResult(RESULT_OK);
             finish();
-        else {
+        } else {
             i = new Intent(CommentActivity.this, ForumMainActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(i);

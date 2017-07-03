@@ -24,7 +24,7 @@
             app:cardCornerRadius="8dp"
             app:cardElevation="4dp">
 
-            <TextView
+            <in.reweyou.reweyouforums.customView.TextViewCustomFont
                 android:id="@+id/edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
                 android:id="@+id/share"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                android:layout_marginLeft="36dp"
+                android:layout_marginLeft="38dp"
 
                 android:layout_marginTop="8dp"
                 android:background="@drawable/ripple_effect3"
@@ -80,7 +80,7 @@
 
                     android:scaleType="fitXY" />
 
-                <TextView
+                <in.reweyou.reweyouforums.customView.TextViewCustomFont
                     android:id="@+id/groupname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -88,11 +88,11 @@
                     android:drawablePadding="6dp"
                     android:gravity="center"
                     android:text="Rajneeti"
-                    android:textColor="#424242"
+                    android:textColor="@color/main_description_text"
                     android:textSize="16dp"
                     android:textStyle="bold" />
 
-                <TextView
+                <in.reweyou.reweyouforums.customView.TextViewCustomFont
                     android:id="@+id/shortdescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -102,7 +102,7 @@
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:text="Modi's victory indeed transforms India's political landscape. BJP's dominance is now a fact of India's political life that everyone "
-                    android:textColor="#616161"
+                    android:textColor="@color/sub_description_color"
                     android:textSize="13dp" />
 
                 <LinearLayout
@@ -119,7 +119,7 @@
                         android:layout_gravity="start"
                         android:orientation="vertical">
 
-                        <TextView
+                        <in.reweyou.reweyouforums.customView.TextViewCustomFont
                             android:id="@+id/members"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -127,17 +127,17 @@
                             android:gravity="center"
                             android:paddingLeft="4dp"
                             android:text="105"
-                            android:textColor="#424242"
+                            android:textColor="@color/main_description_text"
                             android:textSize="18dp"
                             android:textStyle="bold" />
 
-                        <TextView
+                        <in.reweyou.reweyouforums.customView.TextViewCustomFont
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:paddingLeft="4dp"
                             android:text="Members"
-                            android:textColor="#757575"
+                            android:textColor="@color/sub_description_color"
                             android:textSize="14dp" />
                     </LinearLayout>
 
@@ -154,7 +154,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <TextView
+                        <in.reweyou.reweyouforums.customView.TextViewCustomFont
                             android:id="@+id/threads"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -162,7 +162,7 @@
                             android:gravity="center"
                             android:paddingLeft="4dp"
                             android:text="23"
-                            android:textColor="#424242"
+                            android:textColor="@color/main_description_text"
                             android:textSize="18dp"
                             android:textStyle="bold" />
 
@@ -172,13 +172,13 @@
                             android:gravity="center"
                             android:paddingLeft="4dp"
                             android:text="Threads"
-                            android:textColor="#757575"
+                            android:textColor="@color/sub_description_color"
                             android:textSize="14dp" />
                     </LinearLayout>
 
                 </LinearLayout>
 
-                <TextView
+                <in.reweyou.reweyouforums.customView.TextViewCustomFont
                     android:id="@+id/adminname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -187,7 +187,7 @@
                     android:gravity="center"
                     android:paddingLeft="4dp"
                     android:text="Admin: Default"
-                    android:textColor="#424242"
+                    android:textColor="@color/main_description_text"
                     android:textSize="14dp"
                     android:textStyle="bold" />
                 <RelativeLayout
@@ -235,7 +235,7 @@
 
                     android:layout_marginTop="10dp">
 
-                    <TextView
+                    <in.reweyou.reweyouforums.customView.TextViewCustomFont
                         android:id="@+id/membershead"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -243,11 +243,11 @@
                         android:paddingLeft="8dp"
                         android:paddingTop="4dp"
                         android:text="MEMBERS"
-                        android:textColor="@color/main_background_pink"
+                        android:textColor="@color/main_description_text"
                         android:textSize="12dp"
                         android:textStyle="bold" />
 
-                    <TextView
+                    <in.reweyou.reweyouforums.customView.TextViewCustomFont
                         android:id="@+id/membersmore"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -272,18 +272,18 @@
                     android:layout_marginTop="4dp" />
 
 
-                <TextView
+                <in.reweyou.reweyouforums.customView.TextViewCustomFont
                     android:id="@+id/textrules"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:paddingLeft="8dp"
                     android:text="RULES"
-                    android:textColor="@color/main_background_pink"
+                    android:textColor="@color/main_description_text"
                     android:textSize="12dp"
                     android:textStyle="bold" />
 
-                <TextView
+                <in.reweyou.reweyouforums.customView.TextViewCustomFont
                     android:id="@+id/description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -291,7 +291,7 @@
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:text="ent government political party politics is often important."
-                    android:textColor="#616161"
+                    android:textColor="@color/sub_description_color"
                     android:textSize="13dp" />
 
             </LinearLayout>

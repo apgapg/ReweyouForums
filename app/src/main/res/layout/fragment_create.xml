@@ -28,7 +28,7 @@
                 android:layout_marginRight="16dp"
                 android:orientation="vertical">
 
-                <TextView
+                <in.reweyou.reweyouforums.customView.TextViewCustomFont
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -36,15 +36,15 @@
                     android:drawablePadding="6dp"
                     android:gravity="center_vertical"
                     android:text="Create your Group"
-                    android:textColor="@color/main_background_pink"
+                    android:textColor="@color/main_description_text"
                     android:textStyle="bold" />
 
-                <TextView
+                <in.reweyou.reweyouforums.customView.TextViewCustomFont
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="Start creating your own Group, by just adding a cover pic, name and description"
-                    android:textColor="#616161"
+                    android:textColor="@color/sub_description_color"
                     android:textSize="13dp" />
 
                 <RelativeLayout
@@ -67,7 +67,7 @@
 
                         />
 
-                    <TextView
+                    <in.reweyou.reweyouforums.customView.TextViewCustomFont
                         android:id="@+id/imgtext"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -75,16 +75,17 @@
                         android:alpha="0.44"
                         android:gravity="center"
                         android:text="Tap to\nAdd an image"
-                        android:textColor="#000"
+                        android:textColor="@color/main_description_text"
                         android:textSize="12dp" />
                 </RelativeLayout>
 
 
-                <TextView
+                <in.reweyou.reweyouforums.customView.TextViewCustomFont
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:text="GROUP NAME"
+                    android:textColor="@color/main_description_text"
                     android:textSize="12dp"
                     android:textStyle="bold" />
 
@@ -113,12 +114,12 @@
                     android:layout_marginTop="4dp"
                     android:background="@color/greylight" />
 
-                <TextView
+                <in.reweyou.reweyouforums.customView.TextViewCustomFont
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:layout_marginTop="16dp"
                     android:text="SHORT DESCRIPTION"
+                    android:textColor="@color/main_description_text"
                     android:textSize="12dp"
                     android:textStyle="bold" />
 

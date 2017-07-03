@@ -37,10 +37,6 @@
 
             <include layout="@layout/item_row_usernametop" />
 
-            <ImageView
-                android:id="@+id/image1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
 
             <in.reweyou.reweyouforums.customView.ColorTextView
                 android:id="@+id/description"
@@ -58,6 +54,10 @@
                 android:textIsSelectable="true"
                 android:textSize="@dimen/main_description_text_size" />
 
+            <ImageView
+                android:id="@+id/image1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -111,6 +111,30 @@
                     android:text="Comments"
                     android:textColor="@color/sub_description_color"
                     android:textSize="13dp" />
+
+                <in.reweyou.reweyouforums.customView.TextViewCustomFont
+                    android:id="@+id/edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:text="EDIT"
+                    android:textColor="@color/red" />
+
+                <android.support.v4.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/likebutton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="6dp"
+                    android:layout_marginTop="2dp"
+                    android:padding="11dp"
+                    app:srcCompat="@drawable/ic_heart_like" />
 
 
             </LinearLayout>

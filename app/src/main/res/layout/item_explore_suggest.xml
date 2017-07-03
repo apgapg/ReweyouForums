@@ -34,7 +34,7 @@
             android:layout_height="0.7dp"
             android:background="#757575" />
 
-        <TextView
+        <in.reweyou.reweyouforums.customView.TextViewCustomFont
             android:id="@+id/groupname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
             android:scrollHorizontally="true"
             android:singleLine="true"
             android:text="GroupName"
-            android:textColor="#424242"
+            android:textColor="@color/main_description_text"
             android:textSize="13dp"
             android:textStyle="bold" />
 
@@ -58,17 +58,17 @@
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp">
 
-            <TextView
+            <in.reweyou.reweyouforums.customView.TextViewCustomFont
                 android:id="@+id/members"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_supervisor_account_black_24px_layer"
                 android:gravity="center"
                 android:text="46"
-                android:textColor="#424242"
+                android:textColor="@color/main_description_text"
                 android:textSize="12dp" />
 
-            <TextView
+            <in.reweyou.reweyouforums.customView.TextViewCustomFont
                 android:id="@+id/threads"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
 
                 android:gravity="center"
                 android:text="92"
-                android:textColor="#424242"
+                android:textColor="@color/main_description_text"
                 android:textSize="12dp" />
 
 

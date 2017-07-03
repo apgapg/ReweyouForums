@@ -563,7 +563,7 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
                         groupname = (groupModels.get(finalI).getGroupname());
 
                         if (temppos != -1) {
-                            ((TextView) flowLayout.getChildAt(temppos).findViewById(R.id.groupname)).setTextColor(mContext.getResources().getColor(R.color.bright_blue));
+                            ((TextView) flowLayout.getChildAt(temppos).findViewById(R.id.groupname)).setTextColor(mContext.getResources().getColor(R.color.main_description_text));
                             flowLayout.getChildAt(temppos).findViewById(R.id.groupname).setBackground(mContext.getResources().getDrawable(R.drawable.border_blue));
                             flowLayout.getChildAt(temppos).setTag("0");
                         }
@@ -571,7 +571,7 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
 
                     } else {
                         v.setTag("0");
-                        textView.setTextColor(mContext.getResources().getColor(R.color.bright_blue));
+                        textView.setTextColor(mContext.getResources().getColor(R.color.main_description_text));
                         textView.setBackground(mContext.getResources().getDrawable(R.drawable.border_blue));
                         groupid = null;
                     }

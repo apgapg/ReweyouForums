@@ -475,6 +475,8 @@ public class ForumMainActivity extends AppCompatActivity {
                 Log.d(TAG, "onActivityResult: dwjdnwndwdwnoti");
                 getnoticount();
 
+            } else if (requestCode == Utils.MAINACTIVITY_COMMENT) {
+                ((MainThreadsFragment) pagerAdapter.getRegisteredFragment(POSITION_MAIN_FEEDS)).refreshList();
             }
         }
 

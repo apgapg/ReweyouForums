@@ -77,7 +77,7 @@ public class YourGroupsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         userSessionManager = new UserSessionManager(mContext);
-
+        Paper.init(mContext);
     }
 
     @Nullable

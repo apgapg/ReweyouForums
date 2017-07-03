@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
@@ -38,6 +39,7 @@ import in.reweyou.reweyouforums.model.CommentModel;
 import in.reweyou.reweyouforums.model.ReplyCommentModel;
 import in.reweyou.reweyouforums.model.ThreadModel;
 import in.reweyou.reweyouforums.utils.NetworkHandler;
+import in.reweyou.reweyouforums.utils.Utils;
 import me.zhanghai.android.customtabshelper.CustomTabsHelperFragment;
 
 /**
@@ -56,6 +58,7 @@ public class MainThreadsFragment extends Fragment {
     private FloatingActionButton fab;
     private JSONArray jsonresponse;
     private List<ThreadModel> threadlist;
+    private RelativeLayout fetchingdatacont;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,9 +94,13 @@ public class MainThreadsFragment extends Fragment {
         layout.findViewById(R.id.create).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mContext.startActivity(new Intent(mContext, CreatePostActivity.class));
+                Intent i = new Intent(mContext, CreatePostActivity.class);
+                i.putExtra("frommain", true);
+                mContext.startActivityForResult(i, Utils.REQ_CODE_CREATE_FROM_FORUMACTVITY);
             }
         });
+
+        fetchingdatacont = (RelativeLayout) layout.findViewById(R.id.fetchingdatacontainer);
 
         return layout;
     }
@@ -140,6 +147,8 @@ public class MainThreadsFragment extends Fragment {
     }
 
     private void getData() {
+        fetchingdatacont.setVisibility(View.VISIBLE);
+
         AndroidNetworking.post("https://www.reweyou.in/google/list_thread_new.php")
                 .addBodyParameter("uid", userSessionManager.getUID())
                 .addBodyParameter("authtoken", userSessionManager.getAuthToken())
@@ -150,7 +159,7 @@ public class MainThreadsFragment extends Fragment {
                     @Override
                     public void onResponse(JSONArray jsonarray) {
                         if (new NetworkHandler().isActivityAlive(TAG, mContext, jsonarray)) {
-
+                            fetchingdatacont.setVisibility(View.GONE);
                             try {
                                 jsonresponse = jsonarray;
                                 parsejsonresponse();
@@ -167,6 +176,7 @@ public class MainThreadsFragment extends Fragment {
                     @Override
                     public void onError(ANError anError) {
                         if (new NetworkHandler().isActivityAlive(TAG, mContext, anError)) {
+                            fetchingdatacont.setVisibility(View.GONE);
 
                             Log.d(TAG, "onError: " + anError);
                             Toast.makeText(mContext, "couldn't connect", Toast.LENGTH_SHORT).show();

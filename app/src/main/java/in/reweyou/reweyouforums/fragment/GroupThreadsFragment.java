@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,19 +14,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.ParsedRequestListener;
-import com.google.gson.reflect.TypeToken;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
+import com.google.gson.Gson;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import in.reweyou.reweyouforums.GroupActivity;
 import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.adapter.FeeedsAdapter;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
+import in.reweyou.reweyouforums.model.CommentModel;
+import in.reweyou.reweyouforums.model.ReplyCommentModel;
 import in.reweyou.reweyouforums.model.ThreadModel;
 import in.reweyou.reweyouforums.utils.NetworkHandler;
 
@@ -46,8 +54,10 @@ public class GroupThreadsFragment extends Fragment {
     private CardView nopostcard;
     private Button createpost;
     private CardView joingroupcard;
-    private FloatingActionButton fab;
     private boolean isfollow;
+    private RelativeLayout fetchingdatacont;
+    private JSONArray jsonresponse;
+    private List<ThreadModel> threadlist;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,6 +76,7 @@ public class GroupThreadsFragment extends Fragment {
         nopostcard = (CardView) layout.findViewById(R.id.nopostcard);
         joingroupcard = (CardView) layout.findViewById(R.id.joincard);
         isfollow = getArguments().getBoolean("follow");
+        fetchingdatacont = (RelativeLayout) layout.findViewById(R.id.fetchingdatacontainer);
 
         createpost = (Button) layout.findViewById(R.id.createpost);
 
@@ -132,8 +143,7 @@ public class GroupThreadsFragment extends Fragment {
                 getData();
             else {
                 joingroupcard.setVisibility(View.VISIBLE);
-                fab.setVisibility(View.INVISIBLE);
-
+                fetchingdatacont.setVisibility(View.GONE);
             }
 
 
@@ -146,41 +156,43 @@ public class GroupThreadsFragment extends Fragment {
         nopostcard.setVisibility(View.GONE);
         joingroupcard.setVisibility(View.GONE);
 
-        AndroidNetworking.post("https://www.reweyou.in/google/list_threads.php")
+        AndroidNetworking.post("https://www.reweyou.in/google/list_thread_new.php")
                 .addBodyParameter("uid", userSessionManager.getUID())
                 .addBodyParameter("authtoken", userSessionManager.getAuthToken())
                 .addBodyParameter("groupid", getArguments().getString("groupid"))
                 .setTag("report")
                 .setPriority(Priority.HIGH)
                 .build()
-                .getAsParsed(new TypeToken<List<ThreadModel>>() {
-                }, new ParsedRequestListener<List<ThreadModel>>() {
-
+                .getAsJSONArray(new JSONArrayRequestListener() {
                     @Override
-                    public void onResponse(final List<ThreadModel> list) {
-                        if (new NetworkHandler().isActivityAlive(TAG, mContext, list)) {
+                    public void onResponse(JSONArray jsonarray) {
+                        if (new NetworkHandler().isActivityAlive(TAG, mContext, jsonarray)) {
+                            fetchingdatacont.setVisibility(View.GONE);
+                            try {
+                                jsonresponse = jsonarray;
+                                parsejsonresponse();
 
-                            new Handler().post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (list.size() == 0) {
-                                        nopostcard.setVisibility(View.VISIBLE);
-                                    } else
-                                        feeedsAdapter.add(list);
-                                }
-                            });
+
+                            } catch (Exception e) {
+
+                                e.printStackTrace();
+
+                            }
                         }
                     }
 
                     @Override
-                    public void onError(final ANError anError) {
+                    public void onError(ANError anError) {
                         if (new NetworkHandler().isActivityAlive(TAG, mContext, anError)) {
+                            fetchingdatacont.setVisibility(View.GONE);
 
-                            Log.e(TAG, "run: error: " + anError.getErrorDetail());
-
+                            Log.d(TAG, "onError: " + anError);
+                            Toast.makeText(mContext, "couldn't connect", Toast.LENGTH_SHORT).show();
                         }
                     }
+
                 });
+
     }
 
 
@@ -189,7 +201,8 @@ public class GroupThreadsFragment extends Fragment {
             getData();
         else {
             joingroupcard.setVisibility(View.VISIBLE);
-            fab.setVisibility(View.INVISIBLE);
+            fetchingdatacont.setVisibility(View.GONE);
+
 
         }
 
@@ -203,8 +216,62 @@ public class GroupThreadsFragment extends Fragment {
         else {
             nopostcard.setVisibility(View.INVISIBLE);
             joingroupcard.setVisibility(View.VISIBLE);
-            fab.setVisibility(View.INVISIBLE);
+            fetchingdatacont.setVisibility(View.GONE);
+
             recyclerView.setVisibility(View.INVISIBLE);
         }
+
     }
+
+    private void parsejsonresponse() {
+        try {
+            Gson gson = new Gson();
+            threadlist = new ArrayList<>();
+            for (int i = 0; i < jsonresponse.length(); i++) {
+                JSONObject jsonObject = jsonresponse.getJSONObject(i);
+                ThreadModel groupModel = gson.fromJson(jsonObject.toString(), ThreadModel.class);
+
+
+                List<Object> list = new ArrayList<>();
+
+                try {
+                    JSONArray jsonArray = jsonObject.getJSONArray("commentlist");
+                    for (int j = 0; j < jsonArray.length(); j++) {
+                        JSONObject json = jsonArray.getJSONObject(jsonArray.length() - 1 - j);
+                        CommentModel coModel = gson.fromJson(json.toString(), CommentModel.class);
+                        list.add(coModel);
+
+                        if (json.has("reply")) {
+                            JSONArray jsonReply = json.getJSONArray("reply");
+
+                            for (int k = 0; k < jsonReply.length(); k++) {
+                                JSONObject jsontemp = jsonReply.getJSONObject(jsonReply.length() - 1 - k);
+                                ReplyCommentModel temp = gson.fromJson(jsontemp.toString(), ReplyCommentModel.class);
+                                list.add(temp);
+                            }
+                        }
+
+                    }
+
+                    groupModel.setcommentlistshow(list);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+                threadlist.add(0, groupModel);
+            }
+            Collections.reverse(threadlist);
+
+            if (threadlist.size() == 0) {
+                nopostcard.setVisibility(View.VISIBLE);
+            } else
+                feeedsAdapter.add(threadlist);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
