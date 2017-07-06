@@ -2,6 +2,7 @@ package in.reweyou.reweyouforums;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -35,6 +36,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -160,7 +162,12 @@ public class ForumMainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-
+                try {
+                    InputMethodManager imm = (InputMethodManager) ForumMainActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(ForumMainActivity.this.getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
