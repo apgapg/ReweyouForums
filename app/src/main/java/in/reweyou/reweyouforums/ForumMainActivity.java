@@ -567,8 +567,6 @@ public class ForumMainActivity extends AppCompatActivity {
     }
 
     public void refreshfeeds() {
-        Log.d(TAG, "onResponse: dkwmdkwkkkkk11swsws11");
-
         ((MainThreadsFragment) pagerAdapter.getRegisteredFragment(POSITION_MAIN_FEEDS)).refreshList();
     }
 
@@ -832,6 +830,35 @@ public class ForumMainActivity extends AppCompatActivity {
                 ((MainThreadsFragment) pagerAdapter.getRegisteredFragment(POSITION_MAIN_FEEDS)).refreshList();
             }
         }).setActionTextColor(getResources().getColor(R.color.yellow)).show();
+    }
+
+    public void refreshyourGroups() {
+        Snackbar.make(findViewById(R.id.rootlayout), "connection error", BaseTransientBottomBar.LENGTH_INDEFINITE).setAction("Retry", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((YourGroupsFragment) pagerAdapter.getRegisteredFragment(POSITION_YOUR_GROUPS)).refreshlist();
+            }
+        }).setActionTextColor(getResources().getColor(R.color.yellow)).show();
+    }
+
+    public void refreshExploreGroups() {
+        Snackbar.make(findViewById(R.id.rootlayout), "connection error", BaseTransientBottomBar.LENGTH_INDEFINITE).setAction("Retry", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((ExploreFragment) pagerAdapter.getRegisteredFragment(POSITION_EXPLORE_GROUPS)).refreshlist();
+            }
+        }).setActionTextColor(getResources().getColor(R.color.yellow)).show();
+
+    }
+
+    public void refreshUserProfile() {
+        Snackbar.make(findViewById(R.id.rootlayout), "connection error", BaseTransientBottomBar.LENGTH_INDEFINITE).setAction("Retry", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((UserInfoFragment) pagerAdapter.getRegisteredFragment(POSITION_USER_PROFILE)).refreshuserprofile();
+            }
+        }).setActionTextColor(getResources().getColor(R.color.yellow)).show();
+
     }
 
     private class PagerAdapter extends FragmentStatePagerAdapter {

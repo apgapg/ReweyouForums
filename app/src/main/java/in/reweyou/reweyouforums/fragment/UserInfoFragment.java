@@ -45,6 +45,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import in.reweyou.reweyouforums.EditProfileActivity;
+import in.reweyou.reweyouforums.ForumMainActivity;
 import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.adapter.GroupBadegsAdapter;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
@@ -184,6 +185,9 @@ public class UserInfoFragment extends Fragment {
                     @Override
                     public void onError(ANError anError) {
                         if (new NetworkHandler().isActivityAlive(TAG, mContext, anError)) {
+
+                            ((ForumMainActivity) mContext).refreshUserProfile();
+
                         }
                     }
                 });
@@ -294,4 +298,7 @@ public class UserInfoFragment extends Fragment {
         super.onSaveInstanceState(outState);
     }
 
+    public void refreshuserprofile() {
+        getMembersData();
+    }
 }

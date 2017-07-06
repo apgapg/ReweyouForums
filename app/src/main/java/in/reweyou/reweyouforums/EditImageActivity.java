@@ -205,6 +205,13 @@ public class EditImageActivity extends AppCompatActivity implements View.OnClick
             }
         });
 
+        mSignatureView.settouchlistener(new FreeDrawView.Touchlistener() {
+            @Override
+            public void onedit() {
+                tempview = null;
+            }
+        });
+
 
     }
 

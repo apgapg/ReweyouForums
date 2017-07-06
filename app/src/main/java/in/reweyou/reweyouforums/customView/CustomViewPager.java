@@ -51,19 +51,10 @@ public class CustomViewPager extends ViewPager {
     }
 
     @Override
-    public boolean canScrollHorizontally(int direction) {
-        return false;
-    }
-
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent event) {
-        // Never allow swiping to switch between pages
-        return false;
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        // Never allow swiping to switch between pages
-        return false;
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        if (pageposition == 2)
+            return false;
+        else
+            return super.onInterceptTouchEvent(ev);
     }
 }

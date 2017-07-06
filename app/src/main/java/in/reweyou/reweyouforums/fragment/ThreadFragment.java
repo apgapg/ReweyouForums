@@ -25,6 +25,7 @@ import org.json.JSONArray;
 import java.util.ArrayList;
 import java.util.List;
 
+import in.reweyou.reweyouforums.CommentActivity;
 import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.adapter.FeeedsAdapter;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
@@ -132,8 +133,8 @@ public class ThreadFragment extends Fragment {
                     @Override
                     public void onError(ANError anError) {
                         Log.e(TAG, "run: error: " + anError.getErrorDetail());
-                        Toast.makeText(mContext, "couldn't connect", Toast.LENGTH_SHORT).show();
-
+                        // Toast.makeText(mContext, "couldn't connect", Toast.LENGTH_SHORT).show();
+                        ((CommentActivity) mContext).refreshthread1();
 
                     }
                 });

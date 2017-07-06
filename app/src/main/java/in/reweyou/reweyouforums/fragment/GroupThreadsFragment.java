@@ -13,9 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -52,7 +51,7 @@ public class GroupThreadsFragment extends Fragment {
     private FeeedsAdapter feeedsAdapter;
     private UserSessionManager userSessionManager;
     private CardView nopostcard;
-    private Button createpost;
+    private TextView createpost;
     private CardView joingroupcard;
     private boolean isfollow;
     private RelativeLayout fetchingdatacont;
@@ -78,7 +77,7 @@ public class GroupThreadsFragment extends Fragment {
         isfollow = getArguments().getBoolean("follow");
         fetchingdatacont = (RelativeLayout) layout.findViewById(R.id.fetchingdatacontainer);
 
-        createpost = (Button) layout.findViewById(R.id.createpost);
+        createpost = (TextView) layout.findViewById(R.id.create);
 
         createpost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,6 +143,8 @@ public class GroupThreadsFragment extends Fragment {
             else {
                 joingroupcard.setVisibility(View.VISIBLE);
                 fetchingdatacont.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.INVISIBLE);
+                createpost.setVisibility(View.INVISIBLE);
             }
 
 
@@ -167,6 +168,8 @@ public class GroupThreadsFragment extends Fragment {
                     @Override
                     public void onResponse(JSONArray jsonarray) {
                         if (new NetworkHandler().isActivityAlive(TAG, mContext, jsonarray)) {
+                            createpost.setVisibility(View.VISIBLE);
+
                             fetchingdatacont.setVisibility(View.GONE);
                             try {
                                 jsonresponse = jsonarray;
@@ -185,9 +188,11 @@ public class GroupThreadsFragment extends Fragment {
                     public void onError(ANError anError) {
                         if (new NetworkHandler().isActivityAlive(TAG, mContext, anError)) {
                             fetchingdatacont.setVisibility(View.GONE);
+                            createpost.setVisibility(View.INVISIBLE);
 
                             Log.d(TAG, "onError: " + anError);
-                            Toast.makeText(mContext, "couldn't connect", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(mContext, "couldn't connect", Toast.LENGTH_SHORT).show();
+                            ((GroupActivity) mContext).refreshfeed();
                         }
                     }
 
@@ -196,18 +201,7 @@ public class GroupThreadsFragment extends Fragment {
     }
 
 
-    public void refreshList() {
-        if (getArguments().getBoolean("follow"))
-            getData();
-        else {
-            joingroupcard.setVisibility(View.VISIBLE);
-            fetchingdatacont.setVisibility(View.GONE);
 
-
-        }
-
-
-    }
 
     public void refreshList1(boolean isfollowed) {
         this.isfollow = isfollowed;
@@ -219,6 +213,7 @@ public class GroupThreadsFragment extends Fragment {
             fetchingdatacont.setVisibility(View.GONE);
 
             recyclerView.setVisibility(View.INVISIBLE);
+            createpost.setVisibility(View.INVISIBLE);
         }
 
     }

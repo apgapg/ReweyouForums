@@ -3,6 +3,8 @@ package in.reweyou.reweyouforums;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.design.widget.BaseTransientBottomBar;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -199,6 +201,18 @@ public class CommentActivity extends AppCompatActivity {
 
     public void refreshthread() {
         ((ThreadFragment) pagerAdapter.getRegisteredFragment(0)).refreshList(threadid);
+
+    }
+
+    public void refreshthread1() {
+
+        Snackbar.make(findViewById(R.id.rootlayout), "connection error", BaseTransientBottomBar.LENGTH_INDEFINITE).setAction("Retry", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((ThreadFragment) pagerAdapter.getRegisteredFragment(0)).refreshList(threadid);
+            }
+        }).setActionTextColor(getResources().getColor(R.color.yellow)).show();
+
 
     }
 

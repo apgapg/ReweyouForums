@@ -14,14 +14,14 @@
     <style name="AppTheme2.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="colorPrimaryDark">#2d2031</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
 
     </style>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/sub_description_color</item>
+        <item name="colorPrimaryDark">@color/main_description_text</item>
         <item name="colorAccent">@color/main_description_text</item>
         <item name="android:windowContentTransitions">true</item>
 
@@ -31,7 +31,7 @@
     <style name="AppTheme2" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/sub_description_color</item>
-        <item name="colorPrimaryDark">@color/main_description_text</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/main_description_text</item>
         <item name="android:windowContentTransitions">true</item>
 

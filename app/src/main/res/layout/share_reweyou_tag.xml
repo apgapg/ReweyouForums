@@ -19,23 +19,24 @@
 
 
         <ImageView
-            android:layout_width="22dp"
-            android:layout_height="22dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/tv"
-            android:padding="2dp"
+            android:paddingTop="1dp"
             android:src="@mipmap/ic_launcher" />
 
-        <TextView
+        <in.reweyou.reweyouforums.customView.TextViewCustomFontBold
             android:id="@+id/tv"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:gravity="center"
+            android:paddingLeft="2dp"
 
-            android:text=" ReweyouForums"
-            android:textColor="#424242"
+            android:text=" ReweyouForums: Join Explore Discuss"
+            android:textColor="@color/main_description_text"
             android:textSize="12dp"
             android:textStyle="bold" />
 

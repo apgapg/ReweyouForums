@@ -51,16 +51,14 @@ public class FreeDrawView extends View implements View.OnTouchListener {
     private int mLastDimensionH = -1;
 
     private boolean mFinishPath = false;
-
+    private Touchlistener touchlistenr;
     private PathDrawnListener mPathDrawnListener;
     private PathRedoUndoCountChangeListener mPathRedoUndoCountChangeListener;
     private boolean isEdited;
     private RelativeLayout emojiview;
-
     public FreeDrawView(Context context) {
         this(context, null);
     }
-
     public FreeDrawView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
@@ -84,6 +82,10 @@ public class FreeDrawView extends View implements View.OnTouchListener {
                 a.recycle();
             }
         }
+    }
+
+    public void settouchlistener(Touchlistener touchlistener) {
+        this.touchlistenr = touchlistener;
     }
 
     @Override
@@ -164,7 +166,6 @@ public class FreeDrawView extends View implements View.OnTouchListener {
     public int getPaintColorWithAlpha() {
         return mCurrentPaint.getColor();
     }
-
 
     /**
      * Set the paint width in px
@@ -467,7 +468,6 @@ public class FreeDrawView extends View implements View.OnTouchListener {
         new TakeScreenShotAsyncTask(listener).execute();
     }
 
-
     // Internal methods
     private void notifyPathStart() {
         if (mPathDrawnListener != null) {
@@ -595,9 +595,14 @@ public class FreeDrawView extends View implements View.OnTouchListener {
     public boolean isEdited() {
         return isEdited;
     }
+
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
+
+        touchlistenr.onedit();
+
         isEdited = true;
+
         emojiview.setVisibility(INVISIBLE);
         if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
             notifyPathStart();
@@ -719,6 +724,10 @@ public class FreeDrawView extends View implements View.OnTouchListener {
 
     public void addcontainerview(RelativeLayout emojicustomizecontainer) {
         this.emojiview = emojicustomizecontainer;
+    }
+
+    public interface Touchlistener {
+        void onedit();
     }
 
     public interface DrawCreatorListener {

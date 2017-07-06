@@ -12,7 +12,7 @@
         android:layout_marginBottom="2dp"
         android:layout_marginTop="40dp"
         android:visibility="gone"
-        app:cardCornerRadius="2dp"
+        app:cardCornerRadius="8dp"
         app:cardElevation="4dp"
         app:cardUseCompatPadding="true">
 
@@ -42,21 +42,6 @@
                 android:text="Be the first one to post. Share your thoughts, attach clips, or share links."
                 android:textColor="@color/sub_description_color" />
 
-            <Button
-                android:id="@+id/createpost"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_gravity="center_vertical|end"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/ripple_effect2"
-                android:gravity="start|center_vertical"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-
-                android:text="CREATE POST"
-                android:textColor="#283593"
-                android:textSize="13dp" />
 
         </LinearLayout>
     </android.support.v7.widget.CardView>
@@ -70,7 +55,7 @@
         android:layout_marginTop="40dp"
         android:visibility="gone"
 
-        app:cardCornerRadius="2dp"
+        app:cardCornerRadius="8dp"
         app:cardElevation="4dp"
         app:cardUseCompatPadding="true">
 

@@ -464,7 +464,13 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         Log.d(TAG, "onResponse: edit: " + response);
                         if (response.contains("Edited")) {
                             Toast.makeText(mContext, "reply updated!", Toast.LENGTH_SHORT).show();
-                            ((CommentActivity) mContext).refreshlist();
+                            if (mContext instanceof ForumMainActivity) {
+                                ((ForumMainActivity) mContext).refreshfeeds();
+                            } else if (mContext instanceof GroupActivity) {
+                                ((GroupActivity) mContext).refreshfeeds(true);
+                            } else
+                                ((CommentActivity) mContext).refreshlist();
+
                         } else
                             Toast.makeText(mContext, "something went wrong!", Toast.LENGTH_SHORT).show();
 

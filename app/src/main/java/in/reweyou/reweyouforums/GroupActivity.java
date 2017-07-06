@@ -8,6 +8,8 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.BaseTransientBottomBar;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -444,6 +446,7 @@ public class GroupActivity extends AppCompatActivity {
     }
 
     public void refreshfeeds(boolean isfollowed) {
+        this.isfollowed = isfollowed;
         ((GroupThreadsFragment) pagerAdapter.getRegisteredFragment(1)).refreshList1(isfollowed);
     }
 
@@ -457,6 +460,16 @@ public class GroupActivity extends AppCompatActivity {
             uploadingalertbox.show();
         else
             finish();
+    }
+
+    public void refreshfeed() {
+        Snackbar.make(findViewById(R.id.rootlayout), "connection error", BaseTransientBottomBar.LENGTH_INDEFINITE).setAction("Retry", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((GroupThreadsFragment) pagerAdapter.getRegisteredFragment(1)).refreshList1(isfollowed);
+            }
+        }).setActionTextColor(getResources().getColor(R.color.yellow)).show();
+
     }
 
     private class PagerAdapter extends FragmentStatePagerAdapter {

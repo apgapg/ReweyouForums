@@ -25,7 +25,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -253,7 +252,8 @@ public class YourGroupsFragment extends Fragment {
                         if (new NetworkHandler().isActivityAlive(TAG, mContext, anError)) {
 
                             swiperefresh.setRefreshing(false);
-                            Toast.makeText(mContext, "couldn't connect", Toast.LENGTH_SHORT).show();
+                            ((ForumMainActivity) mContext).refreshyourGroups();
+                            //Toast.makeText(mContext, "couldn't connect", Toast.LENGTH_SHORT).show();
 
                         }
                     }

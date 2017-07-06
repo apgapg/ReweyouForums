@@ -18,6 +18,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.customtabs.CustomTabsIntent;
@@ -122,6 +123,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
     public FeeedsAdapter(Context context, Fragment mainThreadsFragment) {
         this.mContext = context;
         this.messagelist = new ArrayList<>();
+
 
         ThreadModel threadModel = new ThreadModel();
         threadModel.setType("empty");
@@ -662,7 +664,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
     }
 
     private Bitmap loadBitmapFromView(View v) {
-        Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight() - Utils.convertpxFromDp(4), Bitmap.Config.ARGB_4444);
+        Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight() - Utils.convertpxFromDp(6), Bitmap.Config.ARGB_4444);
         Canvas c = new Canvas(b);
         v.draw(c);
 
@@ -804,8 +806,15 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
                             @Override
                             public void onSharePress() {
-                                takeScreenshot(cv);
+                                try {
+                                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                        checkStoragePermission(cv);
 
+                                    } else
+                                        takeScreenshot(cv);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
                         });
                         customDialogEditShare.show(((Activity) mContext).getFragmentManager(), "");
