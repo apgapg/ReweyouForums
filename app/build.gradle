@@ -9,7 +9,7 @@ android {
         minSdkVersion 16
 
         targetSdkVersion 25
-        versionCode 17
+        versionCode 18
         versionName "2.0.0"
         /*versionCode 1
          versionName "debug"*/
@@ -78,6 +78,8 @@ dependencies {
     compile 'com.kbeanie:multipicker:1.1.31@aar'
     compile project(':spyglass')
     compile 'io.paperdb:paperdb:2.1'
+    compile 'io.supercharge:shimmerlayout:0.4.0'
+
 
 
 

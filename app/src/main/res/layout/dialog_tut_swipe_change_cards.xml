@@ -1,0 +1,84 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="@drawable/button_background2"
+    android:orientation="vertical"
+
+    android:paddingTop="8dp">
+
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="130dp"
+        android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:srcCompat="@drawable/ic_double_left_chevron" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_tap" />
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:rotation="180"
+            app:srcCompat="@drawable/ic_double_left_chevron" />
+    </LinearLayout>
+
+    <in.reweyou.reweyouforums.customView.TextViewCustomFont
+        android:id="@+id/ab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/viewPager"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="24dp"
+        android:background="@color/transparent"
+        android:gravity="center"
+
+
+        android:text="Swipe Left/Right to
+ change cards "
+        android:textColor="@color/main_description_text"
+        android:textSize="16dp"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/dd"
+        android:layout_width="match_parent"
+        android:layout_height="0.7dp"
+        android:layout_below="@+id/ab"
+        android:layout_marginTop="16dp"
+        android:alpha="@dimen/view_line_alpha"
+        android:background="#577583" />
+
+    <in.reweyou.reweyouforums.customView.TextViewCustomFontBold
+
+        android:id="@+id/buttonConfirm"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_below="@id/dd"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/ripple_effect2"
+        android:gravity="center"
+        android:paddingBottom="2dp"
+        android:text="Got it"
+        android:textColor="@color/main_description_text"
+        android:textSize="16dp" />
+
+</RelativeLayout>

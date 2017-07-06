@@ -57,7 +57,7 @@
                     app:srcCompat="@drawable/ic_account_circle_black_24dp" />
 
 
-                <TextView
+                <in.reweyou.reweyouforums.customView.TextViewCustomFont
                     android:id="@+id/tabnametoolbar"
                     android:layout_width="140dp"
                     android:layout_height="match_parent"

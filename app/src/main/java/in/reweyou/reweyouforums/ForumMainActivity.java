@@ -29,6 +29,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,10 +66,12 @@ import java.util.List;
 
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.customView.ColorTextView;
+import in.reweyou.reweyouforums.customView.CustomChangeCardDialog;
 import in.reweyou.reweyouforums.customView.CustomViewPager;
 import in.reweyou.reweyouforums.fragment.CreateGroupFragment;
 import in.reweyou.reweyouforums.fragment.ExploreFragment;
 import in.reweyou.reweyouforums.fragment.MainThreadsFragment;
+import in.reweyou.reweyouforums.fragment.TutchangecardsFragment;
 import in.reweyou.reweyouforums.fragment.UserInfoFragment;
 import in.reweyou.reweyouforums.fragment.YourGroupsFragment;
 import in.reweyou.reweyouforums.model.BadgeModel;
@@ -231,6 +234,15 @@ public class ForumMainActivity extends AppCompatActivity {
 
 
         getMembersData();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // showtutcardchange();
+                new CustomChangeCardDialog().show(getSupportFragmentManager(), "");
+
+            }
+        }, 3000);
 
     }
 
@@ -744,6 +756,42 @@ public class ForumMainActivity extends AppCompatActivity {
         viewPager.setCurrentItem(POSITION_CREATE_GROUP);
     }
 
+    private void showtutcardchange() {
+        //Creating a LayoutInflater object for the dialog box
+        final LayoutInflater li = LayoutInflater.from(this);
+        //Creating a view to get the dialog box
+        View confirmDialog = li.inflate(R.layout.dialog_tut_swipe_change_cards, null);
+        //  number=session.getMobileNumber();
+        //Initizliaing confirm button fo dialog box and edittext of dialog box
+        Button buttonconfirm = (Button) confirmDialog.findViewById(R.id.buttonConfirm);
+        ViewPager viewPager = (ViewPager) confirmDialog.findViewById(R.id.viewPager);
+
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this, R.style.Dialogtutchangecards);
+
+        alert.setView(confirmDialog);
+
+        final AlertDialog alertDialog = alert.create();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        viewPager.setAdapter(new TutChangeCardsPagerAdapter(getSupportFragmentManager()));
+
+        alertDialog.show();
+
+        //On the click of the confirm button from alert dialog
+        buttonconfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                alertDialog.dismiss();
+
+
+            }
+        });
+
+    }
+
     private class PagerAdapter extends FragmentStatePagerAdapter {
         SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
 
@@ -799,4 +847,47 @@ public class ForumMainActivity extends AppCompatActivity {
 
     }
 
+    private class TutChangeCardsPagerAdapter extends FragmentStatePagerAdapter {
+        SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
+
+
+        private TutChangeCardsPagerAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+
+            return new TutchangecardsFragment();
+        }
+
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            Fragment fragment = (Fragment) super.instantiateItem(container, position);
+            registeredFragments.put(position, fragment);
+            return fragment;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            registeredFragments.remove(position);
+            super.destroyItem(container, position, object);
+        }
+
+        public Fragment getRegisteredFragment(int position) {
+            return registeredFragments.get(position);
+        }
+
+
+        @Override
+        public int getCount() {
+            return 3;
+        }
+
+    }
+
+
 }
+
+

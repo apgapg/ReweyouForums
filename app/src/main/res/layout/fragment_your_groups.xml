@@ -2,18 +2,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F5F6FB"
     android:orientation="vertical">
 
 
-    <android.support.v7.widget.CardView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="40dp"
         android:layout_marginLeft="3dp"
         android:layout_marginRight="3dp"
-        android:layout_marginTop="4dp"
-        app:cardBackgroundColor="#fff"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="0dp">
+        android:layout_marginTop="4dp">
 
         <in.reweyou.reweyouforums.customView.TextViewCustomFont
             android:layout_width="match_parent"
@@ -39,7 +38,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
-
             android:orientation="horizontal">
 
             <EditText
@@ -89,7 +87,7 @@
                 android:layout_height="match_parent"
 
                 android:clipToPadding="false"
-                android:paddingBottom="44dp"
+                android:paddingBottom="4dp"
                 android:paddingLeft="3dp"
                 android:paddingRight="3dp"
                 android:paddingTop="8dp" />
@@ -107,7 +105,13 @@
             android:textSize="13dp"
 
             android:visibility="gone" />
-    </android.support.v7.widget.CardView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_gravity="bottom"
+            android:background="@drawable/gradient_white_bottom"></RelativeLayout>
+    </FrameLayout>
 
     <View
         android:layout_width="match_parent"
@@ -117,17 +121,28 @@
         android:alpha="0.70"
         android:background="@color/sub_description_color" />
 
-    <in.reweyou.reweyouforums.customView.TextViewCustomFont
+    <RelativeLayout
         android:id="@+id/create"
+
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"
-        android:background="#fff"
-        android:foreground="@drawable/ripple_effect2"
+
+        android:background="#fff">
+
+        <in.reweyou.reweyouforums.customView.TextViewCustomFontBold
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:drawableLeft="@drawable/create_group_layer"
+            android:drawablePadding="16dp"
         android:gravity="center"
-        android:paddingBottom="2dp"
-        android:text="Create Group"
+
+
+            android:text="Create Group"
         android:textColor="#657983"
-        android:textSize="14dp" />
+            android:textSize="15dp" />
+    </RelativeLayout>
+
 
 </RelativeLayout>

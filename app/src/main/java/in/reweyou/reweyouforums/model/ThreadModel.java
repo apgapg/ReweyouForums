@@ -120,6 +120,10 @@ public class ThreadModel {
         return type;
     }
 
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public String getUid() {
         return uid;
     }

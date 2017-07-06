@@ -18,22 +18,16 @@
         app:rvp_singlePageFling="true"
         app:rvp_triggerOffset="0.3" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.7dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="40dp"
-        android:alpha="0.70"
-        android:background="@color/sub_description_color" />
+
 
     <RelativeLayout
         android:id="@+id/fetchingdatacontainer"
         android:layout_width="match_parent"
-        android:layout_height="32dp"
+        android:layout_height="30dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="40.7dp"
 
-        android:background="#5790A4AE"
+        android:background="#dbe7ed"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -50,8 +44,9 @@
                 android:paddingLeft="8dp"
                 android:paddingRight="4dp"
                 android:text="Fetching data..."
+                android:textColor="@color/main_description_text"
 
-                android:textColor="@color/main_description_text" />
+                android:textSize="13dp" />
 
             <ProgressBar
                 android:layout_width="32dp"
@@ -61,7 +56,15 @@
 
     </RelativeLayout>
 
-    <in.reweyou.reweyouforums.customView.TextViewCustomFont
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.7dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp"
+        android:alpha="0.70"
+        android:background="@color/sub_description_color" />
+
+    <in.reweyou.reweyouforums.customView.TextViewCustomFontBold
         android:id="@+id/create"
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -72,5 +75,5 @@
         android:paddingBottom="2dp"
         android:text="Create a Post"
         android:textColor="#657983"
-        android:textSize="14dp" />
+        android:textSize="15dp" />
 </RelativeLayout>

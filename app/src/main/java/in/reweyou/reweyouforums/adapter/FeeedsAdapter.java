@@ -89,6 +89,7 @@ import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.customView.ColorTextView;
 import in.reweyou.reweyouforums.model.ThreadModel;
 import in.reweyou.reweyouforums.utils.Utils;
+import io.supercharge.shimmerlayout.ShimmerLayout;
 import me.zhanghai.android.customtabshelper.CustomTabsHelperFragment;
 
 /**
@@ -107,6 +108,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
     private static final int VIEW_TYPE_LINK = 26;
     private static final int VIEW_TYPE_YOUTUBE_LINK = 27;
     private static final String TAG = FeeedsAdapter.class.getName();
+    private static final int VIEW_TYPE_EMPTY = 28;
 
     private final Context mContext;
     private final UserSessionManager userSessionManager;
@@ -119,6 +121,11 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
     public FeeedsAdapter(Context context, Fragment mainThreadsFragment) {
         this.mContext = context;
         this.messagelist = new ArrayList<>();
+
+        ThreadModel threadModel = new ThreadModel();
+        threadModel.setType("empty");
+        messagelist.add(threadModel);
+
         userSessionManager = new UserSessionManager(mContext);
         mCustomTabsIntent = new CustomTabsIntent.Builder()
 
@@ -148,6 +155,8 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                 return new LinkViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_feeds_link, parent, false));
             case VIEW_TYPE_YOUTUBE_LINK:
                 return new YoutubeViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_feeds_youtube_link, parent, false));
+            case VIEW_TYPE_EMPTY:
+                return new TextViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_feeds_empty, parent, false));
 
             default:
                 return new TextViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_feeds_text, parent, false));
@@ -156,108 +165,109 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
     @Override
     public void onBindViewHolder(final BaseViewHolder holder, int position) {
+        if (!messagelist.get(position).getType().equals("empty")) {
 
-        Log.d(TAG, "onBindViewHolder: callledddd");
-        holder.nested.scrollTo(0, 0);
-        holder.description.setText(messagelist.get(position).getDescription().trim());
-        holder.likenumber.setText(messagelist.get(position).getUpvotes());
-        holder.commentnum.setText(messagelist.get(position).getComments());
-        holder.userlevel.setText(messagelist.get(position).getBadge());
+            Log.d(TAG, "onBindViewHolder: callledddd");
+            holder.nested.scrollTo(0, 0);
+            holder.description.setText(messagelist.get(position).getDescription().trim());
+            holder.likenumber.setText(messagelist.get(position).getUpvotes());
+            holder.commentnum.setText(messagelist.get(position).getComments());
+            holder.userlevel.setText(messagelist.get(position).getBadge());
 
-        try {
-            JSONObject jsonObject = new JSONObject(messagelist.get(position).getTags().replace("\\", ""));
-            if (jsonObject.length() > 0) {
-                for (int i = 0; i < jsonObject.length(); i++) {
+            try {
+                JSONObject jsonObject = new JSONObject(messagelist.get(position).getTags().replace("\\", ""));
+                if (jsonObject.length() > 0) {
+                    for (int i = 0; i < jsonObject.length(); i++) {
 
-                    holder.description.findAndSetStrColor(jsonObject.getString("" + i), "#2962FF");
+                        holder.description.findAndSetStrColor(jsonObject.getString("" + i), "#2962FF");
+                    }
+
                 }
 
+            } catch (Exception e) {
+            }
+            holder.username.setText(messagelist.get(position).getUsername());
+            Glide.with(fragmentContext).load(messagelist.get(position).getProfilepic()).diskCacheStrategy(DiskCacheStrategy.SOURCE).error(R.drawable.download).into(holder.profileimage);
+            holder.date.setText(messagelist.get(position).getTimestamp().replace("about ", "").replace(" ago", ""));
+
+            if (mContext instanceof ForumMainActivity || mContext instanceof GroupActivity)
+                holder.adapterComment.add(messagelist.get(position).getCommentlistshow());
+
+            if (messagelist.get(position).getUid().equals(userSessionManager.getUID())) {
+                holder.edit.setVisibility(View.VISIBLE);
+            } else holder.edit.setVisibility(View.GONE);
+
+
+            if (messagelist.get(position).getStatus().equals("true")) {
+                holder.likebuttn.setImageResource(R.drawable.ic_heart_like);
+            } else if (messagelist.get(position).getStatus().equals("false")) {
+
+                holder.likebuttn.setImageResource(R.drawable.ic_heart_like_grey);
+
             }
 
-        } catch (Exception e) {
-        }
-        holder.username.setText(messagelist.get(position).getUsername());
-        Glide.with(fragmentContext).load(messagelist.get(position).getProfilepic()).diskCacheStrategy(DiskCacheStrategy.SOURCE).error(R.drawable.download).into(holder.profileimage);
-        holder.date.setText(messagelist.get(position).getTimestamp().replace("about ", "").replace(" ago", ""));
+            Drawable background = holder.userlevel.getBackground();
+            if (background instanceof GradientDrawable) {
+                // cast to 'ShapeDrawable'
+                GradientDrawable shapeDrawable = (GradientDrawable) background;
+                if (messagelist.get(position).getBadge().equals("Noob")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_noob));
+                } else if (messagelist.get(position).getBadge().equals("Follower")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_follower));
+                } else if (messagelist.get(position).getBadge().equals("Pro")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_pro));
+                } else if (messagelist.get(position).getBadge().equals("Rising Star")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_rising_star));
+                } else if (messagelist.get(position).getBadge().equals("Star")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_star));
+                } else if (messagelist.get(position).getBadge().equals("Expert")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_expert));
+                } else if (messagelist.get(position).getBadge().equals("Leader")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_leader));
+                } else if (messagelist.get(position).getBadge().equals("King")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_king));
+                } else if (messagelist.get(position).getBadge().equals("Legend")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_legend));
+                } else if (messagelist.get(position).getBadge().equals("Editor")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_editor));
+                } else if (messagelist.get(position).getBadge().equals("Writer")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_writer));
+                } else if (messagelist.get(position).getBadge().equals("GOAT")) {
+                    shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_GOAT));
 
-        if (mContext instanceof ForumMainActivity || mContext instanceof GroupActivity)
-            holder.adapterComment.add(messagelist.get(position).getCommentlistshow());
+                }
+            }
+            switch (getItemViewType(position))
 
-        if (messagelist.get(position).getUid().equals(userSessionManager.getUID())) {
-            holder.edit.setVisibility(View.VISIBLE);
-        } else holder.edit.setVisibility(View.GONE);
-
-
-        if (messagelist.get(position).getStatus().equals("true")) {
-            holder.likebuttn.setImageResource(R.drawable.ic_heart_like);
-        } else if (messagelist.get(position).getStatus().equals("false")) {
-
-            holder.likebuttn.setImageResource(R.drawable.ic_heart_like_grey);
-
-        }
-
-        Drawable background = holder.userlevel.getBackground();
-        if (background instanceof GradientDrawable) {
-            // cast to 'ShapeDrawable'
-            GradientDrawable shapeDrawable = (GradientDrawable) background;
-            if (messagelist.get(position).getBadge().equals("Noob")) {
-                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_noob));
-            } else if (messagelist.get(position).getBadge().equals("Follower")) {
-                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_follower));
-            } else if (messagelist.get(position).getBadge().equals("Pro")) {
-                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_pro));
-            } else if (messagelist.get(position).getBadge().equals("Rising Star")) {
-                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_rising_star));
-            } else if (messagelist.get(position).getBadge().equals("Star")) {
-                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_star));
-            } else if (messagelist.get(position).getBadge().equals("Expert")) {
-                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_expert));
-            } else if (messagelist.get(position).getBadge().equals("Leader")) {
-                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_leader));
-            } else if (messagelist.get(position).getBadge().equals("King")) {
-                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_king));
-            } else if (messagelist.get(position).getBadge().equals("Legend")) {
-                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_legend));
-            } else if (messagelist.get(position).getBadge().equals("Editor")) {
-                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_editor));
-            } else if (messagelist.get(position).getBadge().equals("Writer")) {
-                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_writer));
-            } else if (messagelist.get(position).getBadge().equals("GOAT")) {
-                shapeDrawable.setColor(ContextCompat.getColor(mContext, R.color.user_level_GOAT));
+            {
+                case VIEW_TYPE_IMAGE_1:
+                    Image1ViewHolder image1ViewHolder = (Image1ViewHolder) holder;
+                    onbindimage1(image1ViewHolder, position);
+                    return;
+                case VIEW_TYPE_IMAGE_2:
+                    Image2ViewHolder image2ViewHolder = (Image2ViewHolder) holder;
+                    onbindimage2(image2ViewHolder, position);
+                    return;
+                case VIEW_TYPE_IMAGE_3:
+                    Image3ViewHolder image3ViewHolder = (Image3ViewHolder) holder;
+                    onbindimage3(image3ViewHolder, position);
+                    return;
+                case VIEW_TYPE_IMAGE_4:
+                    Image4ViewHolder image4ViewHolder = (Image4ViewHolder) holder;
+                    onbindimage4(image4ViewHolder, position);
+                    return;
+                case VIEW_TYPE_TEXT:
+                    return;
+                case VIEW_TYPE_LINK:
+                    LinkViewHolder linkViewHolder = (LinkViewHolder) holder;
+                    onbindlink(linkViewHolder, position);
+                    return;
+                case VIEW_TYPE_YOUTUBE_LINK:
+                    YoutubeViewHolder youtubeViewHolder = (YoutubeViewHolder) holder;
+                    onbindyoutubelink(youtubeViewHolder, position);
+                    return;
 
             }
-        }
-        switch (getItemViewType(position))
-
-        {
-            case VIEW_TYPE_IMAGE_1:
-                Image1ViewHolder image1ViewHolder = (Image1ViewHolder) holder;
-                onbindimage1(image1ViewHolder, position);
-                return;
-            case VIEW_TYPE_IMAGE_2:
-                Image2ViewHolder image2ViewHolder = (Image2ViewHolder) holder;
-                onbindimage2(image2ViewHolder, position);
-                return;
-            case VIEW_TYPE_IMAGE_3:
-                Image3ViewHolder image3ViewHolder = (Image3ViewHolder) holder;
-                onbindimage3(image3ViewHolder, position);
-                return;
-            case VIEW_TYPE_IMAGE_4:
-                Image4ViewHolder image4ViewHolder = (Image4ViewHolder) holder;
-                onbindimage4(image4ViewHolder, position);
-                return;
-            case VIEW_TYPE_TEXT:
-                return;
-            case VIEW_TYPE_LINK:
-                LinkViewHolder linkViewHolder = (LinkViewHolder) holder;
-                onbindlink(linkViewHolder, position);
-                return;
-            case VIEW_TYPE_YOUTUBE_LINK:
-                YoutubeViewHolder youtubeViewHolder = (YoutubeViewHolder) holder;
-                onbindyoutubelink(youtubeViewHolder, position);
-                return;
-
-        }
 
 
        /* if (messagelist.get(position).getImage().isEmpty())
@@ -267,7 +277,9 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             Glide.with(mContext).load(messagelist.get(position).getImage()).into(forumViewHolder.image);
         }*/
 
+        } else {
 
+        }
     }
 
     private void onbindlink(final LinkViewHolder linkViewHolder, int position) {
@@ -449,6 +461,8 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                 return VIEW_TYPE_LINK;
             case "youtubelink":
                 return VIEW_TYPE_YOUTUBE_LINK;
+            case "empty":
+                return VIEW_TYPE_EMPTY;
             default:
                 return super.getItemViewType(position);
 
@@ -461,9 +475,11 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
     }
 
     public void add(List<ThreadModel> list) {
+
         messagelist.clear();
         messagelist.addAll(list);
         notifyDataSetChanged();
+
     }
 
     private void sendrequestforlike(final int adapterPosition) {
@@ -713,6 +729,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
 
     public class BaseViewHolder extends RecyclerView.ViewHolder {
+        private ShimmerLayout shimmerText;
         private NestedScrollView nested;
         private RelativeLayout commentcont;
         private TextView replyheader;
@@ -731,6 +748,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
         public BaseViewHolder(View inflate) {
             super(inflate);
+            shimmerText = (ShimmerLayout) inflate.findViewById(R.id.shimmer_text);
 
             profileimage = (ImageView) inflate.findViewById(R.id.profilepic);
             comment = (ImageView) inflate.findViewById(R.id.comment);
@@ -763,8 +781,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             cv.setOnClickListener(new DoubleClickListener() {
                 @Override
                 public void onSingleClick(View v) {
-                    if (mContext instanceof ForumMainActivity)
-                        ((ForumMainActivity) mContext).movetonextcard();
+
                 }
 
                 @Override
@@ -910,14 +927,14 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             super(inflate);
             image1 = (ImageView) inflate.findViewById(R.id.image1);
 
-            /*image1.setOnClickListener(new View.OnClickListener() {
+            image1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(mContext, FullImageActivity.class);
                     i.putExtra("image", messagelist.get(getAdapterPosition()).getImage1());
                     mContext.startActivity(i);
                 }
-            });*/
+            });
 
         }
     }
