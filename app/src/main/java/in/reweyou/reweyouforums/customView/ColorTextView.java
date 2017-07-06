@@ -125,4 +125,6 @@ public class ColorTextView extends AppCompatTextView {
         Typeface type = Typeface.createFromAsset(getContext().getAssets(), "Quicksand-Medium.ttf");
         super.setTypeface(type);
     }
+
+
 }

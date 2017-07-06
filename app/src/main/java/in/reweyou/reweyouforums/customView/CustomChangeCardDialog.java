@@ -16,8 +16,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.TextView;
 
 import in.reweyou.reweyouforums.R;
+import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.fragment.TutchangecardsFragment;
 
 /**
@@ -37,6 +39,9 @@ public class CustomChangeCardDialog extends DialogFragment {
         final ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         viewPager.setAdapter(new TutChangeCardsPagerAdapter(getChildFragmentManager()));
 
+        TextView usrname = (TextView) view.findViewById(R.id.name);
+        UserSessionManager userSessionManager = new UserSessionManager(getActivity());
+        usrname.setText("Welcome, " + userSessionManager.getUsername());
         final CountDownTimer downTimer = new CountDownTimer(4501, 1500) {
 
             public void onTick(long millisUntilFinished) {

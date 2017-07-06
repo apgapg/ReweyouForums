@@ -13,7 +13,7 @@
         android:src="@drawable/download"
         card_view:myborderWidth="0dp" />
 
-    <TextView
+    <in.reweyou.reweyouforums.customView.TextViewCustomFont
         android:id="@+id/usernamee"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
         android:textSize="14dp"
         android:textStyle="bold" />
 
-    <TextView
+    <in.reweyou.reweyouforums.customView.TextViewCustomFontBold
         android:id="@+id/userlevel"
         android:layout_width="wrap_content"
         android:layout_height="16dp"
@@ -49,8 +49,7 @@
         android:textStyle="bold" />
 
 
-
-    <TextView
+    <in.reweyou.reweyouforums.customView.TextViewCustomFont
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

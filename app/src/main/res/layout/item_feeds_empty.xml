@@ -6,13 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="@dimen/card_padding_top"
-
     android:scrollbars="none">
 
     <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/cv"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
@@ -161,6 +161,7 @@
 
 
                 <ImageView
+                    android:id="@+id/edit"
                     android:layout_width="match_parent"
                     android:layout_height="140dp"
                     android:layout_margin="14dp"
@@ -220,8 +221,8 @@
                         android:textColor="@color/sub_description_color"
                         android:textSize="13dp" />
 
-                    <in.reweyou.reweyouforums.customView.TextViewCustomFont
-                        android:id="@+id/edit"
+                    <ImageView
+                        android:id="@id/edit"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -258,7 +259,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
 
-                    android:background="@drawable/ripple_effect2">
+                    >
 
                     <in.reweyou.reweyouforums.customView.TextViewCustomFont
                         android:id="@+id/addcomment"

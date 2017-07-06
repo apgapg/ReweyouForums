@@ -15,15 +15,13 @@
     android:id="@+id/cv"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="2dp"
-    android:layout_marginTop="2dp"
 
 
     android:clickable="true"
     android:stateListAnimator="@animator/lift_on_touch"
     card_view:cardBackgroundColor="#fff"
-    card_view:cardCornerRadius="2dp"
-    card_view:cardElevation="1.5dp"
+    card_view:cardCornerRadius="8dp"
+    card_view:cardElevation="3dp"
     card_view:cardPreventCornerOverlap="false"
     card_view:cardUseCompatPadding="true"
     tools:targetApi="lollipop">
@@ -157,7 +155,6 @@
                 android:id="@+id/ddd"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginRight="12dp"
 
                 android:gravity="center_vertical"
                 android:paddingLeft="6dp"
@@ -165,15 +162,14 @@
                 android:textColor="@color/sub_description_color"
                 android:textSize="13dp" />
 
-            <in.reweyou.reweyouforums.customView.TextViewCustomFont
+            <ImageView
                 android:id="@+id/edit"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:text="EDIT"
-                android:textColor="@color/red" />
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:paddingTop="2dp"
+                android:scaleType="center"
+                app:srcCompat="@drawable/ic_settings_black_24dp" />
+
 
             <android.support.v4.widget.Space
                 android:layout_width="0dp"

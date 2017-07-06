@@ -1,0 +1,53 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="200dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/button_background2"
+    android:orientation="vertical"
+
+    >
+
+    <in.reweyou.reweyouforums.customView.TextViewCustomFont
+
+        android:id="@+id/edit"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/dd"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/ripple_effect2"
+        android:gravity="center"
+        android:paddingBottom="2dp"
+        android:text="Edit"
+        android:textColor="@color/main_description_text"
+        android:textSize="14dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.7dp"
+
+        android:alpha="@dimen/view_line_alpha"
+        android:background="#577583" />
+
+    <in.reweyou.reweyouforums.customView.TextViewCustomFont
+
+        android:id="@+id/share"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/dd"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/ripple_effect2"
+        android:gravity="center"
+        android:paddingBottom="2dp"
+        android:text="Share"
+        android:textColor="@color/main_description_text"
+        android:textSize="14dp" />
+
+    <View
+        android:id="@+id/dd"
+        android:layout_width="match_parent"
+        android:layout_height="0.7dp"
+
+        android:alpha="@dimen/view_line_alpha"
+        android:background="#577583" />
+
+</LinearLayout>

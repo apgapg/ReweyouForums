@@ -6,22 +6,35 @@
     android:background="@drawable/button_background2"
     android:orientation="vertical"
 
-    android:paddingTop="8dp">
+    >
 
+    <in.reweyou.reweyouforums.customView.TextViewCustomFontBold
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:lines="1"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:text="Welcome, Ayush"
+
+        android:textColor="@color/main_description_text"
+        android:textSize="18dp" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="130dp"
         android:layout_height="120dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="54dp" />
 
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="100dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="128dp"
         android:orientation="horizontal">
 
         <ImageView
@@ -47,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/viewPager"
         android:layout_gravity="center_vertical"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         android:background="@color/transparent"
         android:gravity="center"
 
@@ -63,7 +76,7 @@
         android:layout_width="match_parent"
         android:layout_height="0.7dp"
         android:layout_below="@+id/ab"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:alpha="@dimen/view_line_alpha"
         android:background="#577583" />
 

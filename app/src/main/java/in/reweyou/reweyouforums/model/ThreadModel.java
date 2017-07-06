@@ -76,6 +76,10 @@ public class ThreadModel {
         return groupname;
     }
 
+    public void setGroupname(String groupname) {
+        this.groupname = groupname;
+    }
+
     public String getUsername() {
         return username;
     }

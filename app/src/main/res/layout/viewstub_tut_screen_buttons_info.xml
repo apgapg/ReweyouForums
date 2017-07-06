@@ -1,0 +1,193 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:alpha="0.0"
+
+    android:background="#eeF5F6FB">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_marginLeft="23dp"
+            android:background="@drawable/solid_circle_blue" />
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="26dp"
+
+            android:background="@color/sub_description_color" />
+
+        <in.reweyou.reweyouforums.customView.TextViewCustomFontBold
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:paddingBottom="4dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="4dp"
+            android:text="Explore Groups"
+            android:textColor="@color/main_description_text" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_marginLeft="61dp"
+            android:background="@drawable/solid_circle_blue" />
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="64dp"
+
+            android:background="@color/sub_description_color" />
+
+        <in.reweyou.reweyouforums.customView.TextViewCustomFontBold
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:paddingBottom="4dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="4dp"
+            android:text="Your Profile"
+            android:textColor="@color/main_description_text" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+
+            android:layout_gravity="end"
+            android:layout_marginRight="61dp"
+            android:background="@drawable/solid_circle_blue" />
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="64dp"
+            android:layout_gravity="end"
+            android:layout_marginRight="64dp"
+            android:background="@color/sub_description_color" />
+
+        <in.reweyou.reweyouforums.customView.TextViewCustomFontBold
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="40dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:paddingBottom="4dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="4dp"
+            android:text="Notification"
+            android:textColor="@color/main_description_text" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+
+            android:layout_gravity="end"
+            android:layout_marginRight="21dp"
+            android:background="@drawable/solid_circle_blue" />
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="120dp"
+            android:layout_gravity="end"
+            android:layout_marginRight="24dp"
+            android:background="@color/sub_description_color" />
+
+        <in.reweyou.reweyouforums.customView.TextViewCustomFontBold
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="4dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:paddingBottom="4dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="4dp"
+            android:text="Your Groups"
+            android:textColor="@color/main_description_text" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="4dp"
+        android:orientation="vertical">
+
+        <in.reweyou.reweyouforums.customView.TextViewCustomFontBold
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="4dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:paddingBottom="4dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="4dp"
+            android:text="Share a new post"
+            android:textColor="@color/main_description_text" />
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+
+            android:background="@color/sub_description_color" />
+
+
+        <View
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+
+            android:layout_gravity="center"
+            android:background="@drawable/solid_circle_blue" />
+    </LinearLayout>
+
+    <in.reweyou.reweyouforums.customView.TextViewCustomFont
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="Tap anywhere to continue"
+        android:textColor="@color/main_description_text"
+        android:textSize="16dp" />
+</RelativeLayout>

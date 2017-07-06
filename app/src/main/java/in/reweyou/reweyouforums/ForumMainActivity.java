@@ -1,5 +1,7 @@
 package in.reweyou.reweyouforums;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,6 +16,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.support.design.widget.BaseTransientBottomBar;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -26,11 +30,14 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -108,6 +115,8 @@ public class ForumMainActivity extends AppCompatActivity {
     private View confirmDialog;
     private BadgeModel badgeModel;
     private TextView tabnametoolbar;
+    private boolean isTutPageShown;
+    private RelativeLayout container;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -235,14 +244,18 @@ public class ForumMainActivity extends AppCompatActivity {
 
         getMembersData();
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // showtutcardchange();
-                new CustomChangeCardDialog().show(getSupportFragmentManager(), "");
 
-            }
-        }, 3000);
+        if (!userSessionManager.getvaluefromsharedprefBoolean("tut2"))
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    isTutPageShown = true;
+                    ViewStub stub = (ViewStub) findViewById(R.id.stub);
+                    View inflated = stub.inflate();
+                    container = (RelativeLayout) inflated.findViewById(R.id.container);
+                    container.animate().alpha(1.0f).setDuration(400).start();
+                }
+            }, 3000);
 
     }
 
@@ -267,6 +280,26 @@ public class ForumMainActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (isTutPageShown) {
+            container.animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    container.setVisibility(View.GONE);
+                    super.onAnimationEnd(animation);
+                    new CustomChangeCardDialog().show(getSupportFragmentManager(), "");
+                }
+            }).start();
+            userSessionManager.putinsharedprefBoolean("tut2", true);
+            isTutPageShown = false;
+            return false;
+        } else
+            return super.dispatchTouchEvent(ev);
+    }
+
 
     private void getMembersData() {
 
@@ -790,6 +823,15 @@ public class ForumMainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void showNetworkErrorSnackBar() {
+        Snackbar.make(findViewById(R.id.rootlayout), "connection error", BaseTransientBottomBar.LENGTH_INDEFINITE).setAction("Retry", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainThreadsFragment) pagerAdapter.getRegisteredFragment(POSITION_MAIN_FEEDS)).refreshList();
+            }
+        }).setActionTextColor(getResources().getColor(R.color.yellow)).show();
     }
 
     private class PagerAdapter extends FragmentStatePagerAdapter {

@@ -146,4 +146,13 @@
 
 
     </android.support.design.widget.TabLayout>
+
+    <ViewStub
+        android:id="@+id/stub"
+        android:layout_width="match_parent"
+
+        android:layout_height="match_parent"
+        android:layout_marginBottom="40dp"
+        android:layout_marginTop="44dp"
+        android:layout="@layout/viewstub_tut_screen_buttons_info" />
 </android.support.design.widget.CoordinatorLayout>

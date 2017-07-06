@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -83,7 +82,11 @@ public class MainThreadsFragment extends Fragment {
         recyclerView.addOnPageChangedListener(new RecyclerViewPager.OnPageChangedListener() {
             @Override
             public void OnPageChanged(int i, int i1) {
-                ((ForumMainActivity) mContext).onFeedCardChange(threadlist.get(i1).getGroupname());
+                try {
+                    ((ForumMainActivity) mContext).onFeedCardChange(threadlist.get(i1).getGroupname());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -179,7 +182,8 @@ public class MainThreadsFragment extends Fragment {
                             fetchingdatacont.setVisibility(View.GONE);
 
                             Log.d(TAG, "onError: " + anError);
-                            Toast.makeText(mContext, "couldn't connect", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(mContext, "couldn't connect", Toast.LENGTH_SHORT).show();
+                            ((ForumMainActivity) mContext).showNetworkErrorSnackBar();
                         }
                     }
 

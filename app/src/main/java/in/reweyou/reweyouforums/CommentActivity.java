@@ -136,7 +136,6 @@ public class CommentActivity extends AppCompatActivity {
         AndroidNetworking.cancel("comment3");
         Intent i;
         if (isfromGroupActivity || isfromNotiAdapter || isfromForumMainActivity) {
-            setResult(RESULT_OK);
             finish();
         } else {
             i = new Intent(CommentActivity.this, ForumMainActivity.class);
@@ -179,6 +178,10 @@ public class CommentActivity extends AppCompatActivity {
 
 
             threadid = intent.getStringExtra("threadid");
+            if (getIntent().getStringExtra("from").equals("n")) {
+                isfromNoti = true;
+            }
+
             Log.d(TAG, "onNewIntent: " + threadid);
             if (viewpager.getAdapter() instanceof PagerAdapterSingle) {
                 pagerAdapter = new PagerAdapter(getSupportFragmentManager());

@@ -2,6 +2,7 @@ package in.reweyou.reweyouforums.adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -37,6 +38,8 @@ import java.util.List;
 
 import in.reweyou.reweyouforums.CommentActivity;
 import in.reweyou.reweyouforums.ForumMainActivity;
+import in.reweyou.reweyouforums.GroupActivity;
+import in.reweyou.reweyouforums.NotificationActivity;
 import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.customView.ColorTextView;
@@ -56,6 +59,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private final Context mContext;
     private final UserSessionManager userSessionManager;
     List<Object> messagelist;
+    private String threadId;
 
 
     public CommentsAdapter(Context context) {
@@ -525,6 +529,10 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 });
     }
 
+    public void setThreadId(String threadId) {
+        this.threadId = threadId;
+    }
+
     private class CommentViewHolder extends RecyclerView.ViewHolder {
         private ColorTextView comment;
         private TextView reply;
@@ -552,14 +560,31 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
             });
 
-            if (mContext instanceof ForumMainActivity) {
+            if (mContext instanceof ForumMainActivity || mContext instanceof GroupActivity) {
 
+                reply.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(mContext, CommentActivity.class);
+                        i.putExtra("threadid", threadId);
+                        if (mContext instanceof ForumMainActivity)
+                            i.putExtra("from", "f");
+                        else if (mContext instanceof GroupActivity)
+                            i.putExtra("from", "g");
+                        else if (mContext instanceof NotificationActivity)
+                            i.putExtra("from", "nb");
+
+                        if (mContext instanceof ForumMainActivity) {
+                            ((ForumMainActivity) mContext).startActivityForResult(i, Utils.MAINACTIVITY_COMMENT);
+                        } else mContext.startActivity(i);
+                    }
+                });
             } else
                 reply.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                         ((CommentActivity) mContext).passClicktoEditText(((CommentModel) messagelist.get(getAdapterPosition())).getUsername(), (((CommentModel) messagelist.get((getAdapterPosition()))).getCommentid()), getAdapterPosition());
+
                     }
                 });
 

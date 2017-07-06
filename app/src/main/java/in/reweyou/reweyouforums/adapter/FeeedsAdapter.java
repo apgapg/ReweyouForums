@@ -87,6 +87,7 @@ import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.YoutubeActivity;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.customView.ColorTextView;
+import in.reweyou.reweyouforums.customView.CustomDialogEditShare;
 import in.reweyou.reweyouforums.model.ThreadModel;
 import in.reweyou.reweyouforums.utils.Utils;
 import io.supercharge.shimmerlayout.ShimmerLayout;
@@ -124,6 +125,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
         ThreadModel threadModel = new ThreadModel();
         threadModel.setType("empty");
+        threadModel.setGroupname("");
         messagelist.add(threadModel);
 
         userSessionManager = new UserSessionManager(mContext);
@@ -190,12 +192,10 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             Glide.with(fragmentContext).load(messagelist.get(position).getProfilepic()).diskCacheStrategy(DiskCacheStrategy.SOURCE).error(R.drawable.download).into(holder.profileimage);
             holder.date.setText(messagelist.get(position).getTimestamp().replace("about ", "").replace(" ago", ""));
 
-            if (mContext instanceof ForumMainActivity || mContext instanceof GroupActivity)
+            if (mContext instanceof ForumMainActivity || mContext instanceof GroupActivity) {
+                holder.adapterComment.setThreadId(messagelist.get(position).getThreadid());
                 holder.adapterComment.add(messagelist.get(position).getCommentlistshow());
-
-            if (messagelist.get(position).getUid().equals(userSessionManager.getUID())) {
-                holder.edit.setVisibility(View.VISIBLE);
-            } else holder.edit.setVisibility(View.GONE);
+            }
 
 
             if (messagelist.get(position).getStatus().equals("true")) {
@@ -742,12 +742,14 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         private ImageView profileimage, liketemp, comment, like, share, likebuttn;
         private TextView username, likenum, commentnum, likenumber;
         private TextView date, userlevel;
-        private TextView edit, commenttxt;
+        private ImageView edit;
+        private TextView commenttxt;
         private ColorTextView description;
         private LinearLayout commentcontainer;
 
         public BaseViewHolder(View inflate) {
             super(inflate);
+
             shimmerText = (ShimmerLayout) inflate.findViewById(R.id.shimmer_text);
 
             profileimage = (ImageView) inflate.findViewById(R.id.profilepic);
@@ -755,28 +757,63 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             share = (ImageView) inflate.findViewById(R.id.share);
             like = (ImageView) inflate.findViewById(R.id.like);
             likebuttn = (ImageView) inflate.findViewById(R.id.likebutton);
-
-            likebuttn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (messagelist.get(getAdapterPosition()).getStatus().equals("false")) {
-                        FeeedsAdapter.this.notifyItemChanged(getAdapterPosition(), "like");
-                    } else FeeedsAdapter.this.notifyItemChanged(getAdapterPosition(), "unlike");
-
-                    sendrequestforlike(getAdapterPosition());
-
-                }
-            });
-            edit = (TextView) inflate.findViewById(R.id.edit);
-
+            edit = (ImageView) inflate.findViewById(R.id.edit);
             likenumber = (TextView) inflate.findViewById(R.id.numlikes);
             userlevel = (TextView) inflate.findViewById(R.id.userlevel);
             description = (ColorTextView) inflate.findViewById(R.id.description);
             cv = (CardView) inflate.findViewById(R.id.cv);
             commentnum = (TextView) inflate.findViewById(R.id.numcomments);
+            nested = (NestedScrollView) inflate.findViewById(R.id.nested);
 
+            commentcontainer = (LinearLayout) inflate.findViewById(R.id.commentcontainer);
+            username = (TextView) inflate.findViewById(R.id.usernamee);
+            date = (TextView) inflate.findViewById(R.id.date);
+            commentcont = (RelativeLayout) inflate.findViewById(R.id.commmentcont);
             FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(Utils.screenWidth - Utils.convertpxFromDp(8), ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL);
             cv.setLayoutParams(layoutParams);
+
+
+            likebuttn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!messagelist.get(getAdapterPosition()).getType().equals("empty")) {
+
+                        if (messagelist.get(getAdapterPosition()).getStatus().equals("false")) {
+                            FeeedsAdapter.this.notifyItemChanged(getAdapterPosition(), "like");
+                        } else FeeedsAdapter.this.notifyItemChanged(getAdapterPosition(), "unlike");
+
+                        sendrequestforlike(getAdapterPosition());
+
+                    }
+                }
+
+            });
+            edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (!messagelist.get(getAdapterPosition()).getType().equals("empty")) {
+                        CustomDialogEditShare customDialogEditShare = new CustomDialogEditShare();
+                        customDialogEditShare.setPostByUser = messagelist.get(getAdapterPosition()).getUid().equals(userSessionManager.getUID());
+
+                        customDialogEditShare.setonEditShareOptions(new CustomDialogEditShare.EditShareCallback() {
+                            @Override
+                            public void onEditPress() {
+                                editdescription(getAdapterPosition());
+                            }
+
+                            @Override
+                            public void onSharePress() {
+                                takeScreenshot(cv);
+
+                            }
+                        });
+                        customDialogEditShare.show(((Activity) mContext).getFragmentManager(), "");
+
+                    }
+                }
+            });
+
 
             cv.setOnClickListener(new DoubleClickListener() {
                 @Override
@@ -786,54 +823,49 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
                 @Override
                 public void onDoubleClick(View v) {
+                    if (!messagelist.get(getAdapterPosition()).getType().equals("empty")) {
 
-                    if (messagelist.get(getAdapterPosition()).getStatus().equals("false")) {
-                        FeeedsAdapter.this.notifyItemChanged(getAdapterPosition(), "like");
-                    } else FeeedsAdapter.this.notifyItemChanged(getAdapterPosition(), "unlike");
 
-                    sendrequestforlike(getAdapterPosition());
+                        if (messagelist.get(getAdapterPosition()).getStatus().equals("false")) {
+                            FeeedsAdapter.this.notifyItemChanged(getAdapterPosition(), "like");
+                        } else FeeedsAdapter.this.notifyItemChanged(getAdapterPosition(), "unlike");
 
+                        sendrequestforlike(getAdapterPosition());
+                    }
 
                 }
             });
 
 
-            nested = (NestedScrollView) inflate.findViewById(R.id.nested);
-
-            commentcontainer = (LinearLayout) inflate.findViewById(R.id.commentcontainer);
-            username = (TextView) inflate.findViewById(R.id.usernamee);
-            date = (TextView) inflate.findViewById(R.id.date);
-            commentcont = (RelativeLayout) inflate.findViewById(R.id.commmentcont);
             commentcont.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (!messagelist.get(getAdapterPosition()).getType().equals("empty")) {
 
-                    if (mContext instanceof CommentActivity) {
-                        ((CommentActivity) mContext).showCommentPage();
-                    } else {
-                        Intent i = new Intent(mContext, CommentActivity.class);
-                        i.putExtra("threadid", messagelist.get(getAdapterPosition()).getThreadid());
-                        if (mContext instanceof ForumMainActivity)
-                            i.putExtra("from", "f");
-                        else if (mContext instanceof GroupActivity)
-                            i.putExtra("from", "g");
-                        else if (mContext instanceof NotificationActivity)
-                            i.putExtra("from", "nb");
+                        if (mContext instanceof CommentActivity) {
+                            ((CommentActivity) mContext).showCommentPage();
+                        } else {
+                            Intent i = new Intent(mContext, CommentActivity.class);
+                            i.putExtra("threadid", messagelist.get(getAdapterPosition()).getThreadid());
+                            if (mContext instanceof ForumMainActivity)
+                                i.putExtra("from", "f");
+                            else if (mContext instanceof GroupActivity)
+                                i.putExtra("from", "g");
+                            else if (mContext instanceof NotificationActivity)
+                                i.putExtra("from", "nb");
 
-                        if (mContext instanceof ForumMainActivity) {
-                            ((ForumMainActivity) mContext).startActivityForResult(i, Utils.MAINACTIVITY_COMMENT);
-                        } else mContext.startActivity(i);
+                            if (mContext instanceof ForumMainActivity) {
+                                ((ForumMainActivity) mContext).startActivityForResult(i, Utils.MAINACTIVITY_COMMENT);
+                            } else mContext.startActivity(i);
+                        }
                     }
+
                 }
             });
 
-            Typeface type = Typeface.createFromAsset(mContext.getAssets(), "Quicksand-Medium.ttf");
-            description.setTypeface(type);
-            username.setTypeface(type);
-            date.setTypeface(type);
-            userlevel.setTypeface(type);
 
             if (mContext instanceof ForumMainActivity || mContext instanceof GroupActivity) {
+
                 recyclerView = (RecyclerView) inflate.findViewById(R.id.recycler_view);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
                 recyclerView.setLayoutManager(linearLayoutManager);
@@ -842,6 +874,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
                 recyclerView.setNestedScrollingEnabled(false);
                 recyclerView.setAdapter(adapterComment);
+
             }
 
 
@@ -862,6 +895,7 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
 
         }
+
     }
 
     public abstract class DoubleClickListener implements View.OnClickListener {

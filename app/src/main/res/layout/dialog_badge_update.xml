@@ -10,18 +10,18 @@
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:layout_centerHorizontal="true"
-        android:alpha="0.14"
+        android:alpha="0.12"
         android:scaleType="fitXY"
         android:src="@drawable/balooon" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="242dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="2dp"
         android:layout_marginTop="4dp"
         android:orientation="vertical">
 
-        <TextView
+        <in.reweyou.reweyouforums.customView.TextViewCustomFontBold
             android:layout_width="match_parent"
             android:layout_height="28dp"
 
@@ -33,7 +33,7 @@
 
 
             android:text="Congratulations"
-            android:textColor="#000000"
+            android:textColor="@color/main_description_text"
             android:textSize="18dp"
             android:textStyle="bold" />
 
@@ -47,7 +47,7 @@
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:text="You have earned FOLLOWER badge in PHOTOGRAPHY"
-            android:textColor="#424242"
+            android:textColor="@color/main_description_text"
             android:textSize="14dp"
             android:textStyle="bold" />
 
@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="4dp">
 
-            <TextView
+            <in.reweyou.reweyouforums.customView.TextViewCustomFontBold
                 android:id="@+id/share"
                 android:layout_width="70dp"
                 android:layout_height="32dp"
@@ -75,10 +75,10 @@
                 android:background="@drawable/ripple_effect2"
                 android:gravity="center"
                 android:text="SHARE"
-                android:textColor="@color/main_background_pink"
+                android:textColor="@color/sub_description_color"
                 android:textStyle="bold" />
 
-            <TextView
+            <in.reweyou.reweyouforums.customView.TextViewCustomFontBold
                 android:id="@+id/buttonConfirm"
                 android:layout_width="50dp"
                 android:layout_height="32dp"
@@ -90,7 +90,7 @@
 
 
                 android:text="OK"
-                android:textColor="@color/main_background_pink"
+                android:textColor="@color/sub_description_color"
                 android:textStyle="bold" />
         </RelativeLayout>
     </LinearLayout>

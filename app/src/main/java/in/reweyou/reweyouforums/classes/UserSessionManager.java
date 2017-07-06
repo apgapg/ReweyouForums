@@ -220,8 +220,18 @@ public class UserSessionManager {
         editor.commit();
     }
 
+    public void putinsharedprefBoolean(String key, boolean value) {
+
+        editor.putBoolean(key, value);
+        editor.commit();
+    }
+
 
     public int getvaluefromsharedpref(String key) {
         return pref.getInt(key, -1);
+    }
+
+    public Boolean getvaluefromsharedprefBoolean(String key) {
+        return pref.getBoolean(key, false);
     }
 }
