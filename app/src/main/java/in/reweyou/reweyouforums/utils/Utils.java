@@ -22,6 +22,7 @@ public class Utils {
     public static final int REQ_CODE_EDIT_IMAGE = 32;
     public static final int REQ_CODE_INSERT_TEXT = 12;
     public static final int MAINACTIVITY_COMMENT = 43;
+    public static final int REQ_CODE_ADD_BACKGROUND = 37;
 
     public static boolean isNight;
     public static int backgroundCode;
@@ -50,6 +51,10 @@ public class Utils {
 
     public static int convertpxFromDp(int dp) {
         return scalefactor * dp;
+    }
+
+    public static float convertdpFromPx(float pixel) {
+        return pixel / scalefactor;
     }
 
 }

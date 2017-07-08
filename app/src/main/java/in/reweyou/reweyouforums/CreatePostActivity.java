@@ -175,7 +175,18 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
 
         cities = new City.CityLoader(getResources());
 
-
+        findViewById(R.id.add_background).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (edittextdescription.getText().trim().length() > 0) {
+                    Intent i = new Intent(CreatePostActivity.this, AddBackground.class);
+                    i.putExtra("text", edittextdescription.getText().toString().trim());
+                    startActivityForResult(i, Utils.REQ_CODE_ADD_BACKGROUND);
+                } else {
+                    Toast.makeText(CreatePostActivity.this, "Description is empty!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         linkpd = (ProgressBar) findViewById(R.id.linkpd);
         cd = (CardView) findViewById(R.id.cd);
         image1 = (ImageView) findViewById(R.id.image1);
@@ -1048,6 +1059,9 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
                 Log.d(TAG, "onActivityResult: fejfnejnfe called: " + data.getStringExtra("from"));
                 Log.d(TAG, "onActivityResult: intent: " + data.getStringExtra("uri"));
                 updateimage(data.getStringExtra("from"), data.getStringExtra("uri"));
+            } else if (requestCode == Utils.REQ_CODE_ADD_BACKGROUND) {
+                edittextdescription.setText("");
+                handleImage(data.getStringExtra("uri"));
             }
         }
 
@@ -1112,6 +1126,7 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
     }
 
     private void handleImage(final String s) {
+        findViewById(R.id.add_background).setVisibility(View.GONE);
 
         if (counter == 1) {
             recyclerView.setVisibility(View.GONE);

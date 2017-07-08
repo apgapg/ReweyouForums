@@ -161,13 +161,16 @@
             android:label="@string/title_activity_edit_image"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2.NoActionBar.EditImage"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".InsertTextActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2.NoActionBar.Transparent"
-
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".AddBackground"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme2.NoActionBar.Transparent"></activity>
     </application>
 
 </manifest>
