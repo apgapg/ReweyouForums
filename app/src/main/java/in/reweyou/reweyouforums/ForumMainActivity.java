@@ -264,6 +264,7 @@ public class ForumMainActivity extends AppCompatActivity {
                 }
             }, 3000);
 
+
     }
 
     private void initmenuitems() {

@@ -43,6 +43,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DecodeFormat;
@@ -383,6 +384,35 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
             }
         keyboardListener();
 
+
+        getBackgroundTextData();
+    }
+
+    private void getBackgroundTextData() {
+        AndroidNetworking.post("https://damp-beyond-15607.herokuapp.com/background.php")
+                .setTag("uploadost")
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject jsonObject) {
+                        try {
+                            List<String> list = new ArrayList<>();
+                            for (int i = 0; i < jsonObject.length(); i++) {
+                                list.add(jsonObject.getString("" + i));
+                            }
+                            Paper.init(CreatePostActivity.this);
+                            Paper.book().write("backgroundimages", list);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        Log.d(TAG, "onError: " + anError);
+                    }
+                });
     }
 
     private void keyboardListener() {

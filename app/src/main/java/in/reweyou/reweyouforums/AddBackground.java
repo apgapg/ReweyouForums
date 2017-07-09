@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +19,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.List;
 import java.util.Random;
 
+import in.reweyou.reweyouforums.adapter.BackgroundImagesAdapter;
 import in.reweyou.reweyouforums.utils.Utils;
+import io.paperdb.Paper;
 
 public class AddBackground extends AppCompatActivity {
 
@@ -30,6 +36,8 @@ public class AddBackground extends AppCompatActivity {
     private TextView textview;
     private ImageView imageview;
     private String TAG = AddBackground.class.getName();
+    private RecyclerView recyclerview;
+    private List<String> backgroundlist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,42 +60,6 @@ public class AddBackground extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.b1).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Glide.with(AddBackground.this).load(R.drawable.b4).into(imageview);
-            }
-        });
-        findViewById(R.id.b4).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Glide.with(AddBackground.this).load(R.drawable.add_background_2).into(imageview);
-            }
-        });
-        findViewById(R.id.b7).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Glide.with(AddBackground.this).load(R.drawable.b7).into(imageview);
-            }
-        });
-        findViewById(R.id.b2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Glide.with(AddBackground.this).load(R.drawable.add_background_3).into(imageview);
-            }
-        });
-        findViewById(R.id.b5).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Glide.with(AddBackground.this).load(R.drawable.b5).into(imageview);
-            }
-        });
-
-        Glide.with(AddBackground.this).load(R.drawable.b4).into((ImageView) findViewById(R.id.b1));
-        Glide.with(AddBackground.this).load(R.drawable.add_background_2).into((ImageView) findViewById(R.id.b4));
-        Glide.with(AddBackground.this).load(R.drawable.b7).into((ImageView) findViewById(R.id.b7));
-        Glide.with(AddBackground.this).load(R.drawable.add_background_3).into((ImageView) findViewById(R.id.b2));
-        Glide.with(AddBackground.this).load(R.drawable.b5).into((ImageView) findViewById(R.id.b5));
 
         findViewById(R.id.plus).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,6 +89,21 @@ public class AddBackground extends AppCompatActivity {
 
             }
         });
+
+        initBottomBar();
+
+
+    }
+
+    private void initBottomBar() {
+        recyclerview = (RecyclerView) findViewById(R.id.recycler_view);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        recyclerview.setLayoutManager(linearLayoutManager);
+        BackgroundImagesAdapter backgroundImagesAdapter = new BackgroundImagesAdapter(this);
+        Paper.init(this);
+        recyclerview.setAdapter(backgroundImagesAdapter);
+        backgroundlist = Paper.book().read("backgroundimages");
+        backgroundImagesAdapter.add(backgroundlist);
     }
 
     private void takeScreenshot(Bitmap bitmap) {
@@ -163,5 +150,9 @@ public class AddBackground extends AppCompatActivity {
         v.invalidate();
         v.draw(c);
         return b;
+    }
+
+    public void onbackgrounditemclick(String s) {
+        Glide.with(AddBackground.this).load(s).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageview);
     }
 }

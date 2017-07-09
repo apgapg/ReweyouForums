@@ -170,7 +170,8 @@
         <activity
             android:name=".AddBackground"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme2.NoActionBar.Transparent"></activity>
+            android:theme="@style/AppTheme2.NoActionBar.Transparent"
+            android:windowSoftInputMode="adjustNothing|stateHidden"></activity>
     </application>
 
 </manifest>
