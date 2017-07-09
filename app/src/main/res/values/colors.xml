@@ -82,4 +82,12 @@
     <color name="yellow">#FFEE58</color>
 
 
+    <color name="ct1">@color/main_description_text</color>
+    <color name="ct2">#fff</color>
+    <color name="ct3">#00C853</color>
+    <color name="ct4">#AA00FF</color>
+    <color name="ct5">@color/c3</color>
+    <color name="ct6">@color/bright_blue</color>
+
+
 </resources><!---->

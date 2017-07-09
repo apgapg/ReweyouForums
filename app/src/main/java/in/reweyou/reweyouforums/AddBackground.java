@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Random;
 
 import in.reweyou.reweyouforums.adapter.BackgroundImagesAdapter;
+import in.reweyou.reweyouforums.adapter.TextColorAdapter;
 import in.reweyou.reweyouforums.utils.Utils;
 import io.paperdb.Paper;
 
@@ -60,7 +61,6 @@ public class AddBackground extends AppCompatActivity {
             }
         });
 
-
         findViewById(R.id.plus).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,7 +91,18 @@ public class AddBackground extends AppCompatActivity {
         });
 
         initBottomBar();
+        initColorBar();
 
+
+    }
+
+    private void initColorBar() {
+        recyclerview = (RecyclerView) findViewById(R.id.recycler_view1);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        recyclerview.setLayoutManager(linearLayoutManager);
+
+        TextColorAdapter textColorAdapter = new TextColorAdapter(this);
+        recyclerview.setAdapter(textColorAdapter);
 
     }
 
@@ -154,5 +165,9 @@ public class AddBackground extends AppCompatActivity {
 
     public void onbackgrounditemclick(String s) {
         Glide.with(AddBackground.this).load(s).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageview);
+    }
+
+    public void ontextcolor(int i) {
+        textview.setTextColor(getResources().getColor(i));
     }
 }
