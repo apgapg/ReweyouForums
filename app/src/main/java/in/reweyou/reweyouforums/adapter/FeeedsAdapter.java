@@ -32,6 +32,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,9 +57,6 @@ import com.androidnetworking.interfaces.StringRequestListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -173,24 +171,34 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
             Log.d(TAG, "onBindViewHolder: callledddd");
             holder.nested.scrollTo(0, 0);
-            holder.description.setText(messagelist.get(position).getDescription().trim());
             holder.likenumber.setText(messagelist.get(position).getUpvotes());
             holder.commentnum.setText(messagelist.get(position).getComments());
             holder.userlevel.setText(messagelist.get(position).getBadge());
+            if (!messagelist.get(position).getDescription().trim().isEmpty()) {
+                holder.description.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 17);
+                holder.description.setPadding(Utils.convertpxFromDp(10), Utils.convertpxFromDp(8), Utils.convertpxFromDp(10), Utils.convertpxFromDp(8));
+                holder.description.setText(messagelist.get(position).getDescription().trim());
 
-            try {
-                JSONObject jsonObject = new JSONObject(messagelist.get(position).getTags().replace("\\", ""));
-                if (jsonObject.length() > 0) {
-                    for (int i = 0; i < jsonObject.length(); i++) {
+                try {
+                    JSONObject jsonObject = new JSONObject(messagelist.get(position).getTags().replace("\\", ""));
+                    if (jsonObject.length() > 0) {
+                        for (int i = 0; i < jsonObject.length(); i++) {
 
-                        holder.description.findAndSetStrColor(jsonObject.getString("" + i), "#2962FF");
+                            holder.description.findAndSetStrColor(jsonObject.getString("" + i), "#2962FF");
+                        }
+
                     }
 
+                } catch (Exception e) {
                 }
+            } else {
+                holder.description.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 8);
 
-            } catch (Exception e) {
+                holder.description.setPadding(Utils.convertpxFromDp(10), Utils.convertpxFromDp(0), Utils.convertpxFromDp(10), Utils.convertpxFromDp(0));
+                holder.description.setText("");
             }
             holder.username.setText(messagelist.get(position).getUsername());
+
             Glide.with(fragmentContext).load(messagelist.get(position).getProfilepic()).diskCacheStrategy(DiskCacheStrategy.SOURCE).error(R.drawable.download).into(holder.profileimage);
             holder.date.setText(messagelist.get(position).getTimestamp().replace("about ", "").replace(" ago", ""));
 
@@ -285,22 +293,11 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
     }
 
     private void onbindlink(final LinkViewHolder linkViewHolder, int position) {
-
+        linkViewHolder.linkimage.layout(0, 0, 0, 0);
         linkViewHolder.linkheadline.setText(messagelist.get(position).getLinkhead());
 
 
-        Glide.with(mContext).load(messagelist.get(position).getLinkimage()).diskCacheStrategy(DiskCacheStrategy.SOURCE).override(Utils.screenWidth - Utils.convertpxFromDp(8), Target.SIZE_ORIGINAL).listener(new RequestListener<String, GlideDrawable>() {
-            @Override
-            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                linkViewHolder.linkimage.invalidate();
-                return false;
-            }
-
-            @Override
-            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                return false;
-            }
-        }).into(linkViewHolder.linkimage);
+        Glide.with(mContext).load(messagelist.get(position).getLinkimage()).asBitmap().format(DecodeFormat.PREFER_ARGB_8888).diskCacheStrategy(DiskCacheStrategy.SOURCE).fitCenter().into(linkViewHolder.linkimage);
 
 
     }
@@ -315,7 +312,9 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
     }
 
     private void onbindimage1(final Image1ViewHolder image1ViewHolder, final int position) {
-        Glide.with(mContext).load(messagelist.get(position).getImage1()).asBitmap().format(DecodeFormat.PREFER_ARGB_8888).diskCacheStrategy(DiskCacheStrategy.SOURCE).override(Utils.screenWidth - Utils.convertpxFromDp(8), Target.SIZE_ORIGINAL).into(image1ViewHolder.image1);
+        // image1ViewHolder.image1.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        image1ViewHolder.image1.layout(0, 0, 0, 0);
+        Glide.with(mContext).load(messagelist.get(position).getImage1()).asBitmap().format(DecodeFormat.PREFER_ARGB_8888).diskCacheStrategy(DiskCacheStrategy.SOURCE).fitCenter().into(image1ViewHolder.image1);
 
     }
 
@@ -729,6 +728,11 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                 }).check();
     }
 
+    @Override
+    public void onViewRecycled(BaseViewHolder holder) {
+
+        super.onViewRecycled(holder);
+    }
 
     public class BaseViewHolder extends RecyclerView.ViewHolder {
         private ShimmerLayout shimmerText;
@@ -1101,7 +1105,6 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
         }
     }
 
-
     private class LinkViewHolder extends BaseViewHolder {
         private TextView openlink;
         private CardView cv;
@@ -1168,6 +1171,4 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
             });
         }
     }
-
-
 }

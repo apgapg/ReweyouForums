@@ -401,7 +401,9 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
                             for (int i = 0; i < jsonObject.length(); i++) {
                                 list.add(jsonObject.getString("" + i));
                             }
+                            Collections.reverse(list);
                             Paper.init(CreatePostActivity.this);
+
                             Paper.book().write("backgroundimages", list);
                         } catch (Exception e) {
                             e.printStackTrace();
