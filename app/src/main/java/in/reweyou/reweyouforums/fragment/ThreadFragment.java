@@ -64,7 +64,7 @@ public class ThreadFragment extends Fragment {
         View layout = inflater.inflate(R.layout.fragment_main_threads_single, container, false);
 
         recyclerView = (RecyclerView) layout.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
 
         return layout;
     }

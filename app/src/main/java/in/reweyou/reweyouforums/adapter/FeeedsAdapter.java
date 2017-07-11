@@ -875,17 +875,16 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
 
                 }
             });
-
+            recyclerView = (RecyclerView) inflate.findViewById(R.id.recycler_view);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
+            recyclerView.setLayoutManager(linearLayoutManager);
+            recyclerView.setNestedScrollingEnabled(false);
 
             if (mContext instanceof ForumMainActivity || mContext instanceof GroupActivity) {
 
-                recyclerView = (RecyclerView) inflate.findViewById(R.id.recycler_view);
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
-                recyclerView.setLayoutManager(linearLayoutManager);
 
                 adapterComment = new CommentsAdapter(mContext);
 
-                recyclerView.setNestedScrollingEnabled(false);
                 recyclerView.setAdapter(adapterComment);
 
             }

@@ -4,18 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F5F6FB"
     tools:context="in.reweyou.reweyouforums.CommentActivity">
 
-    <ImageView
-        android:id="@+id/backgroundimageview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:alpha="0.14"
-        android:scaleType="fitXY"
-        app:srcCompat="@drawable/ic_asb_grey" />
 
-
-    <android.support.v4.view.ViewPager
+    <in.reweyou.reweyouforums.customView.CustomViewPagerGroupActivity
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -23,10 +16,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:layout_marginLeft="4dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="4dp">
+        android:layout_marginTop="4dp"
+        android:background="#F5F6FB">
 
         <ImageView
             android:id="@+id/back"
