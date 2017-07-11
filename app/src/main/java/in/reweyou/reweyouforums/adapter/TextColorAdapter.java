@@ -22,7 +22,7 @@ public class TextColorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private static final String TAG = TextColorAdapter.class.getName();
     private final Context context;
     List<String> messagelist;
-    private int[] colorarray = {R.color.ct1, R.color.ct2, R.color.ct3, R.color.ct4, R.color.ct5, R.color.ct6};
+    private int[] colorarray = {R.color.ct1, R.color.ct2, R.color.ct22, R.color.ct3, R.color.ct4, R.color.ct5, R.color.ct6, R.color.c1, R.color.c2, R.color.c3, R.color.c4, R.color.c5, R.color.c6, R.color.c7, R.color.c8, R.color.c9, R.color.c10};
 
     public TextColorAdapter(Context context) {
         this.context = context;

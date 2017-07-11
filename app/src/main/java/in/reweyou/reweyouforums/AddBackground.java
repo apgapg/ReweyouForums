@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -17,9 +18,16 @@ import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -39,6 +47,7 @@ public class AddBackground extends AppCompatActivity {
     private String TAG = AddBackground.class.getName();
     private RecyclerView recyclerview;
     private List<String> backgroundlist;
+    private View view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,8 +93,12 @@ public class AddBackground extends AppCompatActivity {
         findViewById(R.id.okbutton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                View view = findViewById(R.id.container);
-                takeScreenshot(loadBitmapFromView(view, view.getWidth(), view.getHeight()));
+                view = findViewById(R.id.container);
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    checkStoragePermission();
+
+                } else
+                    takeScreenshot(loadBitmapFromView(view, view.getWidth(), view.getHeight()));
 
             }
         });
@@ -94,6 +107,30 @@ public class AddBackground extends AppCompatActivity {
         initColorBar();
 
 
+    }
+
+    private void checkStoragePermission() {
+        Dexter.withActivity(AddBackground.this)
+                .withPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        takeScreenshot(loadBitmapFromView(view, view.getWidth(), view.getHeight()));
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        Toast.makeText(AddBackground.this, "Storage Permission denied by user", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "onPermissionGranted: " + response.isPermanentlyDenied());
+
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        token.continuePermissionRequest();
+
+                    }
+                }).check();
     }
 
     private void initColorBar() {

@@ -39,7 +39,8 @@
                 android:paddingTop="48dp"
                 android:text="Abc"
                 android:textColor="#304048"
-                android:textSize="18dp" />
+                android:textSize="18dp"
+                android:textStyle="bold" />
         </RelativeLayout>
 
     </ScrollView>

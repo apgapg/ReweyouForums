@@ -1,7 +1,6 @@
 package in.reweyou.reweyouforums.customView;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -53,12 +52,6 @@ public class OnlyDraggableTextView extends android.support.v7.widget.AppCompatTe
                 return false;
         }
 
-    }
-
-    @Override
-    public void setTypeface(Typeface tf) {
-        Typeface type = Typeface.createFromAsset(getContext().getAssets(), "Quicksand-Bold.ttf");
-        super.setTypeface(type);
     }
 
 

@@ -802,6 +802,13 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                         CustomDialogEditShare customDialogEditShare = new CustomDialogEditShare();
                         customDialogEditShare.setPostByUser = messagelist.get(getAdapterPosition()).getUid().equals(userSessionManager.getUID());
 
+                        Log.d(TAG, "onClick: " + messagelist.get(getAdapterPosition()).getLink().replace("\n", ""));
+
+                        if (messagelist.get(getAdapterPosition()).getType().equals("link"))
+                            customDialogEditShare.setExternalLink(messagelist.get(getAdapterPosition()).getLink());
+                        else if (messagelist.get(getAdapterPosition()).getType().equals("youtubelink"))
+                            customDialogEditShare.setYoutubeLink(messagelist.get(getAdapterPosition()).getLink().replace("\n", ""));
+
                         customDialogEditShare.setonEditShareOptions(new CustomDialogEditShare.EditShareCallback() {
                             @Override
                             public void onEditPress() {
