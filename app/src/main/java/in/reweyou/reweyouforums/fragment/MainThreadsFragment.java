@@ -258,4 +258,8 @@ public class MainThreadsFragment extends Fragment {
         } else
             recyclerView.smoothScrollToPosition(recyclerView.getCurrentPosition() + 1);
     }
+
+    public void refreshListscrolltofirst() {
+        getData();
+    }
 }

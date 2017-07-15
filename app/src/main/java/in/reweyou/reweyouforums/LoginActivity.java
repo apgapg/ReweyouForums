@@ -35,6 +35,7 @@ import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.customView.NonSwipeableViewPager;
 import in.reweyou.reweyouforums.fragment.ChooseInterestFragment;
 import in.reweyou.reweyouforums.fragment.LoginFragment;
+import in.reweyou.reweyouforums.service.LoginNotiService;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
@@ -83,6 +84,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         nonSwipeableViewPager = (NonSwipeableViewPager) findViewById(R.id.swipeViewPager);
         pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         nonSwipeableViewPager.setAdapter(pagerAdapter);
+
+        if (!userSessionManager.isUserLoggedIn()) {
+            startService(new Intent(this, LoginNotiService.class));
+
+        }
     }
 
     @Override
@@ -148,8 +154,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         try {
                             Log.d(TAG, "onResponse: " + response);
                             userSessionManager.createUserRegisterSession(acct.getId(), acct.getDisplayName(), response.getString("username"), response.getString("profileurl"), response.getString("token"), response.getString("shortinfo"));
+                            stopService(new Intent(LoginActivity.this, LoginNotiService.class));
                             startActivity(new Intent(LoginActivity.this, ForumMainActivity.class));
+
                             finish();
+
 
                         } catch (Exception e) {
                             e.printStackTrace();

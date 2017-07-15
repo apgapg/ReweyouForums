@@ -265,6 +265,30 @@ public class ForumMainActivity extends AppCompatActivity {
             }, 3000);
 
 
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                AndroidNetworking.post("https://www.reweyou.in/google/appversion.php")
+                        .addBodyParameter("uid", userSessionManager.getUID())
+                        .addBodyParameter("username", userSessionManager.getUsername())
+                        .addBodyParameter("authtoken", userSessionManager.getAuthToken())
+                        .addBodyParameter("version", BuildConfig.VERSION_NAME)
+                        .setTag("m")
+                        .setPriority(Priority.MEDIUM)
+                        .build().getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String s) {
+                        Log.d(TAG, "onResponse: " + s);
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+
+                    }
+                });
+            }
+        }, 5000);
     }
 
     private void initmenuitems() {
@@ -520,9 +544,11 @@ public class ForumMainActivity extends AppCompatActivity {
                 ((YourGroupsFragment) pagerAdapter.getRegisteredFragment(POSITION_YOUR_GROUPS)).refreshlist();
             } else if (requestCode == Utils.REQ_CODE_EDIT_PROFILE) {
                 ((UserInfoFragment) pagerAdapter.getRegisteredFragment(POSITION_USER_PROFILE)).refreshprofile();
+                ((MainThreadsFragment) pagerAdapter.getRegisteredFragment(POSITION_MAIN_FEEDS)).refreshList();
+
 
             } else if (requestCode == Utils.REQ_CODE_CREATE_FROM_FORUMACTVITY) {
-                ((MainThreadsFragment) pagerAdapter.getRegisteredFragment(POSITION_MAIN_FEEDS)).refreshList();
+                ((MainThreadsFragment) pagerAdapter.getRegisteredFragment(POSITION_MAIN_FEEDS)).refreshListscrolltofirst();
 
             } else if (requestCode == Utils.REQ_CODE_NOTI) {
                 Log.d(TAG, "onActivityResult: dwjdnwndwdwnoti");
@@ -568,11 +594,6 @@ public class ForumMainActivity extends AppCompatActivity {
         }
     }
 
-    public void startCreateActivity() {
-        Intent i = new Intent(this, CreatePostActivity.class);
-        i.putExtra("frommain", true);
-        startActivityForResult(i, Utils.REQ_CODE_CREATE_FROM_FORUMACTVITY);
-    }
 
     public void refreshfeeds() {
         ((MainThreadsFragment) pagerAdapter.getRegisteredFragment(POSITION_MAIN_FEEDS)).refreshList();

@@ -261,7 +261,6 @@ public class GroupThreadsFragment extends Fragment {
             if (threadlist.size() == 0) {
                 nopostcard.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.INVISIBLE);
-                createpost.setVisibility(View.INVISIBLE);
             } else
                 feeedsAdapter.add(threadlist);
 
