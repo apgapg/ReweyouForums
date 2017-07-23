@@ -1,8 +1,10 @@
 package in.reweyou.reweyouforums;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -27,7 +29,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.view.WindowManager;
 import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
@@ -75,6 +76,7 @@ import java.util.List;
 import in.reweyou.reweyouforums.adapter.GalleryImagesAdapter;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.customView.CustomGroupChooseDialog;
+import in.reweyou.reweyouforums.customView.Custom_upload_dialog;
 import in.reweyou.reweyouforums.model.GroupModel;
 import in.reweyou.reweyouforums.model.TopGroupMemberModel;
 import in.reweyou.reweyouforums.utils.Utils;
@@ -124,7 +126,7 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
     private String groupid;
     private int temppos = -1;
     private String groupname;
-    private ProgressDialog progressDialog;
+    // private ProgressDialog progressDialog;
     private String image1encoded = "";
     private String image2encoded = "";
     private String image3encoded = "";
@@ -148,6 +150,7 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
     //  private RichEditorView editor;
     private City.CityLoader cities;
     private boolean shouldshowgallery = true;
+    private Custom_upload_dialog custom_upload_dialog;
 
 
     @Override
@@ -691,7 +694,7 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
                     public void onResponse(String response) {
                         Log.d(TAG, "onResponse: " + response);
                         if (response.contains("Thread created")) {
-                            progressDialog.dismiss();
+                            custom_upload_dialog.dismiss();
                             Toast.makeText(CreatePostActivity.this, "Upload successful", Toast.LENGTH_SHORT).show();
 
                             if (!getIntent().getBooleanExtra("frommain", false)) {
@@ -703,7 +706,7 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
                         } else {
                             Toast.makeText(CreatePostActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
 
-                            progressDialog.dismiss();
+                            custom_upload_dialog.dismiss();
                         }
                     }
 
@@ -712,7 +715,7 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
                         Log.d(TAG, "onError: " + anError);
                         Toast.makeText(CreatePostActivity.this, "Upload failed!", Toast.LENGTH_SHORT).show();
 
-                        progressDialog.dismiss();
+                        custom_upload_dialog.dismiss();
                     }
                 });
 
@@ -720,11 +723,16 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
     }
 
     private void showUploading() {
-        progressDialog = new ProgressDialog(this);
+        custom_upload_dialog = new Custom_upload_dialog();
+        custom_upload_dialog.setCancelable(false);
+        custom_upload_dialog.show(getSupportFragmentManager(), "");
+
+
+      /*  progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Uploading Post");
         progressDialog.setMessage("Please Wait!");
         progressDialog.setCancelable(false);
-        progressDialog.show();
+        progressDialog.show();*/
     }
 
 
@@ -753,12 +761,12 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
     private void updateCreateTextUI(boolean b) {
         if (b) {
             postbutton.setEnabled(true);
-            postbutton.setTextColor(this.getResources().getColor(R.color.main_background_pink));
-            postbutton.setBackground(this.getResources().getDrawable(R.drawable.border_pink));
+            postbutton.setTextColor(this.getResources().getColor(R.color.white));
+            postbutton.setBackground(this.getResources().getDrawable(R.drawable.rectangular_solid_maindes));
         } else {
             postbutton.setEnabled(false);
             postbutton.setTextColor(this.getResources().getColor(R.color.grey_create));
-            postbutton.setBackground(this.getResources().getDrawable(R.drawable.border_grey));
+            postbutton.setBackground(null);
         }
     }
 
@@ -771,6 +779,7 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
         //Initizliaing confirm button fo dialog box and edittext of dialog box
         final Button buttonconfirm = (Button) confirmDialog.findViewById(R.id.buttonConfirm);
         final EditText link = (EditText) confirmDialog.findViewById(R.id.editTextlink);
+        final ImageView paste = (ImageView) confirmDialog.findViewById(R.id.paste);
         link.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -780,10 +789,9 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().trim().length() > 0) {
-                    buttonconfirm.setBackground(CreatePostActivity.this.getResources().getDrawable(R.drawable.border_pink));
-                    buttonconfirm.setTextColor(CreatePostActivity.this.getResources().getColor(R.color.main_background_pink));
+                    buttonconfirm.setBackground(CreatePostActivity.this.getResources().getDrawable(R.drawable.rectangular_solid_maindes));
+                    buttonconfirm.setTextColor(CreatePostActivity.this.getResources().getColor(R.color.white));
                 } else {
-                    buttonconfirm.setBackground(CreatePostActivity.this.getResources().getDrawable(R.drawable.border_grey));
                     buttonconfirm.setTextColor(Color.parseColor("#9e9e9e"));
                 }
             }
@@ -794,18 +802,35 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
             }
         });
 
+        paste.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                if (clipboard.hasPrimaryClip()) {
+                    ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
+                    String pasteText = item.getText().toString();
+                    link.setText(pasteText);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Nothing to Paste!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
         alert.setView(confirmDialog);
 
         final AlertDialog alertDialog = alert.create();
-        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        alertDialog.getWindow().
+
+                setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         alertDialog.show();
 
         //On the click of the confirm button from alert dialog
-        buttonconfirm.setOnClickListener(new View.OnClickListener() {
+        buttonconfirm.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
 

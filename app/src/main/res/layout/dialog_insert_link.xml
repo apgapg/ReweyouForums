@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
@@ -25,7 +26,9 @@
         android:textSize="12dp"
         android:textStyle="bold" />
 
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <EditText
         android:id="@+id/editTextlink"
         android:layout_width="match_parent"
@@ -33,7 +36,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginLeft="16dp"
 
-        android:layout_marginRight="16dp"
+        android:layout_marginRight="52dp"
         android:background="@color/transparent"
         android:drawableLeft="@drawable/ic_fileattach_layer1"
         android:drawablePadding="6dp"
@@ -44,6 +47,17 @@
         android:textAllCaps="false"
         android:textColor="#212121"
         android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/paste"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="4dp"
+            android:background="@drawable/ripple_effect3"
+            android:padding="12dp"
+            app:srcCompat="@drawable/ic_content_paste_black_24dp" />
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
