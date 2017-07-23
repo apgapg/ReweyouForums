@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -100,6 +102,13 @@ public class MainThreadsFragment extends Fragment {
                 Intent i = new Intent(mContext, CreatePostActivity.class);
                 i.putExtra("frommain", true);
                 mContext.startActivityForResult(i, Utils.REQ_CODE_CREATE_FROM_FORUMACTVITY);
+            }
+        });
+
+        layout.findViewById(R.id.refresh).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getData();
             }
         });
 
@@ -230,7 +239,29 @@ public class MainThreadsFragment extends Fragment {
                 threadlist.add(0, groupModel);
             }
             Collections.reverse(threadlist);
+            String getlatestpostid = userSessionManager.getvaluefromsharedprefString("latestpostid");
+            if (!getlatestpostid.equals("0")) {
+                int count = 0;
+                for (int i = 0; i < threadlist.size(); i++) {
+                    if (Integer.valueOf(threadlist.get(i).getThreadid()) > Integer.valueOf(getlatestpostid))
+                        count++;
+                }
+                if (count > 0) {
+                    final int temp = count;
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (temp == 1)
+                                Toast.makeText(mContext, "" + temp + " new post", Toast.LENGTH_SHORT).show();
+                            else
+                                Toast.makeText(mContext, "" + temp + " new posts", Toast.LENGTH_SHORT).show();
+                        }
+                    }, 500);
+                }
+            }
 
+            String latestpostid = threadlist.get(0).getThreadid();
+            userSessionManager.putinsharedprefString("latestpostid", latestpostid);
             feeedsAdapter.add(threadlist);
 
 

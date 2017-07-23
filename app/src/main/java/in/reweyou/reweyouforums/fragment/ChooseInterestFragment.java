@@ -269,7 +269,7 @@ public class ChooseInterestFragment extends Fragment {
     private void updateUIproceedbtn(boolean b) {
         if (b) {
             btnproceed.setEnabled(true);
-            btnproceed.setBackgroundColor(mContext.getResources().getColor(R.color.main_background_pink));
+            btnproceed.setBackgroundColor(mContext.getResources().getColor(R.color.main_description_text));
         } else {
             btnproceed.setEnabled(false);
             btnproceed.setBackgroundColor(Color.parseColor("#e0e0e0"));

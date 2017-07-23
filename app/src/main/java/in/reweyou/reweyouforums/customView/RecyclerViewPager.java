@@ -21,7 +21,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import in.reweyou.reweyouforums.BuildConfig;
 import in.reweyou.reweyouforums.R;
 
 /**
@@ -30,7 +29,7 @@ import in.reweyou.reweyouforums.R;
  * @author Green
  */
 public class RecyclerViewPager extends RecyclerView {
-    public static final boolean DEBUG = BuildConfig.DEBUG;
+    public static final boolean DEBUG = false;
     boolean isInertia; // inertia slide state
     float minSlideDistance;
     PointF touchStartPoint;
@@ -45,7 +44,7 @@ public class RecyclerViewPager extends RecyclerView {
     private RecyclerViewPagerAdapter<?> mViewPagerAdapter;
     private float mTriggerOffset = 0.25f;
     private float mFlingFactor = 0.15f;
-    private float mMillisecondsPerInch = 25f;
+    private float mMillisecondsPerInch = 40f;
     private float mTouchSpan;
     private List<OnPageChangedListener> mOnPageChangedListeners;
     private int mSmoothScrollTargetPosition = -1;

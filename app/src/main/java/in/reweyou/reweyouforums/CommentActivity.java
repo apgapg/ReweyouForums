@@ -183,6 +183,15 @@ public class CommentActivity extends AppCompatActivity {
             if (getIntent().getStringExtra("from").equals("n")) {
                 isfromNoti = true;
             }
+            if (getIntent().getStringExtra("from").equals("f")) {
+                isfromForumMainActivity = true;
+            }
+            if (getIntent().getStringExtra("from").equals("g")) {
+                isfromGroupActivity = true;
+            }
+            if (getIntent().getStringExtra("from").equals("nb")) {
+                isfromNotiAdapter = true;
+            }
 
             Log.d(TAG, "onNewIntent: " + threadid);
             if (viewpager.getAdapter() instanceof PagerAdapterSingle) {

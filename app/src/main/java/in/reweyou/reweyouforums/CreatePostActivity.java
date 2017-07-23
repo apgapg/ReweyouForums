@@ -3,7 +3,6 @@ package in.reweyou.reweyouforums;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentUris;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -42,14 +41,12 @@ import android.widget.Toast;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.google.gson.Gson;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -67,8 +64,6 @@ import com.linkedin.android.spyglass.ui.RichEditorView;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import org.apmem.tools.layouts.FlowLayout;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -79,6 +74,7 @@ import java.util.List;
 
 import in.reweyou.reweyouforums.adapter.GalleryImagesAdapter;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
+import in.reweyou.reweyouforums.customView.CustomGroupChooseDialog;
 import in.reweyou.reweyouforums.model.GroupModel;
 import in.reweyou.reweyouforums.model.TopGroupMemberModel;
 import in.reweyou.reweyouforums.utils.Utils;
@@ -124,7 +120,7 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
     private String linkdesc = "";
     private ImageView imageviewlink;
     private String linkimage = "";
-    private FlowLayout flowLayout;
+
     private String groupid;
     private int temppos = -1;
     private String groupname;
@@ -179,6 +175,7 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
         findViewById(R.id.add_background).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (edittextdescription.getText().trim().length() > 0) {
                     Intent i = new Intent(CreatePostActivity.this, AddBackground.class);
                     i.putExtra("text", edittextdescription.getText().toString().trim());
@@ -306,17 +303,23 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
         try {
             if (getIntent().getBooleanExtra("frommain", false)) {
 
-                flowLayout = (FlowLayout) findViewById(R.id.flowlayout);
-                flowLayout.setVisibility(View.VISIBLE);
-                findViewById(R.id.selectgroup).setVisibility(View.VISIBLE);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
 
-                        List<GroupModel> groupsdatalist = Paper.book().read("yourgroups");
-                        populatedata(groupsdatalist);
+                findViewById(R.id.selectgroup).setVisibility(View.VISIBLE);
+                final List<GroupModel> groupsdatalist = Paper.book().read("yourgroups");
+                Collections.sort(groupsdatalist, new Comparator<GroupModel>() {
+                    @Override
+                    public int compare(GroupModel o1, GroupModel o2) {
+                        return o1.getGroupname().compareToIgnoreCase(o2.getGroupname());
                     }
-                }, 200);
+                });
+                findViewById(R.id.selectgroupbtn).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        showChooseGroupDialog(groupsdatalist);
+                    }
+                });
+
                 postbutton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -337,12 +340,22 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
         }
         if (getIntent().getAction() != null)
             if (getIntent().getAction().equals(Intent.ACTION_SEND)) {
-                flowLayout = (FlowLayout) findViewById(R.id.flowlayout);
-                flowLayout.removeAllViews();
-                flowLayout.setVisibility(View.VISIBLE);
+
                 findViewById(R.id.selectgroup).setVisibility(View.VISIBLE);
-                List<GroupModel> groupsdatalist = Paper.book().read("yourgroups");
-                populatedata(groupsdatalist);
+                findViewById(R.id.selectgroupbtn).setVisibility(View.VISIBLE);
+                final List<GroupModel> groupsdatalist = Paper.book().read("yourgroups");
+                Collections.sort(groupsdatalist, new Comparator<GroupModel>() {
+                    @Override
+                    public int compare(GroupModel o1, GroupModel o2) {
+                        return o1.getGroupname().compareToIgnoreCase(o2.getGroupname());
+                    }
+                });
+                findViewById(R.id.selectgroupbtn).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showChooseGroupDialog(groupsdatalist);
+                    }
+                });
                 postbutton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -386,6 +399,12 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
 
 
         getBackgroundTextData();
+    }
+
+    private void showChooseGroupDialog(List<GroupModel> groupsdatalist) {
+
+        new CustomGroupChooseDialog(groupsdatalist).show(getSupportFragmentManager(), "");
+
     }
 
     private void getBackgroundTextData() {
@@ -545,83 +564,6 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
 
                     }
                 }).check();
-    }
-
-    private void getData() {
-        AndroidNetworking.post("https://www.reweyou.in/google/suggest_groups.php")
-                .addBodyParameter("uid", sessionManager.getUID())
-                .setPriority(Priority.HIGH)
-                .build()
-                .getAsJSONArray(new JSONArrayRequestListener() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        try {
-                            Gson gson = new Gson();
-                            List<GroupModel> groupModels = new ArrayList<>();
-                            for (int i = 0; i < response.length(); i++) {
-
-                                GroupModel groupModel = gson.fromJson(response.getJSONObject(i).toString(), GroupModel.class);
-                                groupModels.add(groupModel);
-
-                            }
-
-                            Collections.sort(groupModels, new Comparator<GroupModel>() {
-                                @Override
-                                public int compare(GroupModel o1, GroupModel o2) {
-                                    return o1.getGroupname().length() - o2.getGroupname().length();
-                                }
-                            });
-                            populatedata(groupModels);
-
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onError(ANError anError) {
-
-                    }
-                });
-    }
-
-    private void populatedata(final List<GroupModel> groupModels) {
-        final Context mContext = CreatePostActivity.this;
-        Log.d(TAG, "populatedata: " + groupModels.size());
-        for (int i = 0; i < groupModels.size(); i++) {
-            View view = CreatePostActivity.this.getLayoutInflater().inflate(R.layout.item_interest, null);
-            final TextView textView = (TextView) view.findViewById(R.id.groupname);
-            textView.setText(groupModels.get(i).getGroupname());
-            textView.setTag("0");
-            final int finalI = i;
-            textView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (v.getTag().equals("0")) {
-                        v.setTag("1");
-                        textView.setTextColor(mContext.getResources().getColor(R.color.white));
-                        textView.setBackground(mContext.getResources().getDrawable(R.drawable.rectangular_solid_blue));
-                        groupid = (groupModels.get(finalI).getGroupid());
-                        groupname = (groupModels.get(finalI).getGroupname());
-
-                        if (temppos != -1) {
-                            ((TextView) flowLayout.getChildAt(temppos).findViewById(R.id.groupname)).setTextColor(mContext.getResources().getColor(R.color.main_description_text));
-                            flowLayout.getChildAt(temppos).findViewById(R.id.groupname).setBackground(mContext.getResources().getDrawable(R.drawable.border_blue));
-                            flowLayout.getChildAt(temppos).setTag("0");
-                        }
-                        temppos = finalI;
-
-                    } else {
-                        v.setTag("0");
-                        textView.setTextColor(mContext.getResources().getColor(R.color.main_description_text));
-                        textView.setBackground(mContext.getResources().getDrawable(R.drawable.border_blue));
-                        groupid = null;
-                    }
-                }
-            });
-            flowLayout.addView(view);
-        }
     }
 
 
@@ -870,7 +812,9 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
 
                 if (link.getText().toString().trim().length() > 0) {
                     alertDialog.dismiss();
-                    if (URLUtil.isValidUrl(link.getText().toString()))
+                    if (link.getText().toString().contains("https://youtu.be/")) {
+                        CreatePostActivity.this.onLinkPasted(link.getText().toString());
+                    } else if (URLUtil.isValidUrl(link.getText().toString()))
                         CreatePostActivity.this.onLinkPasted(link.getText().toString());
                     else
                         Toast.makeText(CreatePostActivity.this, "Please check your link", Toast.LENGTH_SHORT).show();
@@ -1425,5 +1369,11 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
         // Lets the widget know which sources to expect results from based
         // on a string key (only one source here)
         return Arrays.asList(BUCKET);
+    }
+
+    public void onGroupSelectByUser(GroupModel groupModel) {
+        groupid = (groupModel.getGroupid());
+        groupname = (groupModel.getGroupname());
+        ((TextView) findViewById(R.id.selectgroupbtn)).setText(groupModel.getGroupname());
     }
 }

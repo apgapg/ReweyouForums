@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <in.reweyou.reweyouforums.customView.TextViewCustomFont xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/textview"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:text="Default"
+        android:textColor="#212121" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.7dp"
+        android:alpha="0.70"
+        android:background="@color/sub_description_color" />
+</LinearLayout>

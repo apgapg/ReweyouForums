@@ -19,7 +19,6 @@
         app:rvp_triggerOffset="0.3" />
 
 
-
     <RelativeLayout
         android:id="@+id/fetchingdatacontainer"
         android:layout_width="match_parent"
@@ -64,16 +63,47 @@
         android:alpha="0.70"
         android:background="@color/sub_description_color" />
 
-    <in.reweyou.reweyouforums.customView.TextViewCustomFontBold
-        android:id="@+id/create"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:background="#fff"
-        android:foreground="@drawable/ripple_effect2"
-        android:gravity="center"
-        android:paddingBottom="2dp"
-        android:text="Create a Post"
-        android:textColor="#657983"
-        android:textSize="15dp" />
+        android:orientation="horizontal">
+
+        <in.reweyou.reweyouforums.customView.TextViewCustomFontBold
+            android:id="@+id/create"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_weight="1"
+            android:background="@drawable/ripple_effect2"
+            android:gravity="center"
+            android:paddingBottom="2dp"
+            android:paddingLeft="12dp"
+            android:text="Create Post"
+            android:textColor="#657983"
+            android:textSize="15dp" />
+
+        <View
+            android:layout_width="0.7dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/sub_description_color" />
+
+        <in.reweyou.reweyouforums.customView.TextViewCustomFontBold
+            android:id="@+id/refresh"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/ripple_effect2"
+            android:gravity="center"
+            android:paddingBottom="2dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:text="Refresh"
+            android:textColor="#657983"
+            android:textSize="15dp" />
+    </LinearLayout>
+
+
 </RelativeLayout>

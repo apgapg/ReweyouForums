@@ -503,7 +503,11 @@ public class FeeedsAdapter extends RecyclerView.Adapter<FeeedsAdapter.BaseViewHo
                     @Override
                     public void onError(ANError anError) {
                         Log.d(TAG, "onError: " + anError);
-                        notifyItemChanged(adapterPosition, "unlike");
+                        try {
+                            notifyItemChanged(adapterPosition, "unlike");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
     }

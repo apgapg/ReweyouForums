@@ -212,7 +212,7 @@
                         android:id="@+id/editor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:minHeight="150dp"
+                        android:minHeight="120dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="15dp" />
 
@@ -429,55 +429,65 @@
                         </LinearLayout>
                     </LinearLayout>
 
-                    <Button
-                        android:id="@+id/add_background"
-                        android:layout_width="wrap_content"
-                        android:layout_height="36dp"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="16dp"
-                        android:background="@drawable/border_grey"
-                        android:paddingLeft="8dp"
-                        android:paddingRight="8dp"
-                        android:text="Add Background"
-                        android:textColor="#9e9e9e"
-                        android:textSize="13dp" />
 
-
-                    <TextView
+                    <LinearLayout
                         android:id="@+id/selectgroup"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="14dp"
+                        android:layout_gravity="center"
                         android:layout_marginTop="12dp"
-                        android:text="SELECT A GROUP"
-                        android:textColor="#424242"
-                        android:textSize="12dp"
-                        android:textStyle="bold"
-                        android:visibility="gone" />
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
-                    <org.apmem.tools.layouts.FlowLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:id="@+id/flowlayout"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="12dp"
-                        android:layout_marginRight="12dp"
-                        android:layout_marginTop="10dp"
-                        android:gravity="center"
-                        android:visibility="gone" />
+                        <in.reweyou.reweyouforums.customView.TextViewCustomFont
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center"
+                            android:paddingBottom="2dp"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp"
+                            android:text="Post in: "
+                            android:textColor="#424242"
+                            android:textSize="14dp"
+                            android:textStyle="bold"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:id="@+id/selectgroupbtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@color/greylight"
+                            android:ellipsize="end"
+                            android:gravity="center"
+                            android:lines="1"
+                            android:maxWidth="170dp"
+                            android:padding="8dp"
+                            android:text="Select a group"
+                            android:textColor="#424242"
+                            android:textSize="12dp"
+                            android:textStyle="bold"
+                            android:visibility="visible" />
+
+                    </LinearLayout>
+
 
                     <Button
                         android:id="@+id/create"
+
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="16dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="14dp"
+
                         android:background="@drawable/border_grey"
                         android:text="POST"
                         android:textColor="#9e9e9e"
                         android:textSize="13dp" />
-
                 </LinearLayout>
+
+
             </android.support.v4.widget.NestedScrollView>
 
             <View
@@ -510,23 +520,14 @@
 
                     android:background="#757575" />
 
-                <in.reweyou.reweyouforums.customView.TextViewCustomFont
-                    android:id="@+id/attach"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="2dp"
-                    android:text="ATTACH ->"
-                    android:textColor="@color/main_description_text"
-                    android:textSize="11dp" />
+
 
                 <RelativeLayout
                     android:id="@+id/camera"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
 
-                    android:layout_toRightOf="@id/attach"
+                    android:layout_marginLeft="4dp"
                     android:background="@drawable/ripple_effect2">
 
                     <ImageView
@@ -578,6 +579,35 @@
                         android:paddingRight="10dp"
 
                         android:text="LINK"
+                        android:textColor="@color/sub_description_color"
+                        android:textSize="11dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/add_background"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/link"
+                    android:background="@drawable/ripple_effect2">
+
+                    <ImageView
+                        android:id="@+id/backedit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        android:paddingLeft="2dp"
+                        android:scaleType="center"
+                        app:srcCompat="@drawable/ic_wallpaper_black_24dp" />
+
+                    <in.reweyou.reweyouforums.customView.TextViewCustomFont
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_toRightOf="@+id/backedit"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="4dp"
+                        android:paddingRight="10dp"
+                        android:text="BACKGROUND"
                         android:textColor="@color/sub_description_color"
                         android:textSize="11dp" />
                 </RelativeLayout>

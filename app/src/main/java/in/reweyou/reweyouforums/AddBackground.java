@@ -151,7 +151,11 @@ public class AddBackground extends AppCompatActivity {
         Paper.init(this);
         recyclerview.setAdapter(backgroundImagesAdapter);
         backgroundlist = Paper.book().read("backgroundimages");
-        backgroundImagesAdapter.add(backgroundlist);
+        try {
+            backgroundImagesAdapter.add(backgroundlist);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void takeScreenshot(Bitmap bitmap) {
