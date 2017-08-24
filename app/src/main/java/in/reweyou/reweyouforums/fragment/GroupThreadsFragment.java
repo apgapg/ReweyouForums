@@ -2,6 +2,7 @@ package in.reweyou.reweyouforums.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -32,6 +33,7 @@ import java.util.List;
 import in.reweyou.reweyouforums.GroupActivity;
 import in.reweyou.reweyouforums.R;
 import in.reweyou.reweyouforums.adapter.FeeedsAdapter;
+import in.reweyou.reweyouforums.civil.MainActivity;
 import in.reweyou.reweyouforums.classes.UserSessionManager;
 import in.reweyou.reweyouforums.model.CommentModel;
 import in.reweyou.reweyouforums.model.ReplyCommentModel;
@@ -57,6 +59,7 @@ public class GroupThreadsFragment extends Fragment {
     private RelativeLayout fetchingdatacont;
     private JSONArray jsonresponse;
     private List<ThreadModel> threadlist;
+    private String groupname;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,9 +78,23 @@ public class GroupThreadsFragment extends Fragment {
         nopostcard = (CardView) layout.findViewById(R.id.nopostcard);
         joingroupcard = (CardView) layout.findViewById(R.id.joincard);
         isfollow = getArguments().getBoolean("follow");
+        groupname = getArguments().getString("groupname");
         fetchingdatacont = (RelativeLayout) layout.findViewById(R.id.fetchingdatacontainer);
 
         createpost = (TextView) layout.findViewById(R.id.create);
+
+        if (groupname != null) {
+            if (groupname.equals("Civil Engineers")) {
+                layout.findViewById(R.id.design).setVisibility(View.VISIBLE);
+                layout.findViewById(R.id.design_line).setVisibility(View.VISIBLE);
+                layout.findViewById(R.id.design).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mContext.startActivity(new Intent(mContext, MainActivity.class));
+                    }
+                });
+            }
+        }
 
         createpost.setOnClickListener(new View.OnClickListener() {
             @Override

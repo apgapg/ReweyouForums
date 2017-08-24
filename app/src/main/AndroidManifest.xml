@@ -101,7 +101,6 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2.NoActionBar"
-
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -173,11 +172,28 @@
             android:name=".AddBackground"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2.NoActionBar.Transparent"
-            android:windowSoftInputMode="adjustNothing|stateHidden"></activity>
+            android:windowSoftInputMode="adjustNothing|stateHidden" />
 
         <service
             android:name=".service.LoginNotiService"
             android:exported="false" />
+
+        <activity
+            android:name=".civil.SieveAnalysis"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme2.NoActionBar" />
+        <activity
+            android:name=".civil.BeamDesignActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme2.NoActionBar" />
+        <activity
+            android:name=".civil.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme2.NoActionBar" />
+        <activity
+            android:name=".civil.DigitalLevel"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme2.NoActionBar" />
     </application>
 
 </manifest>

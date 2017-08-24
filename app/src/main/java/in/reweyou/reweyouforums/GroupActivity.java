@@ -506,6 +506,7 @@ public class GroupActivity extends AppCompatActivity {
                 Bundle bundle = new Bundle();
                 bundle.putString("groupid", groupid);
                 bundle.putBoolean("follow", isfollowed);
+                bundle.putString("groupname", groupname);
                 GroupThreadsFragment groupThreadsFragment = new GroupThreadsFragment();
                 groupThreadsFragment.setArguments(bundle);
 

@@ -28,8 +28,8 @@ public class Utils {
     public static int backgroundCode;
     public static int screenWidth;
     public static String youtubeUrl;
+    public static int screenHeight;
     private static int scalefactor;
-    private static int screenHeight;
 
     public static void setBackgroundColor(Context applicationContext) {
         Random rand = new Random();

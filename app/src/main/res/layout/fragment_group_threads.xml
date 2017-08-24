@@ -161,17 +161,51 @@
         android:layout_marginBottom="40dp"
         android:alpha="0.70"
         android:background="@color/sub_description_color" />
-    <in.reweyou.reweyouforums.customView.TextViewCustomFont
-        android:id="@+id/create"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#fff"
-        android:foreground="@drawable/ripple_effect2"
-        android:gravity="center"
-        android:paddingBottom="2dp"
-        android:text="Create a Post"
-        android:textColor="#657983"
-        android:textSize="14dp" />
+
+        android:orientation="horizontal">
+
+        <in.reweyou.reweyouforums.customView.TextViewCustomFont
+            android:id="@+id/create"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="#fff"
+            android:foreground="@drawable/ripple_effect2"
+            android:gravity="center"
+            android:paddingBottom="2dp"
+            android:text="Create a Post"
+            android:textColor="#657983"
+            android:textSize="14dp" />
+
+        <View
+            android:id="@+id/design_line"
+            android:layout_width="0.7dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/main_description_text"
+            android:visibility="gone" />
+
+        <in.reweyou.reweyouforums.customView.TextViewCustomFont
+            android:id="@+id/design"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_weight="1"
+            android:background="#fff"
+            android:foreground="@drawable/ripple_effect2"
+            android:gravity="center"
+            android:paddingBottom="2dp"
+
+            android:text="Design Helper"
+            android:textColor="#657983"
+            android:textSize="14dp"
+            android:visibility="gone" />
+    </LinearLayout>
+
 
 </RelativeLayout>

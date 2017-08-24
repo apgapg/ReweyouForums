@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00C853"
+    tools:context="in.reweyou.reweyouforums.civil.DigitalLevel">
+
+    <in.reweyou.reweyouforums.civil.LevelCustombackground
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <in.reweyou.reweyouforums.civil.LevelIndicator
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
+    <in.reweyou.reweyouforums.customView.TextViewCustomFontBold
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:alpha="0.54"
+        android:text="Digital   Level  "
+        android:textColor="#000"
+        android:textSize="18dp" />
+</RelativeLayout>

@@ -88,6 +88,7 @@ public class MainThreadsFragment extends Fragment {
                     ((ForumMainActivity) mContext).onFeedCardChange(threadlist.get(i1).getGroupname());
                 } catch (Exception e) {
                     e.printStackTrace();
+
                 }
             }
         });

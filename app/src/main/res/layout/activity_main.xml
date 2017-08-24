@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F6FB"
+    android:orientation="vertical"
+    android:paddingLeft="4dp"
+    android:paddingRight="4dp"
+
+    >
+
+    <in.reweyou.reweyouforums.customView.TextViewCustomFontBold
+        android:id="@+id/b"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:gravity="center"
+        android:text="Civil Helpers"
+
+
+        android:textSize="18dp" />
+
+    <Button
+        android:id="@+id/btn_digital_level"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/b"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/rectangular_solid_maindes"
+
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:text="Digital Level"
+        android:textAllCaps="false"
+        android:textColor="#fff" />
+
+    <Button
+        android:id="@+id/btn_sieve"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/b"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rectangular_solid_maindes"
+
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:text="Sieve analysis"
+        android:textAllCaps="false"
+        android:textColor="#fff" />
+
+
+    <Button
+        android:id="@+id/btn_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_sieve"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rectangular_solid_maindes"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:text="Singly Reinforced Beam"
+        android:textAllCaps="false"
+        android:textColor="#fff" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_sieve"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/border_grey_rounded_corner"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:text="Doubly Reinforced Beam"
+        android:textAllCaps="false"
+        android:textColor="#626262" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_sieve"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/border_grey_rounded_corner"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:text="One way slab design"
+        android:textAllCaps="false"
+        android:textColor="#626262" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_sieve"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/border_grey_rounded_corner"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:text="Two way slab design"
+        android:textAllCaps="false"
+        android:textColor="#626262" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_sieve"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/border_grey_rounded_corner"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:text="Girder Design"
+        android:textAllCaps="false"
+        android:textColor="#626262" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_sieve"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/border_grey_rounded_corner"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:text="Doubly Reinforced Beam"
+        android:textAllCaps="false"
+        android:textColor="#626262" />
+
+</LinearLayout>

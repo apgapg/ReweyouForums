@@ -424,7 +424,6 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
                                 list.add(jsonObject.getString("" + i));
                             }
                             Collections.reverse(list);
-                            Paper.init(CreatePostActivity.this);
 
                             Paper.book().write("backgroundimages", list);
                         } catch (Exception e) {
@@ -1379,7 +1378,6 @@ public class CreatePostActivity extends AppCompatActivity implements QueryTokenR
         editor.onReceiveSuggestionsResult(result, BUCKET);
         return buckets;*/
 
-        Paper.init(CreatePostActivity.this);
         List<TopGroupMemberModel> suggestio = Paper.book().read("member");
         Log.d(TAG, "onQueryReceived: " + queryToken.getTokenString());
         for (int i = suggestio.size() - 1; i >= 0; i--) {
